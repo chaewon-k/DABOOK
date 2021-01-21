@@ -1,82 +1,93 @@
 <template>
   <v-col style="border: 1px solid black; height:35em; overflow:scroll;">
-    <div>
-      <h1>Directory</h1>
-    {
-  "name": "epub_editor",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "electron:build": "vue-cli-service electron:build",
-    "electron:serve": "vue-cli-service electron:serve",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
-  },
-  "main": "background.js",
-  "dependencies": {
-    "@mdi/font": "^3.6.95",
-    "core-js": "^3.6.5",
-    "roboto-fontface": "*",
-    "vue": "^2.6.11",
-    "vue-router": "^3.2.0",
-    "vuetify": "^2.2.11",
-    "vuex": "^3.4.0"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
-    "electron": "^9.0.0",
-    "electron-devtools-installer": "^3.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "sass": "^1.19.0",
-    "sass-loader": "^8.0.0",
-    "vue-cli-plugin-electron-builder": "~2.0.0-rc.5",
-    "vue-cli-plugin-vuetify": "~2.0.9",
-    "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.3.0"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
-}
-
-      A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>
-    
-    </div>
+    <button @click="test">a</button>
+    <v-treeview
+      v-model="tree"
+      :open="initiallyOpen"
+      :items="items"
+      activatable
+      item-key="name"
+      open-on-click
+    >
+      <template v-slot:prepend="{ item, open }">
+        <v-icon v-if="!item.file">
+          {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
+        </v-icon>
+        <v-icon v-else>
+          {{ files[item.file] }}
+        </v-icon>
+      </template>
+    </v-treeview>
   </v-col>
 </template>
 
 <script>
-export default {
-
-}
+  export default {
+    data: () => ({
+      initiallyOpen: ['public'],
+      files: {
+        html: 'mdi-language-html5',
+        js: 'mdi-nodejs',
+        json: 'mdi-code-json',
+        md: 'mdi-language-markdown',
+        pdf: 'mdi-file-pdf',
+        png: 'mdi-file-image',
+        txt: 'mdi-file-document-outline',
+        xls: 'mdi-file-excel',
+      },
+      tree: [],
+      items: [
+        {
+          name: '.git',
+        },
+        {
+          name: 'node_modules',
+        },
+        {
+          name: 'public',
+          children: [
+            {
+              name: 'static',
+              children: [{
+                name: 'logo.png',
+                file: 'png',
+              }],
+            },
+            {
+              name: 'favicon.ico',
+              file: 'png',
+            },
+            {
+              name: 'index.html',
+              file: 'html',
+            },
+          ],
+        },
+        {
+          name: '.gitignore',
+          file: 'txt',
+        },
+        {
+          name: 'babel.config.js',
+          file: 'js',
+        },
+        {
+          name: 'package.json',
+          file: 'json',
+        },
+        {
+          name: 'README.md',
+          file: 'md',
+        },
+        {
+          name: 'vue.config.js',
+          file: 'js',
+        },
+        {
+          name: 'yarn.lock',
+          file: 'txt',
+        },
+      ],
+    }),
+  }
 </script>
-
-<style>
-
-
-</style>
