@@ -1,13 +1,19 @@
 <template>
-  <div>
+  <div >
     <TopMenu/>
-    <v-container>
-      <v-row>
-        <Directory/>
-        <Textarea/>
-        <Preview/>
-      </v-row>
-    </v-container>
+
+<v-container>
+    <v-row  class="stretch">
+      
+      <Directory />
+     <v-divider vertical></v-divider>
+      <Textarea />
+     <v-divider vertical></v-divider>
+      <Preview />
+     
+    </v-row>
+  </v-container>
+
   </div>
 </template>
 
