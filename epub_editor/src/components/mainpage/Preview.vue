@@ -2,7 +2,7 @@
   <v-col style="border: 1px solid black; height:35em; overflow:scroll;">
     <div>
       <h1>Preview</h1>
-      <p v-html=this.editingText></p>
+      <p style="white-space:pre;" v-html=this.editingText></p>
     </div>
   </v-col>
 </template>
