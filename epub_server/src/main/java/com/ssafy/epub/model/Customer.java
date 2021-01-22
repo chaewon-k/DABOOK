@@ -24,7 +24,7 @@ public class Customer {
 	private String nickname;
 	private boolean status;
 	
-	private List<Epub> epubList;
+	private List<String> epubList;
 	
 	public Customer(String email, String password, String nickname){
 		this.email = email;
