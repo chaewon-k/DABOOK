@@ -9,7 +9,7 @@ export function readDirectory (dirPath, arrayOfFiles) {
       temp = readDirectory(dirPath + "/" + file, temp, file)
       arrayOfFiles.push({name: file, children: temp})
     } else {
-      arrayOfFiles.push({name: file})
+      arrayOfFiles.push({name: file, dirPath: dirPath + "/" + file})
     }
   })
   return arrayOfFiles  

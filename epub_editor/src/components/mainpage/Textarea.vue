@@ -24,6 +24,9 @@ export default {
     }
   },
   created() {
+    eventBus.$on('loadData', res => {
+      this.inputText = res
+    })
     eventBus.$on('pushIndexData', res => {
       if (res === 'Italic') {
         this.attachItalicTag()
