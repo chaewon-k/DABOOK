@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.epub.model.Customer;
-import com.ssafy.epub.repository.CustomerRepository;
+import com.ssafy.epub.model.User;
+import com.ssafy.epub.repository.UserRepository;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -22,11 +22,11 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api")
 public class UserController {
 	@Autowired
-	private CustomerRepository customerRepository;
+	private UserRepository userRepository;
 	
 	@GetMapping("/customers")
 	@ApiOperation(value = "getAllCustomers", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<List<Customer>> getAllCustomers() {
-		return new ResponseEntity<>(customerRepository.findAll(),HttpStatus.OK);
+	public ResponseEntity<List<User>> getAllCustomers() {
+		return new ResponseEntity<>(userRepository.findAll(),HttpStatus.OK);
 	}
 }
