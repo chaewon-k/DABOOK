@@ -51,6 +51,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import eventBus from '@/eventBus.js'
 import {
   pTag,
   enterTag,
@@ -77,6 +78,15 @@ export default {
       hTags: [1, 2, 3, 4, 5, 6],
       linkDialog: false,
     };
+  },
+  created() {
+    eventBus.$on('pushIndexData', res => {
+      if (res === 'Italic') {
+        this.attachItalicTag()
+      } else {
+        this.attachHTag(res)
+      }
+    })
   },
   computed: {},
   methods: {
