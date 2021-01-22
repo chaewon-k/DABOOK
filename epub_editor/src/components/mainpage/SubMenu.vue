@@ -22,7 +22,12 @@
       <v-btn text>e-book 축소하기</v-btn>
     </template>
     <template v-else-if="itemIndex===3">
-      <v-btn text>h1</v-btn>
+      <div class="d-flex justify-start">
+        <div v-for="tag in hTags" :key="tag">
+          <v-btn @click="selectHTag(tag)">{{'h' + tag}}</v-btn>
+        </div>
+        <v-btn @click="selectItalicTag()">Italic</v-btn>
+      </div>
     </template>
     <template v-else>
       <v-btn text>editor 사용 설명서 보기</v-btn>
@@ -34,11 +39,23 @@
 
 <script>
 import { readDirectory, test3 } from '@/functions/file.js'
+import eventBus from '@/eventBus.js'
 const { dialog } = require('electron').remote
 
 export default {
   name: 'SubMenu',
+  data() {
+    return {
+      hTags: [1, 2, 3, 4, 5, 6]
+    }
+  },
   methods: {
+    selectHTag: function(index) {
+      eventBus.$emit('pushIndexData', index);
+    },
+    selectItalicTag: function () {
+      eventBus.$emit('pushIndexData', 'Italic');
+    },
     loadEbook: function () {
       const options = {
         properties: ['openDirectory']

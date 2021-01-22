@@ -1,12 +1,5 @@
 <template>
   <v-col>
-
-    <div v-for="tag in hTags" :key="tag">
-      <v-btn @click="attachHTag(tag)">{{'h' + tag}}</v-btn>
-    </div>
-
-    <v-btn @click="attachItalicTag()">Italic</v-btn>
-
     <v-textarea
     id="area"
     outlined
@@ -16,23 +9,28 @@
     v-model="inputText"
     >
     </v-textarea>
-
   </v-col>
-
 </template>
 
 <script>
 import {mapMutations} from "vuex";
+import eventBus from '@/eventBus.js'
 import {hTag, italicTag} from '@/functions/text-style.js'
 
 export default {
   data() {
     return {
       inputText : '',
-      hTags: [1, 2, 3, 4, 5, 6]
     }
   },
-  computed:{
+  created() {
+    eventBus.$on('pushIndexData', res => {
+      if (res === 'Italic') {
+        this.attachItalicTag()
+      } else {
+        this.attachHTag(res)
+      }
+    })
   },
   methods:{
     ...mapMutations(["SET_EDITINGTEXT"]),
