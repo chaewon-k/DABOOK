@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
-public class CustomerController {
+public class UserController {
 	@Autowired
 	private CustomerRepository customerRepository;
 	
