@@ -5,10 +5,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    editingText: ''
   },
   mutations: {
+    SET_EDITINGTEXT(state, value){
+      state.editingText=value;
+    },
   },
   actions: {
+    setEditingText:function({commit},value){
+      commit('SET_EDITINGTEXT',value);
+    }
   },
   modules: {
   }
