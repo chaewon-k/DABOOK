@@ -5,8 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    editingText: '',
-    currentDirectory: [],
+    editingText: ''
   },
   mutations: {
     SET_EDITINGTEXT(state, value){
