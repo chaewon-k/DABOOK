@@ -2,6 +2,7 @@
   <div>
     <template v-if="itemIndex===0">
       <v-btn text>새 e-book 만들기</v-btn>
+      <v-btn @click="loadEbook" text>e-book 불러오기</v-btn>
       <v-btn text>저장하기</v-btn>
       <v-btn text>다른 이름으로 저장하기</v-btn>
       <v-btn text>e-pub으로 내보내기</v-btn>
@@ -32,8 +33,24 @@
 </template>
 
 <script>
+import { readDirectory, test3 } from '@/functions/file.js'
+const { dialog } = require('electron').remote
+
 export default {
   name: 'SubMenu',
+  methods: {
+    loadEbook: function () {
+      const options = {
+        properties: ['openDirectory']
+      }
+      const r = dialog.showOpenDialogSync(options)
+      if (!r) return
+      this.$store.state.currentDirectory = readDirectory(r[0], [])
+    },
+    test: function () {
+      test3()
+    }
+  },
   props: {
     itemIndex: { type: Number }
   },

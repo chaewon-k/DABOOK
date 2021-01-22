@@ -1,6 +1,5 @@
 <template>
   <v-col style="border: 1px solid black; height:35em; overflow:scroll;">
-    <button @click="test">a</button>
     <v-treeview
       v-model="tree"
       :open="initiallyOpen"
@@ -22,9 +21,16 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      initiallyOpen: ['public'],
+
+export default {
+  computed: {
+    items: function () {
+      return this.$store.state.currentDirectory
+    },
+  },
+  data: function () {
+    return {
+      initiallyOpen: [],
       files: {
         html: 'mdi-language-html5',
         js: 'mdi-nodejs',
@@ -36,58 +42,7 @@
         xls: 'mdi-file-excel',
       },
       tree: [],
-      items: [
-        {
-          name: '.git',
-        },
-        {
-          name: 'node_modules',
-        },
-        {
-          name: 'public',
-          children: [
-            {
-              name: 'static',
-              children: [{
-                name: 'logo.png',
-                file: 'png',
-              }],
-            },
-            {
-              name: 'favicon.ico',
-              file: 'png',
-            },
-            {
-              name: 'index.html',
-              file: 'html',
-            },
-          ],
-        },
-        {
-          name: '.gitignore',
-          file: 'txt',
-        },
-        {
-          name: 'babel.config.js',
-          file: 'js',
-        },
-        {
-          name: 'package.json',
-          file: 'json',
-        },
-        {
-          name: 'README.md',
-          file: 'md',
-        },
-        {
-          name: 'vue.config.js',
-          file: 'js',
-        },
-        {
-          name: 'yarn.lock',
-          file: 'txt',
-        },
-      ],
-    }),
-  }
+    }
+  },
+}
 </script>
