@@ -28,13 +28,13 @@ public class EpubController {
 	@Autowired
 	private FileRepository fileRepository;
 	
-	@GetMapping("/epubs")
+	@GetMapping("/epub")
 	@ApiOperation(value = "getAllEpubs", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<List<Epub>> getAllCustomers() {
+	public ResponseEntity<List<Epub>> getAllEpubs() {
 		return new ResponseEntity<>(epubRepository.findAll(),HttpStatus.OK);
 	}
 	
-	@GetMapping("/files")
+	@GetMapping("/file")
 	@ApiOperation(value = "getAllFiles", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<List<File>> getAllFiles() {
 		return new ResponseEntity<>(fileRepository.findAll(),HttpStatus.OK);
