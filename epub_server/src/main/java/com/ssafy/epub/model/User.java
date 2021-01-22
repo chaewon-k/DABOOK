@@ -14,8 +14,8 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Document(collection = "customers")
-public class Customer {
+@Document(collection = "users")
+public class User {
 	@Id
 	private String _id;
 	
@@ -26,7 +26,7 @@ public class Customer {
 	
 	private List<String> epubList;
 	
-	public Customer(String email, String password, String nickname){
+	public User(String email, String password, String nickname){
 		this.email = email;
 		this.password = password;
 		this.nickname = nickname;

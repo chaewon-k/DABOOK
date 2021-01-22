@@ -18,7 +18,7 @@ import lombok.ToString;
 public class Epub {
 	@Id
 	private String _id;
-	private String customerId;
+	private String userId;
 	private String epubName;
 	private List<String> fileList;
 }
