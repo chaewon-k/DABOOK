@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.epub.model.User;
 import com.ssafy.epub.repository.UserRepository;
+import com.ssafy.epub.service.MailService;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -29,6 +30,8 @@ import io.swagger.annotations.ApiOperation;
 public class UserController {
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private MailService mailService;
 	
 	@GetMapping("/user")
 	@ApiOperation(value = "getAllUsers", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -44,7 +47,9 @@ public class UserController {
 	public ResponseEntity<Boolean> addUser(@RequestBody User user) {
 		try {
 			if(userRepository.save(user) != null) {
-				//인증 메일 보내기
+				user.generateEmailToken();
+				mailService.signUpEmailSender(user);
+				userRepository.save(user);
 				return new ResponseEntity<>(true, HttpStatus.OK);
 			}
 			else
@@ -98,24 +103,24 @@ public class UserController {
 		}
 	}
 	
-	@DeleteMapping("/user")
-	@ApiOperation(value = "deleteUser")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "email", value = "삭제할 회원의 이메일", required = true, dataType = "String")
-	})
-	public ResponseEntity<Boolean> deleteUser(@RequestBody String email) {
-		try {
-			List<User> findUserList = userRepository.findByEmail(email);
-			if(findUserList.size() == 1) {
-				User preUser = findUserList.get(0);
-				userRepository.deleteById(preUser.get_id());
-				return new ResponseEntity<>(true, HttpStatus.OK);
-			}
-			else
-				return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
-		}catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+//	@DeleteMapping("/user")
+//	@ApiOperation(value = "deleteUser")
+//	@ApiImplicitParams({
+//		@ApiImplicitParam(name = "email", value = "삭제할 회원의 이메일", required = true, dataType = "String")
+//	})
+//	public ResponseEntity<Boolean> deleteUser(@RequestBody String email) {
+//		try {
+//			List<User> findUserList = userRepository.findByEmail(email);
+//			if(findUserList.size() == 1) {
+//				User preUser = findUserList.get(0);
+//				userRepository.deleteById(preUser.get_id());
+//				return new ResponseEntity<>(true, HttpStatus.OK);
+//			}
+//			else
+//				return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 }
