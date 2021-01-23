@@ -15,6 +15,9 @@
     <v-btn @click="attachSuperscriptTag()">Superscript</v-btn>
     <v-btn @click="attachImageTag()">Image</v-btn>
     <v-btn @click.stop="linkDialog = true">Link</v-btn>
+    <v-btn @click.stop="tableDialog = true">table</v-btn>
+    <v-btn @click="attachUnorderedListTag()">unorderedList</v-btn>
+    <v-btn @click="attachOrderedListTag()">orderedList</v-btn>
 
     <v-dialog v-model="linkDialog" max-width="290">
       <v-card>
@@ -36,6 +39,37 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model="tableDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline"> 생성할 표의 행과 열을 입력하세요. </v-card-title>
+        <v-row>
+          <v-col>
+            <v-text-field label="행" v-model="tableRow">
+              <v-icon slot="append" color="red" @click="plusRow()"> mdi-plus </v-icon>
+              <v-icon slot="prepend" color="green" @click="minusRow()"> mdi-minus </v-icon>
+            </v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field label="열" v-model="tableCol">
+              <v-icon slot="append" color="red" @click="plusCol()"> mdi-plus </v-icon>
+              <v-icon slot="prepend" color="green" @click="minusCol()"> mdi-minus </v-icon>
+            </v-text-field>
+          </v-col>
+        </v-row>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="tableDialog = false">
+            취소
+          </v-btn>
+
+          <v-btn color="green darken-1" text @click="attachTableTag()">
+            표 생성
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-textarea
       id="area"
       outlined
@@ -51,7 +85,7 @@
 
 <script>
 import { mapMutations } from "vuex";
-import eventBus from '@/eventBus.js'
+import eventBus from "@/eventBus.js";
 import {
   pTag,
   enterTag,
@@ -67,76 +101,106 @@ import {
   superscriptTag,
   imageTag,
   linkTag,
+  tableTag,
+  unorderedListTag,
+  orderedListTag
 } from "@/functions/text-style.js";
 
 export default {
   data() {
     return {
-      position: 0,
       inputText: "",
       linkText: "",
+      tableData: { col: [], row: [] },
       hTags: [1, 2, 3, 4, 5, 6],
       linkDialog: false,
+      tableDialog: false,
+      tableRow: 0,
+      tableCol: 0,
     };
   },
   created() {
-    eventBus.$on('loadData', res => {
-      this.inputText = res
-    })
-    eventBus.$on('pushIndexData', res => {
-      if (res === 'Italic') {
-        this.attachItalicTag()
+    eventBus.$on("loadData", (res) => {
+      this.inputText = res;
+    });
+    eventBus.$on("pushIndexData", (res) => {
+      if (res === "Italic") {
+        this.attachItalicTag();
       } else {
-        this.attachHTag(res)
+        this.attachHTag(res);
       }
-    })
+    });
   },
   computed: {},
   methods: {
     ...mapMutations(["SET_EDITINGTEXT"]),
-    attachPTag() {
+    plusRow: function () {
+      this.tableRow++;
+    },
+    minusRow: function () {
+      this.tableRow--;
+    },
+    plusCol: function () {
+      this.tableCol++;
+    },
+    minusCol: function () {
+      this.tableCol--;
+    },
+    attachPTag: function () {
       this.inputText = pTag();
     },
-    attachEnterTag() {
+    attachEnterTag: function () {
       this.inputText = enterTag();
     },
-    attachLineTag() {
+    attachLineTag: function () {
       this.inputText = lineTag();
     },
-    attachHTag(index) {
+    attachHTag: function (index) {
       this.inputText = hTag(index);
     },
-    attachItalicTag() {
+    attachItalicTag: function () {
       this.inputText = italicTag();
     },
-    attachBlockquoteTag() {
+    attachBlockquoteTag: function () {
       this.inputText = blockquoteTag();
     },
-    attachCiteTag() {
+    attachCiteTag: function () {
       this.inputText = citeTag();
     },
-    attachBoldTag() {
+    attachBoldTag: function () {
       this.inputText = boldTag();
     },
-    attachUnderlineTag() {
+    attachUnderlineTag: function () {
       this.inputText = underlineTag();
     },
-    attachMediumlineTag() {
+    attachMediumlineTag: function () {
       this.inputText = mediumlineTag();
     },
-    attachSubscriptTag() {
+    attachSubscriptTag: function () {
       this.inputText = subscriptTag();
     },
-    attachSuperscriptTag() {
+    attachSuperscriptTag: function () {
       this.inputText = superscriptTag();
     },
-    attachImageTag() {
+    attachImageTag: function () {
       this.inputText = imageTag();
     },
-    attachLinkTag() {
+    attachLinkTag: function () {
       this.linkDialog = false;
       this.inputText = linkTag(this.linkText);
       this.linkText = "";
+    },
+    attachTableTag: function () {
+      this.tableDialog = false;
+      this.inputText = tableTag(this.tableRow, this.tableCol);
+      this.tableRow = 0;
+      this.tableCol = 0;
+    },
+    attachUnorderedListTag: function () {
+      this.inputText = unorderedListTag();
+    },
+    attachOrderedListTag: function () {
+      this.inputText = orderedListTag();
     },
   },
   watch: {
