@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     currentDirectory: [],
-    editingText: ''
+    editingText: '' //textarea's text value
   },
   mutations: {
     SET_EDITINGTEXT(state, value){
