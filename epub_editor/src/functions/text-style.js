@@ -115,9 +115,9 @@ export function imageTag() {
   }
   const r = dialog.showOpenDialogSync(options)
   if (!r) return area.value;
-  console.log(r.[0])
+  console.log(r[0])
 
-  var resultString = `<img src="${r.[0]}" >`;
+  var resultString = `<img src="${r[0]}" >`;
   var area = document.getElementById("area");
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
   return area.value;

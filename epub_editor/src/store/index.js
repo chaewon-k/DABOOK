@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    currentDirectory: [],
+    currentDirectory: [], // Directory's item
+    tableOfContents: [], // TableOfContents' item
     editingText: '' //textarea's text value
   },
   mutations: {
