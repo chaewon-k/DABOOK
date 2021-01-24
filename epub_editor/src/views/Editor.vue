@@ -2,10 +2,17 @@
   <div >
     <TopMenu/>
 
-<v-container>
+  <v-container>
     <v-row  class="stretch">
-      
-      <Directory />
+        <v-col style="border: 1px solid black; height:35em; overflow:scroll;">
+          <v-btn @click="toggle">Dir-ToC Toggle</v-btn>
+          <Directory
+            v-show="dirTableToggle===true"
+          />
+          <TableOfContents
+            v-show="dirTableToggle===false"
+          />
+        </v-col>            
      <v-divider vertical></v-divider>
       <Textarea />
      <v-divider vertical></v-divider>
@@ -20,6 +27,7 @@
 <script>
 import TopMenu from '@/components/mainpage/TopMenu';
 import Directory from '@/components/mainpage/Directory';
+import TableOfContents from '@/components/mainpage/TableOfContents';
 import Textarea from '@/components/mainpage/Textarea';
 import Preview from '@/components/mainpage/Preview';
 
@@ -28,8 +36,19 @@ export default {
   components: {
     TopMenu,
     Directory,
+    TableOfContents,
     Textarea,
     Preview
+  },
+  data: function () {
+    return {
+      dirTableToggle: true
+    }
+  },
+  methods: {
+    toggle: function () {
+      this.dirTableToggle = !this.dirTableToggle
+    },
   },
 }
 </script>

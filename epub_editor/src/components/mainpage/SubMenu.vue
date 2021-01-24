@@ -45,9 +45,10 @@
 </template>
 
 <script>
-import { readDirectory, test3 } from '@/functions/file.js'
+import { readDirectory, tocToList } from '@/functions/file.js'
 import eventBus from '@/eventBus.js'
 import { mapMutations, mapState } from 'vuex'
+const fs = require('fs')
 const { dialog } = require('electron').remote
 
 export default {
@@ -75,19 +76,21 @@ export default {
     selectItalicTag: function () {
       eventBus.$emit('pushIndexData', 'Italic');
     },
-    loadEbook: function () {
+    loadEbook: function () { // E-BOOK 불러오기
       const options = {
         properties: ['openDirectory']
       }
       const r = dialog.showOpenDialogSync(options)
       if (!r) return
-      this.$store.state.currentDirectory = readDirectory(r[0], [])
+      const data = readDirectory(r[0], [], [])
+      this.$store.state.currentDirectory = data['arrayOfFiles']
+      this.getToc(data['toc'])
     },
-    test: function () {
-      test3()
+    getToc: function (val) { // 목차 읽어오기
+      const fileToText = fs.readFileSync(val[0]).toString()
+      // console.log(tocToList(fileToText, []))
+      this.$store.state.tableOfContents = tocToList(fileToText, [])
     },
-
-
     /* 
       < itemIndex 1 : 편집 >
       cut/copy : 드래그 필수,

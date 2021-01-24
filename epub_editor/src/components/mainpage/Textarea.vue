@@ -121,7 +121,7 @@ export default {
   },
   created() {
     eventBus.$on("loadData", (res) => {
-      this.inputText = res;
+      this.inputText = res.slice(res.indexOf("<body>"), res.indexOf("</body>")+7);
     });
     eventBus.$on("pushIndexData", (res) => {
       if (res === "Italic") {

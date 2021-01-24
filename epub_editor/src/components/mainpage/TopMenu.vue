@@ -30,7 +30,7 @@ export default {
   components: {
     SubMenu
   },
-  data () {
+  data: function () {
       return {
         itemIndex: 0,     //선택한 메뉴 인덱스
         tab: null,

@@ -18,14 +18,6 @@
         </v-icon>
         <span @click="openFile(item)">{{ item.name }}</span>
       </template>
-      <!-- <template v-slot:prepend="{ item, open }">
-        <v-icon v-if="!item.file">
-          {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
-        </v-icon>
-        <v-icon v-else>
-          {{ files[item.file] }}
-        </v-icon>
-      </template> -->
     </v-treeview>
   </v-col>
 </template>
@@ -57,10 +49,10 @@ export default {
     }
   },
   methods: {
-    openFile: function (val) {
+    openFile: function (val) { // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
       if (val.children) return
-      const aa = fs.readFileSync(val.dirPath).toString()
-      eventBus.$emit('loadData', aa)
+      const temp = fs.readFileSync(val.dirPath).toString()
+      eventBus.$emit('loadData', temp)
     }
   },
 }
