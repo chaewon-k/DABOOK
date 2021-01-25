@@ -1,24 +1,5 @@
 <template>
   <v-col>
-    <div style="display:inline" v-for="tag in hTags" :key="tag">
-      <v-btn @click="attachHTag(tag)">{{'h' + tag}}</v-btn>
-    </div>
-    <v-btn @click="attachItalicTag()">Italic</v-btn>
-    <v-btn @click="attachPTag()">Enter</v-btn>
-    <v-btn @click="attachLineTag()">Line</v-btn>
-    <v-btn @click="attachBlockquoteTag()">Blockquote</v-btn>
-    <v-btn @click="attachCiteTag()">Cite</v-btn>
-    <v-btn @click="attachBoldTag()">Bold</v-btn>
-    <v-btn @click="attachUnderlineTag()">Underline</v-btn>
-    <v-btn @click="attachMediumlineTag()">Mediumline</v-btn>
-    <v-btn @click="attachSubscriptTag()">Subscript</v-btn>
-    <v-btn @click="attachSuperscriptTag()">Superscript</v-btn>
-    <v-btn @click="attachImageTag()">Image</v-btn>
-    <v-btn @click.stop="linkDialog = true">Link</v-btn>
-    <v-btn @click.stop="tableDialog = true">table</v-btn>
-    <v-btn @click="attachUnorderedListTag()">unorderedList</v-btn>
-    <v-btn @click="attachOrderedListTag()">orderedList</v-btn>
-
     <v-dialog v-model="linkDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> 링크를 입력해주세요. </v-card-title>
@@ -73,6 +54,7 @@
     <v-textarea
       id="area"
       outlined
+      ma-auto
       height="35em"
       label="textarea 입니다"
       placeholder="책을 작성해볼까요?"
@@ -126,6 +108,34 @@ export default {
     eventBus.$on("pushIndexData", (res) => {
       if (res === "Italic") {
         this.attachItalicTag();
+      } else if (res === "LineTag") {
+        this.attachLineTag();
+      } else if (res === "Enter") {
+        this.attachPTag();
+      } else if (res === "BlockquoteTag") {
+        this.attachBlockquoteTag();
+      } else if (res === "CiteTag") {
+        this.attachCiteTag();
+      } else if (res === "BoldTag") {
+        this.attachBoldTag();
+      } else if (res === "UnderlineTag") {
+        this.attachUnderlineTag();
+      } else if (res === "MediumlineTag") {
+        this.attachMediumlineTag();
+      } else if (res === "SubscriptTag") {
+        this.attachSubscriptTag();
+      } else if (res === "SuperscriptTag") {
+        this.attachSuperscriptTag();
+      } else if (res === "ImageTag") {
+        this.attachImageTag();
+      } else if (res === "UnorderedListTag") {
+        this.attachUnorderedListTag();
+      } else if (res === "OrderedListTag") {
+        this.attachOrderedListTag();
+      } else if (res === "Link") {
+        this.linkDialog = true;
+      } else if (res === "Table") {
+        this.tableDialog = true;
       } else {
         this.attachHTag(res);
       }
