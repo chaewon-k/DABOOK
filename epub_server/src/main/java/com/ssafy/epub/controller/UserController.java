@@ -2,6 +2,8 @@ package com.ssafy.epub.controller;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,77 +34,60 @@ public class UserController {
 	private UserRepository userRepository;
 	@Autowired
 	private MailService mailService;
-	
+
 	@GetMapping("/user")
 	@ApiOperation(value = "getAllUsers", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<List<User>> getAllUsers() {
-		return new ResponseEntity<>(userRepository.findAll(),HttpStatus.OK);
+		return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/user")
 	@ApiOperation(value = "addUser")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User")
-	})
-	public ResponseEntity<Boolean> addUser(@RequestBody User user) {
-		try {
-			if(userRepository.save(user) != null) {
-				user.generateEmailToken();
-				mailService.signUpEmailSender(user);
-				userRepository.save(user);
-				return new ResponseEntity<>(true, HttpStatus.OK);
-			}
-			else
-				return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
-		}catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	@ApiImplicitParams({ @ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User") })
+	public ResponseEntity<Boolean> addUser(@RequestBody User user) throws MessagingException {
+
+		if (userRepository.save(user) != null) {
+			user.generateEmailToken();
+			mailService.signUpEmailSender(user);
+			userRepository.save(user);
+
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
+
 	}
-	
+
 	@PutMapping("/user")
 	@ApiOperation(value = "updateUser")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User")
-	})
+	@ApiImplicitParams({ @ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User") })
 	public ResponseEntity<Boolean> updateUser(@RequestBody User user) {
-		try {
-			List<User> findUserList = userRepository.findByEmail(user.getEmail());
-			if(findUserList.size() == 1) {
-				User preUser = findUserList.get(0);
-				preUser.setPassword(user.getPassword());
-				preUser.setNickname(user.getNickname());
-				userRepository.save(preUser);
-				return new ResponseEntity<>(true, HttpStatus.OK);
-			}
-			else
-				return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
-		}catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+
+		List<User> findUserList = userRepository.findByEmail(user.getEmail());
+		if (findUserList.size() == 1) {
+			User preUser = findUserList.get(0);
+			preUser.setPassword(user.getPassword());
+			preUser.setNickname(user.getNickname());
+			userRepository.save(preUser);
+			
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
+
 	}
-	
+
 	@DeleteMapping("/user")
 	@ApiOperation(value = "deleteUser")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User")
-	})
+	@ApiImplicitParams({ @ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User") })
 	public ResponseEntity<Boolean> deleteUser(@RequestBody User user) {
-		try {
-			
-			if(user != null) {
-				userRepository.delete(user);
-				return new ResponseEntity<>(true, HttpStatus.OK);
-			}
-			else
-				return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
-		}catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+
+		if (user != null) {
+			userRepository.delete(user);
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
+
 	}
-	
+
 //	@DeleteMapping("/user")
 //	@ApiOperation(value = "deleteUser")
 //	@ApiImplicitParams({
