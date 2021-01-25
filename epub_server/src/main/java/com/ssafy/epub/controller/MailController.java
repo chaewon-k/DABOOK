@@ -20,23 +20,23 @@ import io.swagger.annotations.ApiOperation;
 public class MailController {
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@GetMapping("/auth")
 	@ApiOperation(value = "verify email", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<Boolean> verifyEmail(String token, String email) {
 		try {
 			List<User> findUserList = userRepository.findByEmail(email);
-			if(findUserList.size() == 1 && findUserList.get(0).getEmailToken().equals(token)) {
+			if (findUserList.size() == 1 && findUserList.get(0).getEmailToken().equals(token)) {
 				User preUser = findUserList.get(0);
 				preUser.setStatus(true);
 				userRepository.save(preUser);
 				return new ResponseEntity<>(true, HttpStatus.OK);
-			}
-			else
+			} else
 				return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+
 		}
 	}
 }
