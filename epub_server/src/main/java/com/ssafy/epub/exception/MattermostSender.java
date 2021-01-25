@@ -1,5 +1,8 @@
 package com.ssafy.epub.exception;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,14 +26,27 @@ public class MattermostSender {
     @Value("${notification.mattermost.enabled}")
     private boolean mmEnabled;
     @Value("${notification.mattermost.webhook-url}")
-    private String webhookUrl;    
+    private String webhookUrl;
+    @Value("${notification.mattermost.channel}")
+    private String channel;
+	@Value("${notification.mattermost.pretext}")
+    private String pretext;
+	@Value("${notification.mattermost.color}")
+    private String color;
+	@Value("${notification.mattermost.author-name}")
+    private String authorName;
+	@Value("${notification.mattermost.author-icon}")
+    private String authorIcon;
+    @Value("${notification.mattermost.title}")
+    private String title;
+    @Value("${notification.mattermost.text}")
+    private String text;
+    @Value("${notification.mattermost.footer}")
+    private String footer;
 
-    private RestTemplate restTemplate;
-    private final MattermostProperties mmProperties;
+    private final RestTemplate restTemplate = new RestTemplate();
 
-    public void sendMessage(Exception excpetion, String uri, String params) {
-    	
-    	restTemplate = new RestTemplate();
+    public void sendMessage(Exception exception, String uri, String params) {
     	
     	
         if (!mmEnabled)
@@ -38,19 +54,19 @@ public class MattermostSender {
 
         try {
             Attachment attachment = Attachment.builder()
-                                                    .channel(mmProperties.getChannel())
-                                                    .authorIcon(mmProperties.getAuthorIcon())
-                                                    .authorName(mmProperties.getAuthorName())
-                                                    .color(mmProperties.getColor())
-                                                    .pretext(mmProperties.getPretext())
-                                                    .title(mmProperties.getTitle())
-                                                    .text(mmProperties.getText())
-                                                    .footer(mmProperties.getFooter())
+                                                    .channel(channel)
+                                                    .authorIcon(authorIcon)
+                                                    .authorName(authorName)
+                                                    .color(color)
+                                                    .pretext(pretext)
+                                                    .title(title)
+                                                    .text(text)
+                                                    .footer(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                                                     .build();
 
-            attachment.addExceptionInfo(excpetion, uri, params);
+            attachment.addExceptionInfo(exception, uri, params);
             Attachments attachments = new Attachments(attachment);
-            attachments.addProps(excpetion);
+            attachments.addProps(exception);
             String payload = new Gson().toJson(attachments);
 
             HttpHeaders headers = new HttpHeaders();

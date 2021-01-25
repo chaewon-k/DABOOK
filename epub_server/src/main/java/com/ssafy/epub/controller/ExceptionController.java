@@ -8,20 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ssafy.epub.exception.NotificationManager;
 
-@RestControllerAdvice
+@RestControllerAdvice(annotations = RestController.class)
 public class ExceptionController {
 	@Autowired
     private NotificationManager notificationManager;
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> exceptionTest(Exception e, HttpServletRequest req) {
+    public ResponseEntity<String> exceptionNotify(Exception e, HttpServletRequest req) {
         e.printStackTrace();
         notificationManager.sendNotification(e, req.getRequestURI(), getParams(req));
-
+        System.out.println(req.getRequestURI());
+        System.out.println(getParams(req));
         return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -32,7 +34,7 @@ public class ExceptionController {
             String key = keys.nextElement();
             params.append("- ").append(key).append(" : ").append(req.getParameter(key)).append("/n");
         }
-
+        
         return params.toString();
     }
 }
