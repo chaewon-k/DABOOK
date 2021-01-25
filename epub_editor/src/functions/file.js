@@ -2,6 +2,7 @@ const fs = require("fs")
 
 export function readDirectory (dirPath, arrayOfFiles, toc) {
   const files = fs.readdirSync(dirPath)
+  console.log(dirPath);
   arrayOfFiles = arrayOfFiles || []
   toc = toc || []
   files.forEach(function(file) {
@@ -32,4 +33,20 @@ export function tocToList (toc, arrayOfContents) {
   }
   arrayOfContents.push(toc)
   return arrayOfContents
+}
+
+export function makeEpubFile (title) {
+  var zipFolder = require('zip-folder');
+  var path = 'C:/Users/multicampus/Desktop/';
+ 
+  zipFolder(path + 'NewEbook', path + title + '.epub', function(err) {
+      if(err) {
+          console.log('oh no!', err);
+      } else {
+          console.log(path + title + '.epub');
+          console.log('EXCELLENT');
+          alert('파일이 저장되었습니다!');
+      }
+  });
+
 }
