@@ -1,10 +1,59 @@
 <template>
   <div>
     <template v-if="itemIndex===0">
-      <v-btn text>새 e-book 만들기</v-btn>
+     
+        <v-dialog v-model="newEBook" persistent max-width="600px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on">새 e-book 생성</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">E-Book 생성</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="6" sm="6" md="4">
+                    <v-text-field label="E-Book Title *" required v-model="newEBookTitle"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <div>
+                      <v-btn @click="load">위치 선택</v-btn>
+                      {{newEBookLocation[0]}}
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6" md="7">
+                    <v-file-input
+                      :rules="newEBookCover"
+                      accept="image/png, image/jpeg, image/bmp"
+                      prepend-icon="mdi-camera"
+                      label="E-Book Image"
+                    ></v-file-input>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*indicates required field</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="newEBook = false">
+                Close
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="createNewEBook">
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+     
+
       <v-btn @click="loadEbook" text>e-book 불러오기</v-btn>
       <v-btn text @click="storeInputText">저장하기</v-btn>
-      <v-btn text>다른 이름으로 저장하기</v-btn>
+      <!-- <v-btn text @click="storeNewInputText">다른 이름으로 저장하기</v-btn> -->
       <v-btn @click.stop="titleDialog = true" text>e-pub으로 내보내기</v-btn>
     </template>
     <template v-else-if="itemIndex===1">
@@ -105,9 +154,11 @@ import { readDirectory, tocToList, makeEpubFile } from '@/functions/file.js'
 import eventBus from '@/eventBus.js'
 import { mapMutations, mapState } from 'vuex'
 const fs = require('fs')
+const path=require('path')
 const electron = require('electron')
 const { dialog } = require('electron').remote
 const BrowserWindow = electron.remote.BrowserWindow
+const ncp=require('ncp').ncp;
 
 export default {
   name: 'SubMenu',
@@ -123,7 +174,15 @@ export default {
       replaceAllText:false,
       titleText:'',
       titleDialog:false,
-      rootPath:''
+
+      rootPath:'', //ebook 경로
+
+      /* itemIndex 0 :  */
+      newEBook:false,
+      newEBookCover:[],
+      newEBookTitle:'',
+      newEBookLocation:'',
+
     }
   },
   computed: {
@@ -132,6 +191,15 @@ export default {
   methods: {
     ...mapMutations(["SET_EDITINGTEXT"]),
     // 파일 탭
+    // storeNewInputText: function () {  //다른 이름으로 저장하기 기능
+    //   const options = {
+    //     title: '다른 이름으로 저장하기',
+    //     properties: ['openDirectory','nameFieldLabel']
+    //   }
+    //   const directory = dialog.showSaveDialogSync(options)
+    //   console.log(directory)
+    //   // fs.writeFileSync(directory[0]+'/temp', this.$store.state.editingText)
+    // },
     storeInputText: function () {     // 저장하기 기능
       const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>'
       fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText)
@@ -186,6 +254,42 @@ export default {
     selectTable: function () {
       eventBus.$emit('pushIndexData', 'Table');
     },
+
+    /* 새 ebook 만들기 */
+    load: function(){
+      const options = {
+        properties: ['openDirectory']
+      }
+      this.newEBookLocation = dialog.showOpenDialogSync(options)
+      if (!this.newEBookLocation) return
+      console.log(this.newEBookLocation);
+    },
+    createNewEBook(){
+      let eBookLocation=path.resolve(this.newEBookLocation+'/'+this.newEBookTitle+'/');
+      console.log("ebooklocation : "+eBookLocation);
+
+      fs.mkdir(eBookLocation,function(err){
+        if(err){
+          console.log("make directory error : "+err);
+        }
+        else{
+          console.log("success, make directory in eBookLocation ");
+        }
+      });
+      let eBookSettingDirectory=path.resolve('src/assets/NewEbook');
+      
+      ncp(eBookSettingDirectory,eBookLocation,function(err){
+        if(err){
+          console.log("copy directory error : "+ err);
+        }
+        else{
+          console.log("success, copy  directory");
+        }
+      });
+      this.newEBook=false;
+    },
+
+
     loadEbook: function () { // E-BOOK 불러오기
       const options = {
         properties: ['openDirectory']
@@ -212,6 +316,8 @@ export default {
       const win = new BrowserWindow({ width: 800, height: 1500 })
       win.loadURL(this.$store.state.selectedFileDirectory)
     },
+
+
     /* 
       < itemIndex 1 : 편집 >
       cut/copy : 드래그 필수,
