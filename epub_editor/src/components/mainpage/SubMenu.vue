@@ -24,7 +24,7 @@
        
     </template>
     <template v-else-if="itemIndex===2">
-      <v-btn text>e-book 미리보기</v-btn>
+      <v-btn @click="preview" text>e-book 미리보기</v-btn>
       <v-btn text>e-book 확대하기</v-btn>
       <v-btn text>e-book 축소하기</v-btn>
     </template>
@@ -105,7 +105,9 @@ import { readDirectory, tocToList, makeEpubFile } from '@/functions/file.js'
 import eventBus from '@/eventBus.js'
 import { mapMutations, mapState } from 'vuex'
 const fs = require('fs')
+const electron = require('electron')
 const { dialog } = require('electron').remote
+const BrowserWindow = electron.remote.BrowserWindow
 
 export default {
   name: 'SubMenu',
@@ -183,8 +185,9 @@ export default {
       }
       const r = dialog.showOpenDialogSync(options)
       if (!r) return
+      this.$store.state.ebookDirectory = r[0]
       const data = readDirectory(r[0], [], [])
-      this.$store.state.currentDirectory = data['arrayOfFiles']
+      this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
       this.getToc(data['toc'])
     },
     getToc: function (val) { // 목차 읽어오기
@@ -196,6 +199,10 @@ export default {
       this.titleDialog = false; // title 적는 dialog 창 닫기
       this.savePath = makeEpubFile(this.titleText); // file.js 안의 makeEpub 실행
       this.titleText = '';
+    },
+    preview: function () { // e-book 미리보기
+      const win = new BrowserWindow({ width: 800, height: 1500 })
+      win.loadURL(this.$store.state.selectedFileDirectory)
     },
     /* 
       < itemIndex 1 : 편집 >
