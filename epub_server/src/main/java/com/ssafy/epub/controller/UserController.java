@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +35,27 @@ public class UserController {
 	private UserRepository userRepository;
 	@Autowired
 	private MailService mailService;
-
+	
+	@GetMapping("/user/{email}")
+	@ApiOperation(value = "이메일 중복 체크", produces = MediaType.TEXT_PLAIN_VALUE)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "email", value = "중복 체크할 이메일", required = true, dataType = "String") })
+	public ResponseEntity<Boolean> checkEmail(@PathVariable String email) {
+		if(userRepository.findByEmail(email).size() == 0)
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(false, HttpStatus.OK);
+	}
+	
+	@GetMapping("/user/{nickname}")
+	@ApiOperation(value = "nickname 중복 체크", produces = MediaType.TEXT_PLAIN_VALUE)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "nickname", value = "중복 체크할 닉네임", required = true, dataType = "String") })
+	public ResponseEntity<Boolean> checkNickname(@PathVariable String nickname) {
+		if(userRepository.findByNickname(nickname).size() == 0)
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(false, HttpStatus.OK);
+	}
+	
 	@GetMapping("/user")
 	@ApiOperation(value = "getAllUsers", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<List<User>> getAllUsers() {
