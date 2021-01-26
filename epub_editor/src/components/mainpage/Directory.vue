@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
 import eventBus from '@/eventBus.js'
 const fs = require('fs')
 
@@ -50,7 +49,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["SET_CURRENTFILEDIR"]),
     openFile: function (val) { // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
       if (val.children) return
       const temp = fs.readFileSync(val.dirPath).toString()
