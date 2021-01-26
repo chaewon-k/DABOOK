@@ -28,7 +28,7 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="7">
                     <v-file-input
-                      :rules="newEBookCover"
+                      v-model="newEBookCover"
                       accept="image/png, image/jpeg, image/bmp"
                       prepend-icon="mdi-camera"
                       label="E-Book Image"
@@ -292,6 +292,7 @@ export default {
       eventBus.$emit('pushIndexData', 'Table');
     },
 
+
     /* 새 ebook 만들기 */
     load: function(){
       const options = {
@@ -302,6 +303,11 @@ export default {
       console.log(this.newEBookLocation);
     },
     createNewEBook(){
+      /*
+      새 EBOOK 만들기
+      - 선택한 위치에 TITLE 명의 폴더 생성 
+      - src.assets.NewEbook에 있는 기본 EPUB파일 복사
+      */
       let eBookLocation=path.resolve(this.newEBookLocation+'/'+this.newEBookTitle+'/');
       console.log("ebooklocation : "+eBookLocation);
 
@@ -323,7 +329,22 @@ export default {
           console.log("success, copy  directory");
         }
       });
+      /* 파일 복사 이후, 함수호출을 위해 타임이벤트 추가 */
+      setTimeout(()=>{this.eBookCoverSet(eBookLocation);},500);
       this.newEBook=false;
+    },
+    async eBookCoverSet(eBookLocation){
+        /*
+       새 ebook 만들기 
+       - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
+        */
+        let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.newEBookCover.name);
+        ncp(this.newEBookCover.path,coverLocation,function(err){
+          if(err)
+            console.log("Cover Image save in directory : "+ err);
+          else
+            console.log("success, Cover Image save in directory");
+        });
     },
 
 
