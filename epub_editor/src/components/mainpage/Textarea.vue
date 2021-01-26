@@ -1,5 +1,5 @@
 <template>
-  <v-col>
+  <v-col cols="9">
     <v-dialog v-model="linkDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> 링크를 입력해주세요. </v-card-title>
@@ -52,6 +52,7 @@
     </v-dialog>
 
     <v-textarea
+      style="width: auto;"
       id="area"
       outlined
       ma-auto
@@ -103,7 +104,7 @@ export default {
   },
   created() {
     eventBus.$on("loadData", (res) => {
-      this.inputText = res.slice(res.indexOf("<body>"), res.indexOf("</body>")+7);
+      this.inputText = res.slice(res.indexOf("<body"), res.indexOf("</body>")+7);
     });
     eventBus.$on("pushIndexData", (res) => {
       if (res === "Italic") {
