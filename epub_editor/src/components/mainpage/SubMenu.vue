@@ -127,14 +127,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(["editingText", "editingHTMLText", "currentFileDir"]),
+    ...mapState(["editingText", "editingHTMLText"]),
   },
   methods: {
     ...mapMutations(["SET_EDITINGTEXT"]),
     // 파일 탭
     storeInputText: function () {     // 저장하기 기능
       const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>'
-      fs.writeFileSync(this.$store.state.currentFileDir, updatedText)
+      fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText)
     },
 
     // 도구상자 모음 탭
