@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.epub.config.JwtTokenProvider;
+import com.ssafy.epub.encrypt.BcryptImpl;
+import com.ssafy.epub.encrypt.EncryptHandler;
 import com.ssafy.epub.model.User;
 import com.ssafy.epub.repository.UserRepository;
 
@@ -27,6 +29,8 @@ public class LoginController {
 	UserRepository userRepository;
 	@Autowired
 	JwtTokenProvider jwtTokenProvider;
+	
+	EncryptHandler encryptHandler = new BcryptImpl();
 	
 	@PostMapping("/login")
 	@ApiOperation(value = "로그인")
@@ -45,7 +49,9 @@ public class LoginController {
 		}
 		
 		//비밀번호가 틀렸을 때
-		if(!userRepository.findByEmail(email).get(0).getPassword().equals(password)) {
+//		if(!userRepository.findByEmail(email).get(0).getPassword().equals(password)) {
+		if(!encryptHandler.isMatch(password, userRepository.findByEmail(email).get(0).getPassword())) {
+			System.out.println();
 			result.put("result", "ERROR_PASSWORD");
 			return ResponseEntity.ok().body(result);
 		}
