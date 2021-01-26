@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.epub.encrypt.BcryptImpl;
+import com.ssafy.epub.encrypt.EncryptHandler;
 import com.ssafy.epub.model.User;
 import com.ssafy.epub.repository.UserRepository;
 import com.ssafy.epub.service.MailService;
@@ -35,6 +37,8 @@ public class UserController {
 	private UserRepository userRepository;
 	@Autowired
 	private MailService mailService;
+	
+	private EncryptHandler encryptHandler = new BcryptImpl();
 	
 	@GetMapping("/user/{email}")
 	@ApiOperation(value = "이메일 중복 체크", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -67,6 +71,8 @@ public class UserController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User") })
 	public ResponseEntity<Boolean> addUser(@RequestBody User user) throws MessagingException {
 
+		user.setPassword(encryptHandler.encrypt(user.getPassword()));
+		
 		if (userRepository.save(user) != null) {
 			user.generateEmailToken();
 			mailService.signUpEmailSender(user);
@@ -86,7 +92,7 @@ public class UserController {
 		List<User> findUserList = userRepository.findByEmail(user.getEmail());
 		if (findUserList.size() == 1) {
 			User preUser = findUserList.get(0);
-			preUser.setPassword(user.getPassword());
+			preUser.setPassword(encryptHandler.encrypt(user.getPassword()));
 			preUser.setNickname(user.getNickname());
 			userRepository.save(preUser);
 			
