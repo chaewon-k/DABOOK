@@ -3,7 +3,7 @@
     <template v-if="itemIndex===0">
       <v-btn text>새 e-book 만들기</v-btn>
       <v-btn @click="loadEbook" text>e-book 불러오기</v-btn>
-      <v-btn text>저장하기</v-btn>
+      <v-btn text @click="storeInputText">저장하기</v-btn>
       <v-btn text>다른 이름으로 저장하기</v-btn>
       <v-btn @click.stop="titleDialog = true" text>e-pub으로 내보내기</v-btn>
     </template>
@@ -124,11 +124,17 @@ export default {
     }
   },
   computed: {
-    ...mapState(["editingText"]),
+    ...mapState(["editingText", "editingHTMLText", "currentFileDir"]),
   },
   methods: {
     ...mapMutations(["SET_EDITINGTEXT"]),
-    // 도구상자 모음
+    // 파일 탭
+    storeInputText: function () {     // 저장하기 기능
+      const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>'
+      fs.writeFileSync(this.$store.state.currentFileDir, updatedText)
+    },
+
+    // 도구상자 모음 탭
     selectHTag: function(index) {
       eventBus.$emit('pushIndexData', index);
     },

@@ -53,6 +53,7 @@
 
     <v-textarea
       id="area"
+      style="width:auto;"
       outlined
       ma-auto
       height="35em"
@@ -92,6 +93,7 @@ export default {
   data() {
     return {
       inputText: "",
+      defaultHTMLText: "",
       linkText: "",
       tableData: { col: [], row: [] },
       hTags: [1, 2, 3, 4, 5, 6],
@@ -103,7 +105,8 @@ export default {
   },
   created() {
     eventBus.$on("loadData", (res) => {
-      this.inputText = res.slice(res.indexOf("<body>"), res.indexOf("</body>")+7);
+      this.inputText = res.slice(res.indexOf("<body"), res.indexOf("</body>")+7);
+      this.defaultHTMLText = res.slice(res.indexOf("<?xml"), res.indexOf("<body"));
     });
     eventBus.$on("pushIndexData", (res) => {
       if (res === "Italic") {
@@ -143,7 +146,7 @@ export default {
   },
   computed: {},
   methods: {
-    ...mapMutations(["SET_EDITINGTEXT"]),
+    ...mapMutations(["SET_EDITINGTEXT", "SET_EDITINGHTML"]),
     plusRow: function () {
       this.tableRow++;
     },
@@ -216,6 +219,7 @@ export default {
   watch: {
     inputText: function () {
       this.SET_EDITINGTEXT(this.inputText);
+      this.SET_EDITINGHTML(this.defaultHTMLText);
     },
   },
 };
