@@ -14,8 +14,8 @@
       <v-btn @click="cut">잘라내기</v-btn>
       <v-btn @click="copy">복사하기</v-btn>
       <v-btn @click="paste">붙여넣기</v-btn>
-      <v-btn @click="find">찾기</v-btn>
-      <v-btn @click="replace">바꾸기</v-btn>
+      <v-btn @click="find(findText)">찾기</v-btn>
+      <v-btn @click="replace(findText, replaceText, replaceAlphabet, replaceAllText)">바꾸기</v-btn>
       <br>
       찾을 단어 : <v-text-field clearable v-model="findText"></v-text-field>
       바꿀 단어 : <v-text-field clearable v-model="replaceText"></v-text-field>
@@ -224,54 +224,13 @@ export default {
     redo(){ // 실행 취소 되돌리기
       document.execCommand('redo');
     },
-    find(){ //찾기
-      this.findIndexArray=[];
-      let index=0;
-      console.log(this.editingText);
-      do{
-        index=this.editingText.indexOf(this.findText,index);
-        if(index==-1)
-          break;
-        this.findIndexArray.push(index);
-        index+=this.findText.length;
-      }while(index<this.editingText.length);
-      console.log(this.findIndexArray);
+    find: function (findText) {
+      eventBus.$emit('findText', findText);
     },
-    replace(){
-      find();
-      console.log("editingText: "+this.editingText);
-      console.log("findText:"+this.findText);
-      console.log("replaceText: "+this.replaceText);
-      
-      if(this.replaceAlphabet&&this.replaceAllText){
-        //all change and allCaseReplace
-        console.log("all change and all case replace");
-        let reqularExpression=new RegExp(this.findText,"gi");
-        let result=this.editingText.replace(reqularExpression,this.replaceText);
-        this.SET_EDITINGTEXT(result);
-      }
-      else if(this.replaceAlphabet){
-        //allCaseReplace
-        console.log("all case replace");
-        let reqularExpression=new RegExp(this.findData,"i");
-        let result=this.editingText.replace(reqularExpression,this.replaceText);
-        this.SET_EDITINGTEXT(result);
-      }
-      else if(this.replaceAllText){
-        //allchange
-        console.log("all change");
-        let reqularExpression=new RegExp(this.findText,"g");
-        let result=this.editingText.replace(reqularExpression,this.replaceText);
-        this.SET_EDITINGTEXT(result);
-      }
-      else{
-        //just one change
-        console.log("one change");
-        let result=this.editingText.replace(this.findText,this.replaceText);
-        this.SET_EDITINGTEXT(result);
-      }
+    replace: function (findText, replaceText, replaceAlphabet, replaceAllText) {
+      this.find(findText)
+      eventBus.$emit('replaceText', [replaceText, replaceAlphabet, replaceAllText]);
     },
-
   },
   props: {
     itemIndex: { type: Number }
