@@ -3,12 +3,8 @@ const { dialog } = require('electron').remote
 
 export function pTag() {
   var area = document.getElementById("area");
-  var lines = area.value.split("\n");
-  var resultString  = "";
-  for (var i = 0; i < lines.length; i++) {
-    resultString += "<p>" + lines[i] + "</p>\n";
-  }
-  return resultString;
+  area.value = area.value.slice(0,  area.selectionStart) + "<p></p>" + area.value.slice(area.selectionStart);
+  return area.value;
 }
 
 export function enterTag() {
