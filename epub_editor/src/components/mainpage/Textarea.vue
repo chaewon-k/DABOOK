@@ -110,6 +110,7 @@ export default {
     eventBus.$on("findText", (res) => {
       this.findText = res
       this.findIndexArray = findText(this.inputText, res)
+      console.log(this.findIndexArray)
     });
     eventBus.$on("replaceText", (res) => {
       this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2])

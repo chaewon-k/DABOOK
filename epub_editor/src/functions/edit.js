@@ -23,7 +23,7 @@ export function replaceText(inputText, replaceText, findText, findIndexArray, re
     return inputText.replace(regExp, replaceText)
   } else if (replaceAllText) {
     let regExp = new RegExp(findText, "g")
-    return inputText.repalce(regExp, replaceText)
+    return inputText.replace(regExp, replaceText)
   } else {
     return inputText.replace(findText, replaceText)
   }

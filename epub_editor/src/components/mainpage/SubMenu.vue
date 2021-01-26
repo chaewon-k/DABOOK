@@ -8,20 +8,13 @@
       <v-btn @click.stop="titleDialog = true" text>e-pub으로 내보내기</v-btn>
     </template>
     <template v-else-if="itemIndex===1">
-
-      <v-btn @click="undo">취소하기</v-btn>
-      <v-btn @click="redo">되돌리기</v-btn>
-      <v-btn @click="cut">잘라내기</v-btn>
-      <v-btn @click="copy">복사하기</v-btn>
-      <v-btn @click="paste">붙여넣기</v-btn>
-      <v-btn @click="find(findText)">찾기</v-btn>
-      <v-btn @click="replace(findText, replaceText, replaceAlphabet, replaceAllText)">바꾸기</v-btn>
-      <br>
-      찾을 단어 : <v-text-field clearable v-model="findText"></v-text-field>
-      바꿀 단어 : <v-text-field clearable v-model="replaceText"></v-text-field>
-      <v-checkbox v-model="replaceAlphabet" label="Aa"></v-checkbox>
-      <v-checkbox v-model="replaceAllText" label="All"></v-checkbox>
-       
+      <v-btn icon medium @click="undo"><v-icon medium>mdi-undo</v-icon></v-btn>
+      <v-btn icon medium @click="redo"><v-icon medium>mdi-redo</v-icon></v-btn>
+      <v-btn icon medium @click="cut"><v-icon medium>mdi-content-cut</v-icon></v-btn>
+      <v-btn icon medium @click="copy"><v-icon medium>mdi-content-copy</v-icon></v-btn>
+      <v-btn icon medium @click="paste"><v-icon medium>mdi-content-paste</v-icon></v-btn>
+      <v-btn icon medium @click.stop="findDialog = true" text><v-icon medium>mdi-file-find-outline</v-icon></v-btn>
+      <v-btn icon medium @click.stop="replaceDialog = true" text><v-icon medium>mdi-find-replace</v-icon></v-btn>
     </template>
     <template v-else-if="itemIndex===2">
       <v-btn @click="preview" text>e-book 미리보기</v-btn>
@@ -77,6 +70,50 @@
       <v-btn text>마크다운 설명서 보기</v-btn>
     </template>
 
+    <v-dialog v-model="findDialog" max-width="500">
+      <v-card>
+        <v-card-title class="headline">단어 찾기</v-card-title>
+        <v-card-text>
+          <v-text-field label="찾고 싶은 단어" v-model="findText" required></v-text-field>
+        </v-card-text>
+        
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="findDialog = false">
+            취소
+          </v-btn>
+
+          <v-btn color="green darken-1" text @click="find(findText); findDialog = false;">
+            단어 찾기
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="replaceDialog" max-width="500">
+      <v-card>
+        <v-card-title class="headline">단어 변환</v-card-title>
+        <v-card-text>
+          <v-text-field label="찾고 싶은 단어" v-model="findText" required></v-text-field>
+        </v-card-text>
+        <v-card-text>
+          <v-text-field label="바꾸고 싶은 단어" v-model="replaceText" required></v-text-field>
+        </v-card-text>
+        <v-checkbox v-model="replaceAlphabet" label="Aa"></v-checkbox>
+        <v-checkbox v-model="replaceAllText" label="All"></v-checkbox>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="replaceDialog = false">
+            취소
+          </v-btn>
+
+          <v-btn color="green darken-1" text @click="replace(findText, replaceText, replaceAlphabet, replaceAllText); replaceDialog = false;">
+            단어 변환
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model="titleDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> epub 이름을 입력해주세요. </v-card-title>
@@ -123,6 +160,8 @@ export default {
       replaceAllText:false,
       titleText:'',
       titleDialog:false,
+      findDialog: false,
+      replaceDialog: false,
       rootPath:''
     }
   },
