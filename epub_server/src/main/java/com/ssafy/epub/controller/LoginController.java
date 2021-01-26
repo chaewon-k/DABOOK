@@ -60,7 +60,7 @@ public class LoginController {
 		String token = jwtTokenProvider.createToken(user.getEmail());
 			
 		result.put("auth-token", token);
-		result.put("message", "로그인 성공");
+		result.put("result", "SUCCESS_LOGIN");
 		result.put("email", user.getEmail());
 		result.put("nickname", user.getNickname());
 			
