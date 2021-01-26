@@ -69,6 +69,7 @@
 <script>
 import { mapMutations } from "vuex";
 import eventBus from "@/eventBus.js";
+import { findText, replaceText } from "@/functions/edit.js";
 import {
   pTag,
   enterTag,
@@ -100,10 +101,20 @@ export default {
       tableDialog: false,
       tableRow: 0,
       tableCol: 0,
+      findText: '',
+      findIndexArray: [],
     };
   },
   created() {
+    eventBus.$on("findText", (res) => {
+      this.findText = res
+      this.findIndexArray = findText(this.inputText, res)
+    });
+    eventBus.$on("replaceText", (res) => {
+      this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2])
+    });
     eventBus.$on("loadData", (res) => {
+      console.log(res)
       this.inputText = res.slice(res.indexOf("<body"), res.indexOf("</body>")+7);
     });
     eventBus.$on("pushIndexData", (res) => {
