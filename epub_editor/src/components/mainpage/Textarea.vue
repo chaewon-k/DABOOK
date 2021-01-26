@@ -60,7 +60,7 @@
       label="textarea 입니다"
       placeholder="책을 작성해볼까요?"
       v-model="inputText"
-      @keyup.enter="attachEnterTag()"
+      @keyup.enter="attachPTag()"
     >
     </v-textarea>
   </v-col>
@@ -126,7 +126,7 @@ export default {
       } else if (res === "LineTag") {
         this.attachLineTag();
       } else if (res === "Enter") {
-        this.attachPTag();
+        this.attachEnterTag();
       } else if (res === "BlockquoteTag") {
         this.attachBlockquoteTag();
       } else if (res === "CiteTag") {

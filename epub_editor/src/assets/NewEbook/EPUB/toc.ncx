@@ -7,50 +7,14 @@
     <meta name="dtb:maxPageNumber" content="0" />
   </head>
   <docTitle>
-    <text>최.md</text>
+    <text>{{ ebook 이름 }}</text>
   </docTitle>
   <navMap>
     <navPoint id="navPoint-0">
       <navLabel>
-        <text>최.md</text>
+        <text> {{ 목차 }} </text>
       </navLabel>
       <content src="text/title_page.xhtml" />
-    </navPoint>
-    <navPoint id="navPoint-1">
-      <navLabel>
-        <text>최</text>
-      </navLabel>
-      <content src="text/ch001.xhtml#header-n2" />
-      <navPoint id="navPoint-2">
-        <navLabel>
-          <text>가장 최</text>
-        </navLabel>
-        <content src="text/ch001.xhtml#header-n5" />
-      </navPoint>
-    </navPoint>
-    <navPoint id="navPoint-3">
-      <navLabel>
-        <text>나</text>
-      </navLabel>
-      <content src="text/ch002.xhtml#header-n6" />
-      <navPoint id="navPoint-4">
-        <navLabel>
-          <text>아리따울 나</text>
-        </navLabel>
-        <content src="text/ch002.xhtml#header-n8" />
-      </navPoint>
-    </navPoint>
-    <navPoint id="navPoint-5">
-      <navLabel>
-        <text>현</text>
-      </navLabel>
-      <content src="text/ch003.xhtml#header-n9" />
-      <navPoint id="navPoint-6">
-        <navLabel>
-          <text>어질 현</text>
-        </navLabel>
-        <content src="text/ch003.xhtml#header-n11" />
-      </navPoint>
     </navPoint>
   </navMap>
 </ncx>
