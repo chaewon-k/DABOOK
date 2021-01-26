@@ -4,7 +4,7 @@
 
   <v-container>
     <v-row  class="stretch">
-        <v-col style="border: 1px solid black; height:35em; overflow:scroll;">
+        <v-col cols="3" style="border: 1px solid black; height:35em; overflow:scroll;">
           <v-btn @click="toggle">Dir-ToC Toggle</v-btn>
           <Directory
             v-show="dirTableToggle===true"
@@ -13,10 +13,10 @@
             v-show="dirTableToggle===false"
           />
         </v-col>            
-     <v-divider vertical></v-divider>
+     <!-- <v-divider vertical></v-divider> -->
       <Textarea />
-     <v-divider vertical></v-divider>
-      <Preview />
+     <!-- <v-divider vertical></v-divider>
+      <Preview /> -->
      
     </v-row>
   </v-container>
@@ -29,7 +29,7 @@ import TopMenu from '@/components/mainpage/TopMenu';
 import Directory from '@/components/mainpage/Directory';
 import TableOfContents from '@/components/mainpage/TableOfContents';
 import Textarea from '@/components/mainpage/Textarea';
-import Preview from '@/components/mainpage/Preview';
+// import Preview from '@/components/mainpage/Preview';
 
 export default {
   name: 'Editor',
@@ -38,7 +38,7 @@ export default {
     Directory,
     TableOfContents,
     Textarea,
-    Preview
+    // Preview
   },
   data: function () {
     return {

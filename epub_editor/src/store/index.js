@@ -5,7 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    currentDirectory: [], // Directory's item
+    ebookDirectory: [], // ebook's root directory
+    ebookDirectoryTree: [], // Directory's item
+    selectedFileDirectory: '', // selected file's directory
     tableOfContents: [], // TableOfContents' item
     editingText: '', //textarea's text value
     editingHTMLText: '',  //default HTML text value

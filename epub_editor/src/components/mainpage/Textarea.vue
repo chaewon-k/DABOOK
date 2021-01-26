@@ -1,5 +1,5 @@
 <template>
-  <v-col>
+  <v-col cols="9">
     <v-dialog v-model="linkDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> 링크를 입력해주세요. </v-card-title>
@@ -53,7 +53,7 @@
 
     <v-textarea
       id="area"
-      style="width:auto;"
+      style="width: auto;"
       outlined
       ma-auto
       height="35em"

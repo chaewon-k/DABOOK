@@ -30,7 +30,7 @@ const fs = require('fs')
 export default {
   computed: {
     items: function () {
-      return this.$store.state.currentDirectory
+      return this.$store.state.ebookDirectoryTree
     },
   },
   data: function () {
@@ -54,7 +54,7 @@ export default {
     openFile: function (val) { // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
       if (val.children) return
       const temp = fs.readFileSync(val.dirPath).toString()
-      this.SET_CURRENTFILEDIR(val.dirPath)
+      this.$store.state.selectedFileDirectory = val.dirPath
       eventBus.$emit('loadData', temp)
     }
   },
