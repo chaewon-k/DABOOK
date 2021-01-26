@@ -3,7 +3,7 @@
     <template v-if="itemIndex===0">
       <v-btn text>새 e-book 만들기</v-btn>
       <v-btn @click="loadEbook" text>e-book 불러오기</v-btn>
-      <v-btn text>저장하기</v-btn>
+      <v-btn text @click="storeInputText">저장하기</v-btn>
       <v-btn text>다른 이름으로 저장하기</v-btn>
       <v-btn @click.stop="titleDialog = true" text>e-pub으로 내보내기</v-btn>
     </template>
@@ -123,14 +123,21 @@ export default {
       replaceAllText:false,
       titleText:'',
       titleDialog:false,
+      rootPath:''
     }
   },
   computed: {
-    ...mapState(["editingText"]),
+    ...mapState(["editingText", "editingHTMLText"]),
   },
   methods: {
     ...mapMutations(["SET_EDITINGTEXT"]),
-    // 도구상자 모음
+    // 파일 탭
+    storeInputText: function () {     // 저장하기 기능
+      const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>'
+      fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText)
+    },
+
+    // 도구상자 모음 탭
     selectHTag: function(index) {
       eventBus.$emit('pushIndexData', index);
     },
@@ -185,6 +192,7 @@ export default {
       }
       const r = dialog.showOpenDialogSync(options)
       if (!r) return
+      this.rootPath = r[0];
       this.$store.state.ebookDirectory = r[0]
       const data = readDirectory(r[0], [], [])
       this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
@@ -197,7 +205,7 @@ export default {
     },
     makeEpub: function () { // epub 내보내기
       this.titleDialog = false; // title 적는 dialog 창 닫기
-      this.savePath = makeEpubFile(this.titleText); // file.js 안의 makeEpub 실행
+      this.savePath = makeEpubFile(this.rootPath, this.titleText); // file.js 안의 makeEpub 실행
       this.titleText = '';
     },
     preview: function () { // e-book 미리보기
