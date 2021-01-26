@@ -121,6 +121,7 @@ export default {
       replaceAllText:false,
       titleText:'',
       titleDialog:false,
+      rootPath:''
     }
   },
   computed: {
@@ -183,6 +184,7 @@ export default {
       }
       const r = dialog.showOpenDialogSync(options)
       if (!r) return
+      this.rootPath = r[0];
       const data = readDirectory(r[0], [], [])
       this.$store.state.currentDirectory = data['arrayOfFiles']
       this.getToc(data['toc'])
@@ -194,7 +196,7 @@ export default {
     },
     makeEpub: function () { // epub 내보내기
       this.titleDialog = false; // title 적는 dialog 창 닫기
-      this.savePath = makeEpubFile(this.titleText); // file.js 안의 makeEpub 실행
+      this.savePath = makeEpubFile(this.rootPath, this.titleText); // file.js 안의 makeEpub 실행
       this.titleText = '';
     },
     /* 
