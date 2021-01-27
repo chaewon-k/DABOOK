@@ -223,7 +223,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["editingText", "editingHTMLText"]),
+    ...mapState(["editingText", "editingHTMLText", "ebookDirectory"]),
   },
   methods: {
     ...mapMutations(["SET_EDITINGTEXT","SET_EBOOKDIRECTORY"]),
@@ -339,6 +339,7 @@ export default {
       /* 파일 복사 이후, 함수호출을 위해 타임이벤트 추가 */
       setTimeout(()=>{this.eBookCoverSet(eBookLocation);},500);
 
+      setTimeout(()=>{this.renameImageTag(eBookLocation);},600);
       this.newEBook=false;
 
       console.log("ebooklocation : "+eBookLocation);
@@ -365,6 +366,14 @@ export default {
     },
    
 
+    renameImageTag: function (eBookLocation) {
+      let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.newEBookCover.name);
+      let newCoverLocation=path.resolve(eBookLocation+'/EPUB/images/cover.png');
+      fs.rename(coverLocation, newCoverLocation, function(err){
+      if( err ) throw err;
+      console.log('File Renamed!');
+      });
+    },
 
     loadEbook: function () { // E-BOOK 불러오기
       const options = {
@@ -373,6 +382,7 @@ export default {
       const r = dialog.showOpenDialogSync(options)
       if (!r) return
       this.$store.state.ebookDirectory = r[0]
+      console.log(r[0])
 
       console.log(r[0]);
       const data = readDirectory(r[0], [], [])
