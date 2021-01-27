@@ -206,7 +206,7 @@
             취소
           </v-btn>
 
-          <v-btn color="green darken-1" text @click="makeChapter">
+          <v-btn color="green darken-1" text @click="makeChapter(chapterText)">
             chapter 만들기
           </v-btn>
         </v-card-actions>
@@ -219,7 +219,7 @@
 </template>
 
 <script>
-import { readDirectory, tocToList, makeEpubFile } from '@/functions/file.js'
+import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx } from '@/functions/file.js'
 import eventBus from '@/eventBus.js'
 import { mapMutations, mapState } from 'vuex'
 const fs = require('fs')
@@ -261,7 +261,7 @@ export default {
     ...mapState(["editingText", "editingHTMLText", "ebookDirectory"]),
   },
   methods: {
-    ...mapMutations(["SET_EDITINGTEXT","SET_EBOOKDIRECTORY"]),
+    ...mapMutations(["SET_EDITINGTEXT","SET_EBOOKDIRECTORY", "SET_EBOOKDIRECTORY"]),
     // 파일 탭
     // storeNewInputText: function () {  //다른 이름으로 저장하기 기능
     //   const options = {
@@ -386,6 +386,7 @@ export default {
        - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
         */
       let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.newEBookCover.name);
+      console.log(this.newEBookCover)
       ncp(this.newEBookCover.path,coverLocation,function(err){
         if(err)
           console.log("Cover Image save in directory : "+ err);
@@ -403,7 +404,7 @@ export default {
 
     renameImageTag: function (eBookLocation) {
       let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.newEBookCover.name);
-      let newCoverLocation=path.resolve(eBookLocation+'/EPUB/images/cover.png');
+      let newCoverLocation=path.resolve(eBookLocation+'/EPUB/images/cover.jpg');
       fs.rename(coverLocation, newCoverLocation, function(err){
       if( err ) throw err;
       console.log('File Renamed!');
@@ -417,17 +418,17 @@ export default {
       const r = dialog.showOpenDialogSync(options)
       if (!r) return
       this.$store.state.ebookDirectory = r[0]
-      console.log(r[0])
+      // console.log(r[0])
 
-      console.log(r[0]);
+      // console.log(r[0]);
       const data = readDirectory(r[0], [], [])
-      console.log(data);
+      // console.log('loadEbook: ',data);
       this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
       this.getToc(data['toc'])
     },
     getToc: function (val) { // 목차 읽어오기
       const fileToText = fs.readFileSync(val[0]).toString()
-      // console.log(tocToList(fileToText, []))
+      // 챕터 추가할 때 readFileSync 안됨.
       this.$store.state.tableOfContents = tocToList(fileToText, [])
     },
     makeEpub: function () { // epub 내보내기
@@ -440,18 +441,24 @@ export default {
       win.loadURL(this.$store.state.selectedFileDirectory)
     },
     // chapter 추가하기
-    makeChapter: function () {
+    makeChapter: function (val) {
       this.chapterDialog = false;
       let path = this.$store.state.ebookDirectory + '/EPUB/text/';
       const temp = fs.readFileSync('src/assets/NewEbook/EPUB/text/chapter1.xhtml').toString()
+      addContentOpf(this.$store.state.ebookDirectory, val)
+      addTocNcx(this.$store.state.ebookDirectory, val)
       
       fs.writeFile(path + this.chapterText + '.xhtml', temp, (err) => {
         if (err) {
           console.log(err);
         }
       })
-
+      const data = readDirectory(this.$store.state.ebookDirectory, [], [])
+      // this.SET_EBOOKDIRECTORY(data['arrayOfFiles'])
+      // console.log('makeChapter: ', data)
       alert('새 chapter가 추가되었습니다!');
+      this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
+      this.getToc(data['toc'])
       this.chapterText = '';
     },
 

@@ -59,3 +59,27 @@ export function makeEpubFile (path, title) {
   });
 
 }
+
+export function addContentOpf (path, name) {
+  let temp = fs.readFileSync(path + '/EPUB/content.opf').toString()
+  let start = temp.indexOf("<!-- 새 챕터 추가 위치1 -->")
+  temp = temp.slice(0, start-1).concat(` <item id="${name}.xhtml" href="text/${name}.xhtml" media-type="application/xhtml+xml"/>\n    `, temp.slice(start, temp.length))
+  start = temp.indexOf("<!-- 새 챕터 추가 위치2 -->")
+  temp = temp.slice(0, start-1).concat(` <itemref idref="${name}.xhtml"/>\n    `, temp.slice(start, temp.length))
+  fs.writeFile(path + '/EPUB/content.opf', temp, (err) => {
+    if (err) {
+      console.log(err)
+    }
+  })
+}
+
+export function addTocNcx (path, name) {
+  let temp = fs.readFileSync(path + '/EPUB/toc.ncx').toString()
+  let start = temp.indexOf("<!-- 새 챕터 추가 위치 -->")
+  temp = temp.slice(0, start-1).concat(` <navPoint id="navPoint-0">\n      <navLabel>\n        <text>${name}</text>\n      </navLabel>\n      <content src="text/${name}.xhtml" />\n    </navPoint>\n    `, temp.slice(start, temp.length))
+  fs.writeFile(path + '/EPUB/toc.ncx', temp, (err) => {
+    if (err) {
+      console.log(err)
+    }
+  })
+}
