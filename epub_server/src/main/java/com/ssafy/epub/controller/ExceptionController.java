@@ -18,6 +18,7 @@ public class ExceptionController {
 	@Autowired
     private NotificationManager notificationManager;
 
+	// 에러가 발생한 Exception을 log로 지정된 곳에 알림을 보낸다.
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> exceptionNotify(Exception e, HttpServletRequest req) {
         e.printStackTrace();

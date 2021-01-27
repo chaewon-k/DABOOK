@@ -35,6 +35,7 @@ public class MongoConfig extends MongoAutoConfiguration {
 
 	@Bean
 	public MongoClient mongoClient() {
+		// MongoDB 접속을 위한 url세팅
 		MongoClient mongoClient = MongoClients.create(
 	            new ConnectionString("mongodb://"+userName+":"+password+"@"+host+":"+port+"/"+database+"?authSource=admin"));
 		return mongoClient;
