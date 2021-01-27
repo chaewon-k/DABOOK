@@ -7,14 +7,15 @@
     <meta name="dtb:maxPageNumber" content="0" />
   </head>
   <docTitle>
-    <text>{{ ebook 이름 }}</text>
+    <text>test</text>
   </docTitle>
   <navMap>
     <navPoint id="navPoint-0">
       <navLabel>
-        <text> {{ chapter1 }} </text>
+        <text>챕터 1</text>
       </navLabel>
       <content src="text/chapter1.xhtml" />
     </navPoint>
+    <!-- 새 챕터 추가 위치 -->
   </navMap>
 </ncx>
