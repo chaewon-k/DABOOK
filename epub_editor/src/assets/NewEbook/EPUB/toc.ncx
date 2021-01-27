@@ -12,9 +12,9 @@
   <navMap>
     <navPoint id="navPoint-0">
       <navLabel>
-        <text> {{ 목차 }} </text>
+        <text> {{ chapter1 }} </text>
       </navLabel>
-      <content src="text/title_page.xhtml" />
+      <content src="text/chapter1.xhtml" />
     </navPoint>
   </navMap>
 </ncx>
