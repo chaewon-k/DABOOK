@@ -11,7 +11,6 @@ export default new Vuex.Store({
     tableOfContents: [], // TableOfContents' item
     editingText: '', //textarea's text value
     editingHTMLText: '',  //default HTML text value
-    // currentFileDir: ''  //default HTML text value
   },
   mutations: {
     SET_EDITINGTEXT(state, value){
