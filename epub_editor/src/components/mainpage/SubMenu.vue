@@ -183,11 +183,34 @@
       </v-card>
     </v-dialog>
 
+    <!-- chapterDialog -->
+    <v-dialog v-model="chapterDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline"> chapter 이름을 입력해주세요. </v-card-title>
+        <v-card-text>
+          <v-text-field label="chapter 이름" v-model="chapterText" required></v-text-field>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="chapterDialog = false">
+            취소
+          </v-btn>
+
+          <v-btn color="green darken-1" text @click="makeChapter(chapterText)">
+            chapter 만들기
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+<!-- -------------------- dialog end -------------------- -->
+
   </div>
 </template>
 
 <script>
-import { readDirectory, tocToList, makeEpubFile } from '@/functions/file.js'
+import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx } from '@/functions/file.js'
 import eventBus from '@/eventBus.js'
 import { mapMutations, mapState } from 'vuex'
 const fs = require('fs')
@@ -226,7 +249,7 @@ export default {
     ...mapState(["editingText", "editingHTMLText", "ebookDirectory"]),
   },
   methods: {
-    ...mapMutations(["SET_EDITINGTEXT","SET_EBOOKDIRECTORY"]),
+    ...mapMutations(["SET_EDITINGTEXT","SET_EBOOKDIRECTORY", "SET_EBOOKDIRECTORY"]),
     // 파일 탭
     // storeNewInputText: function () {  //다른 이름으로 저장하기 기능
     //   const options = {
@@ -370,17 +393,17 @@ export default {
       const r = dialog.showOpenDialogSync(options)
       if (!r) return
       this.$store.state.ebookDirectory = r[0]
-      console.log(r[0])
+      // console.log(r[0])
 
-      console.log(r[0]);
+      // console.log(r[0]);
       const data = readDirectory(r[0], [], [])
-      console.log(data);
+      // console.log('loadEbook: ',data);
       this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
       this.getToc(data['toc'])
     },
     getToc: function (val) { // 목차 읽어오기
       const fileToText = fs.readFileSync(val[0]).toString()
-      // console.log(tocToList(fileToText, []))
+      // 챕터 추가할 때 readFileSync 안됨.
       this.$store.state.tableOfContents = tocToList(fileToText, [])
     },
     makeEpub: function () { // epub 내보내기
@@ -393,6 +416,27 @@ export default {
       win.loadURL(this.$store.state.selectedFileDirectory)
     },
 
+    // chapter 추가하기
+    makeChapter: function (val) {
+      this.chapterDialog = false;
+      let path = this.$store.state.ebookDirectory + '/EPUB/text/';
+      const temp = fs.readFileSync('src/assets/NewEbook/EPUB/text/chapter1.xhtml').toString()
+      addContentOpf(this.$store.state.ebookDirectory, val)
+      addTocNcx(this.$store.state.ebookDirectory, val)
+      
+      fs.writeFile(path + this.chapterText + '.xhtml', temp, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      })
+      const data = readDirectory(this.$store.state.ebookDirectory, [], [])
+      // this.SET_EBOOKDIRECTORY(data['arrayOfFiles'])
+      // console.log('makeChapter: ', data)
+      alert('새 chapter가 추가되었습니다!');
+      this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
+      this.getToc(data['toc'])
+      this.chapterText = '';
+    },
 
     /* 
       < itemIndex 1 : 편집 >
