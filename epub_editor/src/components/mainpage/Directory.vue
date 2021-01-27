@@ -10,10 +10,10 @@
       @input="openFile"
     >
       <template slot="label" slot-scope="{ item }">
-        <v-icon style="padding: 0 5px;" v-if="!item.file">
+        <v-icon small style="padding: 0 5px;" v-if="!item.file">
           {{ 'mdi-folder' }}
         </v-icon>
-        <v-icon v-else>
+        <v-icon small v-else>
           {{ files[item.file] }}
         </v-icon>
         <span @click="openFile(item)">{{ item.name }}</span>
