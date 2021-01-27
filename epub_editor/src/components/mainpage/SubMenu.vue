@@ -226,7 +226,7 @@ export default {
     ...mapState(["editingText", "editingHTMLText"]),
   },
   methods: {
-    ...mapMutations(["SET_EDITINGTEXT"]),
+    ...mapMutations(["SET_EDITINGTEXT","SET_EBOOKDIRECTORY"]),
     // 파일 탭
     // storeNewInputText: function () {  //다른 이름으로 저장하기 기능
     //   const options = {
@@ -301,6 +301,7 @@ export default {
       this.newEBookLocation = dialog.showOpenDialogSync(options)
       if (!this.newEBookLocation) return
       console.log(this.newEBookLocation);
+      
     },
     createNewEBook(){
       /*
@@ -320,6 +321,11 @@ export default {
         }
       });
       let eBookSettingDirectory=path.resolve('src/assets/NewEbook');
+
+      console.log("ebooklocation : "+eBookLocation);
+      console.log("before : "+this.$store.state.ebookDirectory);
+      this.SET_EBOOKDIRECTORY(eBookLocation);
+      console.log("after : "+this.$store.state.ebookDirectory);
       
       ncp(eBookSettingDirectory,eBookLocation,function(err){
         if(err){
@@ -329,23 +335,35 @@ export default {
           console.log("success, copy  directory");
         }
       });
+
       /* 파일 복사 이후, 함수호출을 위해 타임이벤트 추가 */
       setTimeout(()=>{this.eBookCoverSet(eBookLocation);},500);
+
       this.newEBook=false;
+
+      console.log("ebooklocation : "+eBookLocation);
+      setTimeout(()=>{this.readToc(eBookLocation);},500);
     },
-    async eBookCoverSet(eBookLocation){
+    eBookCoverSet(eBookLocation){
         /*
        새 ebook 만들기 
        - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
         */
-        let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.newEBookCover.name);
-        ncp(this.newEBookCover.path,coverLocation,function(err){
-          if(err)
-            console.log("Cover Image save in directory : "+ err);
-          else
-            console.log("success, Cover Image save in directory");
-        });
+      let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.newEBookCover.name);
+      ncp(this.newEBookCover.path,coverLocation,function(err){
+        if(err)
+          console.log("Cover Image save in directory : "+ err);
+        else
+          console.log("success, Cover Image save in directory");
+      });
     },
+    readToc(eBookLocation){
+      const data = readDirectory(eBookLocation, [], [])
+      this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
+      console.log(data);
+      this.getToc(data['toc'])
+    },
+   
 
 
     loadEbook: function () { // E-BOOK 불러오기
@@ -356,7 +374,9 @@ export default {
       if (!r) return
       this.$store.state.ebookDirectory = r[0]
 
+      console.log(r[0]);
       const data = readDirectory(r[0], [], [])
+      console.log(data);
       this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
       this.getToc(data['toc'])
     },

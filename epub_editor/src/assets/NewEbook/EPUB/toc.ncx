@@ -1,20 +1,86 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd"><ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
   <head>
-    <meta name="dtb:uid" content="urn:uuid:e235efca-2ad1-4029-809a-b772e5c36ef8" />
+    <meta name="dtb:uid" content="urn:uuid:DBFBF3F3-861D-455E-87F6-2D7813679865" />
     <meta name="dtb:depth" content="1" />
     <meta name="dtb:totalPageCount" content="0" />
     <meta name="dtb:maxPageNumber" content="0" />
   </head>
   <docTitle>
-    <text>{{ ebook 이름 }}</text>
+    <text>젊은작가상 수상작품집 10주년 특별판</text>
   </docTitle>
   <navMap>
-    <navPoint id="navPoint-0">
+    <navPoint id="navPoint-1" playOrder="1">
       <navLabel>
-        <text> {{ 목차 }} </text>
+        <text>책의 시작</text>
       </navLabel>
-      <content src="text/title_page.xhtml" />
+      <content src="Text/cover1.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-2" playOrder="2">
+      <navLabel>
+        <text>저자 소개</text>
+      </navLabel>
+      <content src="Text/author.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-3" playOrder="3">
+      <navLabel>
+        <text>속표지</text>
+      </navLabel>
+      <content src="Text/incover1.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-4" playOrder="4">
+      <navLabel>
+        <text>차례</text>
+      </navLabel>
+      <content src="Text/contents.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-5" playOrder="5">
+      <navLabel>
+        <text>편해영_저녁의 구애</text>
+      </navLabel>
+      <content src="Text/part1.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-6" playOrder="6">
+      <navLabel>
+        <text>김애란_물속 골리앗</text>
+      </navLabel>
+      <content src="Text/part2.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-7" playOrder="7">
+      <navLabel>
+        <text>손보미_폭우</text>
+      </navLabel>
+      <content src="Text/part3.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-8" playOrder="8">
+      <navLabel>
+        <text>이장욱_절반 이상의 하루오</text>
+      </navLabel>
+      <content src="Text/part4.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-9" playOrder="9">
+      <navLabel>
+        <text>황정은_상류엔 맹금류</text>
+      </navLabel>
+      <content src="Text/part5.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-10" playOrder="10">
+      <navLabel>
+        <text>정지돈_건축이냐 혁명이냐</text>
+      </navLabel>
+      <content src="Text/part6.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-11" playOrder="11">
+      <navLabel>
+        <text>강화길_호수—다른 사람</text>
+      </navLabel>
+      <content src="Text/part7.xhtml" />
+    </navPoint>
+    <navPoint id="navPoint-12" playOrder="12">
+      <navLabel>
+        <text>판권</text>
+      </navLabel>
+      <content src="Text/copyrights.xhtml" />
     </navPoint>
   </navMap>
 </ncx>
