@@ -11,12 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.epub.encrypt.BcryptImpl;
+import com.ssafy.epub.encrypt.EncryptHandler;
 import com.ssafy.epub.model.User;
 import com.ssafy.epub.repository.UserRepository;
 import com.ssafy.epub.service.MailService;
@@ -34,7 +37,29 @@ public class UserController {
 	private UserRepository userRepository;
 	@Autowired
 	private MailService mailService;
-
+	
+	private EncryptHandler encryptHandler = new BcryptImpl();
+	
+	@GetMapping("/user/{email}")
+	@ApiOperation(value = "이메일 중복 체크", produces = MediaType.TEXT_PLAIN_VALUE)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "email", value = "중복 체크할 이메일", required = true, dataType = "String") })
+	public ResponseEntity<Boolean> checkEmail(@PathVariable String email) {
+		if(userRepository.findByEmail(email).size() == 0)
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(false, HttpStatus.OK);
+	}
+	
+	@GetMapping("/user/{nickname}")
+	@ApiOperation(value = "nickname 중복 체크", produces = MediaType.TEXT_PLAIN_VALUE)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "nickname", value = "중복 체크할 닉네임", required = true, dataType = "String") })
+	public ResponseEntity<Boolean> checkNickname(@PathVariable String nickname) {
+		if(userRepository.findByNickname(nickname).size() == 0)
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(false, HttpStatus.OK);
+	}
+	
 	@GetMapping("/user")
 	@ApiOperation(value = "getAllUsers", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<List<User>> getAllUsers() {
@@ -46,6 +71,8 @@ public class UserController {
 	@ApiImplicitParams({ @ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User") })
 	public ResponseEntity<Boolean> addUser(@RequestBody User user) throws MessagingException {
 
+		user.setPassword(encryptHandler.encrypt(user.getPassword()));
+		
 		if (userRepository.save(user) != null) {
 			user.generateEmailToken();
 			mailService.signUpEmailSender(user);
@@ -65,7 +92,7 @@ public class UserController {
 		List<User> findUserList = userRepository.findByEmail(user.getEmail());
 		if (findUserList.size() == 1) {
 			User preUser = findUserList.get(0);
-			preUser.setPassword(user.getPassword());
+			preUser.setPassword(encryptHandler.encrypt(user.getPassword()));
 			preUser.setNickname(user.getNickname());
 			userRepository.save(preUser);
 			
