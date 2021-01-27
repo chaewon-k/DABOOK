@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package version="3.0" unique-identifier="BookId" xmlns="http://www.idpf.org/2007/opf">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
-    <dc:identifier id="epub-id-1">{{ 이름을 해시로 넣어서 추출하자. 동일한 이름의 책은 안 된다. }}</dc:identifier>
-    <dc:title id="epub-title-1">{{ 책 제목 }}</dc:title>
-    <dc:creator opf:role="aut">{{ 저자 이름 }}</dc:creator>
-    <dc:publisher>{{ 우리 서비스 이름 }}</dc:publisher>
-    <dc:date id="epub-date">{{ 새 EBOOK 만들기 할 때 시간 넣기 }}</dc:date>
+    <!-- <dc:identifier id="epub-id-1">e701fa01-c44b-4c19-89a4-54389da808e8</dc:identifier> -->
+    <dc:title id="epub-title-1">test</dc:title>
+    <dc:creator opf:role="aut">username</dc:creator>
+    <dc:publisher>SodokSodok</dc:publisher>
+    <dc:date id="epub-date">2019-04-25</dc:date>
     <dc:language>ko</dc:language>
-    <meta property="dcterms:modified">{{ 수정할 때 UPDATE }}</meta>
+    <meta property="dcterms:modified">2019-04-25</meta>
+    <meta content="cover.jpg" name="cover"/>
   </metadata>
   <manifest>
     <!-- 목차 --> 
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
     <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+    <item href="images/cover.jpg" id="cover.jpg" media-type="image/jpeg"/>
     <!-- css 위치 --> 
     <item id="stylesheet1" href="styles/stylesheet.css" media-type="text/css" />
     
     <!-- epub 폴더 내에 파일 추가할 때마다 여기에 아래 형식으로 추가 
     <item id="{{ 파일 이름 }}" href="{{ 경로 }}" media-type="application/xhtml+xml"/> -->
+    <item id="cover.xhtml" href="text/cover.xhtml" media-type="application/xhtml+xml"/>
     <item id="chapter1.xhtml" href="text/chapter1.xhtml" media-type="application/xhtml+xml"/>
+    <!-- 새 챕터 추가 위치1 -->
   </manifest>
   <spine>
     <!-- 책의 실제 구성요소 (ex) 챕터) 를 추가할 때 아래 형식으로 추가  
     <itemref idref="{{ manifest 에서의 id 값}}"/>-->
+    <itemref idref="cover.xhtml"/>
     <itemref idref="chapter1.xhtml"/>
+    <!-- 새 챕터 추가 위치2 -->
   </spine>
 </package>
