@@ -1,13 +1,61 @@
 <template>
   <div>
     <template v-if="itemIndex===0">
+     
+        <v-dialog v-model="eBook" persistent max-width="600px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on">새 e-book 생성</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">E-Book 생성</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="6" sm="6" md="4">
+                    <v-text-field label="E-Book Title *" required v-model="eBookTitle"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <div>
+                      <v-btn @click="load">위치 선택</v-btn>
+                      {{eBookLocation[0]}}
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6" md="7">
+                    <v-file-input
+                      v-model="eBookCover"
+                      accept="image/png, image/jpeg, image/bmp"
+                      prepend-icon="mdi-camera"
+                      label="E-Book Image"
+                    ></v-file-input>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*indicates required field</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="eBook = false">
+                Close
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="createNewEBook">
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+     
+
       <v-btn @click="loadEbook" text>e-book 불러오기</v-btn>
       <v-btn text @click="storeInputText">저장하기</v-btn>
       <!-- <v-btn text @click="storeNewInputText">다른 이름으로 저장하기</v-btn> -->
-      <v-btn @click.stop="titleDialog = true" text>ePUB으로 내보내기</v-btn>
-      <v-btn @click.stop="chapterDialog = true" text>chapter 추가하기</v-btn>
+      <v-btn @click.stop="titleDialog = true" text>e-pub으로 내보내기</v-btn>
     </template>
-
     <template v-else-if="itemIndex===1">
       <v-btn icon medium @click="undo"><v-icon medium>mdi-undo</v-icon></v-btn>
       <v-btn icon medium @click="redo"><v-icon medium>mdi-redo</v-icon></v-btn>
@@ -17,13 +65,11 @@
       <v-btn icon medium @click.stop="findDialog = true" text><v-icon medium>mdi-file-find-outline</v-icon></v-btn>
       <v-btn icon medium @click.stop="replaceDialog = true" text><v-icon medium>mdi-find-replace</v-icon></v-btn>
     </template>
-
     <template v-else-if="itemIndex===2">
       <v-btn @click="preview" text>e-book 미리보기</v-btn>
       <v-btn text>e-book 확대하기</v-btn>
       <v-btn text>e-book 축소하기</v-btn>
     </template>
-
     <template v-else-if="itemIndex===3">
       <div style="height: 100%">
         <v-btn text x-large value="images">
@@ -68,64 +114,11 @@
         <v-btn icon medium><v-icon medium @click="selectOrderedListTag()">mdi-format-list-numbered</v-icon></v-btn>
       </div>
     </template>
-
     <template v-else>
       <v-btn text>editor 사용 설명서 보기</v-btn>
       <v-btn text>마크다운 설명서 보기</v-btn>
     </template>
 
-<!-- -------------------- dialog -------------------- -->
-
-    <!-- newEbook dialog -->
-    <v-dialog v-model="newEBook" persistent max-width="600px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on">새 e-book 생성</v-btn>
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="headline">E-Book 생성</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="6" sm="6" md="4">
-                <v-text-field label="E-Book Title *" required v-model="newEBookTitle"></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <div>
-                  <v-btn @click="load">위치 선택</v-btn>
-                  {{newEBookLocation[0]}}
-                </div>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="6" md="7">
-                <v-file-input
-                  v-model="newEBookCover"
-                  accept="image/png, image/jpeg, image/bmp"
-                  prepend-icon="mdi-camera"
-                  label="E-Book Image"
-                ></v-file-input>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="newEBook = false">
-            Close
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="createNewEBook">
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <!-- findDialog -->
     <v-dialog v-model="findDialog" max-width="500">
       <v-card>
         <v-card-title class="headline">단어 찾기</v-card-title>
@@ -146,7 +139,6 @@
       </v-card>
     </v-dialog>
 
-    <!-- replaceDialog -->
     <v-dialog v-model="replaceDialog" max-width="500">
       <v-card>
         <v-card-title class="headline">단어 변환</v-card-title>
@@ -171,7 +163,6 @@
       </v-card>
     </v-dialog>
 
-    <!-- titleDialog -->
     <v-dialog v-model="titleDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> epub 이름을 입력해주세요. </v-card-title>
@@ -192,29 +183,6 @@
       </v-card>
     </v-dialog>
 
-    <!-- chapterDialog -->
-    <v-dialog v-model="chapterDialog" max-width="290">
-      <v-card>
-        <v-card-title class="headline"> chapter 이름을 입력해주세요. </v-card-title>
-        <v-card-text>
-          <v-text-field label="chapter 이름" v-model="chapterText" required></v-text-field>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="chapterDialog = false">
-            취소
-          </v-btn>
-
-          <v-btn color="green darken-1" text @click="makeChapter">
-            chapter 만들기
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-<!-- -------------------- dialog end -------------------- -->
-
   </div>
 </template>
 
@@ -227,8 +195,8 @@ const path=require('path')
 const electron = require('electron')
 const { dialog } = require('electron').remote
 const BrowserWindow = electron.remote.BrowserWindow
-const ncp=require('ncp').ncp;
-
+//const ncp=require('ncp').ncp;
+const fse=require('fs-extra')
 export default {
   name: 'SubMenu',
   data() {
@@ -242,18 +210,15 @@ export default {
       replaceAlphabet:false,
       replaceAllText:false,
       titleText:'',
-      chapterText: '',
-
       titleDialog:false,
       findDialog: false,
       replaceDialog: false,
-      chapterDialog: false,
 
       /* itemIndex 0 :  */
-      newEBook:false,
-      newEBookCover:[],
-      newEBookTitle:'',
-      newEBookLocation:'',
+      eBook:false, // 새 eBook 만들기 Dialog 활성화/비활성화
+      eBookCover:[], // 새 eBook 이미지
+      eBookTitle:'', // 새 eBook 이름
+      eBookLocation:'', //eBook 폴더까지 경로
 
     }
   },
@@ -333,10 +298,13 @@ export default {
       const options = {
         properties: ['openDirectory']
       }
-      this.newEBookLocation = dialog.showOpenDialogSync(options)
-      if (!this.newEBookLocation) return
-      console.log(this.newEBookLocation);
-      
+      this.eBookLocation = dialog.showOpenDialogSync(options)
+      if (!this.eBookLocation) return
+      //console.log(this.eBookLocation);
+    },
+    dirAndFileCopy(source, destination){
+      fse.copySync(source,destination);
+      console.log("success, copy");
     },
     createNewEBook(){
       /*
@@ -344,10 +312,14 @@ export default {
       - 선택한 위치에 TITLE 명의 폴더 생성 
       - src.assets.NewEbook에 있는 기본 EPUB파일 복사
       */
-      let eBookLocation=path.resolve(this.newEBookLocation+'/'+this.newEBookTitle+'/');
-      console.log("ebooklocation : "+eBookLocation);
+      this.eBookLocation=path.resolve(this.eBookLocation+'/'+this.eBookTitle+'/'); //ebook 폴더까지 경로
+      //console.log("ebooklocation : "+eBookLocation);
 
-      fs.mkdir(eBookLocation,function(err){
+      //console.log("before : "+this.$store.state.ebookDirectory);
+      this.SET_EBOOKDIRECTORY(this.eBookLocation); //store에 현재 위치 저장
+      //console.log("after : "+this.$store.state.ebookDirectory);
+
+      fs.mkdir(this.eBookLocation,function(err){
         if(err){
           console.log("make directory error : "+err);
         }
@@ -355,43 +327,26 @@ export default {
           console.log("success, make directory in eBookLocation ");
         }
       });
-      let eBookSettingDirectory=path.resolve('src/assets/NewEbook');
 
-      console.log("ebooklocation : "+eBookLocation);
-      console.log("before : "+this.$store.state.ebookDirectory);
-      this.SET_EBOOKDIRECTORY(eBookLocation);
-      console.log("after : "+this.$store.state.ebookDirectory);
+      let eBookSettingDirectory=path.resolve('src/assets/NewEbook'); //기본 ebook 디렉토리 위치
+
+      //console.log("ebooklocation : "+this.eBookLocation);
+      //console.log("before : "+this.$store.state.ebookDirectory);
+      //console.log("after : "+this.$store.state.ebookDirectory);
       
-      ncp(eBookSettingDirectory,eBookLocation,function(err){
-        if(err){
-          console.log("copy directory error : "+ err);
-        }
-        else{
-          console.log("success, copy  directory");
-        }
-      });
+      this.dirAndFileCopy(eBookSettingDirectory,this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
 
-      /* 파일 복사 이후, 함수호출을 위해 타임이벤트 추가 */
-      setTimeout(()=>{this.eBookCoverSet(eBookLocation);},500);
-
-      setTimeout(()=>{this.renameImageTag(eBookLocation);},600);
-      this.newEBook=false;
-
-      console.log("ebooklocation : "+eBookLocation);
-      setTimeout(()=>{this.readToc(eBookLocation);},500);
-    },
-    eBookCoverSet(eBookLocation){
-        /*
+      /*
        새 ebook 만들기 
        - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
         */
-      let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.newEBookCover.name);
-      ncp(this.newEBookCover.path,coverLocation,function(err){
-        if(err)
-          console.log("Cover Image save in directory : "+ err);
-        else
-          console.log("success, Cover Image save in directory");
-      });
+      let coverLocation=path.resolve(this.eBookLocation+'/EPUB/images/'+this.eBookCover.name); //이미지 저장할 위치 
+      this.dirAndFileCopy(this.eBookCover.path,coverLocation); // 입력받은 이미지를 저장할 위치로 복사
+
+      this.renameImageTag(this.eBookLocation);
+      this.eBook=false;
+
+      this.readToc(this.eBookLocation);
     },
     readToc(eBookLocation){
       const data = readDirectory(eBookLocation, [], [])
@@ -399,10 +354,8 @@ export default {
       console.log(data);
       this.getToc(data['toc'])
     },
-   
-
     renameImageTag: function (eBookLocation) {
-      let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.newEBookCover.name);
+      let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.eBookCover.name);
       let newCoverLocation=path.resolve(eBookLocation+'/EPUB/images/cover.png');
       fs.rename(coverLocation, newCoverLocation, function(err){
       if( err ) throw err;
@@ -439,21 +392,7 @@ export default {
       const win = new BrowserWindow({ width: 800, height: 1500 })
       win.loadURL(this.$store.state.selectedFileDirectory)
     },
-    // chapter 추가하기
-    makeChapter: function () {
-      this.chapterDialog = false;
-      let path = this.$store.state.ebookDirectory + '/EPUB/text/';
-      const temp = fs.readFileSync('src/assets/NewEbook/EPUB/text/chapter1.xhtml').toString()
-      
-      fs.writeFile(path + this.chapterText + '.xhtml', temp, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      })
 
-      alert('새 chapter가 추가되었습니다!');
-      this.chapterText = '';
-    },
 
     /* 
       < itemIndex 1 : 편집 >
