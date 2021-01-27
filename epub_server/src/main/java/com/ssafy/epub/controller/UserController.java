@@ -40,7 +40,7 @@ public class UserController {
 	
 	private EncryptHandler encryptHandler = new BcryptImpl();
 	
-	@GetMapping("/user/{email}")
+	@GetMapping("/user/email/{email:.+}")
 	@ApiOperation(value = "이메일 중복 체크", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "email", value = "중복 체크할 이메일", required = true, dataType = "String") })
 	public ResponseEntity<Boolean> checkEmail(@PathVariable String email) {
@@ -50,7 +50,7 @@ public class UserController {
 			return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 	
-	@GetMapping("/user/{nickname}")
+	@GetMapping("/user/nickname/{nickname}")
 	@ApiOperation(value = "nickname 중복 체크", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "nickname", value = "중복 체크할 닉네임", required = true, dataType = "String") })
 	public ResponseEntity<Boolean> checkNickname(@PathVariable String nickname) {
