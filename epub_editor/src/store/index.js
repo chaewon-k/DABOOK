@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    ebookDirectory: [], // ebook's root directory
+    ebookDirectory: '', // ebook's root directory
     ebookDirectoryTree: [], // Directory's item
     selectedFileDirectory: '', // selected file's directory
     tableOfContents: [], // TableOfContents' item
@@ -20,6 +20,9 @@ export default new Vuex.Store({
     SET_EDITINGHTML(state, value){
       state.editingHTMLText=value;
     },
+    SET_EBOOKDIRECTORY(state,value){
+      state.ebookDirectory=value;
+    }
   },
   actions: {
     setEditingText:function({commit},value){
