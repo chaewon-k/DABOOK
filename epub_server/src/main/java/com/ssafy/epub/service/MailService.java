@@ -28,4 +28,15 @@ public class MailService {
 			  );
 		javaMailSender.send(mailMessage);
 	}
+	
+	public void findPasswordEmailSender(User user, String tempPassword) throws MessagingException {
+		MimeMessage mailMessage = javaMailSender.createMimeMessage();
+		mailMessage.addRecipients(RecipientType.TO, user.getEmail());
+		mailMessage.setSubject("임시 비밀번호 발송 이메일");
+		mailMessage.setText(new StringBuffer().append("<h1>임시 비밀번호 발송 메일입니다.</h1>")
+			    .append("<p>임시 비밀번호 : " + tempPassword + "</p>")
+			    .toString(),"utf-8","html"
+			  );
+		javaMailSender.send(mailMessage);
+	}
 }
