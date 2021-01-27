@@ -10,15 +10,19 @@
     <meta property="dcterms:modified">{{ 수정할 때 UPDATE }}</meta>
   </metadata>
   <manifest>
-    <!-- 목차 --> <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
-    <!-- 목차 --> <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
-    <!-- css 위치 --> <item id="stylesheet1" href="styles/stylesheet.css" media-type="text/css" />
+    <!-- 목차 --> 
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+    <!-- css 위치 --> 
+    <item id="stylesheet1" href="styles/stylesheet.css" media-type="text/css" />
     
-    <!-- epub 폴더 내에 파일 추가할 때마다 여기에 아래 형식으로 추가 -->
-    <item id="{{ 파일 이름 }}" href="{{ 경로 }}" media-type="application/xhtml+xml"/>
+    <!-- epub 폴더 내에 파일 추가할 때마다 여기에 아래 형식으로 추가 
+    <item id="{{ 파일 이름 }}" href="{{ 경로 }}" media-type="application/xhtml+xml"/> -->
+    <item id="chapter1.xhtml" href="text/chapter1.xhtml" media-type="application/xhtml+xml"/>
   </manifest>
   <spine>
-    <!-- 책의 실제 구성요소 (ex) 챕터) 를 추가할 때 아래 형식으로 추가  -->
-    <itemref idref="{{ manifest 에서의 id 값}}"/>
+    <!-- 책의 실제 구성요소 (ex) 챕터) 를 추가할 때 아래 형식으로 추가  
+    <itemref idref="{{ manifest 에서의 id 값}}"/>-->
+    <itemref idref="chapter1.xhtml"/>
   </spine>
 </package>
