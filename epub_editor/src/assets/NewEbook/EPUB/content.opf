@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package version="3.0" unique-identifier="BookId" xmlns="http://www.idpf.org/2007/opf">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <!-- <dc:identifier id="epub-id-1">e701fa01-c44b-4c19-89a4-54389da808e8</dc:identifier> -->
+    <dc:title id="epub-title-1">test</dc:title>
+    <dc:creator opf:role="aut">username</dc:creator>
+    <dc:publisher>다독다독</dc:publisher>
+    <dc:date id="epub-date">2019-04-25</dc:date>
+    <dc:language>ko</dc:language>
+    <meta property="dcterms:modified">2019-04-25</meta>
+    <meta content="cover.jpg" name="cover"/>
+  </metadata>
+  <manifest>
+    <!-- 목차 --> 
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item href="images/cover.jpg" id="cover.jpg" media-type="image/jpeg"/>
+    <!-- css 위치 --> 
+    <item id="stylesheet1" href="styles/stylesheet.css" media-type="text/css" />
+    
+    <!-- epub 폴더 내에 파일 추가할 때마다 여기에 아래 형식으로 추가 
+    <item id="{{ 파일 이름 }}" href="{{ 경로 }}" media-type="application/xhtml+xml"/> -->
+    <item id="cover.xhtml" href="text/cover.xhtml" media-type="application/xhtml+xml"/>
+    <!-- 새 챕터 추가 위치1 -->
+  </manifest>
+  <spine>
+    <!-- 책의 실제 구성요소 (ex) 챕터) 를 추가할 때 아래 형식으로 추가  
+    <itemref idref="{{ manifest 에서의 id 값}}"/>-->
+    <itemref idref="cover.xhtml"/>
+    <!-- 새 챕터 추가 위치2 -->
+  </spine>
+</package>
