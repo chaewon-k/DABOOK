@@ -321,12 +321,12 @@ export default {
       console.log(data);
       this.getToc(data['toc'])
     },
-    renameImageTag: function (eBookLocation) {
-      let coverLocation=path.resolve(eBookLocation+'/EPUB/images/'+this.eBookCover.name);
-      let newCoverLocation=path.resolve(eBookLocation+'/EPUB/images/cover.jpg');
+    renameImageTag: function () {
+      let coverLocation=path.resolve(this.eBookLocation+'/EPUB/images/'+this.eBookCover.name);
+      let newCoverLocation=path.resolve(this.eBookLocation+'/EPUB/images/cover.jpg');
       fs.rename(coverLocation, newCoverLocation, function(err){
-      if( err ) throw err;
-      console.log('File Renamed!');
+        if( err ) throw err;
+        console.log('File Renamed!');
       });
     },
 
