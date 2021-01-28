@@ -37,7 +37,6 @@ export default {
         items: [
           { tab: '파일' },
           { tab: '편집' },
-          { tab: '창' },
           { tab: '도구상자' },
           { tab: '도움말' }
         ],

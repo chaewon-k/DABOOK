@@ -85,8 +85,6 @@
       </v-tooltip>
     </template>
     <template v-else-if="itemIndex===2">
-    </template>
-    <template v-else-if="itemIndex===3">
       <ToolsTab/>
     </template>
     <template v-else>
