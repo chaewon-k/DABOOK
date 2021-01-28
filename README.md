@@ -34,12 +34,6 @@
     </ul>
 </details>
 <details>
-    <summary> Specification </summary>
-    <ul>
-        <a href="Document/Specification/Function_Specification.md"><li> Commit Rule </li></a>
-    </ul>
-</details>
-<details>
     <summary> Wire frame </summary>
     <ul>
         <a href="Document/Wireframe/Project WireFrame Image.md"><li> Wireframe Image </li></a>
