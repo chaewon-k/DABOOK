@@ -1,26 +1,26 @@
 <template>
-  <div >
+  <div>
     <TopMenu/>
-
-  <v-container>
-    <v-row  class="stretch">
-        <v-col cols="3" style="border: 1px solid black; height:35em; overflow:scroll;">
-          <v-btn @click="toggle">Dir-ToC Toggle</v-btn>
-          <Directory
-            v-show="dirTableToggle===true"
-          />
-          <TableOfContents
-            v-show="dirTableToggle===false"
-          />
-        </v-col>            
-     <!-- <v-divider vertical></v-divider> -->
-      <Textarea />
-     <!-- <v-divider vertical></v-divider>
-      <Preview /> -->
-     
-    </v-row>
-  </v-container>
-
+    <v-container class="d-flex flex-column" >
+      <v-row class="stretch" style="width: auto;">
+        <v-col>
+          <v-card>
+            <v-btn @click="toggle" block text>Toggle</v-btn>
+            <Directory
+              v-show="dirTableToggle===true"
+            />
+            <TableOfContents
+              v-show="dirTableToggle===false"
+            />
+          </v-card>
+          
+        </v-col>
+      <!-- <v-divider vertical></v-divider> -->
+        <Textarea />
+      <!-- <v-divider vertical></v-divider>
+        <Preview /> -->
+      </v-row>
+    </v-container>
   </div>
 </template>
 
