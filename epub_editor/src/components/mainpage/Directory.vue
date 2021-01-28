@@ -1,25 +1,23 @@
 <template>
-  <v-col style="border: 1px solid black; height:35em; overflow:scroll;">
-    <v-treeview
-      v-model="tree"
-      :open="initiallyOpen"
-      :items="items"
-      activatable
-      item-key="name"
-      open-on-click
-      @input="openFile"
-    >
-      <template slot="label" slot-scope="{ item }">
-        <v-icon small style="padding: 0 5px;" v-if="!item.file">
-          {{ 'mdi-folder' }}
-        </v-icon>
-        <v-icon small v-else>
-          {{ files[item.file] }}
-        </v-icon>
-        <span @click="openFile(item)">{{ item.name }}</span>
-      </template>
-    </v-treeview>
-  </v-col>
+  <v-treeview
+    v-model="tree"
+    :open="initiallyOpen"
+    :items="items"
+    activatable
+    item-key="name"
+    open-on-click
+    @input="openFile"
+  >
+    <template slot="label" slot-scope="{ item }">
+      <v-icon small style="padding: 0 5px;" v-if="!item.file">
+        {{ 'mdi-folder' }}
+      </v-icon>
+      <v-icon small v-else>
+        {{ files[item.file] }}
+      </v-icon>
+      <span @click="openFile(item)">{{ item.name }}</span>
+    </template>
+  </v-treeview>
 </template>
 
 <script>
