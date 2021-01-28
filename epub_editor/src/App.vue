@@ -1,19 +1,19 @@
 <template>
   <v-app>
     <v-main>
-      <Login />
+      <Editor />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Login from './views/Login';
+import Editor from './views/Editor';
 
 export default {
   name: 'App',
 
   components: {
-    Login,
+    Editor,
   },
 
   data: () => ({
