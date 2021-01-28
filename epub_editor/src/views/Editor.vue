@@ -3,9 +3,10 @@
     <TopMenu/>
     <v-container class="d-flex flex-column" >
       <v-row class="stretch" style="width: auto;">
-        <v-col cols="3">
-          <v-card>
-            <v-btn @click="toggle" block text>Toggle</v-btn>
+        <v-col cols="3" style="height:35em;">
+          <v-card max-height="100%" min-height="100%" class="overflow-y-auto">
+            <v-btn v-if="dirTableToggle===true" @click="toggle" block text>디렉토리</v-btn>
+            <v-btn v-else @click="toggle" block text>목차</v-btn>
             <Directory
               v-show="dirTableToggle===true"
             />

@@ -1,5 +1,16 @@
 <template>
-  <v-col cols="9">
+  <v-col cols="9" style="height:35em;">
+    <v-textarea
+      solo
+      hide-details
+      style="width: auto;"
+      ma-auto
+      height="100%"
+      label="textarea 입니다"
+      placeholder="책을 작성해볼까요?"
+      v-model="inputText"
+      @keyup.enter="attachPTag()"
+    ></v-textarea>
     <v-dialog v-model="linkDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> 링크를 입력해주세요. </v-card-title>
@@ -51,18 +62,6 @@
       </v-card>
     </v-dialog>
 
-    <v-textarea
-      id="area"
-      style="width: auto;"
-      outlined
-      ma-auto
-      height="35em"
-      label="textarea 입니다"
-      placeholder="책을 작성해볼까요?"
-      v-model="inputText"
-      @keyup.enter="attachPTag()"
-    >
-    </v-textarea>
   </v-col>
 </template>
 
@@ -257,4 +256,13 @@ export default {
 </script>
 
 <style>
+#app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder {
+  height: 100%;
+}
+#app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder > div {
+  height: 100%;
+}
+#app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder > div > div {
+  height: 100%;
+}
 </style>
