@@ -1,6 +1,7 @@
 <template>
   <v-col cols="9" style="height:35em;">
     <v-textarea
+      id="area"
       solo
       hide-details
       style="width: auto;"
