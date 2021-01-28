@@ -6,12 +6,12 @@
           <v-btn text v-bind="attrs" v-on="on">새 e-book 생성</v-btn>
         </template>
         <v-card>
-          <v-card-title class="headline" style="background-color: #C0BFD9">
+          <v-card-title class="headline header-color">
             <span>E-Book 생성</span>
           </v-card-title>
           <v-card-text>
             <v-container>
-              <v-row>
+              <v-row class="my-3">
                 <v-text-field label="E-Book Title *" required v-model="eBookTitle"></v-text-field>
               </v-row>
               <v-row>
@@ -20,7 +20,7 @@
                   <p class="my-0 mx-3">{{eBookLocation[0]}}</p>
                 </div>
               </v-row>
-              <v-row>
+              <v-row class="my-3">
                 <v-file-input
                   v-model="eBookCover"
                   accept="image/png, image/jpeg, image/bmp"
@@ -38,10 +38,10 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="eBook = false">
+            <v-btn color="red darken-1" text @click="eBook = false">
               Close
             </v-btn>
-            <v-btn color="blue darken-1" text @click="createNewEBook">
+            <v-btn text @click="createNewEBook" style="color: #423F8C;">
               Save
             </v-btn>
           </v-card-actions>
@@ -96,9 +96,9 @@
 
     <v-dialog v-model="findDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline">단어 찾기</v-card-title>
+        <v-card-title class="headline header-color">단어 찾기</v-card-title>
         <v-card-text>
-          <v-text-field label="찾고 싶은 단어" v-model="findText" required></v-text-field>
+          <v-text-field class="my-5" label="찾고 싶은 단어" v-model="findText" required></v-text-field>
         </v-card-text>
         
         <v-card-actions>
@@ -107,7 +107,7 @@
             취소
           </v-btn>
 
-          <v-btn color="green darken-1" text @click="find(findText); findDialog = false;">
+          <v-btn text @click="find(findText); findDialog = false;" style="color: #423F8C;">
             단어 찾기
           </v-btn>
         </v-card-actions>
@@ -116,35 +116,41 @@
 
     <v-dialog v-model="replaceDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline">단어 변환</v-card-title>
-        <v-card-text>
-          <v-text-field label="찾고 싶은 단어" v-model="findText" required></v-text-field>
+        <v-card-title class="headline header-color">단어 변환</v-card-title>
+        <v-card-text class="d-flex flex-row mt-4 pa-0">
+          <v-text-field class="my-3 mx-5" label="찾고 싶은 단어" v-model="findText" required></v-text-field>
+          <v-icon>mdi-arrow-right</v-icon>
+          <v-text-field class="my-3 mx-5" label="바꾸고 싶은 단어" v-model="replaceText" required></v-text-field>
         </v-card-text>
-        <v-card-text>
-          <v-text-field label="바꾸고 싶은 단어" v-model="replaceText" required></v-text-field>
-        </v-card-text>
-        <v-checkbox v-model="replaceAlphabet" label="Aa"></v-checkbox>
-        <v-checkbox v-model="replaceAllText" label="All"></v-checkbox>
+        <v-container>
+          <v-row class="ml-2">
+            <v-col cols="3">
+              <v-checkbox v-model="replaceAlphabet" label="Aa"></v-checkbox>
+            </v-col>
+            <v-col cols="3">
+              <v-checkbox v-model="replaceAllText" label="All"></v-checkbox>
+            </v-col>
+          </v-row>
+        </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-1" text @click="replaceDialog = false">
             취소
           </v-btn>
-
-          <v-btn color="green darken-1" text @click="replace(findText, replaceText, replaceAlphabet, replaceAllText); replaceDialog = false;">
+          <v-btn text @click="replace(findText, replaceText, replaceAlphabet, replaceAllText); replaceDialog = false;" style="color: #423F8C;">
             단어 변환
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="titleDialog" max-width="400">
+    <v-dialog v-model="titleDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline" style="background-color: #C0BFD9">
+        <v-card-title class="headline header-color">
           E-PUB으로 내보내기
         </v-card-title>
         <v-card-text>
-          <v-text-field label="epub 이름" v-model="titleText" required></v-text-field>
+          <v-text-field class="my-3" label="epub 이름" v-model="titleText" required></v-text-field>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -163,11 +169,11 @@
     </v-dialog>
 
     <!-- chapterDialog -->
-    <v-dialog v-model="chapterDialog" max-width="290">
+    <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
-        <v-card-title class="headline"> chapter 이름을 입력해주세요. </v-card-title>
+        <v-card-title class="headline header-color">chapter 추가하기</v-card-title>
         <v-card-text>
-          <v-text-field label="chapter 이름" v-model="chapterText" required></v-text-field>
+          <v-text-field class="my-3" label="chapter 이름" v-model="chapterText" required></v-text-field>
         </v-card-text>
 
         <v-card-actions>
@@ -176,7 +182,7 @@
             취소
           </v-btn>
 
-          <v-btn color="green darken-1" text @click="makeChapter(chapterText)">
+          <v-btn text @click="makeChapter(chapterText)" style="color: #423F8C;">
             chapter 만들기
           </v-btn>
         </v-card-actions>
@@ -452,5 +458,11 @@ export default {
 <style>
 .v-text-field{
   width: 150px;
+}
+.header-color{
+  background-color: #C0BFD9;
+}
+.font-color{
+  color: #423F8C;
 }
 </style>
