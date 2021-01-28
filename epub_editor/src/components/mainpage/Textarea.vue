@@ -244,14 +244,14 @@ export default {
         if(this.editingTextArrPoint==this.arrSize){
           this.DOWN_EDITINGTEXTARRPOINT();
           this.SHIFT_EDITINGTEXTARR();
-          console.log("shiFT : "+this.editingTextArr);
+          //console.log("shiFT : "+this.editingTextArr);
         }
         this.UP_EDITINGTEXTARRPOINT();
         this.PUSH_EDITINGTEXTARR();
-        console.log(this.editingTextArr);
-        console.log(this.editingTextArrPoint);
+        //console.log(this.editingTextArr);
+        //console.log(this.editingTextArrPoint);
       }
-    },
+   },
   },
 };
 </script>
