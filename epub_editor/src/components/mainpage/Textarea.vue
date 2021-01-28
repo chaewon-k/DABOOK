@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import eventBus from "@/eventBus.js";
 import { findText, replaceText } from "@/functions/edit.js";
 import {
@@ -104,9 +104,14 @@ export default {
       tableCol: 0,
       findText: '',
       findIndexArray: [],
+
+      
     };
   },
   created() {
+    eventBus.$on('set',()=>{
+      this.inputText=this.editingText;
+    });
     eventBus.$on("findText", (res) => {
       this.findText = res
       this.findIndexArray = findText(this.inputText, res)
@@ -156,9 +161,11 @@ export default {
       }
     });
   },
-  computed: {},
+  computed: {
+    ...mapState(['editingText','editingTextArrPoint','arrSize','editingTextArr']),
+  },
   methods: {
-    ...mapMutations(["SET_EDITINGTEXT", "SET_EDITINGHTML"]),
+    ...mapMutations(["SET_EDITINGTEXT", "SET_EDITINGHTML",'PUSH_EDITINGTEXTARR','SHIFT_EDITINGTEXTARR','DOWN_EDITINGTEXTARRPOINT','UP_EDITINGTEXTARRPOINT']),
     plusRow: function () {
       this.tableRow++;
     },
@@ -232,7 +239,19 @@ export default {
     inputText: function () {
       this.SET_EDITINGTEXT(this.inputText);
       this.SET_EDITINGHTML(this.defaultHTMLText);
-    },
+
+      if(this.editingTextArr[this.editingTextArrPoint]!=this.inputText){
+        if(this.editingTextArrPoint==this.arrSize){
+          this.DOWN_EDITINGTEXTARRPOINT();
+          this.SHIFT_EDITINGTEXTARR();
+          //console.log("shiFT : "+this.editingTextArr);
+        }
+        this.UP_EDITINGTEXTARRPOINT();
+        this.PUSH_EDITINGTEXTARR();
+        //console.log(this.editingTextArr);
+        //console.log(this.editingTextArrPoint);
+      }
+   },
   },
 };
 </script>

@@ -233,10 +233,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(["editingText", "editingHTMLText", "ebookDirectory"]),
+    ...mapState(["editingText", "editingHTMLText", "ebookDirectory",'editingTextArrPoint','editingTextArr','arrSize']),
   },
   methods: {
-    ...mapMutations(["SET_EDITINGTEXT","SET_EBOOKDIRECTORY", "SET_EBOOKDIRECTORY"]),
+    ...mapMutations(["SET_EDITINGTEXT","SET_EBOOKDIRECTORY", "SET_EBOOKDIRECTORY",'PUSH_EDITINGTEXTARR','SHIFT_EDITINGTEXTARR',"UP_EDITINGTEXTARRPOINT","DOWN_EDITINGTEXTARRPOINT"]),
     // 파일 탭
     // storeNewInputText: function () {  //다른 이름으로 저장하기 기능
     //   const options = {
@@ -308,11 +308,11 @@ export default {
       }
       this.renameImageTag();
       this.eBook=false;
-      this.readToc(this.eBookLocation);
-      
+
+      this.readToc();
     },
-    readToc(eBookLocation){
-      const data = readDirectory(eBookLocation, [], [], 0)
+    readToc(){
+      const data = readDirectory(this.eBookLocation, [], [])
       this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
       console.log(data);
       this.getToc(data['toc'])
@@ -395,10 +395,12 @@ export default {
       document.execCommand('paste');
     },
     undo(){ // 실행 취소
-      document.execCommand('undo');
+      //document.execCommand('undo');
+      this.inputTextUndo();
     },
     redo(){ // 실행 취소 되돌리기
-      document.execCommand('redo');
+      //document.execCommand('redo');
+      this.inputTextRedo();
     },
     find: function (findText) {
       eventBus.$emit('findText', findText);
@@ -407,6 +409,39 @@ export default {
       this.find(findText)
       eventBus.$emit('replaceText', [replaceText, replaceAlphabet, replaceAllText]);
     },
+
+
+    inputTextRedo(){
+      //console.log("Redo");
+      //console.log(this.editingTextArrPoint);
+      if(this.editingTextArrPoint==this.arrSize)
+        return;
+      this.UP_EDITINGTEXTARRPOINT();
+      
+      this.inputTextSet();
+    },
+    inputTextUndo(){
+      //console.log("Undo");
+      //console.log(this.editingTextArrPoint);
+      if(this.editingTextArrPoint==0){
+        return;
+      }
+      this.DOWN_EDITINGTEXTARRPOINT();
+      //console.log(this.editingTextArrPoint)
+      //console.log(this.editingTextArrPoint);
+      this.inputTextSet();
+    },
+    inputTextSet(){
+      //console.log("set");
+      //console.log(this.editingTextArr);
+      //console.log(this.editingTextArrPoint);
+      //console.log(this.editingTextArr[this.editingTextArrPoint]);
+      this.SET_EDITINGTEXT(this.editingTextArr[this.editingTextArrPoint]);
+      //console.log(this.editingText);
+      eventBus.$emit('set');
+    },
+
+
   },
   props: {
     itemIndex: { type: Number }

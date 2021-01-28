@@ -11,6 +11,10 @@ export default new Vuex.Store({
     tableOfContents: [], // TableOfContents' item
     editingText: '', //textarea's text value
     editingHTMLText: '',  //default HTML text value
+
+    editingTextArr:[],
+    editingTextArrPoint:0,
+    arrSize:20,
   },
   mutations: {
     SET_EDITINGTEXT(state, value){
@@ -21,7 +25,20 @@ export default new Vuex.Store({
     },
     SET_EBOOKDIRECTORY(state,value){
       state.ebookDirectory=value;
+    },
+    PUSH_EDITINGTEXTARR(state){
+      state.editingTextArr[state.editingTextArrPoint]=state.editingText;
+    },
+    SHIFT_EDITINGTEXTARR(state){
+      state.editingTextArr.shift();
+    },
+    UP_EDITINGTEXTARRPOINT(state){
+      state.editingTextArrPoint=state.editingTextArrPoint+1;
+    },
+    DOWN_EDITINGTEXTARRPOINT(state){
+      state.editingTextArrPoint=state.editingTextArrPoint-1;
     }
+
   },
   actions: {
     setEditingText:function({commit},value){
