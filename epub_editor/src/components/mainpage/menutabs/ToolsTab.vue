@@ -1,27 +1,6 @@
 <template>
-  <div>
-    <div style="height: 100%">
-      <v-btn text x-large value="images">
-        <div>
-          <v-icon large class="d-flex justify-center" @click="selectImageTag()">mdi-image-search-outline</v-icon>
-          <p class="caption">Images</p>
-        </div>
-      </v-btn>
-      <v-btn text x-large>
-        <div>
-          <v-icon large @click="selectLink()">mdi-link-box-variant-outline</v-icon>
-          <p class="caption">Link</p>
-        </div>
-        </v-btn>
-      <v-btn text x-large>
-        <div>
-          <v-icon large @click="selectTable()">mdi-table-large-plus</v-icon>
-          <p class="caption">Table</p>
-        </div>
-      </v-btn>
-    </div>
-    <v-divider></v-divider>
-    <div>
+  <div id="subMenuBar">
+    <div class="left">
       <v-tooltip bottom><template v-slot:activator="{ on }">
         <v-btn v-on="on" icon medium><v-icon medium @click="selectHTag(1)">mdi-format-header-1</v-icon></v-btn></template>
         <span>H1</span>
@@ -95,6 +74,28 @@
       <span>OrderedList</span>
       </v-tooltip>
     </div>
+    <v-divider inset vertical/>
+    <div class="right" style="height: 100%">
+      <v-btn text x-large value="images">
+        <div>
+          <v-icon large @click="selectImageTag()">mdi-image-search-outline</v-icon>
+          <p class="caption">Images</p>
+        </div>
+      </v-btn>
+      <v-btn text x-large>
+        <div>
+          <v-icon large @click="selectLink()">mdi-link-box-variant-outline</v-icon>
+          <p class="caption">Link</p>
+        </div>
+        </v-btn>
+      <v-btn text x-large>
+        <div>
+          <v-icon large @click="selectTable()">mdi-table-large-plus</v-icon>
+          <p class="caption">Table</p>
+        </div>
+      </v-btn>
+    </div>
+    
   </div>
 </template>
 
@@ -157,4 +158,19 @@ export default {
 </script>
 
 <style>
+    #subMenuBar{
+      width: 100%;
+      height: 80px;
+    }
+    div.left {
+        width: 60%;
+        float: left;
+        height: 10%;
+    }
+    div.right {
+      top:20%;
+      width: 39%;
+      float: right;
+      position: relative;
+    }
 </style>
