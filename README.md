@@ -36,13 +36,13 @@
 <details>
     <summary> Specification </summary>
     <ul>
-        <a href="Document/Specification/Git Commit Rule.md"><li> Commit Rule </li></a>
+        <a href="Document/Specification/Function_Specification.md"><li> Commit Rule </li></a>
     </ul>
 </details>
 <details>
     <summary> Wire frame </summary>
     <ul>
-        <a href="Document/Wireframe/Project Wireframe Image.md"><li> Wireframe Image </li></a>
+        <a href="Document/Wireframe/Project WireFrame Image.md"><li> Wireframe Image </li></a>
     </ul>
 </details>
 
