@@ -3,7 +3,7 @@
     <TopMenu/>
     <v-container class="d-flex flex-column" >
       <v-row class="stretch" style="width: auto;">
-        <v-col>
+        <v-col cols="3">
           <v-card>
             <v-btn @click="toggle" block text>Toggle</v-btn>
             <Directory

@@ -6,38 +6,35 @@
           <v-btn text v-bind="attrs" v-on="on">새 e-book 생성</v-btn>
         </template>
         <v-card>
-          <v-card-title>
-            <span class="headline">E-Book 생성</span>
+          <v-card-title class="headline" style="background-color: #C0BFD9">
+            <span>E-Book 생성</span>
           </v-card-title>
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="6" sm="6" md="4">
-                  <v-text-field label="E-Book Title *" required v-model="eBookTitle"></v-text-field>
-                </v-col>
+                <v-text-field label="E-Book Title *" required v-model="eBookTitle"></v-text-field>
               </v-row>
               <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <div>
-                    <v-btn @click="load">위치 선택</v-btn>
-                    {{eBookLocation[0]}}
-                  </div>
-                </v-col>
+                <div class="my-3 d-flex align-center">
+                  <v-btn @click="load">위치 선택</v-btn>
+                  <p class="my-0 mx-3">{{eBookLocation[0]}}</p>
+                </div>
               </v-row>
               <v-row>
-                <v-col cols="12" sm="6" md="7">
-                  <v-file-input
-                    v-model="eBookCover"
-                    accept="image/png, image/jpeg, image/bmp"
-                    prepend-icon="mdi-camera"
-                    label="E-Book Image"
-                  ></v-file-input>
-                  <v-btn @click="selectDefaultImg=true">기본 이미지로 저장</v-btn>
-                </v-col>
+                <v-file-input
+                  v-model="eBookCover"
+                  accept="image/png, image/jpeg, image/bmp"
+                  prepend-icon="mdi-camera"
+                  label="E-Book Image"
+                ></v-file-input>
+              </v-row>
+              <v-row class="d-flex align-center">
+                <v-btn class="my-3" @click="selectDefaultImg=true">기본 이미지로 저장</v-btn>
+                <p class="my-3 mx-3" v-if="selectDefaultImg===true">기본 이미지를 선택</p>
+                <p class="my-3 mx-3" v-else>*indicates required field</p>
               </v-row>
             </v-container>
-            <small v-if="selectDefaultImg===true">기본 이미지를 선택</small>
-            <small v-else>*indicates required field</small>
+            
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -141,12 +138,16 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="titleDialog" max-width="290">
+    <v-dialog v-model="titleDialog" max-width="400">
       <v-card>
-        <v-card-title class="headline"> epub 이름을 입력해주세요. </v-card-title>
+        <v-card-title class="headline" style="background-color: #C0BFD9">
+          E-PUB으로 내보내기
+        </v-card-title>
         <v-card-text>
           <v-text-field label="epub 이름" v-model="titleText" required></v-text-field>
         </v-card-text>
+
+        <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -154,7 +155,7 @@
             취소
           </v-btn>
 
-          <v-btn color="green darken-1" text @click="makeEpub">
+          <v-btn text @click="makeEpub" style="color: #423F8C;">
             epub 내보내기
           </v-btn>
         </v-card-actions>
