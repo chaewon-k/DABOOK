@@ -3,19 +3,19 @@ const { dialog } = require('electron').remote
 
 export function pTag() {
   var area = document.getElementById("area");
-  area.value = area.value.slice(0,  area.selectionStart) + "<p></p>" + area.value.slice(area.selectionStart);
+  area.value = area.value.slice(0,  area.selectionStart) + "    <p></p>" + area.value.slice(area.selectionStart);
   return area.value;
 }
 
 export function enterTag() {
   var area = document.getElementById("area");
-  area.value = area.value.slice(0,  area.selectionStart) + "<br>\n" + area.value.slice(area.selectionStart);
+  area.value = area.value.slice(0,  area.selectionStart) + "<br />\n" + area.value.slice(area.selectionStart);
   return area.value;
 }
 
 export function lineTag() {
   var area = document.getElementById("area");
-  area.value = area.value.slice(0,  area.selectionStart) + "<hr>\n" + area.value.slice(area.selectionStart);
+  area.value = area.value.slice(0,  area.selectionStart) + "<hr />\n" + area.value.slice(area.selectionStart);
   return area.value;
 }
 
