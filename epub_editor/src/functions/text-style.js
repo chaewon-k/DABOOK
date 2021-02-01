@@ -3,7 +3,9 @@ const { dialog } = require('electron').remote
 
 export function pTag() {
   var area = document.getElementById("area");
+  const remember = area.selectionStart;
   area.value = area.value.slice(0,  area.selectionStart) + "    <p></p>" + area.value.slice(area.selectionStart);
+  area.selectionEnd = remember + 7
   return area.value;
 }
 
