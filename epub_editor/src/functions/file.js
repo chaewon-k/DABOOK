@@ -7,8 +7,12 @@ export function readPath () {
   }
   const r = dialog.showOpenDialogSync(options)
   if (!r) {
-    alert('경로를 선택해주세요')
-    return readPath()
+    const result = window.confirm('경로를 선택해주세요')
+    if (result === true) {
+      return readPath()
+    } else {
+      return false
+    }      
   }
   return r[0]
 }

@@ -16,6 +16,7 @@ export default new Vuex.Store({
     editingTextArrPoint:0,
     arrSize:20,
   },
+
   mutations: {
     SET_EDITINGTEXT(state, value){
       state.editingText=value;
@@ -38,8 +39,8 @@ export default new Vuex.Store({
     DOWN_EDITINGTEXTARRPOINT(state){
       state.editingTextArrPoint=state.editingTextArrPoint-1;
     }
-
   },
+  
   actions: {
     setEditingText:function({commit},value){
       commit('SET_EDITINGTEXT',value);
