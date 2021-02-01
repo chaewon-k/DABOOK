@@ -1,4 +1,17 @@
+const { dialog } = require('electron').remote
 const fs = require("fs")
+
+export function readPath () {
+  const options = {
+    properties: ['openDirectory']
+  }
+  const r = dialog.showOpenDialogSync(options)
+  if (!r) {
+    alert('경로를 선택해주세요')
+    return readPath()
+  }
+  return r[0]
+}
 
 export function readDirectory (dirPath, arrayOfFiles, toc, maxV) {
   const files = fs.readdirSync(dirPath)
@@ -44,25 +57,19 @@ export function tocToList (toc, arrayOfContents) {
 
 export function makeEpubFile (path, title) {
   var zipFolder = require('zip-folder');
-  const { dialog } = require('electron').remote;
+  const savePath = readPath()
   const electron = require('electron');
   const { shell } = electron;
-  const options = {
-        properties: ['openDirectory']
-      }
-
-  const r = dialog.showOpenDialogSync(options)
-  if (!r) return
   path = path.replace('\\\\', '/');
 
-  zipFolder(path, r[0] + '/' + title + '.epub', function(err) {
+  zipFolder(path, savePath + '/' + title + '.epub', function(err) {
       if(err) {
           console.log('oh no!', err);
       } else {
-          console.log(r[0] + '/' + title + '.epub');
+          console.log(savePath + '/' + title + '.epub');
           console.log('EXCELLENT');
           alert('파일이 저장되었습니다!');
-          shell.openPath(r[0]);
+          shell.openPath(savePath);
       }
   });
 
