@@ -4,24 +4,26 @@
       <v-card-title class="title font-weight-regular justify-space-between">
         <span>Login</span>
       </v-card-title>
-      <v-window>
-        <v-window-item :value="1">
-          <v-card-text>
+      <v-card-text>
+        <v-container>
+          <v-row>
             <v-text-field
               label="Email"
               v-model="inputEmail"
             ></v-text-field>
+          </v-row>
+          <v-row>
             <v-text-field
               label="Password"
               type="password"
               v-model="inputPassword"
             ></v-text-field>
-            <div class="float-right text-primary">
-              <p>비밀번호를 잊으셨나요?</p>
-            </div>
-          </v-card-text>
-        </v-window-item>
-      </v-window>
+          </v-row>
+        </v-container>
+        <div class="float-right">
+          <p>비밀번호를 잊으셨나요?</p>
+        </div>
+      </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-btn @click="logIn">LOGIN</v-btn>
@@ -43,7 +45,7 @@
     methods: {
       logIn: function () {
         const data = {"email" : this.inputEmail, "password" : this.inputPassword}
-        axios.post("http://i4a103.p.ssafy.io:8080/api/login", data)
+        axios.post("http://i4a103.p.ssafy.io/api/login", data)
           .then(res => {
             const message = res.data.result
             if (message === "ERROR_ID"){console.log(message)}
