@@ -62,9 +62,9 @@
       <v-card>
         <v-card-title class="headline header-color">단어 변환</v-card-title>
         <v-card-text class="d-flex flex-row mt-4 pa-0">
-          <v-text-field class="my-3 mx-5" label="찾고 싶은 단어" v-model="findText"></v-text-field>
+          <v-text-field class="my-3 mx-5" label="찾고 싶은 단어" v-model="findText" required></v-text-field>
           <v-icon>mdi-arrow-right</v-icon>
-          <v-text-field class="my-3 mx-5" label="바꾸고 싶은 단어" v-model="replaceText"></v-text-field>
+          <v-text-field class="my-3 mx-5" label="바꾸고 싶은 단어" v-model="replaceText" required></v-text-field>
         </v-card-text>
         <v-container>
           <v-row class="ml-2">
@@ -97,7 +97,7 @@
         <v-card-text>
           <v-container>
               <v-row class="my-3">
-          <v-text-field class="my-3" label="e-book 이름" v-model="eBookText"></v-text-field>
+          <v-text-field class="my-3" label="e-book 이름" v-model="eBookText" required></v-text-field>
               </v-row>
               <v-row>
                 <div class="my-3 d-flex align-center">

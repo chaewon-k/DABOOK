@@ -95,7 +95,6 @@ export default {
     return {
       inputText: "",
       defaultHTMLText: "",
-      cursorIndex: 0,
       linkText: "",
       tableData: { col: [], row: [] },
       hTags: [1, 2, 3, 4, 5, 6],
@@ -236,7 +235,6 @@ export default {
   },
   watch: {
     inputText: function () {
-      this.cursorIndex = document.getElementById('area').selectionEnd
       this.SET_EDITINGTEXT(this.inputText);
       this.SET_EDITINGHTML(this.defaultHTMLText);
 

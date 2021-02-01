@@ -3,7 +3,7 @@
       <v-card>
         <v-card-title class="headline header-color">{{ title }}</v-card-title>
         <v-card-text>
-          <v-text-field class="my-3" :label="labelText" v-model="inputText"></v-text-field>
+          <v-text-field class="my-3" :label="labelText" v-model="inputText" required></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
