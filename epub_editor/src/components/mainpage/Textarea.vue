@@ -2,6 +2,7 @@
   <v-col cols="9" style="height:35em;">
     <v-textarea
       solo
+      id="area"
       hide-details
       style="width: auto;"
       ma-auto
@@ -102,9 +103,7 @@ export default {
       tableRow: 0,
       tableCol: 0,
       findText: '',
-      findIndexArray: [],
-
-      
+      findIndexArray: [],      
     };
   },
   created() {

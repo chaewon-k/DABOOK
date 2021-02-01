@@ -62,7 +62,7 @@
       <v-card>
         <v-card-title class="headline header-color">단어 찾기</v-card-title>
         <v-card-text>
-          <v-text-field class="my-5" label="찾고 싶은 단어" v-model="findText" required></v-text-field>
+          <v-text-field class="my-5" label="찾고 싶은 단어" v-model="findText"></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -81,9 +81,9 @@
       <v-card>
         <v-card-title class="headline header-color">단어 변환</v-card-title>
         <v-card-text class="d-flex flex-row mt-4 pa-0">
-          <v-text-field class="my-3 mx-5" label="찾고 싶은 단어" v-model="findText" required></v-text-field>
+          <v-text-field class="my-3 mx-5" label="찾고 싶은 단어" v-model="findText"></v-text-field>
           <v-icon>mdi-arrow-right</v-icon>
-          <v-text-field class="my-3 mx-5" label="바꾸고 싶은 단어" v-model="replaceText" required></v-text-field>
+          <v-text-field class="my-3 mx-5" label="바꾸고 싶은 단어" v-model="replaceText"></v-text-field>
         </v-card-text>
         <v-container>
           <v-row class="ml-2">
@@ -116,12 +116,12 @@
         <v-card-text>
           <v-container>
               <v-row class="my-3">
-          <v-text-field class="my-3" label="e-book 이름" v-model="eBookText" required></v-text-field>
+          <v-text-field class="my-3" label="e-book 이름" v-model="eBookText"></v-text-field>
               </v-row>
               <v-row>
                 <div class="my-3 d-flex align-center">
                   <v-btn @click="selectPath">위치 선택</v-btn>
-                  <p class="my-0 mx-3">{{eBookLocation}}</p>
+                  <p class="my-0 mx-3">{{selectedEBookLocation}}</p>
                 </div>
               </v-row>
               <v-row class="my-3">
@@ -150,13 +150,10 @@
     <!-- epub dialog -->
     <v-dialog v-model="epubDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline header-color">
-          E-PUB으로 내보내기
-        </v-card-title>
+        <v-card-title class="headline header-color">E-PUB으로 내보내기</v-card-title>
         <v-card-text>
-          <v-text-field class="my-3" label="epub 이름" v-model="epubText" required></v-text-field>
+          <v-text-field class="my-3" label="epub 이름" v-model="epubText"></v-text-field>
         </v-card-text>
-        <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-1" text @click="epubDialog = false">
@@ -174,7 +171,7 @@
       <v-card>
         <v-card-title class="headline header-color">chapter 추가하기</v-card-title>
         <v-card-text>
-          <v-text-field class="my-3" label="chapter 이름" v-model="chapterText" required></v-text-field>
+          <v-text-field class="my-3" label="chapter 이름" v-model="chapterText"></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -224,6 +221,7 @@ export default {
       replaceText: '',
       eBookText: '',
       eBookLocation: '',
+      selectedEBookLocation: '',
 
       // boolean
       replaceAlphabet: false,
@@ -254,6 +252,7 @@ export default {
       E-BOOK 생성하기 > 위치 선택 버튼을 눌렀을 때 선택한 위치 + ebook 제목 반환
       */
       this.eBookLocation = readPath()
+      this.selectedEBookLocation = this.eBookLocation
     },
     createNewEBook: function () {
       /*
@@ -278,17 +277,20 @@ export default {
        새 ebook 만들기 
        - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
         */
+
       if (this.eBookCover.length === 0) {   // 기본 이미지를 선택할 경우
         this.eBookCover.name = 'default.jpg'
       } else {  // 이미지를 선택할 경우
         const coverLocation = this.eBookLocation + '/EPUB/images/' + this.eBookCover.name //이미지 저장할 위치 
         fse.copySync(this.eBookCover.path, coverLocation); // 입력받은 이미지를 저장할 위치로 복사
       }
+
       this.renameImageTag();
       this.readToc();
+      // Dialog 초기화
       this.eBookDialog = false;
       this.eBookText = '';
-      this.eBookLocation = '';
+      this.selectedEBookLocation = '';
     },
 
     // 목차 읽어오기
@@ -332,8 +334,11 @@ export default {
     // e-book 불러오기
     loadEbook: function () { 
       this.eBookLocation = readPath()
-      this.readToc()
+      if (this.eBookLocation) {
+        this.readToc()
+      }
     },
+
     // epub 내보내기
     makeEpub: function () { 
       this.epubDialog = false;
@@ -356,11 +361,14 @@ export default {
       this.chapterNum++
       if (this.chapterNum < 10) {
         num = '0' + this.chapterNum
+      } else {
+        num = this.chapterNum
       }
       changeHtag(path, num, temp, val)
       addContentOpf(this.eBookLocation, num)
       addTocNcx(this.eBookLocation, val, num)
       const data = readDirectory(this.eBookLocation, [], [], 0)
+      // Worker.postMessage('새 chapter가 추가되었습니다!')
       alert('새 chapter가 추가되었습니다!');
       this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
       this.$store.state.tableOfContents.push({text: val})
