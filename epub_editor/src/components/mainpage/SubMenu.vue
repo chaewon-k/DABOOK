@@ -57,25 +57,6 @@
 
     <!---------------------- dialog start ---------------------->
 
-    <!-- find dialog -->
-    <v-dialog v-model="findDialog" max-width="500">
-      <v-card>
-        <v-card-title class="headline header-color">단어 찾기</v-card-title>
-        <v-card-text>
-          <v-text-field class="my-5" label="찾고 싶은 단어" v-model="findText"></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="findDialog = false">
-            취소
-          </v-btn>
-          <v-btn text @click="find(findText); findDialog = false;" style="color: #423F8C;">
-            단어 찾기
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
     <!-- replace dialog -->
     <v-dialog v-model="replaceDialog" max-width="500">
       <v-card>
@@ -147,43 +128,36 @@
       </v-card>
     </v-dialog>
 
-    <!-- epub dialog -->
-    <v-dialog v-model="epubDialog" max-width="500">
-      <v-card>
-        <v-card-title class="headline header-color">E-PUB으로 내보내기</v-card-title>
-        <v-card-text>
-          <v-text-field class="my-3" label="epub 이름" v-model="epubText"></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="epubDialog = false">
-            취소
-          </v-btn>
-          <v-btn text @click="makeEpub" style="color: #423F8C;">
-            epub 내보내기
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- find dialog -->
+    <Dialog
+      :isDialog = "findDialog"
+      title = "단어 찾기"
+      labelText = "찾고싶은 단어"
+      :inputText = "findText"
+      :dialogMethod = "find"
+      @toggle-dialog = "findDialog = false"
+     /> 
 
-    <!-- chapterDialog -->
-    <v-dialog v-model="chapterDialog" max-width="400">
-      <v-card>
-        <v-card-title class="headline header-color">chapter 추가하기</v-card-title>
-        <v-card-text>
-          <v-text-field class="my-3" label="chapter 이름" v-model="chapterText"></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="chapterDialog = false">
-            취소
-          </v-btn>
-          <v-btn text @click="makeChapter(chapterText)" style="color: #423F8C;">
-            chapter 만들기
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- epub dialog -->
+    <Dialog
+      :isDialog = "epubDialog"
+      title = "epub 내보내기"
+      labelText = "epub 이름"
+      :inputText = "epubText"
+      :dialogMethod = "makeEpub"
+      @toggle-dialog = "epubDialog = false"
+     /> 
+
+    <!-- chapter dialog -->
+     <Dialog
+      :isDialog = "chapterDialog"
+      title = "chapter 추가하기"
+      labelText = "chapter 이름"
+      :inputText = "chapterText"
+      :dialogMethod = "makeChapter"
+      @toggle-dialog = "chapterDialog = false"
+     /> 
+
     <!-------------------- dialog end -------------------->
 
   </div>
@@ -194,6 +168,7 @@ import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, chang
 import eventBus from '@/eventBus.js'
 import { mapMutations, mapState } from 'vuex'
 import ToolsTab from '@/components/mainpage/menutabs/ToolsTab'
+import Dialog from '@/components/mainpage/Dialog'
 
 const fs = require('fs')
 const path=require('path')
@@ -203,7 +178,8 @@ const fse = require('fs-extra')
 export default {
   name: 'SubMenu',
   components: {
-    ToolsTab
+    ToolsTab,
+    Dialog
   },
   data: function () {
     return {
@@ -340,9 +316,10 @@ export default {
     },
 
     // epub 내보내기
-    makeEpub: function () { 
+    makeEpub: function (val) { 
       this.epubDialog = false;
-      this.savePath = makeEpubFile(this.eBookLocation, this.epubText);
+      this.savePath = makeEpubFile(this.eBookLocation, val);
+      console.log(val)
       this.epubText = '';
     },
 
@@ -367,12 +344,13 @@ export default {
       changeHtag(path, num, temp, val)
       addContentOpf(this.eBookLocation, num)
       addTocNcx(this.eBookLocation, val, num)
+      
       const data = readDirectory(this.eBookLocation, [], [], 0)
       // Worker.postMessage('새 chapter가 추가되었습니다!')
       alert('새 chapter가 추가되었습니다!');
       this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
       this.$store.state.tableOfContents.push({text: val})
-      this.chapterText = '';
+      this.chapterText = ''
     },
     //-------------------- file tab end --------------------
 
@@ -410,6 +388,7 @@ export default {
 
     // 찾기
     find: function (findText) {
+      this.findDialog = false;
       eventBus.$emit('findText', findText);
     },
 

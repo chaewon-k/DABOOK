@@ -104,6 +104,7 @@ export function addTocNcx (path, name, maxV) {
 }
 
 export function changeHtag (path, num, str, title) {
+  console.log('changeHtag : ' + title)
   // let start = temp.indexOf("{{ 사용자 입력 제목 }}")
   str = str.replace('{{ 사용자 입력 제목 }}', title)
   fs.writeFile(path + 'chapter' + num + '.xhtml', str, (err) => {
