@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- <v-system-bar>
-      <v-icon>mdi-message</v-icon>
-      <span>로고?</span>
-    </v-system-bar> -->
     <v-card class="rounded-0">
       <v-tabs
         show-arrows
@@ -32,7 +28,7 @@ export default {
   },
   data: function () {
       return {
-        itemIndex: 0,     //선택한 메뉴 인덱스
+        itemIndex: 0,
         tab: null,
         items: [
           { tab: '파일' },

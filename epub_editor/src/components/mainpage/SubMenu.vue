@@ -4,7 +4,7 @@
     <template v-if="itemIndex===0">
       <v-btn @click.stop="eBookDialog = true" text>e-book 생성하기</v-btn>
       <v-btn @click="loadEbook" text>e-book 불러오기</v-btn>
-      <v-btn text @click="storeInputText">저장하기</v-btn>
+      <v-btn @click="storeInputText" text>저장하기</v-btn>
       <v-btn @click="preview" text>e-book 미리보기</v-btn>
       <!-- <v-btn text @click="storeNewInputText">다른 이름으로 저장하기</v-btn> -->
       <v-btn @click.stop="epubDialog = true" text>e-pub으로 내보내기</v-btn>
@@ -120,8 +120,8 @@
               </v-row>
               <v-row>
                 <div class="my-3 d-flex align-center">
-                  <v-btn @click="load">위치 선택</v-btn>
-                  <p class="my-0 mx-3">{{eBookLocation[0]}}</p>
+                  <v-btn @click="selectPath">위치 선택</v-btn>
+                  <p class="my-0 mx-3">{{eBookLocation}}</p>
                 </div>
               </v-row>
               <v-row class="my-3">
@@ -129,13 +129,8 @@
                   v-model="eBookCover"
                   accept="image/png, image/jpeg, image/bmp"
                   prepend-icon="mdi-camera"
-                  label="E-Book Image"
+                  label="기본 이미지"
                 ></v-file-input>
-              </v-row>
-              <v-row class="d-flex align-center">
-                <v-btn class="my-3" @click="selectDefaultImg=true">기본 이미지로 저장</v-btn>
-                <p class="my-3 mx-3" v-if="selectDefaultImg===true">기본 이미지를 선택</p>
-                <p class="my-3 mx-3" v-else>*indicates required field</p>
               </v-row>
             </v-container>
         </v-card-text>
@@ -198,7 +193,7 @@
 </template>
 
 <script>
-import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, changeHtag } from '@/functions/file.js'
+import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, changeHtag, readPath } from '@/functions/file.js'
 import eventBus from '@/eventBus.js'
 import { mapMutations, mapState } from 'vuex'
 import ToolsTab from '@/components/mainpage/menutabs/ToolsTab'
@@ -206,15 +201,14 @@ import ToolsTab from '@/components/mainpage/menutabs/ToolsTab'
 const fs = require('fs')
 const path=require('path')
 const electron = require('electron')
-const { dialog } = require('electron').remote
 const BrowserWindow = electron.remote.BrowserWindow
-const fse=require('fs-extra')
+const fse = require('fs-extra')
 export default {
   name: 'SubMenu',
   components: {
     ToolsTab
   },
-  data() {
+  data: function () {
     return {
       // dialog
       chapterDialog: false,
@@ -254,66 +248,62 @@ export default {
     //-------------------- file tab start --------------------
 
     // 새 e-book 생성
-    load: function(){
-      const options = {
-        properties: ['openDirectory']
-      }
-      this.eBookLocation = dialog.showOpenDialogSync(options)
-      if (!this.eBookLocation) return
+    // 위치 선택
+    selectPath: function () {
+      /*
+      E-BOOK 생성하기 > 위치 선택 버튼을 눌렀을 때 선택한 위치 + ebook 제목 반환
+      */
+      this.eBookLocation = readPath()
     },
-    dirAndFileCopy: function(source, destination){
-      fse.copySync(source,destination);
-      console.log("success, copy");
-    },
-    createNewEBook: function() {
+    createNewEBook: function () {
       /*
       새 EBOOK 만들기
       - 선택한 위치에 TITLE 명의 폴더 생성 
       - src.assets.NewEbook에 있는 기본 EPUB파일 복사
       */
-      this.eBookLocation=path.resolve(this.eBookLocation+'/'+this.eBookText+'/'); //ebook 폴더까지 경로
-      this.SET_EBOOKDIRECTORY(this.eBookLocation); //store에 현재 위치 저장
+      this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/'
+      this.SET_EBOOKDIRECTORY(this.eBookLocation) // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
 
-      fs.mkdir(this.eBookLocation,function(err){
-        if(err){
-          console.log("make directory error : "+err);
+      fs.mkdir(this.eBookLocation, function (err) {
+        if (err) {
+          console.log(err)
         }
-        else{
-          console.log("success, make directory in eBookLocation ");
-        }
-      });
+      })
 
       this.eBookDialog = false;
-      let eBookSettingDirectory=path.resolve('src/assets/NewEbook'); //기본 ebook 디렉토리 위치
-      this.dirAndFileCopy(eBookSettingDirectory,this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
+      let eBookSettingDirectory = 'src/assets/NewEbook'; //기본 ebook 디렉토리 위치
+      fse.copySync(eBookSettingDirectory,this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
 
       /*
        새 ebook 만들기 
        - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
         */
-      if (this.selectDefaultImg === true) {   // 기본 이미지를 선택할 경우
+      if (this.eBookCover.length === 0) {   // 기본 이미지를 선택할 경우
         this.eBookCover.name = 'default.jpg'
-        this.selectDefaultImg = false
       } else {  // 이미지를 선택할 경우
-        let coverLocation=path.resolve(this.eBookLocation+'/EPUB/images/'+this.eBookCover.name); //이미지 저장할 위치 
-        this.dirAndFileCopy(this.eBookCover.path,coverLocation); // 입력받은 이미지를 저장할 위치로 복사
+        const coverLocation = this.eBookLocation + '/EPUB/images/' + this.eBookCover.name //이미지 저장할 위치 
+        fse.copySync(this.eBookCover.path, coverLocation); // 입력받은 이미지를 저장할 위치로 복사
       }
       this.renameImageTag();
+      this.readToc();
       this.eBookDialog = false;
       this.eBookText = '';
-      this.readToc();
+      this.eBookLocation = '';
     },
 
     // 목차 읽어오기
     readToc: function () {
-      const data = readDirectory(this.eBookLocation, [], [])
+      const data = readDirectory(this.eBookLocation, [], [], 0)
+      this.chapterNum = data['maxV']
       this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
-      console.log(data);
-      this.getToc(data['toc'])
+
+      const fileToText = fs.readFileSync(data['toc'][0]).toString()
+      this.$store.state.tableOfContents = tocToList(fileToText, [])
     },
 
     // 이미지 이름 재설정
     renameImageTag: function () {
+      console.log(this.eBookCover)
       let coverLocation=path.resolve(this.eBookLocation+'/EPUB/images/'+this.eBookCover.name);
       let newCoverLocation=path.resolve(this.eBookLocation+'/EPUB/images/cover.jpg');
       fs.rename(coverLocation, newCoverLocation, function(err){
@@ -341,29 +331,13 @@ export default {
 
     // e-book 불러오기
     loadEbook: function () { 
-      const options = {
-        properties: ['openDirectory']
-      }
-      const r = dialog.showOpenDialogSync(options)
-      if (!r) return
-      this.$store.state.ebookDirectory = r[0]
-      const data = readDirectory(r[0], [], [], 0)
-      this.chapterNum = data['maxV']
-      this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
-      this.getToc(data['toc'])
+      this.eBookLocation = readPath()
+      this.readToc()
     },
-
-    // 목차 읽어오기
-    getToc: function (val) { 
-      const fileToText = fs.readFileSync(val[0]).toString()
-      // 챕터 추가할 때 readFileSync 안됨.
-      this.$store.state.tableOfContents = tocToList(fileToText, [])
-    },
-
     // epub 내보내기
     makeEpub: function () { 
       this.epubDialog = false;
-      this.savePath = makeEpubFile(this.$store.state.ebookDirectory, this.epubText);
+      this.savePath = makeEpubFile(this.eBookLocation, this.epubText);
       this.epubText = '';
     },
 
@@ -377,16 +351,16 @@ export default {
     makeChapter: function (val) {
       this.chapterDialog = false;
       let num = ''
-      let path = this.$store.state.ebookDirectory + '/EPUB/text/';
+      let path = this.eBookLocation + '/EPUB/text/';
       const temp = fs.readFileSync('src/assets/chapter01.xhtml').toString()
       this.chapterNum++
       if (this.chapterNum < 10) {
         num = '0' + this.chapterNum
       }
       changeHtag(path, num, temp, val)
-      addContentOpf(this.$store.state.ebookDirectory, num)
-      addTocNcx(this.$store.state.ebookDirectory, val, num)
-      const data = readDirectory(this.$store.state.ebookDirectory, [], [], 0)
+      addContentOpf(this.eBookLocation, num)
+      addTocNcx(this.eBookLocation, val, num)
+      const data = readDirectory(this.eBookLocation, [], [], 0)
       alert('새 chapter가 추가되었습니다!');
       this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
       this.$store.state.tableOfContents.push({text: val})
@@ -402,29 +376,27 @@ export default {
       paste : chrome 환경에서 작동 안됨,
     */
    //자르기
-    cut(){ 
+    cut: function () { 
       document.execCommand('cut');
     },
 
     //복사
-    copy(){ 
+    copy: function () { 
       document.execCommand('copy');
     },
 
     // 붙여넣기
-    paste(){ 
+    paste: function () { 
       document.execCommand('paste');
     },
 
     // 실행 취소
-    undo(){ 
-      //document.execCommand('undo');
+    undo: function () { 
       this.inputTextUndo();
     },
 
     // 실행 취소 되돌리기
-    redo(){ 
-      //document.execCommand('redo');
+    redo: function () { 
       this.inputTextRedo();
     },
 
@@ -439,21 +411,21 @@ export default {
       eventBus.$emit('replaceText', [replaceText, replaceAlphabet, replaceAllText]);
     },
     
-    inputTextRedo: function(){
+    inputTextRedo: function () {
       if(this.editingTextArrPoint==this.arrSize)
         return;
       this.UP_EDITINGTEXTARRPOINT();
       
       this.inputTextSet();
     },
-    inputTextUndo: function(){
+    inputTextUndo: function () {
       if(this.editingTextArrPoint==0){
         return;
       }
       this.DOWN_EDITINGTEXTARRPOINT();
       this.inputTextSet();
     },
-    inputTextSet: function(){
+    inputTextSet: function () {
       this.SET_EDITINGTEXT(this.editingTextArr[this.editingTextArrPoint]);
       eventBus.$emit('set');
     },
