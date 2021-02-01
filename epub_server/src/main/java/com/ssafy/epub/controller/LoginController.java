@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LoginController {
 	@Autowired
 	UserRepository userRepository;

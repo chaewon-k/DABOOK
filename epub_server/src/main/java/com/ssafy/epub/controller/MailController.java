@@ -19,7 +19,7 @@ import com.ssafy.epub.service.MailService;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MailController {
 	@Autowired
 	private UserRepository userRepository;
