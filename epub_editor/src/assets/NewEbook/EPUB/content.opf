@@ -14,6 +14,7 @@
     <!-- 목차 --> 
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
     <item href="images/cover.jpg" id="cover.jpg" media-type="image/jpeg"/>
+    <!-- 이미지 파일 추가 위치 -->
     <!-- css 위치 --> 
     <item id="stylesheet1" href="styles/stylesheet.css" media-type="text/css" />
     
