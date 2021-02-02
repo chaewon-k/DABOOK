@@ -112,7 +112,7 @@ export default {
       const data = { 'email': this.email, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': true }
       if (this.password === this.passwordConfirm) {
         if (this.checkbox === true) {
-          axios.post("http://i4a103.p.ssafy.io/api/user", data)
+          axios.post("https://i4a103.p.ssafy.io/api/user", data)
             .then(res => {
               console.log(res)
               this.$router.push({ name: 'Login'})
@@ -130,7 +130,7 @@ export default {
       }
     },
     emailConfirm: function () {  //false - 이미 이메일 존재
-      axios.get(`http://i4a103.p.ssafy.io/api/user/email/${this.email}`)
+      axios.get(`https://i4a103.p.ssafy.io/api/user/email/${this.email}`)
         .then(res => {
           if (res.data === false) {
             this.message = '이메일이 이미 존재합니다!'
@@ -144,7 +144,7 @@ export default {
         .catch(err => console.log(err))
     },
     nicknameConfirm: function () {  //false - 닉네임 이미 존재
-      axios.get(`http://i4a103.p.ssafy.io/api/user/nickname/${this.nickname}`)
+      axios.get(`https://i4a103.p.ssafy.io/api/user/nickname/${this.nickname}`)
         .then(res => {
           if (res.data === false) {
             this.message = '닉네임이 이미 존재합니다!'

@@ -45,7 +45,7 @@
     methods: {
       logIn: function () {
         const data = {"email" : this.inputEmail, "password" : this.inputPassword}
-        axios.post("http://i4a103.p.ssafy.io/api/login", data)
+        axios.post("https://i4a103.p.ssafy.io/api/login", data)
           .then(res => {
             const message = res.data.result
             if (message === "ERROR_ID"){console.log(message)}
