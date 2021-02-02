@@ -50,7 +50,14 @@ export default {
   },
   methods: {
     openFile: function (val) { // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
-      if (val.children) return;
+      if (val.children || this.$store.state.selectedFileDirectory === val.dirPath) return; // 폴더 클릭했을 때 열리는 것 방지 / 똑같은 파일을 다시 선택했을 때 내용이 초기화 되는 것 방지
+      if (this.$store.state.selectedFileDirectory !== val.dirPath) {
+        const result = window.confirm("이전 파일의 변경 내역을 저장하시겠습니까?")
+        if (result) {
+          const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
+          fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
+        } 
+      }
       const temp = fs.readFileSync(val.dirPath).toString();
       this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
       eventBus.$emit('loadData', temp);
@@ -58,7 +65,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>
