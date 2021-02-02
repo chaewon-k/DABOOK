@@ -93,37 +93,37 @@ export default {
     });
     eventBus.$on("pushIndexData", (res) => {
       if (res === "Italic") {
-        this.attachItalicTag();
+        this.inputText = textStyle.italicTag();
       } else if (res === "LineTag") {
-        this.attachLineTag();
+        this.inputText = textStyle.lineTag();
       } else if (res === "Enter") {
-        this.attachEnterTag();
+        this.inputText = textStyle.enterTag();
       } else if (res === "BlockquoteTag") {
-        this.attachBlockquoteTag();
+        this.inputText = textStyle.blockquoteTag();
       } else if (res === "CiteTag") {
-        this.attachCiteTag();
+        this.inputText = textStyle.citeTag();
       } else if (res === "BoldTag") {
-        this.attachBoldTag();
+        this.inputText = textStyle.boldTag();
       } else if (res === "UnderlineTag") {
-        this.attachUnderlineTag();
+        this.inputText = textStyle.underlineTag();
       } else if (res === "MediumlineTag") {
-        this.attachMediumlineTag();
+        this.inputText = textStyle.mediumlineTag();
       } else if (res === "SubscriptTag") {
-        this.attachSubscriptTag();
+        this.inputText = textStyle.subscriptTag();
       } else if (res === "SuperscriptTag") {
-        this.attachSuperscriptTag();
+        this.inputText = textStyle.superscriptTag();
       } else if (res === "ImageTag") {
-        this.attachImageTag();
+        this.inputText = textStyle.imageTag();
       } else if (res === "UnorderedListTag") {
-        this.attachUnorderedListTag();
+        this.inputText = textStyle.unorderedListTag();
       } else if (res === "OrderedListTag") {
-        this.attachOrderedListTag();
+        this.inputText = textStyle.orderedListTag();
       } else if (res === "Link") {
         this.linkDialog = true;
       } else if (res === "Table") {
         this.tableDialog = true;
       } else {
-        this.attachHTag(res);
+        this.inputText = textStyle.hTag(res);
       }
     });
   },
@@ -180,42 +180,6 @@ export default {
     attachPTag: function () {
       this.inputText = textStyle.pTag();
     },
-    attachEnterTag: function () {
-      this.inputText = textStyle.enterTag();
-    },
-    attachLineTag: function () {
-      this.inputText = textStyle.lineTag();
-    },
-    attachHTag: function (index) {
-      this.inputText = textStyle.hTag(index);
-    },
-    attachItalicTag: function () {
-      this.inputText = textStyle.italicTag();
-    },
-    attachBlockquoteTag: function () {
-      this.inputText = textStyle.blockquoteTag();
-    },
-    attachCiteTag: function () {
-      this.inputText = textStyle.citeTag();
-    },
-    attachBoldTag: function () {
-      this.inputText = textStyle.boldTag();
-    },
-    attachUnderlineTag: function () {
-      this.inputText = textStyle.underlineTag();
-    },
-    attachMediumlineTag: function () {
-      this.inputText = textStyle.mediumlineTag();
-    },
-    attachSubscriptTag: function () {
-      this.inputText = textStyle.subscriptTag();
-    },
-    attachSuperscriptTag: function () {
-      this.inputText = textStyle.superscriptTag();
-    },
-    attachImageTag: function () {
-      this.inputText = textStyle.imageTag();
-    },
     attachLinkTag: function () {
       this.linkDialog = false;
       this.inputText = textStyle.linkTag(this.linkText);
@@ -226,12 +190,6 @@ export default {
       this.inputText = textStyle.tableTag(this.tableRow, this.tableCol);
       this.tableRow = 0;
       this.tableCol = 0;
-    },
-    attachUnorderedListTag: function () {
-      this.inputText = textStyle.unorderedListTag();
-    },
-    attachOrderedListTag: function () {
-      this.inputText = textStyle.orderedListTag();
     },
   },
 };
