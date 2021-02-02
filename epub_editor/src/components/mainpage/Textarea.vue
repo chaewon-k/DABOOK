@@ -179,7 +179,7 @@ export default {
       }
     },
     set:function(){
-      edit.set();
+      edit.set(this.inputText);
     },
     plusRow: function () {
       this.tableRow++;

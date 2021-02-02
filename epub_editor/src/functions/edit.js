@@ -41,27 +41,22 @@ export function redo(){
   return area;
 }
 
-export function set(){
+export function set(res){
   console.log("Set");
-  setTimeout(() => console.log("after"), 500)
-  var area=document.getElementById("area").value;
-  if(arr[arrPoint]!=area){
+  if(arr[arrPoint]!=res){
     if(arrPoint==arrSize){
       arrPoint-=1;
       arr.shift();
     }
     arrPoint+=1;
-    arr.push(area);
-    console.log("ArrPoint : "+ arrPoint+" "+arr[arrPoint]);
+    //arr.push(res);
+    arr[arrPoint]=res;
+    console.log("ArrPoint : "+ arrPoint);
+    console.log("Arr : "+arr);
     console.log(arr);
   }
 }
 
-
-export function inputTextSet() {
-  //this.SET_EDITINGTEXT(this.editingTextArr[this.editingTextArrPoint]);
-  //eventBus.$emit('set');
-}
 
 
 

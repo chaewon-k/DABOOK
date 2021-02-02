@@ -360,33 +360,6 @@ export default {
     edit: function(res){
       eventBus.$emit('edit', res);
     },
-    /*
-   //자르기
-    cut: function (e) { 
-      document.execCommand(e);
-      //document.execCommand('cut');
-    },
-
-    //복사
-    copy: function () { 
-      document.execCommand('copy');
-    },
-
-    // 붙여넣기
-    paste: function () { 
-      document.execCommand('paste');
-    },
-
-    // 실행 취소
-    undo: function () { 
-      this.inputTextUndo();
-    },
-
-    // 실행 취소 되돌리기
-    redo: function () { 
-      this.inputTextRedo();
-    },*/
-
     // 찾기
     find: function (findText) {
       this.findDialog = false;
@@ -399,25 +372,6 @@ export default {
       eventBus.$emit('replaceText', [replaceText, replaceAlphabet, replaceAllText]);
     },
     
-    /*inputTextRedo: function () {
-      if (this.editingTextArrPoint == this.arrSize)
-        return;
-      this.UP_EDITINGTEXTARRPOINT();
-      this.inputTextSet();
-    },
-
-    inputTextUndo: function () {
-      if (this.editingTextArrPoint == 0) {
-        return;
-      }
-      this.DOWN_EDITINGTEXTARRPOINT();
-      this.inputTextSet();
-    },
-
-    inputTextSet: function () {
-      this.SET_EDITINGTEXT(this.editingTextArr[this.editingTextArrPoint]);
-      eventBus.$emit('set');
-    },*/
     //-------------------- edit tab end --------------------
   },
 }
