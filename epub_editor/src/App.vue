@@ -8,6 +8,7 @@
 
 <script>
 import Editor from './views/Editor';
+import "./assets/style.css";
 
 export default {
   name: 'App',
