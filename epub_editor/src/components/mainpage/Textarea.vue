@@ -72,15 +72,17 @@ import eventBus from "@/eventBus.js";
 import { readDirectory, tocToList } from '@/functions/file.js';
 import { findText, replaceText } from "@/functions/edit.js";
 import * as textStyle from "@/functions/text-style.js";
+import * as edit from "@/functions/edit.js";
 
 const fs = require('fs');
 
 export default {
   name: 'Textarea',
   created: function () {
-    eventBus.$on('set',()=>{
-      this.inputText=this.editingText;
+    eventBus.$on('edit',(res)=>{
+      this.edit(res);
     });
+    
     eventBus.$on("findText", (res) => {
       this.findText = res;
       this.findIndexArray = findText(this.inputText, res);
@@ -140,15 +142,7 @@ export default {
     inputText: function () {
       this.SET_EDITINGTEXT(this.inputText);
       this.SET_EDITINGHTML(this.defaultHTMLText);
-
-      if (this.editingTextArr[this.editingTextArrPoint] != this.inputText) {
-        if (this.editingTextArrPoint == this.arrSize) {
-          this.DOWN_EDITINGTEXTARRPOINT();
-          this.SHIFT_EDITINGTEXTARR();
-        }
-        this.UP_EDITINGTEXTARRPOINT();
-        this.PUSH_EDITINGTEXTARR();
-      }
+      this.set();
     },
   },
   data: function () {
@@ -174,6 +168,28 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_EDITINGTEXT", "SET_EDITINGHTML",'PUSH_EDITINGTEXTARR','SHIFT_EDITINGTEXTARR','DOWN_EDITINGTEXTARRPOINT','UP_EDITINGTEXTARRPOINT']),
+    edit:function(res){
+      switch (res){
+        case 'cut': 
+          edit.cut();
+          break;
+        case 'copy':
+          edit.copy();
+          break;
+        case 'paste':
+          edit.paste();
+          break;
+        case 'undo':
+          this.inputText=edit.undo();
+          break;
+        case 'redo':
+          this.inputText=edit.redo();
+          break;
+      }
+    },
+    set:function(){
+      edit.set(this.inputText);
+    },
     plusRow: function () {
       this.tableRow++;
     },
