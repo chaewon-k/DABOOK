@@ -4,6 +4,18 @@ let arrPoint=-1;
 let arr=[];
 let arrSize=20;
 
+export function Save (res){
+  console.log("isSave");
+  if(res>=37&&res<=40) // 방향키
+    set('');
+  else if(res==9) //tab
+    set('');
+  else if(res==13) //enter
+    set('');
+  else if(res==32) //space
+    set(' ');
+}
+
 
 export function cut(){
   console.log("cut");
@@ -21,7 +33,7 @@ export function paste(){
 export function undo(){ 
   console.log("undo");
   if (arrPoint == 0) {
-    return;
+    return arr[arrPoint];
   }
   arrPoint-=1;
   var area=document.getElementById("area").value;
@@ -32,10 +44,11 @@ export function undo(){
 
 export function redo(){
   console.log("redo");
-  if (arrPoint == arrSize)
-    return;
-  arrPoint+=1;
   var area=document.getElementById("area").value;
+  if (arrPoint == arr.length-1){
+    return arr[arrPoint];
+  }
+  arrPoint+=1;
   area=arr[arrPoint];
   console.log(arrPoint+" "+arr[arrPoint]);
   return area;
@@ -43,18 +56,16 @@ export function redo(){
 
 export function set(res){
   console.log("Set");
-  if(arr[arrPoint]!=res){
-    if(arrPoint==arrSize){
-      arrPoint-=1;
-      arr.shift();
-    }
-    arrPoint+=1;
-    //arr.push(res);
-    arr[arrPoint]=res;
-    console.log("ArrPoint : "+ arrPoint);
-    console.log("Arr : "+arr);
-    console.log(arr);
+  let data= document.getElementById("area").value;
+  let point=document.getElementById("area").selectionStart;
+  data=data.substring(0,point)+res+data.substring(point);
+  if(arrPoint==arrSize){
+    arrPoint-=1;
+    arr.shift();
   }
+  arrPoint+=1;
+  arr[arrPoint]=data;
+  console.log(arr);
 }
 
 
