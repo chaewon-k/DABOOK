@@ -417,17 +417,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.v-text-field {
-  width: 150px;
-}
-
-.header-color {
-  background-color: #C0BFD9;
-}
-
-.font-color {
-  color: #423F8C;
-}
-</style>
