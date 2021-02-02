@@ -137,9 +137,15 @@ export function imageTag (location) {
 
 export function linkTag (link) {
   var area = document.getElementById("area");
+  link = link.trim();
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
-    area.setRangeText(`<a href="${link}" >${selected}</a>`);
+    if (link.slice(0,5) === 'https') {
+      area.setRangeText(`<a href="${link}" >${selected}</a>`);
+    }
+    else {
+      area.setRangeText(`<a href="https://${link}" >${selected}</a>`);
+    }
   }
   return area.value;
 }
