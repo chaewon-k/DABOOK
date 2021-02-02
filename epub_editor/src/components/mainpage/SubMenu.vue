@@ -15,23 +15,23 @@
     <!-------------------- edit tap start -------------------->
     <template v-else-if="itemIndex===1">
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="undo"><v-icon medium>mdi-undo</v-icon></v-btn></template>
+        <v-btn v-on="on" icon medium @click="edit('undo')"><v-icon medium>mdi-undo</v-icon></v-btn></template>
         <span>undo</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="redo"><v-icon medium>mdi-redo</v-icon></v-btn></template>
+        <v-btn v-on="on" icon medium @click="edit('redo')"><v-icon medium>mdi-redo</v-icon></v-btn></template>
         <span>redo</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="cut"><v-icon medium>mdi-content-cut</v-icon></v-btn></template>
+        <v-btn v-on="on" icon medium @click="edit('cut')"><v-icon medium>mdi-content-cut</v-icon></v-btn></template>
         <span>cut</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="copy"><v-icon medium>mdi-content-copy</v-icon></v-btn></template>
+        <v-btn v-on="on" icon medium @click="edit('copy')"><v-icon medium>mdi-content-copy</v-icon></v-btn></template>
         <span>copy</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="paste"><v-icon medium>mdi-content-paste</v-icon></v-btn></template>
+        <v-btn v-on="on" icon medium @click="edit('paste')"><v-icon medium>mdi-content-paste</v-icon></v-btn></template>
         <span>paste</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
@@ -362,9 +362,14 @@ export default {
       cut/copy : 드래그 필수,
       paste : chrome 환경에서 작동 안됨,
     */
+    edit: function(res){
+      eventBus.$emit('edit', res);
+    },
+    /*
    //자르기
-    cut: function () { 
-      document.execCommand('cut');
+    cut: function (e) { 
+      document.execCommand(e);
+      //document.execCommand('cut');
     },
 
     //복사
@@ -385,7 +390,7 @@ export default {
     // 실행 취소 되돌리기
     redo: function () { 
       this.inputTextRedo();
-    },
+    },*/
 
     // 찾기
     find: function (findText) {
@@ -399,7 +404,7 @@ export default {
       eventBus.$emit('replaceText', [replaceText, replaceAlphabet, replaceAllText]);
     },
     
-    inputTextRedo: function () {
+    /*inputTextRedo: function () {
       if (this.editingTextArrPoint == this.arrSize)
         return;
       this.UP_EDITINGTEXTARRPOINT();
@@ -417,7 +422,7 @@ export default {
     inputTextSet: function () {
       this.SET_EDITINGTEXT(this.editingTextArr[this.editingTextArrPoint]);
       eventBus.$emit('set');
-    },
+    },*/
     //-------------------- edit tab end --------------------
   },
 }
