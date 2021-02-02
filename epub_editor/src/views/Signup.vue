@@ -1,8 +1,10 @@
 <template>
   <div>
+    <!---------------Alert 창-------------------->
     <v-alert outlined dense icon="mdi-alert-circle-outline" :color="type" v-if="type">
       {{ message }}
     </v-alert>
+    <!---------------Signup form----------------->
     <v-card class="ma-auto" max-width="500">
       <v-card-title class="title font-weight-regular justify-space-between">
         <span>Signup</span>
@@ -13,7 +15,7 @@
             <v-text-field
               label="Email"
               v-model="email"
-              :rules="rules"
+              :rules="emailRules"
             ></v-text-field>
             <v-btn @click="emailConfirm">이메일 인증</v-btn>
           </v-row>
@@ -67,21 +69,31 @@ import axios from 'axios'
 export default {
   name: 'Signup',
   data: () => ({
+    // 서버에 보낼 데이터
     name: '',
     email: '',
     nickname: '',
     password: '',
+
+    // 정보 확인용 데이터
     passwordConfirm: '',
     checkbox: false,
 
+    // Alert 용 데이터
     message: '',
     type: null,
     elapse:null,
+
+    // 각 데이터별 기본 규칙
     rules: [
-        value => !!value || 'Required.'
+        value => !!value || 'Required.',
     ],
+    emailRules: [
+      value => /.+@.+\..+/.test(value) || "E-mail must be valid"
+    ]
   }),
   methods: {
+    // 3초 후 사라지는 alert 구현 함수
     showAlert (type) {
       this.type = type
       let timer = this.showAlert.timer
@@ -108,8 +120,10 @@ export default {
         }
       }, 1000)
     },
+
+    // 회원가입 
     signUp: function () {
-      const data = { 'email': this.email, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': true }
+      const data = { 'email': this.email, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': false }
       if (this.password === this.passwordConfirm) {
         if (this.checkbox === true) {
           axios.post("https://i4a103.p.ssafy.io/api/user", data)
@@ -129,6 +143,8 @@ export default {
         this.showAlert('error')
       }
     },
+
+    // 이메일 중복 확인
     emailConfirm: function () {  //false - 이미 이메일 존재
       axios.get(`https://i4a103.p.ssafy.io/api/user/email/${this.email}`)
         .then(res => {
@@ -137,12 +153,14 @@ export default {
             this.showAlert('error')
           }
           else {
-            this.message = '이메일을 발송했습니다!'
+            this.message = '사용 가능한 이메일입니다!'
             this.showAlert('purple')
           }
         })
         .catch(err => console.log(err))
     },
+
+    //닉네임 중복 확인
     nicknameConfirm: function () {  //false - 닉네임 이미 존재
       axios.get(`https://i4a103.p.ssafy.io/api/user/nickname/${this.nickname}`)
         .then(res => {
