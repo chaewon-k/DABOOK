@@ -36,24 +36,24 @@
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
         <v-btn v-on="on" icon medium @click.stop="findDialog = true" text><v-icon medium>mdi-file-find-outline</v-icon></v-btn></template>
-        <span>findDialog</span>
+        <span>find</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
         <v-btn v-on="on" icon medium @click.stop="replaceDialog = true" text><v-icon medium>mdi-find-replace</v-icon></v-btn></template>
-        <span>replaceDialog</span>
+        <span>replace</span>
       </v-tooltip>
     </template>
     <!---------------------- edit tap end ---------------------->
 
-    <!-------------------- manual tap start -------------------->
-    <template v-else-if="itemIndex===2">
+    <template v-else-if="itemIndex === 2">
       <ToolsTab/>
     </template>
+    <!-------------------- manual tap start -------------------->
     <template v-else>
       <v-btn text>editor 사용 설명서 보기</v-btn>
       <v-btn text>마크다운 설명서 보기</v-btn>
     </template>
-    <!-------------------- manual tap start -------------------->
+    <!-------------------- manual tap end -------------------->
 
     <!---------------------- dialog start ---------------------->
 
@@ -133,7 +133,6 @@
       :isDialog = "findDialog"
       title = "단어 찾기"
       labelText = "찾고싶은 단어"
-      :inputText = "findText"
       :dialogMethod = "find"
       @toggle-dialog = "findDialog = false"
      /> 
@@ -143,7 +142,6 @@
       :isDialog = "epubDialog"
       title = "epub 내보내기"
       labelText = "epub 이름"
-      :inputText = "epubText"
       :dialogMethod = "makeEpub"
       @toggle-dialog = "epubDialog = false"
      /> 
@@ -153,7 +151,6 @@
       :isDialog = "chapterDialog"
       title = "chapter 추가하기"
       labelText = "chapter 이름"
-      :inputText = "chapterText"
       :dialogMethod = "makeChapter"
       @toggle-dialog = "chapterDialog = false"
      /> 
@@ -195,8 +192,6 @@ export default {
       eBookDialog: false,
 
       // string
-      chapterText: '',
-      epubText: '',
       findText: '',
       replaceText: '',
       eBookText: '',
