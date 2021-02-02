@@ -44,3 +44,38 @@ div.right {
 #app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder > div > div {
   height: 100%;
 }
+
+/* 우클릭 시 나오는 div의 style */
+.contextmenu {
+  display: none;
+  position: absolute;
+  width: 180px;
+  height: 220px;
+  margin-top: 2px;
+  padding: 0;
+  background: #FFFFFF;
+  border-radius: 5px;
+  list-style: none;
+  box-shadow:
+    0 15px 35px rgba(50,50,90,0.1),
+    0 5px 15px rgba(0,0,0,0.07);
+  overflow: hidden;
+  z-index: 999999;
+}
+
+.contextmenu span {
+  display: block;
+  padding: 2px;
+  margin-left: 5px;
+  text-decoration: none;
+  transition: ease .2s;
+}
+
+.contextmenu span:hover {
+  background: #5d106b;
+  color: white;
+}
+
+.divider-margin {
+  margin: 7px;
+}

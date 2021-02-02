@@ -11,7 +11,10 @@
       placeholder="책을 작성해볼까요?"
       v-model="inputText"
       @keyup.enter="attachPTag()"
+      @mousedown.left="closeMenu"
+      @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
+
     <v-dialog v-model="linkDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> 링크를 입력해주세요. </v-card-title>
@@ -63,6 +66,35 @@
       </v-card>
     </v-dialog>
 
+    <div class="contextmenu" id="menu" @click="closeMenu">
+      <span>오려두기</span>
+      <span>복사</span>
+      <span>붙이기</span>
+      <v-divider class="divider-margin"></v-divider>
+
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachBoldTag()">mdi-format-bold</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachItalicTag()">mdi-format-italic</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachUnderlineTag()">mdi-format-underline</v-icon></v-btn>
+
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachMediumlineTag()">mdi-format-strikethrough</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachUnorderdListTag()">mdi-format-list-bulleted</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachOrderedListTag()">mdi-format-list-numbered</v-icon></v-btn>
+      
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachImageTag()">mdi-image-search-outline</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="linkDialog = true">mdi-link-box-variant-outline</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="tableDialog = true">mdi-table-large-plus</v-icon></v-btn>
+      
+      <v-divider class="divider-margin"></v-divider>
+      
+      <span @mouseover="openHeaders">headers▸</span>
+    </div>
+
+    <div id="headers" class="contextmenu" @click="closeMenu">
+      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">
+        {{ 'h' + hTag }}
+      </span>
+    </div>
+
   </v-col>
 </template>
 
@@ -82,7 +114,6 @@ export default {
     eventBus.$on('edit',(res)=>{
       this.edit(res);
     });
-    
     eventBus.$on("findText", (res) => {
       this.findText = res;
       this.findIndexArray = findText(this.inputText, res);
@@ -160,7 +191,8 @@ export default {
       tableRow: 0,
       tableCol: 0,
       findText: '',
-      findIndexArray: [],      
+      findIndexArray: [], 
+      cursorPosition: {posX: 0, posY: 0}      
     };
   },
   computed: {
@@ -205,6 +237,42 @@ export default {
     attachPTag: function () {
       this.inputText = textStyle.pTag();
     },
+    attachEnterTag: function () {
+      this.inputText = textStyle.enterTag();
+    },
+    attachLineTag: function () {
+      this.inputText = textStyle.lineTag();
+    },
+    attachHTag: function (index) {
+      this.inputText = textStyle.hTag(index);
+    },
+    attachItalicTag: function () {
+      this.inputText = textStyle.italicTag();
+    },
+    attachBlockquoteTag: function () {
+      this.inputText = textStyle.blockquoteTag();
+    },
+    attachCiteTag: function () {
+      this.inputText = textStyle.citeTag();
+    },
+    attachBoldTag: function () {
+      this.inputText = textStyle.boldTag();
+    },
+    attachUnderlineTag: function () {
+      this.inputText = textStyle.underlineTag();
+    },
+    attachMediumlineTag: function () {
+      this.inputText = textStyle.mediumlineTag();
+    },
+    attachSubscriptTag: function () {
+      this.inputText = textStyle.subscriptTag();
+    },
+    attachSuperscriptTag: function () {
+      this.inputText = textStyle.superscriptTag();
+    },
+    attachImageTag: function () {
+      this.inputText = textStyle.imageTag();
+    },
     attachLinkTag: function () {
       this.linkDialog = false;
       this.inputText = textStyle.linkTag(this.linkText);
@@ -216,6 +284,39 @@ export default {
       this.tableRow = 0;
       this.tableCol = 0;
     },
+    attachUnorderedListTag: function () {
+      this.inputText = textStyle.unorderedListTag();
+    },
+    attachOrderedListTag: function () {
+      this.inputText = textStyle.orderedListTag();
+    },
+    closeMenu: function () {
+      let menu = document.getElementById('menu');
+      menu.style.display = 'none';
+      this.cursorPosition.posX = 0;
+      this.cursorPosition.posY = 0;
+      this.closeHeaders();
+    },
+    openMenu: function (event) {
+      let menu = document.getElementById('menu');
+      menu.style.left = event.pageX + 'px';
+      menu.style.top = event.pageY + 'px';
+      menu.style.display = 'block';
+      this.cursorPosition.posX = event.pageX;
+      this.cursorPosition.posY = event.pageY;
+    },
+    openHeaders: function () {
+      let menu = document.getElementById('headers');
+      menu.style.left = (this.cursorPosition.posX + 180) + 'px';
+      menu.style.top = (this.cursorPosition.posY + 190) + 'px';
+      menu.style.height = 'auto';
+      menu.style.display = 'block';
+    },
+    closeHeaders: function () {
+      let menu = document.getElementById('headers');
+      menu.style.display = 'none';
+    }
   },
 };
 </script>
+
