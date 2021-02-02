@@ -110,23 +110,3 @@ export default {
   }
 }
 </script>
-
-<style>
-#subMenuBar {
-  width: 100%;
-  height: 80px;
-}
-
-div.left {
-    width: 60%;
-    float: left;
-    height: 10%;
-}
-
-div.right {
-  top:20%;
-  width: 39%;
-  float: right;
-  position: relative;
-}
-</style>
