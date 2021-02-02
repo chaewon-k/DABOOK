@@ -1,4 +1,6 @@
 const { dialog } = require('electron').remote;
+const fse = require('fs-extra');
+const fs = require("fs");
 
 export function pTag () {
   var area = document.getElementById("area");
@@ -101,7 +103,7 @@ export function citeTag () {
   return area.value;
 }
 
-export function imageTag () {
+export function imageTag (location) {
   const options = {
     filters: [
       {
@@ -112,17 +114,38 @@ export function imageTag () {
   };
   const r = dialog.showOpenDialogSync(options);
   if (!r) return area.value;
-  var resultString = `<img src="${r[0]}" >`;
+  const temp = r[0].split('\\');
+  const fileName = temp[temp.length - 1];
+  const imgLocation = location + '/EPUB/images/' + fileName;
+  const extension = fileName.split('.')[1]
+  fse.copySync(r[0], imgLocation);
+
+  let temp2 = fs.readFileSync(location + '/EPUB/content.opf').toString();
+  let start = temp2.indexOf("<!-- 이미지 파일 추가 위치 -->");
+  temp2 = temp2.slice(0, start-1).concat(` <item id="${fileName}" href="images/${fileName}" media-type="image/${extension}" />\n    `, temp2.slice(start, temp2.length));
+  fs.writeFile(location + '/EPUB/content.opf', temp2, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+  var resultString = `<img src="../images/${fileName}" />`;
   var area = document.getElementById("area");
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
+
   return area.value;
 }
 
 export function linkTag (link) {
   var area = document.getElementById("area");
+  link = link.trim();
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
-    area.setRangeText(`<a href="${link}" >${selected}</a>`);
+    if (link.slice(0,5) === 'https') {
+      area.setRangeText(`<a href="${link}" >${selected}</a>`);
+    }
+    else {
+      area.setRangeText(`<a href="https://${link}" >${selected}</a>`);
+    }
   }
   return area.value;
 }

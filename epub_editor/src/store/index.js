@@ -40,6 +40,9 @@ export default new Vuex.Store({
     setEditingText: function ({ commit }, value) {
       commit('SET_EDITINGTEXT', value);
     },
+    setEbookDirectory: function ({ commit }, value) {
+      commit('SET_EBOOKDIRECTORY', value);
+    },
     setSelectedFileDirectory: function ({ commit }, value) {
       commit('SET_SELECTEDFILEDIRECTORY',value);
     },
