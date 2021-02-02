@@ -19,15 +19,16 @@
 
 <script>
 export default {
+  name: 'TableOfContents',
   computed: {
     items: function () {
-      return this.$store.state.tableOfContents
+      return this.$store.state.tableOfContents;
     },
   },
   data: function () {
     return {
       selectedItem: 1,
-    }
+    };
   },
 }
 </script>

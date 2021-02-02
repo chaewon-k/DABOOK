@@ -1,27 +1,26 @@
-const { dialog } = require('electron').remote
-//const fs = require('fs')
+const { dialog } = require('electron').remote;
 
-export function pTag() {
+export function pTag () {
   var area = document.getElementById("area");
   const remember = area.selectionStart;
   area.value = area.value.slice(0,  area.selectionStart) + "    <p></p>" + area.value.slice(area.selectionStart);
-  area.selectionEnd = remember + 7
+  area.selectionEnd = remember + 7;
   return area.value;
 }
 
-export function enterTag() {
+export function enterTag () {
   var area = document.getElementById("area");
   area.value = area.value.slice(0,  area.selectionStart) + "<br />\n" + area.value.slice(area.selectionStart);
   return area.value;
 }
 
-export function lineTag() {
+export function lineTag () {
   var area = document.getElementById("area");
   area.value = area.value.slice(0,  area.selectionStart) + "<hr />\n" + area.value.slice(area.selectionStart);
   return area.value;
 }
 
-export function hTag(index) {
+export function hTag (index) {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -30,7 +29,7 @@ export function hTag(index) {
   return area.value;
 }
 
-export function italicTag() {
+export function italicTag () {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -39,7 +38,7 @@ export function italicTag() {
   return area.value;
 }
 
-export function boldTag() {
+export function boldTag () {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -48,7 +47,7 @@ export function boldTag() {
   return area.value;
 }
 
-export function underlineTag() {
+export function underlineTag () {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -57,7 +56,7 @@ export function underlineTag() {
   return area.value;
 }
 
-export function mediumlineTag() {
+export function mediumlineTag () {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -66,7 +65,7 @@ export function mediumlineTag() {
   return area.value;
 }
 
-export function subscriptTag() {
+export function subscriptTag () {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -75,7 +74,7 @@ export function subscriptTag() {
   return area.value;
 }
 
-export function superscriptTag() {
+export function superscriptTag () {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -84,7 +83,7 @@ export function superscriptTag() {
   return area.value;
 }
 
-export function blockquoteTag() {
+export function blockquoteTag () {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -93,7 +92,7 @@ export function blockquoteTag() {
   return area.value;
 }
 
-export function citeTag() {
+export function citeTag () {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -102,7 +101,7 @@ export function citeTag() {
   return area.value;
 }
 
-export function imageTag() {
+export function imageTag () {
   const options = {
     filters: [
       {
@@ -110,18 +109,16 @@ export function imageTag() {
         extensions: ['jpg', 'png']
       }
     ]
-  }
-  const r = dialog.showOpenDialogSync(options)
+  };
+  const r = dialog.showOpenDialogSync(options);
   if (!r) return area.value;
-  console.log(r[0])
-
   var resultString = `<img src="${r[0]}" >`;
   var area = document.getElementById("area");
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
   return area.value;
 }
 
-export function linkTag(link) {
+export function linkTag (link) {
   var area = document.getElementById("area");
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
@@ -130,7 +127,7 @@ export function linkTag(link) {
   return area.value;
 }
 
-export function tableTag(row, col) {
+export function tableTag (row, col) {
   var resultString = `<table>
   <caption>표 이름</caption>
   <thead>
@@ -145,11 +142,9 @@ export function tableTag(row, col) {
     resultString += `   <tr>\n`;
     for (let j = 0; j < col; j++) {
       resultString += `     <td>data</td>\n`;
-      
     }
     resultString += `   </tr>\n`;
   }
-  
     resultString += ` </tbody>
 </table>
 <style>
@@ -167,7 +162,7 @@ export function tableTag(row, col) {
   return area.value;
 }
 
-export function unorderedListTag() {
+export function unorderedListTag () {
   var resultString = `<ul>
     <li>list1</li>
     <li>list2</li>
@@ -178,7 +173,7 @@ export function unorderedListTag() {
   return area.value;
 }
 
-export function orderedListTag() {
+export function orderedListTag () {
   var resultString = `<ol>
     <li>list1</li>
     <li>list2</li>

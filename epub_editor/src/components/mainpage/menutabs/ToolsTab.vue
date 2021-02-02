@@ -95,13 +95,14 @@
         </div>
       </v-btn>
     </div>
-    
   </div>
 </template>
 
 <script>
-import eventBus from '@/eventBus.js'
+import eventBus from '@/eventBus.js';
+
 export default {
+  name: 'ToolsTab',
   methods: {
     // 도구상자 모음 탭
     selectHTag: function(index) {
@@ -152,25 +153,26 @@ export default {
     selectTable: function () {
       eventBus.$emit('pushIndexData', 'Table');
     },
-
   }
 }
 </script>
 
 <style>
-    #subMenuBar{
-      width: 100%;
-      height: 80px;
-    }
-    div.left {
-        width: 60%;
-        float: left;
-        height: 10%;
-    }
-    div.right {
-      top:20%;
-      width: 39%;
-      float: right;
-      position: relative;
-    }
+#subMenuBar {
+  width: 100%;
+  height: 80px;
+}
+
+div.left {
+    width: 60%;
+    float: left;
+    height: 10%;
+}
+
+div.right {
+  top:20%;
+  width: 39%;
+  float: right;
+  position: relative;
+}
 </style>

@@ -164,22 +164,26 @@
 </template>
 
 <script>
-import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, changeHtag, readPath } from '@/functions/file.js'
-import eventBus from '@/eventBus.js'
-import { mapMutations, mapState } from 'vuex'
-import ToolsTab from '@/components/mainpage/menutabs/ToolsTab'
-import Dialog from '@/components/mainpage/Dialog'
+import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, changeHtag, readPath } from '@/functions/file.js';
+import eventBus from '@/eventBus.js';
+import { mapMutations, mapState } from 'vuex';
+import ToolsTab from '@/components/mainpage/menutabs/ToolsTab';
+import Dialog from '@/components/mainpage/Dialog';
 
-const fs = require('fs')
-const path=require('path')
-const electron = require('electron')
-const BrowserWindow = electron.remote.BrowserWindow
-const fse = require('fs-extra')
+const fs = require('fs');
+const path=require('path');
+const electron = require('electron');
+const BrowserWindow = electron.remote.BrowserWindow;
+const fse = require('fs-extra');
+
 export default {
   name: 'SubMenu',
   components: {
     ToolsTab,
     Dialog
+  },
+  props: {
+    itemIndex: { type: Number }
   },
   data: function () {
     return {
@@ -211,7 +215,7 @@ export default {
       // Array
       findIndexArray: [],
       eBookCover: [],
-    }
+    };
   },
   computed: {
     ...mapState(["editingText", "editingHTMLText", "ebookDirectory",'editingTextArrPoint','editingTextArr','arrSize']),
@@ -227,8 +231,8 @@ export default {
       /*
       E-BOOK 생성하기 > 위치 선택 버튼을 눌렀을 때 선택한 위치 + ebook 제목 반환
       */
-      this.eBookLocation = readPath()
-      this.selectedEBookLocation = this.eBookLocation
+      this.eBookLocation = readPath();
+      this.selectedEBookLocation = this.eBookLocation;
     },
     createNewEBook: function () {
       /*
@@ -236,14 +240,14 @@ export default {
       - 선택한 위치에 TITLE 명의 폴더 생성 
       - src.assets.NewEbook에 있는 기본 EPUB파일 복사
       */
-      this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/'
-      this.SET_EBOOKDIRECTORY(this.eBookLocation) // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
+      this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
+      this.SET_EBOOKDIRECTORY(this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
 
       fs.mkdir(this.eBookLocation, function (err) {
         if (err) {
-          console.log(err)
+          console.log(err);
         }
-      })
+      });
 
       this.eBookDialog = false;
       let eBookSettingDirectory = 'src/assets/NewEbook'; //기본 ebook 디렉토리 위치
@@ -255,9 +259,9 @@ export default {
         */
 
       if (this.eBookCover.length === 0) {   // 기본 이미지를 선택할 경우
-        this.eBookCover.name = 'default.jpg'
+        this.eBookCover.name = 'default.jpg';
       } else {  // 이미지를 선택할 경우
-        const coverLocation = this.eBookLocation + '/EPUB/images/' + this.eBookCover.name //이미지 저장할 위치 
+        const coverLocation = this.eBookLocation + '/EPUB/images/' + this.eBookCover.name; //이미지 저장할 위치 
         fse.copySync(this.eBookCover.path, coverLocation); // 입력받은 이미지를 저장할 위치로 복사
       }
 
@@ -271,21 +275,20 @@ export default {
 
     // 목차 읽어오기
     readToc: function () {
-      const data = readDirectory(this.eBookLocation, [], [], 0)
-      this.chapterNum = data['maxV']
-      this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
+      const data = readDirectory(this.eBookLocation, [], [], 0);
+      this.chapterNum = data['maxV'];
+      this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
 
-      const fileToText = fs.readFileSync(data['toc'][0]).toString()
-      this.$store.state.tableOfContents = tocToList(fileToText, [])
+      const fileToText = fs.readFileSync(data['toc'][0]).toString();
+      this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
     },
 
     // 이미지 이름 재설정
     renameImageTag: function () {
-      console.log(this.eBookCover)
       let coverLocation=path.resolve(this.eBookLocation+'/EPUB/images/'+this.eBookCover.name);
       let newCoverLocation=path.resolve(this.eBookLocation+'/EPUB/images/cover.jpg');
       fs.rename(coverLocation, newCoverLocation, function(err){
-        if( err ) throw err;
+        if (err) throw err;
         console.log('File Renamed!');
       });
     },
@@ -303,15 +306,15 @@ export default {
 
     // 저장하기
     storeInputText: function () { 
-      const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>'
-      fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText)
+      const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
+      fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
     },
 
     // e-book 불러오기
     loadEbook: function () { 
-      this.eBookLocation = readPath()
+      this.eBookLocation = readPath();
       if (this.eBookLocation) {
-        this.readToc()
+        this.readToc();
       }
     },
 
@@ -319,38 +322,36 @@ export default {
     makeEpub: function (val) { 
       this.epubDialog = false;
       this.savePath = makeEpubFile(this.eBookLocation, val);
-      console.log(val)
       this.epubText = '';
     },
 
     // e-book 미리보기
     preview: function () { 
-      const win = new BrowserWindow({ width: 800, height: 1500 })
-      win.loadURL(this.$store.state.selectedFileDirectory)
+      const win = new BrowserWindow({ width: 800, height: 1500 });
+      win.loadURL(this.$store.state.selectedFileDirectory);
     },
 
     // chapter 추가하기
     makeChapter: function (val) {
       this.chapterDialog = false;
-      let num = ''
+      let num = '';
       let path = this.eBookLocation + '/EPUB/text/';
-      const temp = fs.readFileSync('src/assets/chapter01.xhtml').toString()
-      this.chapterNum++
+      const temp = fs.readFileSync('src/assets/chapter01.xhtml').toString();
+      this.chapterNum++;
       if (this.chapterNum < 10) {
-        num = '0' + this.chapterNum
+        num = '0' + this.chapterNum;
       } else {
-        num = this.chapterNum
+        num = this.chapterNum;
       }
-      changeHtag(path, num, temp, val)
-      addContentOpf(this.eBookLocation, num)
-      addTocNcx(this.eBookLocation, val, num)
+      changeHtag(path, num, temp, val);
+      addContentOpf(this.eBookLocation, num);
+      addTocNcx(this.eBookLocation, val, num);
       
-      const data = readDirectory(this.eBookLocation, [], [], 0)
-      // Worker.postMessage('새 chapter가 추가되었습니다!')
+      const data = readDirectory(this.eBookLocation, [], [], 0);
       alert('새 chapter가 추가되었습니다!');
-      this.$store.state.ebookDirectoryTree = data['arrayOfFiles']
-      this.$store.state.tableOfContents.push({text: val})
-      this.chapterText = ''
+      this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
+      this.$store.dispatch('addTableOfContents', val);
+      this.chapterText = '';
     },
     //-------------------- file tab end --------------------
 
@@ -394,45 +395,44 @@ export default {
 
     // 문자 대체하기
     replace: function (findText, replaceText, replaceAlphabet, replaceAllText) {
-      this.find(findText)
+      this.find(findText);
       eventBus.$emit('replaceText', [replaceText, replaceAlphabet, replaceAllText]);
     },
     
     inputTextRedo: function () {
-      if(this.editingTextArrPoint==this.arrSize)
+      if (this.editingTextArrPoint == this.arrSize)
         return;
       this.UP_EDITINGTEXTARRPOINT();
-      
       this.inputTextSet();
     },
+
     inputTextUndo: function () {
-      if(this.editingTextArrPoint==0){
+      if (this.editingTextArrPoint == 0) {
         return;
       }
       this.DOWN_EDITINGTEXTARRPOINT();
       this.inputTextSet();
     },
+
     inputTextSet: function () {
       this.SET_EDITINGTEXT(this.editingTextArr[this.editingTextArrPoint]);
       eventBus.$emit('set');
     },
     //-------------------- edit tab end --------------------
-
-  },
-  props: {
-    itemIndex: { type: Number }
   },
 }
 </script>
 
 <style>
-.v-text-field{
+.v-text-field {
   width: 150px;
 }
-.header-color{
+
+.header-color {
   background-color: #C0BFD9;
 }
-.font-color{
+
+.font-color {
   color: #423F8C;
 }
 </style>

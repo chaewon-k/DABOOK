@@ -21,13 +21,15 @@
 </template>
 
 <script>
-import eventBus from '@/eventBus.js'
-const fs = require('fs')
+import eventBus from '@/eventBus.js';
+
+const fs = require('fs');
 
 export default {
+  name: 'Directory',
   computed: {
     items: function () {
-      return this.$store.state.ebookDirectoryTree
+      return this.$store.state.ebookDirectoryTree;
     },
   },
   data: function () {
@@ -44,15 +46,19 @@ export default {
         xls: 'mdi-file-excel',
       },
       tree: [],
-    }
+    };
   },
   methods: {
     openFile: function (val) { // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
-      if (val.children) return
-      const temp = fs.readFileSync(val.dirPath).toString()
-      this.$store.state.selectedFileDirectory = val.dirPath
-      eventBus.$emit('loadData', temp)
+      if (val.children) return;
+      const temp = fs.readFileSync(val.dirPath).toString();
+      this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
+      eventBus.$emit('loadData', temp);
     }
   },
 }
 </script>
+
+<style>
+
+</style>
