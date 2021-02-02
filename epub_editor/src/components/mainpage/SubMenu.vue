@@ -236,8 +236,7 @@ export default {
       - src.assets.NewEbook에 있는 기본 EPUB파일 복사
       */
       this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
-      this.SET_EBOOKDIRECTORY(this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
-
+      this.$store.dispatch('setEbookDirectory', this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
       fs.mkdir(this.eBookLocation, function (err) {
         if (err) {
           console.log(err);
@@ -308,6 +307,7 @@ export default {
     // e-book 불러오기
     loadEbook: function () { 
       this.eBookLocation = readPath();
+      this.$store.dispatch('setEbookDirectory', this.eBookLocation)
       if (this.eBookLocation) {
         this.readToc();
       }

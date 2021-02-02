@@ -69,8 +69,11 @@
 <script>
 import { mapMutations, mapState } from "vuex";
 import eventBus from "@/eventBus.js";
+import { readDirectory, tocToList } from '@/functions/file.js';
 import { findText, replaceText } from "@/functions/edit.js";
 import * as textStyle from "@/functions/text-style.js";
+
+const fs = require('fs');
 
 export default {
   name: 'Textarea',
@@ -113,7 +116,13 @@ export default {
       } else if (res === "SuperscriptTag") {
         this.inputText = textStyle.superscriptTag();
       } else if (res === "ImageTag") {
-        this.inputText = textStyle.imageTag();
+        this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
+        
+        const data = readDirectory(this.$store.state.ebookDirectory, [], [], 0);
+        this.chapterNum = data['maxV'];
+        this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
+        const fileToText = fs.readFileSync(data['toc'][0]).toString();
+        this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
       } else if (res === "UnorderedListTag") {
         this.inputText = textStyle.unorderedListTag();
       } else if (res === "OrderedListTag") {
