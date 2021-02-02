@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Document(collection = "files")
-public class File {
+public class FileDTO {
 	@Id
 	private String _id;
 	
