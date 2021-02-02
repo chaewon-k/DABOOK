@@ -10,6 +10,7 @@
       label="textarea 입니다"
       placeholder="책을 작성해볼까요?"
       v-model="inputText"
+      @keydown="isSave"
       @keyup.enter="attachPTag()"
     ></v-textarea>
     <v-dialog v-model="linkDialog" max-width="290">
@@ -127,13 +128,13 @@ export default {
       } else {
         this.inputText = textStyle.hTag(res);
       }
+      this.set();
     });
   },
   watch: {
     inputText: function () {
       this.SET_EDITINGTEXT(this.inputText);
       this.SET_EDITINGHTML(this.defaultHTMLText);
-      this.set();
     },
   },
   data: function () {
@@ -178,9 +179,13 @@ export default {
           break;
       }
     },
-    set:function(){
+    isSave: function(event){
+      edit.Save(event.keyCode);
+    },
+    set: function(){
       edit.set(this.inputText);
     },
+
     plusRow: function () {
       this.tableRow++;
     },
