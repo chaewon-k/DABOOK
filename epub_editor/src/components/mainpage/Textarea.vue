@@ -70,57 +70,25 @@
 import { mapMutations, mapState } from "vuex";
 import eventBus from "@/eventBus.js";
 import { findText, replaceText } from "@/functions/edit.js";
-import {
-  pTag,
-  enterTag,
-  lineTag,
-  hTag,
-  italicTag,
-  blockquoteTag,
-  citeTag,
-  boldTag,
-  underlineTag,
-  mediumlineTag,
-  subscriptTag,
-  superscriptTag,
-  imageTag,
-  linkTag,
-  tableTag,
-  unorderedListTag,
-  orderedListTag
-} from "@/functions/text-style.js";
+import * as textStyle from "@/functions/text-style.js";
 
 export default {
-  data() {
-    return {
-      inputText: "",
-      defaultHTMLText: "",
-      linkText: "",
-      tableData: { col: [], row: [] },
-      hTags: [1, 2, 3, 4, 5, 6],
-      linkDialog: false,
-      tableDialog: false,
-      tableRow: 0,
-      tableCol: 0,
-      findText: '',
-      findIndexArray: [],      
-    };
-  },
-  created() {
+  name: 'Textarea',
+  created: function () {
     eventBus.$on('set',()=>{
       this.inputText=this.editingText;
     });
     eventBus.$on("findText", (res) => {
-      this.findText = res
-      this.findIndexArray = findText(this.inputText, res)
-      console.log(this.findIndexArray)
+      this.findText = res;
+      this.findIndexArray = findText(this.inputText, res);
+      console.log(this.findIndexArray);
     });
     eventBus.$on("replaceText", (res) => {
-      this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2])
+      this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2]);
     });
     eventBus.$on("loadData", (res) => {
-      console.log(res)
-      this.inputText = res.slice(res.indexOf("<body"), res.indexOf("</body>")+7);
+      console.log(res);
+      this.inputText = res.slice(res.indexOf("<body"), res.indexOf("</body>") + 7);
       this.defaultHTMLText = res.slice(res.indexOf("<?xml"), res.indexOf("<body"));
     });
     eventBus.$on("pushIndexData", (res) => {
@@ -159,6 +127,39 @@ export default {
       }
     });
   },
+  watch: {
+    inputText: function () {
+      this.SET_EDITINGTEXT(this.inputText);
+      this.SET_EDITINGHTML(this.defaultHTMLText);
+
+      if (this.editingTextArr[this.editingTextArrPoint] != this.inputText) {
+        if (this.editingTextArrPoint == this.arrSize) {
+          this.DOWN_EDITINGTEXTARRPOINT();
+          this.SHIFT_EDITINGTEXTARR();
+        }
+        this.UP_EDITINGTEXTARRPOINT();
+        this.PUSH_EDITINGTEXTARR();
+      }
+    },
+  },
+  data: function () {
+    return {
+      inputText: "",
+      defaultHTMLText: "",
+      linkText: "",
+      tableData: {
+        col: [], 
+        row: []
+      },
+      hTags: [1, 2, 3, 4, 5, 6],
+      linkDialog: false,
+      tableDialog: false,
+      tableRow: 0,
+      tableCol: 0,
+      findText: '',
+      findIndexArray: [],      
+    };
+  },
   computed: {
     ...mapState(['editingText','editingTextArrPoint','arrSize','editingTextArr']),
   },
@@ -177,79 +178,61 @@ export default {
       this.tableCol--;
     },
     attachPTag: function () {
-      this.inputText = pTag();
+      this.inputText = textStyle.pTag();
     },
     attachEnterTag: function () {
-      this.inputText = enterTag();
+      this.inputText = textStyle.enterTag();
     },
     attachLineTag: function () {
-      this.inputText = lineTag();
+      this.inputText = textStyle.lineTag();
     },
     attachHTag: function (index) {
-      this.inputText = hTag(index);
+      this.inputText = textStyle.hTag(index);
     },
     attachItalicTag: function () {
-      this.inputText = italicTag();
+      this.inputText = textStyle.italicTag();
     },
     attachBlockquoteTag: function () {
-      this.inputText = blockquoteTag();
+      this.inputText = textStyle.blockquoteTag();
     },
     attachCiteTag: function () {
-      this.inputText = citeTag();
+      this.inputText = textStyle.citeTag();
     },
     attachBoldTag: function () {
-      this.inputText = boldTag();
+      this.inputText = textStyle.boldTag();
     },
     attachUnderlineTag: function () {
-      this.inputText = underlineTag();
+      this.inputText = textStyle.underlineTag();
     },
     attachMediumlineTag: function () {
-      this.inputText = mediumlineTag();
+      this.inputText = textStyle.mediumlineTag();
     },
     attachSubscriptTag: function () {
-      this.inputText = subscriptTag();
+      this.inputText = textStyle.subscriptTag();
     },
     attachSuperscriptTag: function () {
-      this.inputText = superscriptTag();
+      this.inputText = textStyle.superscriptTag();
     },
     attachImageTag: function () {
-      this.inputText = imageTag();
+      this.inputText = textStyle.imageTag();
     },
     attachLinkTag: function () {
       this.linkDialog = false;
-      this.inputText = linkTag(this.linkText);
+      this.inputText = textStyle.linkTag(this.linkText);
       this.linkText = "";
     },
     attachTableTag: function () {
       this.tableDialog = false;
-      this.inputText = tableTag(this.tableRow, this.tableCol);
+      this.inputText = textStyle.tableTag(this.tableRow, this.tableCol);
       this.tableRow = 0;
       this.tableCol = 0;
     },
     attachUnorderedListTag: function () {
-      this.inputText = unorderedListTag();
+      this.inputText = textStyle.unorderedListTag();
     },
     attachOrderedListTag: function () {
-      this.inputText = orderedListTag();
+      this.inputText = textStyle.orderedListTag();
     },
-  },
-  watch: {
-    inputText: function () {
-      this.SET_EDITINGTEXT(this.inputText);
-      this.SET_EDITINGHTML(this.defaultHTMLText);
-
-      if(this.editingTextArr[this.editingTextArrPoint]!=this.inputText){
-        if(this.editingTextArrPoint==this.arrSize){
-          this.DOWN_EDITINGTEXTARRPOINT();
-          this.SHIFT_EDITINGTEXTARR();
-          //console.log("shiFT : "+this.editingTextArr);
-        }
-        this.UP_EDITINGTEXTARRPOINT();
-        this.PUSH_EDITINGTEXTARR();
-        //console.log(this.editingTextArr);
-        //console.log(this.editingTextArrPoint);
-      }
-   },
   },
 };
 </script>
@@ -258,9 +241,11 @@ export default {
 #app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder {
   height: 100%;
 }
+
 #app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder > div {
   height: 100%;
 }
+
 #app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder > div > div {
   height: 100%;
 }

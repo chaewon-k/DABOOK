@@ -20,21 +20,21 @@
 
 <script>
 export default {
-    props: ['isDialog', 'title', 'labelText', 'inputText', 'dialogMethod'],
-    created() {
-        console.log(this.isDialog, this.title, this.labelText, this.inputText);
-    },
-    data() {
-        return {
-            changedText: ''
-        }
-    },
-    methods: {
-        toggleDialog() {
-            this.$emit('toggle-dialog');
-        }
-    }
-
+  name: 'Dialog',
+  created: function () {
+    console.log(this.isDialog, this.title, this.labelText, this.inputText);
+  },
+  data: function () {
+    return {
+      changedText: ''
+      };
+  },
+  props: ['isDialog', 'title', 'labelText', 'inputText', 'dialogMethod'],
+  methods: {
+      toggleDialog() {
+          this.$emit('toggle-dialog');
+      }
+  }
 }
 </script>
 

@@ -21,8 +21,10 @@
   </div>
 </template>
 <script>
-import SubMenu from './SubMenu.vue'
+import SubMenu from './SubMenu.vue';
+
 export default {
+  name: 'TopMenu',
   components: {
     SubMenu
   },
@@ -36,11 +38,11 @@ export default {
           { tab: '도구상자' },
           { tab: '도움말' }
         ],
-      }
+      };
     },
   methods: {
     selectedIndex: function (idx) {
-      this.itemIndex = idx
+      this.itemIndex = idx;
     }
   }
 }
