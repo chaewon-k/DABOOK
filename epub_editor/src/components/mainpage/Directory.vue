@@ -50,17 +50,26 @@ export default {
   },
   methods: {
     openFile: function (val) { // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
-      if (val.children) return; // 폴더 클릭했을 때 열리는 것 방지
-      if (this.$store.state.selectedFileDirectory !== '' && this.$store.state.selectedFileDirectory !== val.dirPath) {  // 처음 여는게 아니고 새로 파일을 열려고 하는 것이면
-        const result = window.confirm("이전 파일의 변경 내역을 저장하시겠습니까?")
-        if (result) {
-          const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
-          fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
-        } 
+      if (val.children) {
+        return  // 폴더면 그냥 return
+      } else {  // 파일을 클릭한 것이면
+        if (this.$store.state.selectedFileDirectory !== '' && this.$store.state.selectedFileDirectory !== val.dirPath) {  // 처음 여는게 아니거나 다른 파일을 열려고 하는 것이면, 변경여부 확인하고 저장여부를 물어본다.
+          let original = fs.readFileSync(this.$store.state.selectedFileDirectory).toString();  // original: 원래 작성중이던 파일의 원본
+          original = original.slice(original.indexOf("<body"), original.indexOf("</body>") + 7);
+          if (original !== this.$store.state.editingText) {  // 원본과 수정 중 파일이 다르다면
+            // 저장 할 것인지 물어보고 저장 / 취소
+            const result = window.confirm("이전 파일의 변경 내역을 저장하시겠습니까?")
+            if (result) {
+              const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
+              fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
+            }
+          } 
+        }
+        // 파일을 클릭한 것이면 -> 불러온다.
+        const temp = fs.readFileSync(val.dirPath).toString();
+        this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
+        eventBus.$emit('loadData', temp);
       }
-      const temp = fs.readFileSync(val.dirPath).toString();
-      this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
-      eventBus.$emit('loadData', temp);
     }
   },
 }
