@@ -35,8 +35,10 @@ export default new Vuex.Store({
     SET_EBOOKDIRECTORY: function (state, value) {
       state.ebookDirectory = value;
       const temp = state.ebookDirectory.split('\\')
-      const title = temp[temp.length - 1]
-      document.getElementById('electron-title').text = document.getElementById('electron-title').text + ' - ' + title
+      const temp2 = temp[temp.length - 1].split('/')
+      const title = temp2[temp2.length - 2]
+      console.log(temp, title)
+      document.getElementById('electron-title').text = 'epub_editor - ' + title
     },
   },
   actions: {
