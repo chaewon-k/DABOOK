@@ -212,11 +212,21 @@ export default {
       eBookCover: [],
     };
   },
+  created:function(){
+    eventBus.$on('shortcut',(res)=>{
+      if(res=="save"){
+        this.storeInputText();
+      }
+
+    })
+  },
   computed: {
     ...mapState(["editingText", "editingHTMLText", "ebookDirectory",'editingTextArrPoint','editingTextArr','arrSize']),
   },
   methods: {
     ...mapMutations(["SET_EDITINGTEXT","SET_EBOOKDIRECTORY", "SET_EBOOKDIRECTORY",'PUSH_EDITINGTEXTARR','SHIFT_EDITINGTEXTARR',"UP_EDITINGTEXTARRPOINT","DOWN_EDITINGTEXTARRPOINT"]),
+
+
 
     //-------------------- file tab start --------------------
 
