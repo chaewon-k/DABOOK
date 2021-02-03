@@ -11,6 +11,7 @@ export default new Vuex.Store({
     tableOfContents: [], // TableOfContents' item
     editingText: '', //textarea's text value
     editingHTMLText: '',  //default HTML text value
+    findTextArray: []
   },
 
   mutations: {
@@ -40,6 +41,9 @@ export default new Vuex.Store({
       console.log(temp, title)
       document.getElementById('electron-title').text = 'epub_editor - ' + title
     },
+    SET_FINDTEXTARRAY: function (state, value) {
+      state.findTextArray = value;
+    },
   },
   actions: {
     setEditingText: function ({ commit }, value) {
@@ -62,6 +66,9 @@ export default new Vuex.Store({
     },
     setHTMLText: function ({ commit }, value) {
       commit('SET_EDITINGHTML', value);
+    },
+    setFindTextArray: function ({ commit }, value) {
+      commit('SET_FINDTEXTARRAY', value);
     },
   },
 
