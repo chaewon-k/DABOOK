@@ -34,6 +34,9 @@ export default new Vuex.Store({
     },
     SET_EBOOKDIRECTORY: function (state, value) {
       state.ebookDirectory = value;
+      const temp = state.ebookDirectory.split('\\')
+      const title = temp[temp.length - 1]
+      document.getElementById('electron-title').text = document.getElementById('electron-title').text + ' - ' + title
     },
   },
   actions: {
