@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isDialog" max-width="500" @click:outside="toggleDialog">
+  <v-dialog v-model="isDialog" max-width="500" @click:outside="toggleDialog(); resetDialog();">
     <v-card>
       <v-card-title class="headline header-color">{{ title }}</v-card-title>
       <v-card-text>
@@ -10,7 +10,7 @@
         <v-btn color="red darken-1" text @click="toggleDialog">
           취소
         </v-btn>
-        <v-btn text @click="dialogMethod(inputText)" style="color: #423F8C;">
+        <v-btn text @click="dialogMethod(inputText); resetDialog();" style="color: #423F8C;">
           {{ title }}
         </v-btn>
       </v-card-actions>
@@ -32,7 +32,10 @@ export default {
   props: ['isDialog', 'title', 'labelText', 'dialogMethod'],
   methods: {
       toggleDialog() {
-          this.$emit('toggle-dialog');
+        this.$emit('toggle-dialog');
+      },
+      resetDialog() {
+        this.inputText = ''
       }
   }
 }

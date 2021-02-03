@@ -323,7 +323,8 @@ export default {
     // e-book 미리보기
     preview: function () { 
       const win = new BrowserWindow({ width: 800, height: 1500 });
-      win.loadURL(this.$store.state.selectedFileDirectory);
+      // macOS 에도 열릴 수 있도록 'file://' 추가
+      win.loadURL('file://'+this.$store.state.selectedFileDirectory);
     },
 
     // chapter 추가하기

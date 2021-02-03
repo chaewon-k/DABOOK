@@ -119,7 +119,6 @@ export default {
         this.inputText = textStyle.superscriptTag();
       } else if (res === "ImageTag") {
         this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
-        
         const data = readDirectory(this.$store.state.ebookDirectory, [], [], 0);
         this.chapterNum = data['maxV'];
         this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
