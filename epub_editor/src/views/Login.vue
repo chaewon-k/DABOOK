@@ -1,42 +1,45 @@
 <template>
-  <div>
+  <v-container fluid fill-height>
     <!---------------Alert 창-------------------->
     <v-alert outlined dense icon="mdi-alert-circle-outline" :color="type" v-if="type">
       {{ message }}
     </v-alert>
     <!---------------login form------------------>
-    <v-card class="ma-auto" max-width="500">
-      <v-card-title class="title font-weight-regular justify-space-between">
-        <span>Login</span>
-      </v-card-title>
-      <v-card-text>
-        <v-container>
-          <v-row>
-            <v-text-field
-              label="Email"
-              v-model="inputEmail"
-            ></v-text-field>
-          </v-row>
-          <v-row>
-            <v-text-field
-              label="Password"
-              type="password"
-              v-model="inputPassword"
-            ></v-text-field>
-          </v-row>
-        </v-container>
-        <!-------------비밀번호 찾기 ----------------->
-        <div class="float-right">
-          <p>비밀번호를 잊으셨나요?</p>
-        </div>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-btn @click="logIn">LOGIN</v-btn>
-        <v-btn @click="signUp">SIGNUP</v-btn>
-      </v-card-actions>
-    </v-card>
-  </div>
+    <v-layout align-center justify-center>
+      <v-card width="500">
+        <v-card-title class="title font-weight-regular justify-space-between">
+          <span>Login</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-text-field
+                label="Email"
+                v-model="inputEmail"
+              ></v-text-field>
+            </v-row>
+            <v-row>
+              <v-text-field
+                label="Password"
+                type="password"
+                v-model="inputPassword"
+              ></v-text-field>
+            </v-row>
+
+            <!-------------비밀번호 찾기 ----------------->
+            <div class="float-right">
+              <v-btn text @click="findPassword">비밀번호를 잊으셨나요?</v-btn>
+            </div>
+          </v-container>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn @click="logIn">LOGIN</v-btn>
+          <v-btn @click="signUp">SIGNUP</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-layout>
+  </v-container>
 </template>
 <script>
   import axios from 'axios'
@@ -102,7 +105,11 @@
               this.showAlert('error')
             }
             else {
-              console.log(message)
+              console.log(res)
+              // local Storage에 로그인 정보 저장.
+              localStorage.setItem('token',res.data.token)
+              localStorage.setItem('email', res.data.email)
+              localStorage.setItem('nickname', res.data.nickname)
               this.$router.push({ name: 'Editor'})
             }
           })
@@ -112,6 +119,17 @@
       // 회원가입 창으로 이동
       signUp: function () {
         this.$router.push({ name: 'Signup'})
+      },
+
+      // 임시 비밀번호 발급
+      findPassword: function () {
+        axios.get(`https://i4a103.p.ssafy.io/password?email=${this.inputEmail}`)
+          .then(res =>{
+            console.log(res)
+          })
+          .catch(err => console.log(err))
+        this.message = '해당 이메일로 임시 비밀번호를 전송했습니다.'
+        this.showAlert('purple')
       }
     }
   }
