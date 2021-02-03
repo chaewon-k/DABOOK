@@ -227,7 +227,9 @@ export default {
       E-BOOK 생성하기 > 위치 선택 버튼을 눌렀을 때 선택한 위치 + ebook 제목 반환
       */
       this.eBookLocation = readPath();
-      this.selectedEBookLocation = this.eBookLocation;
+      if (this.eBookLocation) {
+        this.selectedEBookLocation = this.eBookLocation;
+      }
     },
     createNewEBook: function () {
       /*
