@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.epub.model.Epub;
 import com.ssafy.epub.model.FileDTO;
-import com.ssafy.epub.model.FileVO;
 import com.ssafy.epub.repository.EpubRepository;
 import com.ssafy.epub.repository.FileRepository;
 
@@ -47,15 +47,16 @@ public class EpubController {
 	public ResponseEntity<List<FileDTO>> getAllFiles() {
 		return new ResponseEntity<>(fileRepository.findAll(),HttpStatus.OK);
 	}
-	
-	@PostMapping("/upload")
-	@ApiOperation(value = "upload", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<Boolean> upload(FileVO uploadFilesInfo) {
-		List<MultipartFile> fileList = uploadFilesInfo.getFiles();
+	//, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
+	@PostMapping(value = "/upload", consumes = {"multipart/form-data"})
+	@ApiOperation(value = "upload")
+	public ResponseEntity<Boolean> upload(@RequestParam("file") MultipartFile mfFile,@RequestParam("email") String email,@RequestParam("epubName") String epubName) {
+		//List<MultipartFile> files = uploadFilesInfo.getFiles();
 		
-		String filePath = storagePath + "/" + uploadFilesInfo.getEmail() + "/" + uploadFilesInfo.getEpubName() + "/";
+		//String filePath = storagePath + "/" + uploadFilesInfo.getEmail() + "/" + uploadFilesInfo.getEpubName() + "/";
+		String filePath = storagePath + "/" + email + "/" + epubName + "/";
 		
-		for(MultipartFile mfFile : fileList) {
+		//for(MultipartFile mfFile : files) {
 			File file = new File(filePath + mfFile.getOriginalFilename());
 			
 			// 주어진 경로에 존재하지 않는 모든 디렉토리 생성
@@ -84,7 +85,7 @@ public class EpubController {
 			fileDTO.setDataLocation(filePath + mfFile.getOriginalFilename());
 			fileDTO.setFileName(mfFile.getOriginalFilename());
 			fileRepository.save(fileDTO);
-		}
+		//}
 		
 		
 		return new ResponseEntity<>(true,HttpStatus.OK);
