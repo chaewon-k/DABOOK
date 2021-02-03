@@ -104,6 +104,7 @@ export function citeTag () {
 }
 
 export function imageTag (location) {
+  var area = document.getElementById("area");
   const options = {
     filters: [
       {
@@ -113,13 +114,12 @@ export function imageTag (location) {
     ]
   };
   const r = dialog.showOpenDialogSync(options);
-  if (!r) return area.value;
+  if (!r) return area.value //이미지 태그 추가 dialog 열었다가 취소 눌러서 껐을 때
   const temp = r[0].split('\\');
   const fileName = temp[temp.length - 1];
   const imgLocation = location + '/EPUB/images/' + fileName;
-  const extension = fileName.split('.')[1]
-  fse.copySync(r[0], imgLocation);
-
+  const extension = fileName.split('.')[1]  // 확장자
+  fse.copySync(r[0], imgLocation);  // 파일 복사
   let temp2 = fs.readFileSync(location + '/EPUB/content.opf').toString();
   let start = temp2.indexOf("<!-- 이미지 파일 추가 위치 -->");
   temp2 = temp2.slice(0, start-1).concat(` <item id="${fileName}" href="images/${fileName}" media-type="image/${extension}" />\n    `, temp2.slice(start, temp2.length));
@@ -129,7 +129,6 @@ export function imageTag (location) {
     }
   });
   var resultString = `<img src="../images/${fileName}" />`;
-  var area = document.getElementById("area");
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
 
   return area.value;
