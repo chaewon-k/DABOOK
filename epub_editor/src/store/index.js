@@ -12,6 +12,9 @@ export default new Vuex.Store({
     editingText: '', //textarea's text value
     editingHTMLText: '',  //default HTML text value
     customStyleArray: []
+    findTextArray: [],
+    alertMessage:'',
+    alertDialog:false,
   },
 
   mutations: {
@@ -51,6 +54,16 @@ export default new Vuex.Store({
     SET_CUSTOMSTYLEARRAY: function (state, value) {
       state.customStyleArray = value;
     },
+    SET_FINDTEXTARRAY: function (state, value) {
+      state.findTextArray = value;
+    },
+    SET_ALERTMESSAGE: function (state,value) {
+      state.alertDialog=true;
+      state.alertMessage=value;
+    },
+    CANCEL_ALERTMESSAGE: function (state){
+      state.alertDialog=false;
+    }
   },
   actions: {
     setEditingText: function ({ commit }, value) {
@@ -77,6 +90,15 @@ export default new Vuex.Store({
     setCustomStyleArray: function ({ commit }, value) {
       commit('SET_CUSTOMSTYLEARRAY', value);
     },
+    setFindTextArray: function ({ commit }, value) {
+      commit('SET_FINDTEXTARRAY', value);
+    },
+    setAlertMessage : function({commit}, value) {
+      commit('SET_ALERTMESSAGE',value);
+    },
+    cancelAlertMessage: function({commit}){
+      commit('CANCEL_ALERTMESSAGE');
+    }
   },
 
   modules: {

@@ -79,3 +79,13 @@ div.right {
 .divider-margin {
   margin: 7px;
 }
+
+/* 찾기 bar style */
+#findMenu {
+  display: none;
+  position: absolute;
+  right: 2%;
+  width: auto;
+  border-radius: 5px;
+  z-index: 999999;
+}
