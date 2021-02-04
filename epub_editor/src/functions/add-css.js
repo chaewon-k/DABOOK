@@ -39,3 +39,54 @@ export function alignText (val) {
 export function setColor (val) {
   console.log(val)
 }
+
+export function makeCustomStyle (val, path) {
+  console.log(path);
+  const fs = require("fs");
+  let temp = fs.readFileSync(path + '/EPUB/styles/stylesheet.css').toString();
+  console.log(temp);
+  let range = '', font = '', backgroundColor = '', fontColor = '';
+  if (val.range === '왼쪽 정렬') {
+    range = ` text-align: left;\n`;
+  }
+  else if (val.range == '오른쪽 정렬') {
+    range = ` text-align: right;\n`;
+  }
+  else if (val.range == '가운데 정렬'){
+    range = ` text-align: center;\n`;
+  }
+
+  if (val.font != '') {
+    font = `  font-family:${val.font};\n`;
+  }
+
+  if (val.backgroundColor != '') {
+    backgroundColor = ` backgroundColor:${val.backgroundColor};\n`;
+  }
+
+  if (val.fontColor != '') {
+    fontColor = ` color:${val.fontColor};`;
+  }
+
+  let cssStr = `.user_${val.title}
+{ 
+${fontColor}${backgroundColor}${range}${font}
+}\n\n`;
+  console.log(cssStr);
+
+  fs.writeFile(path + '/EPUB/styles/stylesheet.css', cssStr, (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+
+  const area = document.getElementById("area");
+  let preStr = `<div class ="user_${val.title}">\n`;
+  let postStr = `\n</div>`;
+  if (area.selectionStart != area.selectionEnd) {
+    let selected = area.value.slice(area.selectionStart, area.selectionEnd);
+    area.setRangeText(preStr + selected + postStr);
+  }
+  return area.value;
+
+}

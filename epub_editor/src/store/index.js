@@ -11,6 +11,7 @@ export default new Vuex.Store({
     tableOfContents: [], // TableOfContents' item
     editingText: '', //textarea's text value
     editingHTMLText: '',  //default HTML text value
+    customStyleArray: []
   },
 
   mutations: {
@@ -47,6 +48,9 @@ export default new Vuex.Store({
         }
       } 
     },
+    SET_CUSTOMSTYLEARRAY: function (state, value) {
+      state.customStyleArray = value;
+    },
   },
   actions: {
     setEditingText: function ({ commit }, value) {
@@ -69,6 +73,9 @@ export default new Vuex.Store({
     },
     setHTMLText: function ({ commit }, value) {
       commit('SET_EDITINGHTML', value);
+    },
+    setCustomStyleArray: function ({ commit }, value) {
+      commit('SET_CUSTOMSTYLEARRAY', value);
     },
   },
 
