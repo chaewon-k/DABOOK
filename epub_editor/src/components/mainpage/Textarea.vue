@@ -6,6 +6,7 @@
       hide-details
       style="width: auto;"
       ma-auto
+      autofocus
       height="100%"
       label="textarea 입니다"
       placeholder="책을 작성해볼까요?"
@@ -136,13 +137,16 @@ window.onkeypress=(e)=>{
 export default {
   name: 'Textarea',
   created: function () {
-    eventBus.$on('edit',(res)=>{
+    eventBus.$on("edit",(res)=>{
       this.edit(res);
     });
     eventBus.$on("findText", (res) => {
       this.findText = res;
       this.findIndexArray = findText(this.inputText, res);
-      console.log(this.findIndexArray);
+      this.$store.dispatch('setFindTextArray', this.findIndexArray);
+    });
+    eventBus.$on("setCursor",(res, length)=>{
+      this.setCursor(res, length);
     });
     eventBus.$on("replaceText", (res) => {
       this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2]);
@@ -249,7 +253,9 @@ export default {
     set: function(){
       edit.set(this.inputText);
     },
-
+    setCursor: function (index, length) {
+      edit.setCursor(index, length);
+    },
     plusRow: function () {
       this.tableRow++;
     },
