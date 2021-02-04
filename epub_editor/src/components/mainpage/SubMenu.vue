@@ -15,6 +15,13 @@
     <template v-else-if="itemIndex === 2">
       <ToolsTab/>
     </template>
+
+    <!-------------------- style tap start -------------------->
+    <template v-else-if="itemIndex === 3">
+      <StyleTab/>
+    </template>
+    <!---------------------- style tap end ---------------------->
+
     <!-------------------- manual tap start -------------------->
     <template v-else>
       <v-btn text>editor 사용 설명서 보기</v-btn>
@@ -29,13 +36,15 @@
 import FileTab from '@/components/mainpage/menutabs/FileTab';
 import EditTab from '@/components/mainpage/menutabs/EditTab';
 import ToolsTab from '@/components/mainpage/menutabs/ToolsTab';
+import StyleTab from '@/components/mainpage/menutabs/StyleTab';
 
 export default {
   name: 'SubMenu',
   components: {
     FileTab,
     EditTab,
-    ToolsTab
+    ToolsTab,
+    StyleTab
   },
   props: {
     itemIndex: { type: Number }
