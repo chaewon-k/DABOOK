@@ -137,13 +137,16 @@ window.onkeypress=(e)=>{
 export default {
   name: 'Textarea',
   created: function () {
-    eventBus.$on('edit',(res)=>{
+    eventBus.$on("edit",(res)=>{
       this.edit(res);
     });
     eventBus.$on("findText", (res) => {
       this.findText = res;
       this.findIndexArray = findText(this.inputText, res);
-      console.log(this.findIndexArray);
+      this.$store.dispatch('setFindTextArray', this.findIndexArray);
+    });
+    eventBus.$on("setCursor",(res, length)=>{
+      this.setCursor(res, length);
     });
     eventBus.$on("replaceText", (res) => {
       this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2]);
@@ -350,7 +353,10 @@ export default {
     closeHeaders: function () {
       let menu = document.getElementById('headers');
       menu.style.display = 'none';
-    }
+    },
+    setCursor: function (index, length) {
+      edit.setCursor(index, length);
+    },
   },
 };
 </script>
