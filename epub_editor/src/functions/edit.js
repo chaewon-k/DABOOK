@@ -83,14 +83,6 @@ export function findText (inputText, findText) {
   return result;
 }
 
-export function setCursor (index, length) {
-  var area = document.getElementById("area");
-  area.selectionStart = index;
-  area.selectionEnd = index + length;
-  area.focus();
-  return area.value;
-}
-
 export function replaceText (inputText, replaceText, findText, findIndexArray, replaceAlphabet, replaceAllText) {
   console.log(findIndexArray);
   if (replaceAlphabet && replaceAllText) {
