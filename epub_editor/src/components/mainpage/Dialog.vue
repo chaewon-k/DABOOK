@@ -21,9 +21,6 @@
 <script>
 export default {
   name: 'Dialog',
-  created: function () {
-    console.log(this.isDialog, this.title, this.labelText);
-  },
   data: function () {
     return {
       inputText: ''

@@ -36,6 +36,7 @@ export default {
           { tab: '파일' },
           { tab: '편집' },
           { tab: '도구상자' },
+          { tab: '스타일' },
           { tab: '도움말' }
         ],
       };

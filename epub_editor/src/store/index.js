@@ -11,8 +11,8 @@ export default new Vuex.Store({
     tableOfContents: [], // TableOfContents' item
     editingText: '', //textarea's text value
     editingHTMLText: '',  //default HTML text value
+    customStyleArray: []
     findTextArray: [],
-
     alertMessage:'',
     alertDialog:false,
   },
@@ -38,11 +38,21 @@ export default new Vuex.Store({
     },
     SET_EBOOKDIRECTORY: function (state, value) {
       state.ebookDirectory = value;
-      const temp = state.ebookDirectory.split('\\')
-      const temp2 = temp[temp.length - 1].split('/')
-      const title = temp2[temp2.length - 2]
-      console.log(temp, title)
-      document.getElementById('electron-title').text = 'epub_editor - ' + title
+      if (state.ebookDirectory !== false) {
+        const temp = state.ebookDirectory.split('\\')
+        if (temp[temp.length - 1].includes('/')) {
+          const temp2 = temp[temp.length - 1].split('/')
+          const title = temp2[temp2.length - 2]
+          console.log(title)
+          document.getElementById('electron-title').text = 'epub_editor - ' + title
+        } else {
+          const title = temp[temp.length - 1]
+          document.getElementById('electron-title').text = 'epub_editor - ' + title
+        }
+      } 
+    },
+    SET_CUSTOMSTYLEARRAY: function (state, value) {
+      state.customStyleArray = value;
     },
     SET_FINDTEXTARRAY: function (state, value) {
       state.findTextArray = value;
@@ -76,6 +86,9 @@ export default new Vuex.Store({
     },
     setHTMLText: function ({ commit }, value) {
       commit('SET_EDITINGHTML', value);
+    },
+    setCustomStyleArray: function ({ commit }, value) {
+      commit('SET_CUSTOMSTYLEARRAY', value);
     },
     setFindTextArray: function ({ commit }, value) {
       commit('SET_FINDTEXTARRAY', value);
