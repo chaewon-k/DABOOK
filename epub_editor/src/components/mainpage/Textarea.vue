@@ -15,7 +15,7 @@
       @mousedown.left="closeMenu"
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
-
+    
     <v-dialog v-model="linkDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> 링크를 입력해주세요. </v-card-title>
@@ -97,6 +97,7 @@
     </div>
 
   </v-col>
+  
 </template>
 
 <script>
