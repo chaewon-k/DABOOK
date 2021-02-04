@@ -100,6 +100,7 @@
 </template>
 
 <script>
+
 import { mapMutations, mapState } from "vuex";
 import eventBus from "@/eventBus.js";
 import { readDirectory, tocToList } from '@/functions/file.js';
@@ -108,6 +109,29 @@ import * as textStyle from "@/functions/text-style.js";
 import * as edit from "@/functions/edit.js";
 
 const fs = require('fs');
+
+
+window.onkeypress=(e)=>{
+  if(e.key=="s"&&e.ctrlKey==true){
+    eventBus.$emit("shortcut","save");
+  }
+  else if(e.key=="c"&&e.ctrlKey==true){
+    edit.copy();
+  }
+  else if(e.key=="x"&&e.ctrlKey==true){
+    edit.cut();
+  }
+  else if(e.key=="v"&&e.ctrlKey==true){
+    edit.paste();
+  }
+  else if(e.key=="z"&&e.ctrlKey==true){
+    edit.undo();
+  }
+  else if(e.key=="y"&&e.ctrlKey==true){
+    edit.redo();
+  }
+};
+
 
 export default {
   name: 'Textarea',
@@ -124,7 +148,7 @@ export default {
       this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2]);
     });
     eventBus.$on("loadData", (res) => {
-      console.log(res);
+      //console.log(res);
       this.inputText = res.slice(res.indexOf("<body"), res.indexOf("</body>") + 7);
       this.defaultHTMLText = res.slice(res.indexOf("<?xml"), res.indexOf("<body"));
     });
