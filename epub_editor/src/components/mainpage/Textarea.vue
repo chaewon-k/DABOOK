@@ -15,7 +15,7 @@
       @mousedown.left="closeMenu"
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
-
+    
     <v-dialog v-model="linkDialog" max-width="290">
       <v-card>
         <v-card-title class="headline"> 링크를 입력해주세요. </v-card-title>
@@ -97,9 +97,11 @@
     </div>
 
   </v-col>
+  
 </template>
 
 <script>
+
 import { mapMutations, mapState } from "vuex";
 import eventBus from "@/eventBus.js";
 import { readDirectory, tocToList } from '@/functions/file.js';
@@ -108,6 +110,29 @@ import * as textStyle from "@/functions/text-style.js";
 import * as edit from "@/functions/edit.js";
 
 const fs = require('fs');
+
+
+window.onkeypress=(e)=>{
+  if(e.key=="s"&&e.ctrlKey==true){
+    eventBus.$emit("shortcut","save");
+  }
+  else if(e.key=="c"&&e.ctrlKey==true){
+    edit.copy();
+  }
+  else if(e.key=="x"&&e.ctrlKey==true){
+    edit.cut();
+  }
+  else if(e.key=="v"&&e.ctrlKey==true){
+    edit.paste();
+  }
+  else if(e.key=="z"&&e.ctrlKey==true){
+    edit.undo();
+  }
+  else if(e.key=="y"&&e.ctrlKey==true){
+    edit.redo();
+  }
+};
+
 
 export default {
   name: 'Textarea',
@@ -150,6 +175,7 @@ export default {
         this.inputText = textStyle.superscriptTag();
       } else if (res === "ImageTag") {
         this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
+        
         const data = readDirectory(this.$store.state.ebookDirectory, [], [], 0);
         this.chapterNum = data['maxV'];
         this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
@@ -280,7 +306,7 @@ export default {
       this.inputText = textStyle.superscriptTag();
     },
     attachImageTag: function () {
-      this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
+      this.inputText = textStyle.imageTag();
     },
     attachLinkTag: function () {
       this.linkDialog = false;
