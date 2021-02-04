@@ -1,8 +1,8 @@
 export function alignText (val) {
   const area = document.getElementById("area");
   let start = area.selectionStart;
-  // 태그 여는 <를 찾을 때까지 실행. <> 안에서 버튼을 누를 때도 적용시키기 위해 >가 아닌 <를 찾는다.
-  while (area.value[start] !== '<' || area.value.slice(start, start + 2) === '</') {
+  // span 아닌 다른 태그를 여는 <를 찾을 때까지 실행. <> 안에서 버튼을 누를 때도 적용시키기 위해 >가 아닌 <를 찾는다.
+  while (area.value[start] !== '<' || area.value.slice(start, start + 2) === '</' || area.value.slice(start, start + 2) === '<s') {
     if (area.value[start] === '\n') {
       return area.value;
     }
@@ -28,16 +28,13 @@ export function alignText (val) {
     const styleStart = tagArea.indexOf('style')
     const styleEnd = tagArea.indexOf('"', styleStart + 7)
     if (styleStart !== -1) {  // 2-1. style 속성이 있으면
-      area.value = area.value.slice(0, start) + tagArea.slice(0, styleStart + 7) + `text-align: ${val};` + tagArea.slice(styleEnd, tagArea.length) + area.value.slice(end, area.value.length);
+      console.log(tagArea.slice(styleStart, styleEnd))
+      area.value = area.value.slice(0, start) + tagArea.slice(0, styleEnd) + `text-align: ${val};` + tagArea.slice(styleEnd, tagArea.length) + area.value.slice(end, area.value.length);
     } else if (tagArea.slice(0, 5) !== '<body') {  // 2-2. style 속성이 없으면, body 태그 제외하고
       area.value = area.value.slice(0, end) + ` style="text-align: ${val};"` + area.value.slice(end, area.value.length);
     }
   }  
   return area.value;
-}
-
-export function setColor (val) {
-  console.log(val)
 }
 
 export function makeCustomStyle (val, path) {
@@ -61,7 +58,7 @@ export function makeCustomStyle (val, path) {
   }
 
   if (val.backgroundColor != '') {
-    backgroundColor = ` backgroundColor:${val.backgroundColor};\n`;
+    backgroundColor = ` background-color:${val.backgroundColor};\n`;
   }
 
   if (val.fontColor != '') {
@@ -89,4 +86,110 @@ ${fontColor}${backgroundColor}${range}${font}
   }
   return area.value;
 
+}
+export function setFontColor (val) {
+  const area = document.getElementById("area");
+  const start = area.selectionStart;  // 드래그 한 단어 시작
+  const end = area.selectionEnd;  // 드래그 한 단어 끝
+  if (start !== end) {  // 드래그 해서 하면 해당 부분에 span 태그를 달아준다.
+    // 이미 색이 적용된 단어면 <span style="color: ${}"> 의 색깔만 바꿔주면 됨
+    area.value = area.value.slice(0, start) + `<span style="color: ${val};">` + area.value.slice(start, end) + '</span>' + area.value.slice(end, area.value.length)
+  } else { // 드래그가 아니라면, 앞으로 가서 span이나 p나 h 등 태그를 찾아서 거기다가 적용시켜준다.
+
+  }
+  return area.value
+}
+
+export function setBackgroundColor (val) {
+  const area = document.getElementById("area");
+  const start = area.selectionStart;  // 드래그 한 단어 시작
+  const end = area.selectionEnd;  // 드래그 한 단어 끝
+  if (start !== end) {  // 한 군데 클릭하고 실행 못함
+    // 이미 색이 적용된 단어면 <span style="color: ${}"> 의 색깔만 바꿔주면 됨
+    area.value = area.value.slice(0, start) + `<span style="background-color: ${val};">` + area.value.slice(start, end) + '</span>' + area.value.slice(end, area.value.length)
+  }
+  return area.value
+}
+
+export function setFont (val) {
+  const area = document.getElementById("area");
+  let start = area.selectionStart;
+  while (area.value[start] !== '<' || area.value.slice(start, start + 2) === '</' || area.value.slice(start, start + 2) === '<s') {
+    if (area.value[start] === '\n') {
+      return area.value;
+    }
+    start--;
+  }
+  const end = area.value.indexOf('>', start);
+  const tagArea = area.value.slice(start, end)
+  const fontStart = tagArea.indexOf('font-family: ')
+  const fontEnd = tagArea.indexOf(';', fontStart)
+  if (fontStart !== -1) {
+    if (tagArea.slice(fontStart + 13, fontEnd) === val) {
+      area.value = area.value.slice(0, start) + tagArea.slice(0, fontStart) + tagArea.slice(fontEnd + 1, tagArea.length) + area.value.slice(end, area.value.length);
+    } else {
+      area.value = area.value.slice(0, start) + tagArea.slice(0, fontStart + 13) + val + tagArea.slice(fontEnd, tagArea.length) + area.value.slice(end, area.value.length);
+    }
+  } else if (fontStart === -1) {
+    const styleStart = tagArea.indexOf('style')
+    const styleEnd = tagArea.indexOf('"', styleStart + 7)
+    if (styleStart !== -1) {
+      area.value = area.value.slice(0, start) + tagArea.slice(0, styleEnd) + ` font-family: ${val};` + tagArea.slice(styleEnd, tagArea.length) + area.value.slice(end, area.value.length);
+    } else if (tagArea.slice(0, 5) !== '<body') {
+      area.value = area.value.slice(0, end) + ` style="font-family: ${val};"` + area.value.slice(end, area.value.length);
+    }
+  }
+  return area.value;
+}
+
+export function fontSize(val) {
+  const area = document.getElementById("area");
+  let start = area.selectionStart;
+  while (area.value[start] !== '<' || area.value.slice(start, start + 2) === '</') {
+    if (area.value[start] === '\n') {
+      return area.value;
+    }
+    start--;
+  }
+  const end = area.value.indexOf('>', start);
+  const tagArea = area.value.slice(start, end);
+  const sizeStart = tagArea.indexOf('font-size: ');
+  const sizeEnd = tagArea.indexOf(';', sizeStart);
+  if (sizeStart !== -1) {
+    const size = tagArea.slice(sizeStart + 11, sizeEnd)
+    if (size === 'medium') {
+      let newSize = (val === 'down' ? 'small' : 'large')
+      area.value = area.value.slice(0, start) + tagArea.slice(0, sizeStart + 11) + newSize + tagArea.slice(sizeEnd, tagArea.length) + area.value.slice(end, area.value.length);
+    } else if (size === 'small') {
+      let newSize = (val === 'down' ? 'x-small' : 'medium')
+      area.value = area.value.slice(0, start) + tagArea.slice(0, sizeStart + 11) + newSize + tagArea.slice(sizeEnd, tagArea.length) + area.value.slice(end, area.value.length);
+    } else if (size === 'x-small') {
+      let newSize = (val === 'down' ? 'xx-small' : 'small')
+      area.value = area.value.slice(0, start) + tagArea.slice(0, sizeStart + 11) + newSize + tagArea.slice(sizeEnd, tagArea.length) + area.value.slice(end, area.value.length);
+    } else if (size === 'xx-small') {
+      if (val === 'up') {
+        area.value = area.value.slice(0, start) + tagArea.slice(0, sizeStart + 11) + 'x-small' + tagArea.slice(sizeEnd, tagArea.length) + area.value.slice(end, area.value.length);
+      }
+    } else if (size === 'large') {
+      let newSize = (val === 'down' ? 'medium' : 'x-large')
+      area.value = area.value.slice(0, start) + tagArea.slice(0, sizeStart + 11) + newSize + tagArea.slice(sizeEnd, tagArea.length) + area.value.slice(end, area.value.length);
+    } else if (size === 'x-large') {
+      let newSize = (val === 'down' ? 'large' : 'xx-large')
+      area.value = area.value.slice(0, start) + tagArea.slice(0, sizeStart + 11) + newSize + tagArea.slice(sizeEnd, tagArea.length) + area.value.slice(end, area.value.length);
+    } else if (size === 'xx-large') {
+      if (val === 'down') {
+        area.value = area.value.slice(0, start) + tagArea.slice(0, sizeStart + 11) + 'x-large' + tagArea.slice(sizeEnd, tagArea.length) + area.value.slice(end, area.value.length);
+      }
+    }
+  } else if (sizeStart === -1) {
+    const styleStart = tagArea.indexOf('style')
+    const styleEnd = tagArea.indexOf('"', styleStart + 7)
+    let newSize = (val === 'down' ? 'small' : 'large')
+    if (styleStart !== -1) {
+      area.value = area.value.slice(0, start) + tagArea.slice(0, styleEnd) + ` font-size: ${newSize};` + tagArea.slice(styleEnd, tagArea.length) + area.value.slice(end, area.value.length);
+    } else if (tagArea.slice(0, 5) !== '<body') {
+      area.value = area.value.slice(0, end) + ` style="font-size: ${newSize};"` + area.value.slice(end, area.value.length);
+    }
+  }
+  return area.value;
 }
