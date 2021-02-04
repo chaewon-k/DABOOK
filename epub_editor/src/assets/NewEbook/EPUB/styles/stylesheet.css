@@ -20,7 +20,7 @@
 }
 @font-face {
   font-family: "fopub_bat_m";
-  src: url('../Fonts/KoPubBatangMedium.ttf');
+  src: url('../fonts/KoPubBatangMedium.ttf');
 }
 @font-face {
   font-family: "hanamina";
@@ -28,5 +28,5 @@
 }
 @font-face {
   font-family: 'noto_li';
-  src: url('../Fonts/NotoSerif-LightItalic.ttf');
+  src: url('../fonts/NotoSerif-LightItalic.ttf');
 }
