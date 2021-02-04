@@ -64,10 +64,6 @@ export function set(res){
   arr[arrPoint]=data;
 }
 
-
-
-
-
 export function findText (inputText, findText) {
   const result = [];
   let index = 0;
@@ -97,4 +93,12 @@ export function replaceText (inputText, replaceText, findText, findIndexArray, r
   } else {
     return inputText.replace(findText, replaceText);
   }
+}
+
+export function setCursor (index, length) {
+  var area = document.getElementById("area");
+  area.selectionStart = index;
+  area.selectionEnd = index + length;
+  area.focus();
+  return area.value;
 }
