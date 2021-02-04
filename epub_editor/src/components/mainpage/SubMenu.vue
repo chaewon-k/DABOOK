@@ -1,25 +1,32 @@
 <template>
   <div>
     <!-------------------- file tap start -------------------->
-    <template v-if="itemIndex===0">
+    <div v-show="itemIndex===0">
       <FileTab/>
-    </template>
+    </div>
     <!--------------------- file tap end --------------------->
 
     <!-------------------- edit tap start -------------------->
-    <template v-else-if="itemIndex===1">
+    <div v-show="itemIndex===1">
       <EditTab/>
-    </template>
+    </div>
     <!---------------------- edit tap end ---------------------->
 
-    <template v-else-if="itemIndex === 2">
+    <div v-show="itemIndex === 2">
       <ToolsTab/>
-    </template>
+    </div>
+
+    <!-------------------- style tap start -------------------->
+    <div v-show="itemIndex === 3">
+      <StyleTab/>
+    </div>
+    <!---------------------- style tap end ---------------------->
+
     <!-------------------- manual tap start -------------------->
     <template v-else>
       <v-btn text @click="popUpEditor">editor 사용 설명서 보기</v-btn>
       <v-btn text>마크다운 설명서 보기</v-btn>
-    </template>
+    </div>
     <!-------------------- manual tap end -------------------->
 
   </div>
@@ -29,6 +36,7 @@
 import FileTab from '@/components/mainpage/menutabs/FileTab';
 import EditTab from '@/components/mainpage/menutabs/EditTab';
 import ToolsTab from '@/components/mainpage/menutabs/ToolsTab';
+import StyleTab from '@/components/mainpage/menutabs/StyleTab';
 
 const path=require('path');
 const electron = require('electron');
@@ -38,7 +46,8 @@ export default {
   components: {
     FileTab,
     EditTab,
-    ToolsTab
+    ToolsTab,
+    StyleTab
   },
   props: {
     itemIndex: { type: Number }

@@ -149,7 +149,6 @@ export default {
       this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2]);
     });
     eventBus.$on("loadData", (res) => {
-      //console.log(res);
       this.inputText = res.slice(res.indexOf("<body"), res.indexOf("</body>") + 7);
       this.defaultHTMLText = res.slice(res.indexOf("<?xml"), res.indexOf("<body"));
     });
@@ -201,6 +200,9 @@ export default {
       this.SET_EDITINGTEXT(this.inputText);
       this.SET_EDITINGHTML(this.defaultHTMLText);
     },
+    getEditingText: function () {
+      this.inputText = this.getEditingText;
+    },
   },
   data: function () {
     return {
@@ -223,6 +225,9 @@ export default {
   },
   computed: {
     ...mapState(['editingText','editingTextArrPoint','arrSize','editingTextArr']),
+    getEditingText: function () {
+      return this.$store.state.editingText;
+    }
   },
   methods: {
     ...mapMutations(["SET_EDITINGTEXT", "SET_EDITINGHTML",'PUSH_EDITINGTEXTARR','SHIFT_EDITINGTEXTARR','DOWN_EDITINGTEXTARRPOINT','UP_EDITINGTEXTARRPOINT']),

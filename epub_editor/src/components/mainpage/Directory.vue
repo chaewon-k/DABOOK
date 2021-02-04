@@ -65,10 +65,11 @@ export default {
             }
           } 
         }
-        // 파일을 클릭한 것이면 -> 불러온다.
-        const temp = fs.readFileSync(val.dirPath).toString();
-        this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
-        eventBus.$emit('loadData', temp);
+        if (this.$store.state.selectedFileDirectory !== val.dirPath) {  // 자기 자신을 다시 클릭한 것이 아니라면 새 파일을 가져온다.
+          const temp = fs.readFileSync(val.dirPath).toString();
+          this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
+          eventBus.$emit('loadData', temp);
+        }
       }
     }
   },
