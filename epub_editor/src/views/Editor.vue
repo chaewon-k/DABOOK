@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopMenu/>
+    <TopMenu/>   <Alert/>
     <v-container class="d-flex flex-column" >
       <v-row class="stretch" style="width: auto;">
         <v-col cols="3" style="height:35em;">
@@ -21,6 +21,8 @@
       <!-- <v-divider vertical></v-divider>
         <Preview /> -->
       </v-row>
+     
+
     </v-container>
   </div>
 </template>
@@ -30,6 +32,7 @@ import TopMenu from '@/components/mainpage/TopMenu';
 import Directory from '@/components/mainpage/Directory';
 import TableOfContents from '@/components/mainpage/TableOfContents';
 import Textarea from '@/components/mainpage/Textarea';
+import Alert from "@/components/mainpage/Alert"
 // import Preview from '@/components/mainpage/Preview';
 
 export default {
@@ -39,6 +42,7 @@ export default {
     Directory,
     TableOfContents,
     Textarea,
+    Alert,
     // Preview
   },
   data: function () {

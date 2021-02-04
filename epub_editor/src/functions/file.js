@@ -71,7 +71,7 @@ export function makeEpubFile (path, title) {
       } else {
           console.log(savePath + '/' + title + '.epub');
           console.log('EXCELLENT');
-          alert('파일이 저장되었습니다!');
+          //alert('파일이 저장되었습니다!');
           shell.openPath(savePath);
       }
   });

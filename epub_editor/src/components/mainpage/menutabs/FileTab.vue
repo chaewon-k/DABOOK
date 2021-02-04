@@ -108,7 +108,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["editingText", "editingHTMLText", "ebookDirectory",'editingTextArr']),
+    ...mapState(["alertDialog","editingText", "editingHTMLText", "ebookDirectory",'editingTextArr']),
   },
   methods: {
     // 새 e-book 생성
@@ -126,46 +126,60 @@ export default {
       - 선택한 위치에 TITLE 명의 폴더 생성 
       - src.assets.NewEbook에 있는 기본 EPUB파일 복사
       */
-      this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
-      this.$store.dispatch('setEbookDirectory', this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
-      fs.mkdir(this.eBookLocation, function (err) {
-        if (err) {
-          console.log(err);
+
+      try{
+        this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
+        this.$store.dispatch('setEbookDirectory', this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
+        fs.mkdir(this.eBookLocation, function (err) {
+          if (err) {
+            console.log(err);
+          }
+        });
+
+        this.eBookDialog = false;
+        let eBookSettingDirectory = 'src/assets/NewEbook'; //기본 ebook 디렉토리 위치
+        fse.copySync(eBookSettingDirectory,this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
+
+        /*
+        새 ebook 만들기 
+        - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
+          */
+
+        if (this.eBookCover.length === 0) {   // 기본 이미지를 선택할 경우
+          this.eBookCover.name = 'default.jpg';
+        } else {  // 이미지를 선택할 경우
+          const coverLocation = this.eBookLocation + '/EPUB/images/' + this.eBookCover.name; //이미지 저장할 위치 
+          fse.copySync(this.eBookCover.path, coverLocation); // 입력받은 이미지를 저장할 위치로 복사
         }
-      });
 
-      this.eBookDialog = false;
-      let eBookSettingDirectory = 'src/assets/NewEbook'; //기본 ebook 디렉토리 위치
-      fse.copySync(eBookSettingDirectory,this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
-
-      /*
-       새 ebook 만들기 
-       - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
-        */
-
-      if (this.eBookCover.length === 0) {   // 기본 이미지를 선택할 경우
-        this.eBookCover.name = 'default.jpg';
-      } else {  // 이미지를 선택할 경우
-        const coverLocation = this.eBookLocation + '/EPUB/images/' + this.eBookCover.name; //이미지 저장할 위치 
-        fse.copySync(this.eBookCover.path, coverLocation); // 입력받은 이미지를 저장할 위치로 복사
+        this.renameImageTag();
+        this.readToc();
+        // Dialog 초기화
+        this.eBookDialog = false;
+        this.eBookText = '';
+        this.selectedEBookLocation = '';
+        this.$store.dispatch('setAlertMessage',"새로운 e-book 생성에 성공했습니다");
       }
-
-      this.renameImageTag();
-      this.readToc();
-      // Dialog 초기화
-      this.eBookDialog = false;
-      this.eBookText = '';
-      this.selectedEBookLocation = '';
+      catch(err){
+        console.log(err);
+        this.$store.dispatch('setAlertMessage',"새로운 e-book 생성에 실패했습니다");
+      }
     },
 
     // 목차 읽어오기
     readToc: function () {
-      const data = readDirectory(this.eBookLocation, [], [], 0);
-      this.chapterNum = data['maxV'];
-      this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
+      try{
+        const data = readDirectory(this.eBookLocation, [], [], 0);
+        this.chapterNum = data['maxV'];
+        this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
 
-      const fileToText = fs.readFileSync(data['toc'][0]).toString();
-      this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
+        const fileToText = fs.readFileSync(data['toc'][0]).toString();
+        this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
+      }
+      catch(err){
+        console.log(err);
+        this.$store.dispatch('setAlertMessage',"목차 읽어오기에 실패했습니다");
+      }
     },
 
     // 이미지 이름 재설정
@@ -180,24 +194,43 @@ export default {
 
     // 저장하기
     storeInputText: function () { 
-      const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
-      fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
+      try{
+        const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
+        fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
+      }
+      catch(err){
+        console.log(err);
+        this.$store.dispatch('setAlertMessage',"저장하기에 실패했습니다");
+      }
     },
 
     // e-book 불러오기
     loadEbook: function () { 
-      this.eBookLocation = readPath();
-      this.$store.dispatch('setEbookDirectory', this.eBookLocation)
-      if (this.eBookLocation) {
-        this.readToc();
+      try{
+        this.eBookLocation = readPath();
+        this.$store.dispatch('setEbookDirectory', this.eBookLocation)
+        if (this.eBookLocation) {
+          this.readToc();
+        }
+      }
+      catch(err){
+        console.log(err);
+        this.$store.dispatch('setAlertMessage',"e-book 불러오기에 실패했습니다"); 
       }
     },
 
     // epub 내보내기
     makeEpub: function (val) { 
-      this.epubDialog = false;
-      this.savePath = makeEpubFile(this.eBookLocation, val);
-      this.epubText = '';
+      try{
+        this.epubDialog = false;
+        this.savePath = makeEpubFile(this.eBookLocation, val);
+        this.epubText = '';
+        this.$store.dispatch('setAlertMessage',"e-book 내보내기에 실패했습니다");
+      }
+      catch(err){
+        console.log(err);
+        this.$store.dispatch('setAlertMessage',"e-book 내보내기에 실패했습니다");
+      }
     },
 
     // e-book 미리보기
@@ -208,25 +241,33 @@ export default {
 
     // chapter 추가하기
     makeChapter: function (val) {
-      this.chapterDialog = false;
-      let num = '';
-      let path = this.eBookLocation + '/EPUB/text/';
-      const temp = fs.readFileSync('src/assets/chapter01.xhtml').toString();
-      this.chapterNum++;
-      if (this.chapterNum < 10) {
-        num = '0' + this.chapterNum;
-      } else {
-        num = this.chapterNum;
+      try{
+        this.chapterDialog = false;
+        let num = '';
+        let path = this.eBookLocation + '/EPUB/text/';
+        const temp = fs.readFileSync('src/assets/chapter01.xhtml').toString();
+        this.chapterNum++;
+        if (this.chapterNum < 10) {
+          num = '0' + this.chapterNum;
+        } else {
+          num = this.chapterNum;
+        }
+        changeHtag(path, num, temp, val);
+        addContentOpf(this.eBookLocation, num);
+        addTocNcx(this.eBookLocation, val, num);
+        
+        const data = readDirectory(this.eBookLocation, [], [], 0);
+        //alert('새 chapter가 추가되었습니다!');
+        this.$store.dispatch('setAlertMessage',"챕터 추가에 성공했습니다");
+ 
+        this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
+        this.$store.dispatch('addTableOfContents', val);
+        this.chapterText = '';
       }
-      changeHtag(path, num, temp, val);
-      addContentOpf(this.eBookLocation, num);
-      addTocNcx(this.eBookLocation, val, num);
-      
-      const data = readDirectory(this.eBookLocation, [], [], 0);
-      alert('새 chapter가 추가되었습니다!');
-      this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
-      this.$store.dispatch('addTableOfContents', val);
-      this.chapterText = '';
+      catch(err){
+        console.log(err);
+        this.$store.dispatch('setAlertMessage',"챕터 추가에 실패했습니다");
+      }
     },
   }
 }
