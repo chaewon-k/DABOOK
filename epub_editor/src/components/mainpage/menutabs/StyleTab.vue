@@ -142,29 +142,56 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="colorDialog1" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">글씨 색상 선택</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col class="d-flex justify-center">
+                <v-color-picker v-model="tabs[5].color"></v-color-picker>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="colorDialog1 = false">
+            닫기
+          </v-btn>
+          <v-btn color="green darken-1" text @click="colorDialog1 = false"> 선택 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     
-    <v-dialog
-      v-model="colorDialog1"
-      width="316px"
-    >
-      <v-color-picker
-        class="ma-2"
-        show-swatches
-        swatches-max-height="300px"
-        v-model="tabs[5].color"
-      ></v-color-picker>
+
+    <v-dialog v-model="colorDialog2" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">배경 색상 선택</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col class="d-flex justify-center">
+                <v-color-picker v-model="tabs[7].color"></v-color-picker>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="colorDialog2 = false">
+            닫기
+          </v-btn>
+          <v-btn color="green darken-1" text @click="colorDialog2 = false"> 선택 </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
-    <v-dialog
-      v-model="colorDialog2"
-      width="316px"
-    >
-      <v-color-picker
-        class="ma-2"
-        show-swatches
-        swatches-max-height="300px"
-        v-model="tabs[7].color"
-      ></v-color-picker>
-    </v-dialog>
+    
     <v-dialog
       v-model="fontDialog"
       scrollable
@@ -286,16 +313,28 @@ export default {
       },
     fonts: [
       {
+        name: '바탕체',
+        value: '바탕체',
+      },
+      {
+        name: '돋움체',
+        value: '돋움체',
+      },
+      {
+        name: '굴림체',
+        value: '굴림체',
+      },
+      {
+        name: '궁서체',
+        value: '궁서체',
+      },
+      {
         name: 'KoPubBatangBold',
         value: 'kopub_bat_b',
       },
       {
         name: 'KoPubBatangLight',
         value: 'kopub_bat_l',
-      },
-      {
-        name: 'KoPubBatangMedium',
-        value: 'kopub_bat_m',
       },
       {
         name: 'KoPubDotumBold',
@@ -306,29 +345,14 @@ export default {
         value: 'kopub_dot_l',
       },
       {
-        name: 'KoPubDotumMedium',
-        value: 'kopub_dot_m',
-      },
-      {
         name: 'NotoSerif-Lightitalic',
         value: 'noto_li',
-      },
-      {
-        name: 'HanaMinA',
-        value: 'hanamina',
       },
     ],
       colorDialog1: false,
       colorDialog2: false,
       fontDialog: false,
       selectedFont: '',
-      swatches : [
-        ['#FF0000', '#AA0000', '#550000'],
-        ['#FFFF00', '#AAAA00', '#555500'],
-        ['#00FF00', '#00AA00', '#005500'],
-        ['#00FFFF', '#00AAAA', '#005555'],
-        ['#0000FF', '#0000AA', '#000055'],  
-      ],
     }
   },
   methods: {
