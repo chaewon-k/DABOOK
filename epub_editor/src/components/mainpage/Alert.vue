@@ -30,6 +30,7 @@ export default {
 
 <style>
 #alertMessage{
+  color: white;
   position: fixed;
   float:  right;
   bottom: 3%;

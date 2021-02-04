@@ -31,8 +31,6 @@
       </v-list>
     </v-card>
 
-
-
     <v-dialog v-model="styleDialog" persistent width="300px">
       <v-card>
         <v-card-title>
@@ -348,7 +346,7 @@ export default {
         this.$store.dispatch('setEditingText', css.alignText('justify'));
       }
       else if (i == 4) {
-        this.colorDialog = !this.colorDialog;
+        this.colorDialog1 = !this.colorDialog1;
       }
       else if (i == 5) {
         this.$store.dispatch('setEditingText', css.setFontColor(this.tabs[5].color));
