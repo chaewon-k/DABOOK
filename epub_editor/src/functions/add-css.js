@@ -1,8 +1,8 @@
 export function alignText (val) {
   const area = document.getElementById("area");
   let start = area.selectionStart;
-  // 태그 여는 <를 찾을 때까지 실행. <> 안에서 버튼을 누를 때도 적용시키기 위해 >가 아닌 <를 찾는다.
-  while (area.value[start] !== '<' || area.value.slice(start, start + 2) === '</') {
+  // span 아닌 다른 태그를 여는 <를 찾을 때까지 실행. <> 안에서 버튼을 누를 때도 적용시키기 위해 >가 아닌 <를 찾는다.
+  while (area.value[start] !== '<' || area.value.slice(start, start + 2) === '</' || area.value.slice(start, start + 2) === '<s') {
     if (area.value[start] === '\n') {
       return area.value;
     }
@@ -37,5 +37,12 @@ export function alignText (val) {
 }
 
 export function setColor (val) {
-  console.log(val)
+  const area = document.getElementById("area");
+  const start = area.selectionStart;  // 드래그 한 단어 시작
+  const end = area.selectionEnd;  // 드래그 한 단어 끝
+  if (start !== end) {  // 한 군데 클릭하고 실행 못함
+    // 이미 색이 적용된 단어면 <span style="color: ${}"> 의 색깔만 바꿔주면 됨
+    area.value = area.value.slice(0, start) + `<span style="color: ${val};">` + area.value.slice(start, end) + '</span>' + area.value.slice(end, area.value.length)
+  }
+  return area.value
 }

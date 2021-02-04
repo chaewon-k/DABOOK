@@ -1,32 +1,32 @@
 <template>
   <div>
     <!-------------------- file tap start -------------------->
-    <template v-if="itemIndex===0">
+    <div v-show="itemIndex===0">
       <FileTab/>
-    </template>
+    </div>
     <!--------------------- file tap end --------------------->
 
     <!-------------------- edit tap start -------------------->
-    <template v-else-if="itemIndex===1">
+    <div v-show="itemIndex===1">
       <EditTab/>
-    </template>
+    </div>
     <!---------------------- edit tap end ---------------------->
 
-    <template v-else-if="itemIndex === 2">
+    <div v-show="itemIndex === 2">
       <ToolsTab/>
-    </template>
+    </div>
 
     <!-------------------- style tap start -------------------->
-    <template v-else-if="itemIndex === 3">
+    <div v-show="itemIndex === 3">
       <StyleTab/>
-    </template>
+    </div>
     <!---------------------- style tap end ---------------------->
 
     <!-------------------- manual tap start -------------------->
-    <template v-else>
+    <div v-show="itemIndex === 4">
       <v-btn text>editor 사용 설명서 보기</v-btn>
       <v-btn text>마크다운 설명서 보기</v-btn>
-    </template>
+    </div>
     <!-------------------- manual tap end -------------------->
 
   </div>
