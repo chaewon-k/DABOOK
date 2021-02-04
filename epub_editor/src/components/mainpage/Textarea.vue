@@ -6,7 +6,6 @@
       hide-details
       style="width: auto;"
       ma-auto
-      autofocus
       height="100%"
       label="textarea 입니다"
       placeholder="책을 작성해볼까요?"
@@ -137,16 +136,13 @@ window.onkeypress=(e)=>{
 export default {
   name: 'Textarea',
   created: function () {
-    eventBus.$on("edit",(res)=>{
+    eventBus.$on('edit',(res)=>{
       this.edit(res);
     });
     eventBus.$on("findText", (res) => {
       this.findText = res;
       this.findIndexArray = findText(this.inputText, res);
-      this.$store.dispatch('setFindTextArray', this.findIndexArray);
-    });
-    eventBus.$on("setCursor",(res, length)=>{
-      this.setCursor(res, length);
+      console.log(this.findIndexArray);
     });
     eventBus.$on("replaceText", (res) => {
       this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2]);
@@ -179,6 +175,7 @@ export default {
         this.inputText = textStyle.superscriptTag();
       } else if (res === "ImageTag") {
         this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
+        
         const data = readDirectory(this.$store.state.ebookDirectory, [], [], 0);
         this.chapterNum = data['maxV'];
         this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
@@ -253,9 +250,7 @@ export default {
     set: function(){
       edit.set(this.inputText);
     },
-    setCursor: function (index, length) {
-      edit.setCursor(index, length);
-    },
+
     plusRow: function () {
       this.tableRow++;
     },
@@ -305,7 +300,7 @@ export default {
       this.inputText = textStyle.superscriptTag();
     },
     attachImageTag: function () {
-      this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
+      this.inputText = textStyle.imageTag();
     },
     attachLinkTag: function () {
       this.linkDialog = false;

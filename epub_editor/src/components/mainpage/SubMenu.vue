@@ -17,7 +17,7 @@
     </template>
     <!-------------------- manual tap start -------------------->
     <template v-else>
-      <v-btn text>editor 사용 설명서 보기</v-btn>
+      <v-btn text @click="popUpEditor">editor 사용 설명서 보기</v-btn>
       <v-btn text>마크다운 설명서 보기</v-btn>
     </template>
     <!-------------------- manual tap end -------------------->
@@ -30,6 +30,9 @@ import FileTab from '@/components/mainpage/menutabs/FileTab';
 import EditTab from '@/components/mainpage/menutabs/EditTab';
 import ToolsTab from '@/components/mainpage/menutabs/ToolsTab';
 
+const path=require('path');
+const electron = require('electron');
+const BrowserWindow = electron.remote.BrowserWindow;
 export default {
   name: 'SubMenu',
   components: {
@@ -40,5 +43,12 @@ export default {
   props: {
     itemIndex: { type: Number }
   },
+  methods:{
+    popUpEditor(){
+      const win = new BrowserWindow({ width: 800, height: 1500 });
+      const p=path.resolve("./src/assets/manual/manual.html");
+      win.loadURL('file://'+p,function(){console.log("123");});
+    }
+  }
 }
 </script>
