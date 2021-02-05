@@ -1,9 +1,11 @@
 <template>
   <v-container fluid fill-height>
     <!---------------Alert 창-------------------->
-    <v-alert outlined dense icon="mdi-alert-circle-outline" :color="type" v-if="type">
-      {{ message }}
-    </v-alert>
+    <v-row>
+      <v-alert outlined dense style="width:100%;" icon="mdi-alert-circle-outline" :color="type" v-if="type">
+        {{ message }}
+      </v-alert>
+    </v-row>
     <!---------------login form------------------>
     <v-layout align-center justify-center>
       <v-card width="500">
@@ -43,95 +45,95 @@
   </v-container>
 </template>
 <script>
-import axios from 'axios'
-export default {
-  name: 'Login',
-  data: function () {
-    return {
-      // 서버에 보낼 데이터
-      inputEmail: '',
-      inputPassword: '',
+  import axios from 'axios'
+  export default {
+    name: 'Login',
+    data: function () {
+      return {
+        // 서버에 보낼 데이터
+        inputEmail: '',
+        inputPassword: '',
 
-      // Alert 용 데이터
-      message: '',
-      type: null,
-      elapse:null,
-    }
-  },
-  methods: {
-    // 3초 후 사라지는 alert 구현 함수
-    showAlert (type) {
-      this.type = type
-      let timer = this.showAlert.timer
-      if (timer) {
-        clearTimeout(timer)
+        // Alert 용 데이터
+        message: '',
+        type: null,
+        elapse:null,
       }
-      this.showAlert.timer = setTimeout(() => {
-          this.type = null
-      }, 3000)
-      
-      this.elapse = 1 
-      let t = this.showAlert.t
-      if (t) {
-        clearInterval(t)
-      }
-      
-      this.showAlert.t = setInterval(() => {
-        if (this.elapse === 3) {
-          this.elapse = 0
-          clearInterval(this.showAlert.t)
-        }
-        else {
-          this.elapse++
-        }
-      }, 1000)
     },
-
-    // 로그인 
-    logIn: function () {
-      const data = {"email" : this.inputEmail, "password" : this.inputPassword}
-      axios.post("https://i4a103.p.ssafy.io/api/login", data)
-        .then(res => {
-          const message = res.data.result
-          if (message === "ERROR_ID"){
-            this.message = '존재하지 않는 ID입니다.'
-            this.showAlert('error')
-          }
-          else if (message === "ERROR_STATUS"){
-            this.message = '이메일 인증을 해주세요.'
-            this.showAlert('error')
-          }
-          else if (message === "ERROR_PASSWORD"){
-            this.message = '존재하지 않는 비밀번호입니다.'
-            this.showAlert('error')
+    methods: {
+      // 3초 후 사라지는 alert 구현 함수
+      showAlert (type) {
+        this.type = type
+        let timer = this.showAlert.timer
+        if (timer) {
+          clearTimeout(timer)
+        }
+        this.showAlert.timer = setTimeout(() => {
+            this.type = null
+        }, 3000)
+        
+        this.elapse = 1 
+        let t = this.showAlert.t
+        if (t) {
+          clearInterval(t)
+        }
+        
+        this.showAlert.t = setInterval(() => {
+          if (this.elapse === 3) {
+            this.elapse = 0
+            clearInterval(this.showAlert.t)
           }
           else {
-            console.log(res)
-            // local Storage에 로그인 정보 저장.
-            localStorage.setItem('token',res.data.token)
-            localStorage.setItem('email', res.data.email)
-            localStorage.setItem('nickname', res.data.nickname)
-            this.$router.push({ name: 'Editor'})
+            this.elapse++
           }
-        })
-        .catch(err => console.log(err))
-    },
+        }, 1000)
+      },
 
-    // 회원가입 창으로 이동
-    signUp: function () {
-      this.$router.push({ name: 'Signup'})
-    },
+      // 로그인 
+      logIn: function () {
+        const data = {"email" : this.inputEmail, "password" : this.inputPassword}
+        axios.post("https://i4a103.p.ssafy.io/api/login", data)
+          .then(res => {
+            const message = res.data.result
+            if (message === "ERROR_ID"){
+              this.message = '존재하지 않는 ID입니다.'
+              this.showAlert('error')
+            }
+            else if (message === "ERROR_STATUS"){
+              this.message = '이메일 인증을 해주세요.'
+              this.showAlert('error')
+            }
+            else if (message === "ERROR_PASSWORD"){
+              this.message = '존재하지 않는 비밀번호입니다.'
+              this.showAlert('error')
+            }
+            else {
+              console.log(res)
+              // local Storage에 로그인 정보 저장.
+              localStorage.setItem('token',res.data.token)
+              localStorage.setItem('email', res.data.email)
+              localStorage.setItem('nickname', res.data.nickname)
+              this.$router.push({ name: 'Editor'})
+            }
+          })
+          .catch(err => console.log(err))
+      },
 
-    // 임시 비밀번호 발급
-    findPassword: function () {
-      axios.get(`https://i4a103.p.ssafy.io/password?email=${this.inputEmail}`)
-        .then(res =>{
-          console.log(res)
-        })
-        .catch(err => console.log(err))
-      this.message = '해당 이메일로 임시 비밀번호를 전송했습니다.'
-      this.showAlert('purple')
+      // 회원가입 창으로 이동
+      signUp: function () {
+        this.$router.push({ name: 'Signup'})
+      },
+
+      // 임시 비밀번호 발급
+      findPassword: function () {
+        axios.get(`https://i4a103.p.ssafy.io/password?email=${this.inputEmail}`)
+          .then(res =>{
+            console.log(res)
+          })
+          .catch(err => console.log(err))
+        this.message = '해당 이메일로 임시 비밀번호를 전송했습니다.'
+        this.showAlert('purple')
+      }
     }
   }
-}
 </script>
