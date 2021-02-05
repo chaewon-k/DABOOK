@@ -39,6 +39,12 @@
         <a href="Document/Wireframe/Project WireFrame Image.md"><li> Wireframe Image </li></a>
     </ul>
 </details>
+<details>
+    <summary> Manual </summary>
+    <ul>
+        <a href="Document/Manual/manual.md"><li> Manual </li></a>
+    </ul>
+</details>
 
 
 ## 기능정의서
