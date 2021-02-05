@@ -7,11 +7,11 @@
 
 - 진행기간 : 2021.1.11 ~ (ing)
 - 만든이 : 소독가들(강세준, 강채원, 김혜민, 장주빈, 최나현, 최낙훈)
-- 기획 배경 : 
-- 목표 : 
+- 기획 배경 : HTML, CSS도 모르는 일반인들도 전자책을 만들수 있게 해보자.
+- 목표 : GUI와 단축키로 편하게 사용가능한 Epub Editor만들기.
 
 ## Project Stack
-
+![Project_Stacks](/uploads/ea77b3e5ce6ab35d0ba738c464d6a66c/Project_Stacks.png)
 
 ## Document
 <details>
