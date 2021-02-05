@@ -10,12 +10,18 @@
     <!---------------Signup form----------------->
     <v-layout align-center justify-center>
       <v-card width="500">
-        <v-card-title class="title font-weight-regular justify-space-between">
-          <span>Signup</span>
-        </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
+              <router-link  text :to="{name:'Login'}"><v-icon>mdi-arrow-left</v-icon></router-link>
+            </v-row>
+            <v-row>
+              <v-card-text align="center" class="mb-6">
+                <h1>Signup</h1>
+              </v-card-text>
+            </v-row>
+            <v-row>
+              <v-icon class="mr-3">mdi-email-outline</v-icon>
               <v-text-field
                 label="Email"
                 v-model="email"
@@ -24,6 +30,7 @@
               <v-btn @click="emailConfirm">이메일 인증</v-btn>
             </v-row>
             <v-row class="my-3">
+              <v-icon class="mr-3">mdi-account</v-icon>
               <v-text-field
                 label="Name"
                 v-model="name"
@@ -31,6 +38,7 @@
               ></v-text-field>
             </v-row>
             <v-row class="my-3">
+              <v-icon class="mr-3">mdi-emoticon-happy-outline</v-icon>
               <v-text-field
                 label="Nickname"
                 v-model="nickname"
@@ -39,6 +47,7 @@
               <v-btn @click="nicknameConfirm">닉네임 중복확인</v-btn>
             </v-row>
             <v-row class="my-3">
+              <v-icon class="mr-3">mdi-lock-outline</v-icon>
               <v-text-field
                 class="mr-2"
                 label="Password"
@@ -54,17 +63,17 @@
                 :rules="rules"
               ></v-text-field>
             </v-row>
+            <v-row class="mb-3">
+              <v-checkbox
+                v-model="checkbox"
+                label="Do you agree?"
+              ></v-checkbox>
+            </v-row>
+            <v-row>
+              <v-btn block class="mb-5" @click="signUp">SIGNUP</v-btn>
+            </v-row>
           </v-container>
         </v-card-text>
-        <v-divider></v-divider>
-        <v-checkbox
-          v-model="checkbox"
-          label="Do you agree?"
-        ></v-checkbox>
-        <v-card-actions>
-          <v-btn @click="signUp">SIGNUP</v-btn>
-          <router-link :to="{name:'Login'}"><v-btn>Back</v-btn></router-link>
-        </v-card-actions>
       </v-card>
     </v-layout>
   </v-container>
