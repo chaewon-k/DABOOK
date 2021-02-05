@@ -6,23 +6,24 @@ module.exports = {
     electronBuilder: {
       nodeIntegration: true,
       nodeModulesPath: ['../../node_modules', './node_modules'],
+
       builderOptions: {
-        appId: 'com.ssafy.epubeditor',
-        nsis: {
-          shorcutName: 'epub-editor'
+        appId: 'com.ssafy.dabook',
+        productName: 'dabook',
+        asar: false,
+        protocols: {
+          name: 'dabook',
+          schemes: [
+            'dabook'
+          ],
         },
-        win: {
-          target: [
-            {
-              target: "nsis",
-              arch: [
-                'x64',
-                'ia32'
-              ]
-            }
-          ]
+        mac: {
+          category: 'public.app-category.productivity',
+          // target: 'mas',
+          // identity: 'String - The name of certificate to use when signing. Consider using environment variables CSC_LINK or CSC_NAME instead of specifying this option. MAS installer identity is specified in the mas.',
         },
       },
     }
+    
   },
 }

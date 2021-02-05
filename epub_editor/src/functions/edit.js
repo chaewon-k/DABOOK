@@ -4,7 +4,7 @@ let arrPoint=-1;
 let arr=[];
 let arrSize=20;
 
-export function Save (res){
+export function Save (res) {
   if(res>=37&&res<=40) // 방향키
     set('');
   else if(res==9) //tab
@@ -16,20 +16,20 @@ export function Save (res){
 }
 
 
-export function cut(){
+export function cut () {
   console.log("cut");
   document.execCommand('cut');
 }
-export function copy(){
+export function copy () {
   console.log("copy");
   document.execCommand('copy');
 }
-export function paste(){
+export function paste () {
   console.log("paste");
   document.execCommand('paste');
 }
 
-export function undo(){ 
+export function undo () { 
 
   console.log("undo");
   if (arrPoint == 0) {
@@ -41,7 +41,7 @@ export function undo(){
 
 }
 
-export function redo(){
+export function redo () {
 
   console.log("redo");
   var area=document.getElementById("area");
@@ -53,7 +53,7 @@ export function redo(){
 
 }
 
-export function set(res){
+export function set (res) {
   console.log("Set");
   let data= document.getElementById("area").value;
   let point=document.getElementById("area").selectionStart;
