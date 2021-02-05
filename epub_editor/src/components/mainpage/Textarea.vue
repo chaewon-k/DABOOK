@@ -1,9 +1,10 @@
 <template>
-  <v-col cols="9" style="height:35em;">
+  <div id="textarea">
     <v-textarea
-      solo
       id="area"
+      solo
       hide-details
+      spellcheck="false"
       style="width: auto;"
       ma-auto
       height="100%"
@@ -95,9 +96,8 @@
         {{ 'h' + hTag }}
       </span>
     </div>
+  </div>
 
-  </v-col>
-  
 </template>
 
 <script>
