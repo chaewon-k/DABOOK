@@ -1,9 +1,11 @@
 <template>
   <v-container fluid fill-height>
     <!---------------Alert 창-------------------->
-    <v-alert outlined dense icon="mdi-alert-circle-outline" :color="type" v-if="type">
-      {{ message }}
-    </v-alert>
+    <v-row>
+      <v-alert outlined dense style="width:100%;" icon="mdi-alert-circle-outline" :color="type" v-if="type">
+        {{ message }}
+      </v-alert>
+    </v-row>
     <!---------------login form------------------>
     <v-layout align-center justify-center>
       <v-card width="500">
