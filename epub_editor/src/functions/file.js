@@ -60,6 +60,26 @@ export function tocToList (toc, arrayOfContents) {
   return arrayOfContents;
 }
 
+
+export function readCustomStyle (path) {
+  let temp = fs.readFileSync(path + '/EPUB/styles/stylesheet.css').toString();
+    let prePos = 0;
+    let postPos = 0;
+    let start = temp.indexOf("user_");
+    //let end = temp.indexOf("\n{");
+    let styleList = [];
+    while (start !== -1) {
+      let foundPos = temp.indexOf("user_", prePos);
+      let endPos = temp.indexOf("\n{", postPos);
+      if (foundPos == -1) break;
+      styleList.push(temp.slice(foundPos+5, endPos));
+      prePos = foundPos + 1;
+      postPos = endPos + 1;
+    }
+    console.log(styleList);
+    return styleList;
+}
+
 export function makeEpubFile (path, title) {
   var zipFolder = require('zip-folder');
   const savePath = readPath();

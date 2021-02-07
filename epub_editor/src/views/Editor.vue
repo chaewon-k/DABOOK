@@ -7,7 +7,7 @@
     </header>
     <div id="wrap">
       <aside id="aside">
-        <v-card max-height="100%" min-height="100%" class="overflow-y-auto">
+        <v-card max-height="100%" min-height="100%" class="overflow-y-auto" style="border-radius: 0%;">
           <v-btn v-if="dirTableToggle===true" @click="toggle" block text>디렉토리</v-btn>
           <v-btn v-else @click="toggle" block text>목차</v-btn>
           <Directory
