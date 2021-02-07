@@ -1,5 +1,3 @@
-
-
 let arrPoint=-1;
 let arr=[];
 let arrSize=20;
@@ -9,76 +7,77 @@ let maxStack=0;
 export function Save (res) {
   //if(res>=37&&res<=40) // 방향키
   // set('');
-  if(res==9) //tab
+  if (res == 9) //tab
     set('');
-  else if(res==13) //enter
+  else if (res == 13) //enter
     set('');
-  else if(res==32) //space
+  else if (res == 32) //space
     set(' ');
 }
 
-
 export function cut () {
-  console.log("cut");
+  // console.log("cut");
   document.execCommand('cut');
 }
+
 export function copy () {
-  console.log("copy");
+  // console.log("copy");
   document.execCommand('copy');
 }
+
 export function paste () {
-  console.log("paste");
+  // console.log("paste");
   document.execCommand('paste');
 }
 
 export function undo () { 
-  if(maxStack==arrPoint)
+  if (maxStack == arrPoint)
     this.set('');
-  direction=1;
-  if(arr[arrPoint+1]===undefined)
+  direction = 1;
+  if (arr[arrPoint + 1] === undefined)
     this.set('');
-  console.log("undo");
+  // console.log("undo");
   if (arrPoint == 0) {
     return arr[arrPoint];
   }
-  arrPoint-=1;
-  var area=document.getElementById("area");
-  area.value=arr[arrPoint];
-  direction=1;
+  arrPoint -= 1;
+  var area = document.getElementById("area");
+  area.value = arr[arrPoint];
+  direction = 1;
 }
 
 export function redo () {
-  direction=1;
-  console.log("redo");
-  var area=document.getElementById("area");
-  if (arrPoint == arr.length-1){
+  direction = 1;
+  // console.log("redo");
+  var area = document.getElementById("area");
+  if (arrPoint == arr.length - 1){
     return arr[arrPoint];
   }
-  if(arrPoint==maxStack){
+  if(arrPoint == maxStack){
     return arr[arrPoint];
   }
-  arrPoint+=1;
-  area.value=arr[arrPoint];
+  arrPoint += 1;
+  area.value = arr[arrPoint];
 }
 
 export function set (res) {
-  if(direction==1){
-    maxStack=arrPoint;
-    direction=0;
+  if (direction == 1) {
+    maxStack = arrPoint;
+    direction = 0;
   }
-  console.log("Set");
-  let data= document.getElementById("area").value;
-  let point=document.getElementById("area").selectionStart;
-  data=data.substring(0,point)+res+data.substring(point);
-  if(arr[arrPoint]==data)
+  // console.log("Set");
+  let data = document.getElementById("area").value;
+  let point = document.getElementById("area").selectionStart;
+  data = data.substring(0,point) + res + data.substring(point);
+  if (arr[arrPoint] == data)
     return;
-  if(arrPoint==arrSize){
-    arrPoint-=1;
+  if (arrPoint == arrSize) {
+    arrPoint -= 1;
     arr.shift();
   }
-  arrPoint+=1;
-  arr[arrPoint]=data;
-  maxStack=maxStack+1;
+  arrPoint += 1;
+  arr[arrPoint] = data;
+  maxStack = maxStack + 1;
 }
 
 export function findText (inputText, findText) {
@@ -97,7 +96,7 @@ export function findText (inputText, findText) {
 }
 
 export function replaceText (inputText, replaceText, findText, findIndexArray, replaceAlphabet, replaceAllText) {
-  console.log(findIndexArray);
+  // console.log(findIndexArray);
   if (replaceAlphabet && replaceAllText) {
     let regExp = new RegExp(findText, "gi");
     return inputText.replace(regExp, replaceText);

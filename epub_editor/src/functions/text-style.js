@@ -125,7 +125,7 @@ export function imageTag (location) {
   temp2 = temp2.slice(0, start-1).concat(` <item id="${fileName}" href="images/${fileName}" media-type="image/${extension}" />\n    `, temp2.slice(start, temp2.length));
   fs.writeFile(location + '/EPUB/content.opf', temp2, (err) => {
     if (err) {
-      console.log(err);
+      console.log('해당 디렉토리에 이미지 저장 실패');
     }
   });
   var resultString = `<img src="../images/${fileName}" />`;

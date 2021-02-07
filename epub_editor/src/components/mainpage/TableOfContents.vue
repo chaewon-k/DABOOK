@@ -57,9 +57,9 @@ export default {
     };
   },
   methods: {
-    test: function (val) {
-      console.log(val)
-    },
+    // test: function (val) {
+    //   console.log(val)
+    // },
   }
 }
 </script>
