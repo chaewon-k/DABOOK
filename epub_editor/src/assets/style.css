@@ -1,11 +1,61 @@
+#editor {
+  height: 100%;
+}
+
+#header {
+  position: fixed;
+  height: 96px;
+  width: 100%;
+  background-color: #5d106b;
+  z-index: 2;
+}
+
+#topMenu {
+  width: 100%;
+}
+
+#wrap {
+  padding-top: 96px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+#aside {
+  height: 100%;
+  width: 300px;
+  position: fixed;
+  background: blue;
+}
+
+#tableOfContents {
+  height: 100%;
+}
+
+#content {
+  background: green;
+  padding-left: 300px;
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
+#textarea {
+  height: 100%;
+}
+
+#textarea div {
+  height: 100%;
+}
+
 /* 도구상자 버튼 정렬하는 style */
 
 #subMenuBar {
   width: 100%;
-  height: 80px;
 }
 
-div.left {
+/* div.left {
     width: 60%;
     float: left;
     height: 10%;
@@ -16,7 +66,7 @@ div.right {
   width: 39%;
   float: right;
   position: relative;
-}
+} */
 
 /* dialog 글씨 및 배경 색 변경하는 style */
 
@@ -33,17 +83,7 @@ div.right {
 }
 
 /*  textarea 높이 맞추는 style */
-#app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder {
-  height: 100%;
-}
 
-#app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder > div {
-  height: 100%;
-}
-
-#app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder > div > div {
-  height: 100%;
-}
 
 /* 우클릭 시 나오는 div의 style */
 .contextmenu {

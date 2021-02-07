@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-tabs show-arrows v-model="tab">
     <v-tooltip bottom
       ><template v-slot:activator="{ on }">
         <v-btn v-on="on" icon medium @click="edit('undo')"
@@ -131,7 +131,7 @@
         </v-btn>
       </v-toolbar>
     </v-card>
-  </div>
+  </v-tabs>
 </template>
 
 <script>
@@ -140,6 +140,7 @@ export default {
   name: "EditTab",
   data: function () {
     return {
+      tab: null,
       findDialog: false,
       replaceDialog: false,
       findText: "",

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-card class="rounded-0">
+  <div id="topMenu">
+    <v-card>
       <v-tabs
         show-arrows
         v-model="tab"
