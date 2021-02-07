@@ -12,7 +12,7 @@
       <v-icon small style="padding: 0 5px;" v-if="!item.file">
         {{ 'mdi-folder' }}
       </v-icon>
-      <v-icon small v-else>
+      <v-icon v-else style="padding: 0 5px;">
         {{ files[item.file] }}
       </v-icon>
       <span @click="openFile(item)">{{ item.name }}</span>
@@ -36,14 +36,15 @@ export default {
     return {
       initiallyOpen: [],
       files: {
-        html: 'mdi-language-html5',
-        js: 'mdi-nodejs',
-        json: 'mdi-code-json',
-        md: 'mdi-language-markdown',
-        pdf: 'mdi-file-pdf',
+        xhtml: 'mdi-book-open-page-variant',
+        html: 'mdi-book-open-page-variant',
+        ncx: 'mdi-table-of-contents',
+        opf: 'mdi-cogs',
+        ttf: 'mdi-format-font',
         png: 'mdi-file-image',
-        txt: 'mdi-file-document-outline',
-        xls: 'mdi-file-excel',
+        jpg: 'mdi-file-image',
+        xml: 'mdi-xml',
+        css: 'mdi-language-css3',
       },
       tree: [],
     };
