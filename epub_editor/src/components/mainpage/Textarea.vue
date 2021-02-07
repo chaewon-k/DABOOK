@@ -23,16 +23,10 @@
         <v-card-text>
           <v-text-field label="Link" v-model="linkText" required></v-text-field>
         </v-card-text>
-
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="linkDialog = false">
-            취소
-          </v-btn>
-
-          <v-btn color="green darken-1" text @click="attachLinkTag()">
-            링크 추가
-          </v-btn>
+          <v-btn color="red darken-1" text @click="linkDialog = false">취소</v-btn>
+          <v-btn color="green darken-1" text @click="attachLinkTag()">링크 추가</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -43,35 +37,30 @@
         <v-row>
           <v-col>
             <v-text-field label="행" v-model="tableRow">
-              <v-icon slot="append" color="red" @click="plusRow()"> mdi-plus </v-icon>
-              <v-icon slot="prepend" color="green" @click="minusRow()"> mdi-minus </v-icon>
+              <v-icon slot="append" color="red" @click="plusRow()">mdi-plus</v-icon>
+              <v-icon slot="prepend" color="green" @click="minusRow()">mdi-minus</v-icon>
             </v-text-field>
           </v-col>
           <v-col>
             <v-text-field label="열" v-model="tableCol">
-              <v-icon slot="append" color="red" @click="plusCol()"> mdi-plus </v-icon>
-              <v-icon slot="prepend" color="green" @click="minusCol()"> mdi-minus </v-icon>
+              <v-icon slot="append" color="red" @click="plusCol()">mdi-plus</v-icon>
+              <v-icon slot="prepend" color="green" @click="minusCol()">mdi-minus</v-icon>
             </v-text-field>
           </v-col>
         </v-row>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="tableDialog = false">
-            취소
-          </v-btn>
-
-          <v-btn color="green darken-1" text @click="attachTableTag()">
-            표 생성
-          </v-btn>
+          <v-btn color="red darken-1" text @click="tableDialog = false">취소</v-btn>
+          <v-btn color="green darken-1" text @click="attachTableTag()">표 생성</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <div class="contextmenu" id="menu" @click="closeMenu">
       <span>오려두기</span>
-      <span>복사</span>
-      <span>붙이기</span>
+      <span>복사하기</span>
+      <span>붙여넣기</span>
       <v-divider class="divider-margin"></v-divider>
 
       <v-btn x-small class="mx-1"><v-icon medium @click="attachBoldTag()">mdi-format-bold</v-icon></v-btn>
@@ -88,13 +77,11 @@
       
       <v-divider class="divider-margin"></v-divider>
       
-      <span @mouseover="openHeaders">headers▸</span>
+      <span @mouseover="openHeaders">제목▸</span>
     </div>
 
     <div id="headers" class="contextmenu" @click="closeMenu">
-      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">
-        {{ 'h' + hTag }}
-      </span>
+      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{ '제목' + hTag }}</span>
     </div>
   </div>
 
@@ -111,34 +98,27 @@ import * as edit from "@/functions/edit.js";
 
 const fs = require('fs');
 
-
-window.onkeypress=(e)=>{
+window.onkeypress = (e) => {
   //console.log(e);
-  if(e.keyCode===19&&e.ctrlKey===true){
-    eventBus.$emit("shortcut","save");
-  }
-  else if(e.keyCode===5&&e.ctrlKey===true){
+  if (e.keyCode === 19 && e.ctrlKey === true) {
+    eventBus.$emit("shortcut", "save");
+  } else if (e.keyCode === 5 && e.ctrlKey === true) {
     edit.copy();
-  }
-  else if(e.keyCode===23&&e.ctrlKey===true){
+  } else if (e.keyCode === 23 && e.ctrlKey === true) {
     edit.cut();
-  }
-  else if(e.keyCode===4&&e.ctrlKey===true){
+  } else if (e.keyCode === 4 && e.ctrlKey === true) {
     edit.paste();
-  }
-  else if(e.keyCode===17&&e.ctrlKey===true){
+  } else if (e.keyCode === 17 && e.ctrlKey === true) {
     edit.undo();
-  }
-  else if(e.keyCode===6&&e.ctrlKey===true){
+  } else if(e.keyCode === 6 && e.ctrlKey === true) {
     edit.redo();
   }
 };
 
-
 export default {
   name: 'Textarea',
   created: function () {
-    eventBus.$on("edit",(res)=>{
+    eventBus.$on("edit", (res) => {
       this.edit(res);
     });
     eventBus.$on("findText", (res) => {
@@ -146,7 +126,7 @@ export default {
       this.findIndexArray = findText(this.inputText, res);
       this.$store.dispatch('setFindTextArray', this.findIndexArray);
     });
-    eventBus.$on("setCursor",(res, length)=>{
+    eventBus.$on("setCursor", (res, length)=>{
       this.setCursor(res, length);
     });
     eventBus.$on("replaceText", (res) => {
@@ -228,15 +208,15 @@ export default {
     };
   },
   computed: {
-    ...mapState(['editingText','editingTextArrPoint','arrSize','editingTextArr']),
+    ...mapState(['editingText', 'editingTextArrPoint', 'arrSize', 'editingTextArr']),
     getEditingText: function () {
       return this.$store.state.editingText;
     }
   },
   methods: {
     ...mapMutations(["SET_EDITINGTEXT", "SET_EDITINGHTML",'PUSH_EDITINGTEXTARR','SHIFT_EDITINGTEXTARR','DOWN_EDITINGTEXTARRPOINT','UP_EDITINGTEXTARRPOINT']),
-    edit:function(res){
-      switch (res){
+    edit: function (res) {
+      switch (res) {
         case 'cut': 
           edit.cut();
           break;
@@ -254,7 +234,7 @@ export default {
           break;
       }
     },
-    isSave: function(event){
+    isSave: function (event) {
       edit.Save(event.keyCode);
     },
     plusRow: function () {

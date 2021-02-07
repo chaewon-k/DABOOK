@@ -28,7 +28,7 @@ export function alignText (val) {
     const styleStart = tagArea.indexOf('style')
     const styleEnd = tagArea.indexOf('"', styleStart + 7)
     if (styleStart !== -1) {  // 2-1. style 속성이 있으면
-      console.log(tagArea.slice(styleStart, styleEnd))
+      // console.log(tagArea.slice(styleStart, styleEnd))
       area.value = area.value.slice(0, start) + tagArea.slice(0, styleEnd) + `text-align: ${val};` + tagArea.slice(styleEnd, tagArea.length) + area.value.slice(end, area.value.length);
     } else if (tagArea.slice(0, 5) !== '<body') {  // 2-2. style 속성이 없으면, body 태그 제외하고
       area.value = area.value.slice(0, end) + ` style="text-align: ${val};"` + area.value.slice(end, area.value.length);
@@ -71,11 +71,11 @@ export function makeCustomStyle (val, path) {
 { 
 ${fontColor}${backgroundColor}${range}${font}
 }\n\n`;
-  console.log(cssStr);
+  // console.log(cssStr);
 
   fs.writeFile(path + '/EPUB/styles/stylesheet.css', temp + cssStr, (err) => {
     if (err) {
-      console.log(err);
+      console.log('fs.writeFile 실패');
     }
   });
 

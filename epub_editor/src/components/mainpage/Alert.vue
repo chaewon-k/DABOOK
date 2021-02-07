@@ -4,7 +4,7 @@
       <v-alert id="alertMessage" border="left" color="#433e8a">
         {{alertMessage}}
         <v-btn icon x-small @click="cancel">
-          <v-icon> mdi-close-circle </v-icon>
+          <v-icon>mdi-close-circle</v-icon>
         </v-btn>
       </v-alert>
     </div>
@@ -15,14 +15,14 @@
 import { mapState } from "vuex";
 
 export default {
-  name: 'alert',
+  name: 'Alert',
   computed: {
-    ...mapState(['alertMessage','alertDialog']),
+    ...mapState(['alertMessage', 'alertDialog']),
   },
-  methods:{
-    cancel:function(){
-      console.log(document.getElementById("alert").value);
-      console.log("cancel");
+  methods: {
+    cancel: function () {
+      // console.log(document.getElementById("alert").value);
+      // console.log("cancel");
       this.$store.dispatch('cancelAlertMessage');
     },
   },

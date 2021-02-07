@@ -1,15 +1,13 @@
 <template>
+  <!----------- StyleTab menus ----------->  
   <v-tabs show-arrows v-model="tab">
     <div class="d-flex">
       <div v-for="(tab, idx) in tabs" :key="idx">
-        <v-tooltip bottom
-          ><template v-slot:activator="{ on }">
-            <v-btn v-on="on" icon medium @click="styleMethod(idx)"
-              ><v-icon v-bind:style="{ color: tab.color }" medium>{{
-                tab.icon
-              }}</v-icon></v-btn
-            ></template
-          >
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" icon medium @click="styleMethod(idx)">
+              <v-icon v-bind:style="{ color: tab.color }" medium>{{ tab.icon }}</v-icon></v-btn>
+          </template>
           <span>{{ tab.name }}</span>
         </v-tooltip>
       </div>
@@ -23,12 +21,8 @@
     >
       <v-toolbar color="deep-purple accent-4" dark>
         <v-toolbar-title>나만의 style</v-toolbar-title>
-
         <v-spacer></v-spacer>
-
-        <v-btn icon @click="customDialog = false;">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
+        <v-btn icon @click="customDialog = false;"><v-icon>mdi-close</v-icon></v-btn>
       </v-toolbar>
 
       <v-list subheader>
@@ -40,23 +34,17 @@
           <v-list-item-content>
             <v-list-item-title v-text="style"></v-list-item-title>
           </v-list-item-content>
-
-        </v-list-item> 
+        </v-list-item>
 
         <v-list-item  @click="styleDialog = true">
-          
-
           <v-list-item-icon>
             <v-icon> mdi-plus</v-icon>
           </v-list-item-icon>
-
           <v-list-item-content>
             <v-list-item-title> style 추가하기</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
       </v-list>
-
       <v-divider></v-divider>
     </v-dialog>
 
@@ -101,11 +89,9 @@
                     colorDialog = true;
                   "
                 ></v-text-field>
-                <v-btn v-if="customStyle.fontColor != ''" icon medium
-                  ><v-icon medium v-bind:style="{ color: customStyle.fontColor }"
-                    >mdi-checkbox-blank-circle</v-icon
-                  ></v-btn
-                >
+                <v-btn v-if="customStyle.fontColor != ''" icon medium>
+                  <v-icon medium v-bind:style="{ color: customStyle.fontColor }">mdi-checkbox-blank-circle</v-icon>
+                </v-btn>
               </v-row>
             </v-col>
             <v-col sm>
@@ -117,30 +103,24 @@
                   @click="
                     selected = 'background';
                     colorDialog = true;
-                  "
-                ></v-text-field>
-                <v-btn v-if="customStyle.backgroundColor != ''" icon medium
-                  ><v-icon medium v-bind:style="{ color: customStyle.backgroundColor }"
-                    >mdi-checkbox-blank-circle</v-icon
-                  ></v-btn
-                >
+                  "></v-text-field>
+                <v-btn v-if="customStyle.backgroundColor != ''" icon medium>
+                  <v-icon medium v-bind:style="{ color: customStyle.backgroundColor }">mdi-checkbox-blank-circle</v-icon></v-btn>
               </v-row>
             </v-col>
           </v-container>
         </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="styleDialog = false">
-            닫기
-          </v-btn>
+          <v-btn color="red darken-1" text @click="styleDialog = false">닫기</v-btn>
           <v-btn
             color="green darken-1"
             text
             @click="
               addStyle();
               styleDialog = false;
-            "
-          >
+            ">
             만들기
           </v-btn>
         </v-card-actions>
@@ -211,9 +191,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="colorDialog2 = false">
-            닫기
-          </v-btn>
+          <v-btn color="red darken-1" text @click="colorDialog2 = false">닫기</v-btn>
           <v-btn color="green darken-1" text @click="colorDialog2 = false"> 선택 </v-btn>
         </v-card-actions>
       </v-card>
