@@ -3,7 +3,6 @@
     <!-------------------- file tap start -------------------->
     <FileTab
       v-show="itemIndex===0"
-      class="align-self-center"
     />
     <!--------------------- file tap end --------------------->
 

@@ -10,7 +10,7 @@
     <!-- eBook dialog -->
     <v-dialog v-model="eBookDialog" max-width="600">
       <v-card>
-        <v-card-title class="headline header-color">
+        <v-card-title class="header-color">
           E-BOOK 생성하기
         </v-card-title>
         <v-card-text>
@@ -138,7 +138,7 @@ export default {
       - src.assets.NewEbook에 있는 기본 EPUB파일 복사
       */
 
-      try{
+      try {
         this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
         this.$store.dispatch('setEbookDirectory', this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
         fs.mkdir(this.eBookLocation, function (err) {
@@ -169,10 +169,14 @@ export default {
         this.eBookDialog = false;
         this.eBookText = '';
         this.selectedEBookLocation = '';
+        this.$store.dispatch('setEditingText', '');
         this.$store.dispatch('setAlertMessage',"새로운 e-book 생성에 성공했습니다");
       }
       catch(err){
         console.log(err);
+        this.eBookDialog = false;
+        this.eBookText = '';
+        this.selectedEBookLocation = '';
         this.$store.dispatch('setAlertMessage',"새로운 e-book 생성에 실패했습니다");
       }
     },
@@ -224,15 +228,16 @@ export default {
 
     // e-book 불러오기
     loadEbook: function () { 
-      try{
+      try {
         this.eBookLocation = readPath();
-        this.$store.dispatch('setEbookDirectory', this.eBookLocation)
+        this.$store.dispatch('setEbookDirectory', this.eBookLocation);
         if (this.eBookLocation) {
           this.readToc();
           this.readCustomStyle();
+          this.$store.dispatch('setEditingText', '');
         }
       }
-      catch(err){
+      catch (err) {
         console.log(err);
         this.$store.dispatch('setAlertMessage',"e-book 불러오기에 실패했습니다"); 
       }

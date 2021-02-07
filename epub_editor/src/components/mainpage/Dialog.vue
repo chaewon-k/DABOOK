@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="isDialog" max-width="500" @click:outside="toggleDialog(); resetDialog();">
     <v-card>
-      <v-card-title class="headline header-color">{{ title }}</v-card-title>
+      <v-card-title class="header-color">{{ title }}</v-card-title>
       <v-card-text>
         <v-text-field class="my-3" :label="labelText" v-model="inputText" required></v-text-field>
       </v-card-text>

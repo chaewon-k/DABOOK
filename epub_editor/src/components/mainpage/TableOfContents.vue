@@ -2,6 +2,7 @@
 <template>
   <v-card
     id="tableOfContents"
+    height="0"
     class="mx-auto"
     max-width="400"
   >

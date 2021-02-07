@@ -27,6 +27,12 @@ const fs = require('fs');
 
 export default {
   name: 'Directory',
+  watch: {
+    items: function () {
+      this.initiallyOpen = ['EPUB', 'text']
+    },
+
+  },
   computed: {
     items: function () {
       return this.$store.state.ebookDirectoryTree;
@@ -34,7 +40,7 @@ export default {
   },
   data: function () {
     return {
-      initiallyOpen: [],
+      initiallyOpen: ['EPUB', 'text'],
       files: {
         xhtml: 'mdi-book-open-page-variant',
         html: 'mdi-book-open-page-variant',

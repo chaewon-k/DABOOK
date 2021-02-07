@@ -2,16 +2,41 @@
   <v-tabs show-arrows v-model="tab">
     <div class="d-flex">
       <div class="align-self-center" v-for="(tab, idx) in tabs" :key="idx">
-        <v-tooltip bottom
-          ><template v-slot:activator="{ on }">
-            <v-btn v-on="on" icon medium @click="styleMethod(idx)"
-              ><v-icon v-bind:style="{ color: tab.color }" medium>{{
-                tab.icon
-              }}</v-icon></v-btn
-            ></template
-          >
-          <span>{{ tab.name }}</span>
-        </v-tooltip>
+
+        <div v-if="idx===4">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" icon medium @click="styleMethod(idx)" @mousedown.right.stop.prevent="colorDialog1 = true;"
+                ><v-icon v-bind:style="{ color: tab.color }" medium>{{
+                  tab.icon
+                }}</v-icon></v-btn>
+              </template>
+            <span>{{ tab.name }}</span>
+          </v-tooltip>
+        </div>
+        <div v-else-if="idx===5">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" icon medium @click="styleMethod(idx)" @mousedown.right.stop.prevent="colorDialog2 = true;"
+                ><v-icon v-bind:style="{ color: tab.color }" medium>{{
+                  tab.icon
+                }}</v-icon></v-btn>
+              </template>
+            <span>{{ tab.name }}</span>
+          </v-tooltip>
+        </div>
+
+        <div v-else>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" icon medium @click="styleMethod(idx)"
+                ><v-icon v-bind:style="{ color: tab.color }" medium>{{
+                  tab.icon
+                }}</v-icon></v-btn>
+              </template>
+            <span>{{ tab.name }}</span>
+          </v-tooltip>
+        </div>
       </div>
     </div>
 
@@ -63,7 +88,7 @@
     <v-dialog v-model="styleDialog" persistent width="300px">
       <v-card>
         <v-card-title>
-          <span class="headline">나만의 style 추가하기</span>
+          <span>나만의 style 추가하기</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -150,7 +175,7 @@
     <v-dialog v-model="colorDialog" persistent max-width="400px">
       <v-card>
         <v-card-title>
-          <span class="headline">색상 선택</span>
+          <span>색상 선택</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -174,13 +199,13 @@
     <v-dialog v-model="colorDialog1" persistent max-width="400px">
       <v-card>
         <v-card-title>
-          <span class="headline">글씨 색상 선택</span>
+          <span>글씨 색상 선택</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col class="d-flex justify-center">
-                <v-color-picker v-model="tabs[5].color"></v-color-picker>
+                <v-color-picker v-model="tabs[4].color"></v-color-picker>
               </v-col>
             </v-row>
           </v-container>
@@ -198,13 +223,13 @@
     <v-dialog v-model="colorDialog2" persistent max-width="400px">
       <v-card>
         <v-card-title>
-          <span class="headline">배경 색상 선택</span>
+          <span>배경 색상 선택</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col class="d-flex justify-center">
-                <v-color-picker v-model="tabs[7].color"></v-color-picker>
+                <v-color-picker v-model="tabs[5].color"></v-color-picker>
               </v-col>
             </v-row>
           </v-container>
@@ -292,17 +317,9 @@ export default {
           icon: "mdi-format-align-justify",
         },
         {
-          name: '글자색 선택',
-          icon: 'mdi-eyedropper-variant',
-        },
-        {
           name: '글자색 적용',
           icon: 'mdi-format-color-text',
           color: 'red',
-        },
-        {
-          name: '배경색 선택',
-          icon: 'mdi-eyedropper-variant',
         },
         {
           name: '배경색 적용',
@@ -400,27 +417,21 @@ export default {
         this.$store.dispatch('setEditingText', css.alignText('justify'));
       }
       else if (i == 4) {
-        this.colorDialog1 = !this.colorDialog1;
+        this.$store.dispatch('setEditingText', css.setFontColor(this.tabs[4].color));
       }
       else if (i == 5) {
-        this.$store.dispatch('setEditingText', css.setFontColor(this.tabs[5].color));
+        this.$store.dispatch('setEditingText', css.setBackgroundColor(this.tabs[5].color));
       }
       else if (i == 6) {
-        this.colorDialog2 = !this.colorDialog2;
-      }
-      else if (i == 7) {
-        this.$store.dispatch('setEditingText', css.setBackgroundColor(this.tabs[7].color));
-      }
-      else if (i == 8) {
         this.fontDialog = !this.fontDialog;
       }
-      else if (i == 9) {
+      else if (i == 7) {
         this.$store.dispatch('setEditingText', css.fontSize('down'));
       }
-      else if (i == 10) {
+      else if (i == 8) {
         this.$store.dispatch('setEditingText', css.fontSize('up'));
       }
-      else if (i == 11) {
+      else if (i == 9) {
         this.openCustomStyleMenu();
       }
       edit.set('');

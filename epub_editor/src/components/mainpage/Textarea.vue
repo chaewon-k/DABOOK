@@ -19,7 +19,7 @@
     
     <v-dialog v-model="linkDialog" max-width="290">
       <v-card>
-        <v-card-title class="headline"> 링크를 입력해주세요. </v-card-title>
+        <v-card-title> 링크를 입력해주세요. </v-card-title>
         <v-card-text>
           <v-text-field label="Link" v-model="linkText" required></v-text-field>
         </v-card-text>
@@ -39,7 +39,7 @@
 
     <v-dialog v-model="tableDialog" max-width="290">
       <v-card>
-        <v-card-title class="headline"> 생성할 표의 행과 열을 입력하세요. </v-card-title>
+        <v-card-title> 생성할 표의 행과 열을 입력하세요. </v-card-title>
         <v-row>
           <v-col>
             <v-text-field label="행" v-model="tableRow">
@@ -101,8 +101,6 @@
 </template>
 
 <script>
-
-import { mapMutations, mapState } from "vuex";
 import eventBus from "@/eventBus.js";
 import { readDirectory, tocToList } from '@/functions/file.js';
 import { findText, replaceText } from "@/functions/edit.js";
@@ -110,7 +108,6 @@ import * as textStyle from "@/functions/text-style.js";
 import * as edit from "@/functions/edit.js";
 
 const fs = require('fs');
-
 
 window.onkeypress=(e)=>{
   //console.log(e);
@@ -133,7 +130,6 @@ window.onkeypress=(e)=>{
     edit.redo();
   }
 };
-
 
 export default {
   name: 'Textarea',
@@ -201,8 +197,8 @@ export default {
   },
   watch: {
     inputText: function () {
-      this.SET_EDITINGTEXT(this.inputText);
-      this.SET_EDITINGHTML(this.defaultHTMLText);
+      this.$store.dispatch('setEditingText', this.inputText);
+      this.$store.dispatch('setHTMLText', this.defaultHTMLText);
     },
     getEditingText: function () {
       this.inputText = this.getEditingText;
@@ -210,6 +206,7 @@ export default {
   },
   data: function () {
     return {
+      test: '',
       inputText: "",
       defaultHTMLText: "",
       linkText: "",
@@ -228,13 +225,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(['editingText','editingTextArrPoint','arrSize','editingTextArr']),
     getEditingText: function () {
       return this.$store.state.editingText;
     }
   },
   methods: {
-    ...mapMutations(["SET_EDITINGTEXT", "SET_EDITINGHTML",'PUSH_EDITINGTEXTARR','SHIFT_EDITINGTEXTARR','DOWN_EDITINGTEXTARRPOINT','UP_EDITINGTEXTARRPOINT']),
     edit:function(res){
       switch (res){
         case 'cut': 
