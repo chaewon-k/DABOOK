@@ -15,63 +15,50 @@
       </div>
     </div>
 
-    <!-- <v-card id="customStyleMenu" class="mx-auto" style="display:none;" max-width="300" flat>
-      <v-toolbar dense floating>
-      <v-list>
-        <v-list-item-group color="primary">
-          <v-list-item v-for="(style, i) in customStyleList" :key="i" @click="applyCustomStyle(i)">
-            <v-list-item-content>
-              <v-list-item-title v-text="style.title"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item @click="styleDialog = true">
-            <v-icon style="margin-right: 5px">mdi-plus-circle-outline</v-icon>
-            <v-list-item-content> 스타일 추가하기 </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-      </v-toolbar>
-    </v-card> -->
-
-    <v-card
-    id="customStyleMenu" style="display:none;"
-    class="mx-auto"
-    max-width="500"
-  >
-    <v-toolbar
-      color="deep-purple accent-4"
-      dark
+    <v-dialog
+      v-model="customDialog"
+      class="mx-auto"
+      max-width="500"
+      width="200"
     >
+      <v-toolbar color="deep-purple accent-4" dark>
+        <v-toolbar-title>나만의 style</v-toolbar-title>
 
-      <v-toolbar-title>나만의 style</v-toolbar-title>
+        <v-spacer></v-spacer>
 
-      <v-spacer></v-spacer>
+        <v-btn icon @click="customDialog = false;">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>
 
-      <v-btn icon @click="styleDialog = true">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </v-toolbar>
+      <v-list subheader>
+         <v-list-item
+          v-for="(style, index) in customStyleList"
+          :key="index"
+          @click="applyCustomStyle(index)"
+        >
+          <v-list-item-content>
+            <v-list-item-title v-text="style"></v-list-item-title>
+          </v-list-item-content>
 
-    <v-list subheader>
+        </v-list-item> 
 
-      <v-list-item
-        v-for="(style, i) in customStyleList" :key="i" @click="applyCustomStyle(i)"
-      >
+        <v-list-item  @click="styleDialog = true">
+          
 
-        <v-list-item-content>
-          <v-list-item-title v-text="style.title"></v-list-item-title>
-        </v-list-item-content>
+          <v-list-item-icon>
+            <v-icon> mdi-plus</v-icon>
+          </v-list-item-icon>
 
-        <v-list-item-icon>
-          <v-icon>
-            mdi-check-bold
-          </v-icon>
-        </v-list-item-icon>
-      </v-list-item>
-    </v-list>
+          <v-list-item-content>
+            <v-list-item-title> style 추가하기</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
-    <v-divider></v-divider>
-  </v-card>
+      </v-list>
+
+      <v-divider></v-divider>
+    </v-dialog>
 
     <v-dialog v-model="styleDialog" persistent width="300px">
       <v-card>
@@ -208,7 +195,6 @@
       </v-card>
     </v-dialog>
     
-
     <v-dialog v-model="colorDialog2" persistent max-width="400px">
       <v-card>
         <v-card-title>
@@ -344,6 +330,7 @@ export default {
       styleListIndex: 0,
       styleDialog: false,
       colorDialog: false,
+      customDialog: false,
       customStyleMenu: false,
       pickedColor: "",
       selected: "",
@@ -434,7 +421,6 @@ export default {
         this.$store.dispatch('setEditingText', css.fontSize('up'));
       }
       else if (i == 11) {
-        this.customStyleMenu = !this.customStyleMenu;
         this.openCustomStyleMenu();
       }
       edit.set('');
@@ -448,24 +434,22 @@ export default {
       this.colorDialog = false;
     },
     addStyle: function () {
-      //css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
       this.customStyleMenu = false;
-      this.customStyleList.push(this.customStyle);
+      this.customStyleList.push(this.customStyle.title);
+      css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
       this.customStyle = {};
       this.$store.dispatch('setCustomStyleArray', this.customStyleList);
     },
     openCustomStyleMenu: function () {
-       let menu = document.getElementById('customStyleMenu');
-       if (this.customStyleMenu) {
-          menu.style.display = 'block';
-       }
-       else {
-         menu.style.display = 'none';
-       }
+      this.customStyleList = this.$store.state.customStyleArray;
+      this.customDialog = true;
     },
     applyCustomStyle: function (index) {
-      css.attachCustomStyleTag(this.customStyle.title);
-      this.$store.dispatch("setEditingText", css.makeCustomStyle(this.customStyleList[index], this.$store.state.ebookDirectory));
+      this.$store.dispatch(
+        "setEditingText",
+        css.attachCustomStyleTag(this.customStyleList[index])
+      );
+      this.customDialog = false;
     },
     setFont: function (font) {
       this.$store.dispatch('setEditingText', css.setFont(font))

@@ -5,7 +5,7 @@
       solo
       hide-details
       spellcheck="false"
-      style="width: auto;"
+      style="width: auto; border-radius: 0%;"
       ma-auto
       height="100%"
       label="textarea 입니다"
@@ -155,6 +155,7 @@ export default {
     eventBus.$on("loadData", (res) => {
       this.inputText = res.slice(res.indexOf("<body"), res.indexOf("</body>") + 7);
       this.defaultHTMLText = res.slice(res.indexOf("<?xml"), res.indexOf("<body"));
+      edit.set(this.inputText);
     });
     eventBus.$on("pushIndexData", (res) => {
       if (res === "Italic") {
