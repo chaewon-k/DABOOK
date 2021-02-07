@@ -44,13 +44,38 @@
     </v-dialog>
 
     <!-- epub dialog -->
-    <Dialog
+    <!-- <Dialog
       :isDialog = "epubDialog"
       title = "epub 내보내기"
       labelText = "epub 이름"
       :dialogMethod = "makeEpub"
       @toggle-dialog = "epubDialog = false"
-    /> 
+    />  -->
+
+    <v-dialog v-model="epubDialog" max-width="600">
+      <v-card>
+        <v-card-title class="header-color">
+          epub 내보내기
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row class="my-3">
+              <v-text-field class="my-3" label="e-book 이름" v-model="eBookText" required></v-text-field>
+            </v-row>
+            <v-row class="my-3">
+              <v-text-field class="my-3" label="작성자" v-model="eBookAuthor" required></v-text-field>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="epubDialog = false">취소</v-btn>
+          <v-btn text @click="makeEpub(eBookText)" style="color: #423F8C;">epub 내보내기</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
 
     <!-- chapter dialog -->
     <Dialog
@@ -64,7 +89,7 @@
 </template>
 
 <script>
-import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, changeHtag, readPath, readCustomStyle } from '@/functions/file.js';
+import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, changeHtag, readPath, readCustomStyle, changeTitleAuthor } from '@/functions/file.js';
 import { mapState } from 'vuex';
 import eventBus from "@/eventBus.js";
 import Dialog from '@/components/mainpage/Dialog';
@@ -90,6 +115,7 @@ export default {
 
       // string
       eBookText: '',
+      eBookAuthor: '',
       eBookLocation: '',
       selectedEBookLocation: '',
 
@@ -132,46 +158,54 @@ export default {
       - 선택한 위치에 TITLE 명의 폴더 생성 
       - src.assets.NewEbook에 있는 기본 EPUB파일 복사
       */
-      try {
-        this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
-        this.$store.dispatch('setEbookDirectory', this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
-        fs.mkdir(this.eBookLocation, function (err) {
-          if (err) {
-            console.log('디렉토리 생성 실패');
+
+      if (this.eBookLocation === '' || this.eBookText === '') {
+        this.$store.dispatch('setAlertMessage',"이북 생성에 실패했습니다.");
+        this.eBookDialog = false;
+      } else {
+      
+
+        try {
+          this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
+          this.$store.dispatch('setEbookDirectory', this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
+          fs.mkdir(this.eBookLocation, function (err) {
+            if (err) {
+              console.log('디렉토리 생성 실패');
+            }
+          });
+
+          this.eBookDialog = false;
+          let eBookSettingDirectory = 'src/assets/NewEbook'; //기본 ebook 디렉토리 위치
+          fse.copySync(eBookSettingDirectory,this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
+
+          /*
+          새 ebook 만들기 
+          - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
+            */
+          if (this.eBookCover.length === 0) {   // 기본 이미지를 선택할 경우
+            this.eBookCover.name = 'default.jpg';
+          } else {  // 이미지를 선택할 경우
+            const coverLocation = this.eBookLocation + '/EPUB/images/' + this.eBookCover.name; //이미지 저장할 위치 
+            fse.copySync(this.eBookCover.path, coverLocation); // 입력받은 이미지를 저장할 위치로 복사
           }
-        });
 
-        this.eBookDialog = false;
-        let eBookSettingDirectory = 'src/assets/NewEbook'; //기본 ebook 디렉토리 위치
-        fse.copySync(eBookSettingDirectory,this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
-
-        /*
-        새 ebook 만들기 
-        - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
-          */
-        if (this.eBookCover.length === 0) {   // 기본 이미지를 선택할 경우
-          this.eBookCover.name = 'default.jpg';
-        } else {  // 이미지를 선택할 경우
-          const coverLocation = this.eBookLocation + '/EPUB/images/' + this.eBookCover.name; //이미지 저장할 위치 
-          fse.copySync(this.eBookCover.path, coverLocation); // 입력받은 이미지를 저장할 위치로 복사
+          this.renameImageTag();
+          this.readToc();
+          // Dialog 초기화
+          this.eBookDialog = false;
+          this.eBookText = '';
+          this.selectedEBookLocation = '';
+          this.$store.dispatch('setEditingText', '');
+          this.$store.dispatch('setAlertMessage', "새로운 e-book 생성에 성공했습니다");
         }
-
-        this.renameImageTag();
-        this.readToc();
-        // Dialog 초기화
-        this.eBookDialog = false;
-        this.eBookText = '';
-        this.selectedEBookLocation = '';
-        this.$store.dispatch('setEditingText', '');
-        this.$store.dispatch('setAlertMessage', "새로운 e-book 생성에 성공했습니다");
-      }
-      catch (err) {
-        console.log(err);
-        this.eBookDialog = false;
-        this.eBookText = '';
-        this.selectedEBookLocation = '';
-        this.$store.dispatch('setAlertMessage', "새로운 e-book 생성에 실패했습니다");
-      }
+        catch (err) {
+          console.log(err);
+          this.eBookDialog = false;
+          this.eBookText = '';
+          this.selectedEBookLocation = '';
+          this.$store.dispatch('setAlertMessage', "새로운 e-book 생성에 실패했습니다");
+        }
+      }  
     },
 
     // 목차 읽어오기
@@ -211,6 +245,7 @@ export default {
       try {
         const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
         fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
+        this.$store.dispatch('setAlertMessage',"저장하기에 성공했습니다");
       } catch(err) {
         console.log('저장하기 실패');
         this.$store.dispatch('setAlertMessage',"저장하기에 실패했습니다");
@@ -237,14 +272,16 @@ export default {
     // epub 내보내기
     makeEpub: function (val) { 
       try {
+        changeTitleAuthor(this.eBookLocation, val, this.eBookAuthor)
         this.epubDialog = false;
         this.savePath = makeEpubFile(this.eBookLocation, val);
-        this.epubText = '';
-        this.$store.dispatch('setAlertMessage',"e-book 내보내기에 실패했습니다");
+        this.$store.dispatch('setAlertMessage', "epub 내보내기에 성공했습니다");
       } catch (err) {
         console.log('epub 내보내기 실패');
-        this.$store.dispatch('setAlertMessage',"e-book 내보내기에 실패했습니다");
+        this.$store.dispatch('setAlertMessage', "epub 내보내기에 실패했습니다");
       }
+      this.eBookText = '';
+      this.eBookAuthor = '';
     },
 
     // e-book 미리보기
@@ -281,7 +318,7 @@ export default {
         this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
         this.$store.dispatch('addTableOfContents', val);
         this.chapterText = '';
-      } catch(err){
+      } catch (err) {
         console.log('chapter 추가 실패');
         this.$store.dispatch('setAlertMessage',"챕터 추가에 실패했습니다");
       }
