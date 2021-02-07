@@ -113,22 +113,23 @@ const fs = require('fs');
 
 
 window.onkeypress=(e)=>{
-  if(e.key=="s"&&e.ctrlKey==true){
+  //console.log(e);
+  if(e.keyCode===19&&e.ctrlKey===true){
     eventBus.$emit("shortcut","save");
   }
-  else if(e.key=="c"&&e.ctrlKey==true){
+  else if(e.keyCode===5&&e.ctrlKey===true){
     edit.copy();
   }
-  else if(e.key=="x"&&e.ctrlKey==true){
+  else if(e.keyCode===23&&e.ctrlKey===true){
     edit.cut();
   }
-  else if(e.key=="v"&&e.ctrlKey==true){
+  else if(e.keyCode===4&&e.ctrlKey===true){
     edit.paste();
   }
-  else if(e.key=="z"&&e.ctrlKey==true){
+  else if(e.keyCode===17&&e.ctrlKey===true){
     edit.undo();
   }
-  else if(e.key=="y"&&e.ctrlKey==true){
+  else if(e.keyCode===6&&e.ctrlKey===true){
     edit.redo();
   }
 };
@@ -137,13 +138,16 @@ window.onkeypress=(e)=>{
 export default {
   name: 'Textarea',
   created: function () {
-    eventBus.$on('edit',(res)=>{
+    eventBus.$on("edit",(res)=>{
       this.edit(res);
     });
     eventBus.$on("findText", (res) => {
       this.findText = res;
       this.findIndexArray = findText(this.inputText, res);
-      console.log(this.findIndexArray);
+      this.$store.dispatch('setFindTextArray', this.findIndexArray);
+    });
+    eventBus.$on("setCursor",(res, length)=>{
+      this.setCursor(res, length);
     });
     eventBus.$on("replaceText", (res) => {
       this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2]);
@@ -175,7 +179,6 @@ export default {
         this.inputText = textStyle.superscriptTag();
       } else if (res === "ImageTag") {
         this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
-        
         const data = readDirectory(this.$store.state.ebookDirectory, [], [], 0);
         this.chapterNum = data['maxV'];
         this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
@@ -192,7 +195,7 @@ export default {
       } else {
         this.inputText = textStyle.hTag(res);
       }
-      this.set();
+      edit.set('');
     });
   },
   watch: {
@@ -243,20 +246,16 @@ export default {
           edit.paste();
           break;
         case 'undo':
-          this.inputText=edit.undo();
+          edit.undo();
           break;
         case 'redo':
-          this.inputText=edit.redo();
+          edit.redo();
           break;
       }
     },
     isSave: function(event){
       edit.Save(event.keyCode);
     },
-    set: function(){
-      edit.set(this.inputText);
-    },
-
     plusRow: function () {
       this.tableRow++;
     },
@@ -350,7 +349,10 @@ export default {
     closeHeaders: function () {
       let menu = document.getElementById('headers');
       menu.style.display = 'none';
-    }
+    },
+    setCursor: function (index, length) {
+      edit.setCursor(index, length);
+    },
   },
 };
 </script>

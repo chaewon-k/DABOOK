@@ -70,6 +70,7 @@
 <script>
 import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, changeHtag, readPath } from '@/functions/file.js';
 import { mapState } from 'vuex';
+import eventBus from "@/eventBus.js";
 import Dialog from '@/components/mainpage/Dialog';
 
 const fs = require('fs');
@@ -106,7 +107,16 @@ export default {
       findIndexArray: [],
       eBookCover: [],
     }
+  }, 
+  created:function(){
+    eventBus.$on('shortcut',(res)=>{
+      if(res=="save"){
+        this.storeInputText();
+      }
+
+    })
   },
+
   computed: {
     ...mapState(["alertDialog","editingText", "editingHTMLText", "ebookDirectory",'editingTextArr']),
   },
@@ -236,7 +246,7 @@ export default {
     // e-book 미리보기
     preview: function () { 
       const win = new BrowserWindow({ width: 800, height: 1500 });
-      win.loadURL(this.$store.state.selectedFileDirectory);
+      win.loadURL("file://" + this.$store.state.selectedFileDirectory);
     },
 
     // chapter 추가하기

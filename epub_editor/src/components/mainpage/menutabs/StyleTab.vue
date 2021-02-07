@@ -281,6 +281,7 @@
 
 <script>
 import * as css from "@/functions/add-css.js";
+import * as edit from "@/functions/edit.js";
 
 export default {
   name: "StyleTab",
@@ -435,6 +436,7 @@ export default {
         this.customStyleMenu = !this.customStyleMenu;
         this.openCustomStyleMenu();
       }
+      edit.set('');
     },
     pickColor: function () {
       if (this.selected == "font") {
