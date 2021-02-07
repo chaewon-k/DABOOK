@@ -1,6 +1,6 @@
 <template>
   <div id="subMenuBar">
-    <div class="left">
+    <v-tabs show-arrows v-model="tab" class="left">
       <v-tooltip bottom><template v-slot:activator="{ on }">
         <v-btn v-on="on" icon medium><v-icon medium @click="selectTag(1)">mdi-format-header-1</v-icon></v-btn></template>
         <span>H1</span>
@@ -85,7 +85,7 @@
         <v-btn v-on="on" icon medium><v-icon medium @click="selectTag('Table')">mdi-table-large-plus</v-icon></v-btn></template>
       <span>Table</span>
       </v-tooltip>
-    </div>
+    </v-tabs>
   </div>
 </template>
 
@@ -94,6 +94,11 @@ import eventBus from '@/eventBus.js';
 
 export default {
   name: 'ToolsTab',
+  data: function () {
+    return {
+      tab: null,
+    }
+  },
   methods: {
     selectTag: function(index) {
       eventBus.$emit('pushIndexData', index);

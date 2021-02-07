@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-tabs show-arrows v-model="tab">
     <v-btn @click.stop="eBookDialog = true" text>e-book 생성하기</v-btn>
     <v-btn @click="loadEbook" text>e-book 불러오기</v-btn>
     <v-btn @click="storeInputText" text>저장하기</v-btn>
@@ -64,7 +64,7 @@
       :dialogMethod = "makeChapter"
       @toggle-dialog = "chapterDialog = false"
      /> 
-  </div>
+  </v-tabs>
 </template>
 
 <script>
@@ -87,6 +87,7 @@ export default {
   data: function () {
     return {
       // dialog
+      tab: null,
       chapterDialog: false,
       epubDialog: false,
       eBookDialog: false,
