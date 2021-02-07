@@ -93,13 +93,13 @@ export default new Vuex.Store({
     setFindTextArray: function ({ commit }, value) {
       commit('SET_FINDTEXTARRAY', value);
     },
-    setAlertMessage : function({commit}, value) {
-      commit('SET_ALERTMESSAGE',value);
-      setTimeout(function(){
+    setAlertMessage : function({ commit }, value) {
+      commit('SET_ALERTMESSAGE', value);
+      setTimeout(function () {
         commit('CANCEL_ALERTMESSAGE');
-      },3000);
+      }, 3000);
     },
-    cancelAlertMessage: function({commit}){
+    cancelAlertMessage: function({ commit }){
       commit('CANCEL_ALERTMESSAGE');
     }
   },

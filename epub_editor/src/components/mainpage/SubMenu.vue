@@ -40,7 +40,7 @@ import EditTab from '@/components/mainpage/menutabs/EditTab';
 import ToolsTab from '@/components/mainpage/menutabs/ToolsTab';
 import StyleTab from '@/components/mainpage/menutabs/StyleTab';
 
-const path=require('path');
+const path = require('path');
 const electron = require('electron');
 const BrowserWindow = electron.remote.BrowserWindow;
 export default {
@@ -60,10 +60,12 @@ export default {
     }
   },
   methods:{
-    popUpEditor(){
+    popUpEditor: function (){
       const win = new BrowserWindow({ width: 800, height: 1500 });
-      const p=path.resolve("./src/assets/manual/manual.html");
-      win.loadURL('file://'+p,function(){console.log("123");});
+      const p = path.resolve("./src/assets/manual/manual.html");
+      win.loadURL('file://' + p, function () { 
+        // console.log("123");
+      });
     }
   }
 }

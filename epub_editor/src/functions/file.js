@@ -78,7 +78,7 @@ export function readCustomStyle (path) {
       prePos = foundPos + 1;
       postPos = endPos + 1;
     }
-    console.log(styleList);
+    // console.log(styleList);
     return styleList;
 }
 
@@ -90,10 +90,10 @@ export function makeEpubFile (path, title) {
   path = path.replace('\\\\', '/');
   zipFolder(path, savePath + '/' + title + '.epub', function(err) {
       if(err) {
-          console.log('oh no!', err);
+          console.log('makeEpubFile 실패');
       } else {
-          console.log(savePath + '/' + title + '.epub');
-          console.log('EXCELLENT');
+          // console.log(savePath + '/' + title + '.epub');
+          // console.log('EXCELLENT');
           //alert('파일이 저장되었습니다!');
           shell.openPath(savePath);
       }
@@ -109,7 +109,7 @@ export function addContentOpf (path, maxV) {
   temp = temp.slice(0, start-1).concat(` <itemref idref="chapter${maxV}.xhtml"/>\n    `, temp.slice(start, temp.length));
   fs.writeFile(path + '/EPUB/content.opf', temp, (err) => {
     if (err) {
-      console.log(err);
+      console.log('fs.writeFile 실패');
     }
   });
 }
@@ -120,7 +120,7 @@ export function addTocNcx (path, name, maxV) {
   temp = temp.slice(0, start-1).concat(` <navPoint id="navPoint-${maxV}">\n      <navLabel>\n        <text>${name}</text>\n      </navLabel>\n      <content src="text/chapter${maxV}.xhtml" />\n    </navPoint>\n    `, temp.slice(start, temp.length));
   fs.writeFile(path + '/EPUB/toc.ncx', temp, (err) => {
     if (err) {
-      console.log(err);
+      console.log('chapter 추가 실패');
     }
   });
 }
@@ -129,7 +129,7 @@ export function changeHtag (path, num, str, title) {
   str = str.replace('{{ 사용자 입력 제목 }}', title);
   fs.writeFile(path + 'chapter' + num + '.xhtml', str, (err) => {
     if (err) {
-      console.log(err);
+      console.log('change Htag 실패');
     }
   });
 }

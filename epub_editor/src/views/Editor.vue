@@ -1,7 +1,6 @@
 <template>
   <div id="editor">
     <Alert/>
-
     <header id="header">
       <TopMenu/>
     </header>
@@ -48,7 +47,7 @@ export default {
   },
   methods: {
     toggle: function () {
-      this.dirTableToggle = !this.dirTableToggle
+      this.dirTableToggle = !this.dirTableToggle;
     },
   },
 }
