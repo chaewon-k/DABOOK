@@ -1,7 +1,7 @@
 <template>
   <v-tabs show-arrows v-model="tab">
     <div class="d-flex">
-      <div v-for="(tab, idx) in tabs" :key="idx">
+      <div class="align-self-center" v-for="(tab, idx) in tabs" :key="idx">
         <v-tooltip bottom
           ><template v-slot:activator="{ on }">
             <v-btn v-on="on" icon medium @click="styleMethod(idx)"
