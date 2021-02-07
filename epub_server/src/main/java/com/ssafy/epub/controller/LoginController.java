@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin({"*"})
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LoginController {
 	@Autowired
 	UserRepository userRepository;
@@ -65,7 +65,7 @@ public class LoginController {
 		user = userRepository.findByEmail(email).get(0);
 		String token = jwtTokenProvider.createToken(user.getEmail());
 			
-		result.put("auth-token", token);
+		result.put("token", token);
 		result.put("result", "SUCCESS_LOGIN");
 		result.put("email", user.getEmail());
 		result.put("nickname", user.getNickname());
