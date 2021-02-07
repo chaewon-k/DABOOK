@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, changeHtag, readPath } from '@/functions/file.js';
+import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, changeHtag, readPath, readCustomStyle } from '@/functions/file.js';
 import { mapState } from 'vuex';
 import eventBus from "@/eventBus.js";
 import Dialog from '@/components/mainpage/Dialog';
@@ -193,6 +193,13 @@ export default {
       }
     },
 
+    // 나만의 style 읽어오기
+    readCustomStyle: function () {
+      let data = readCustomStyle(this.eBookLocation);
+      console.log(data);
+      this.$store.dispatch('setCustomStyleArray', readCustomStyle(this.eBookLocation));
+    },
+
     // 이미지 이름 재설정
     renameImageTag: function () {
       let coverLocation=path.resolve(this.eBookLocation+'/EPUB/images/'+this.eBookCover.name);
@@ -222,6 +229,7 @@ export default {
         this.$store.dispatch('setEbookDirectory', this.eBookLocation)
         if (this.eBookLocation) {
           this.readToc();
+          this.readCustomStyle();
         }
       }
       catch(err){

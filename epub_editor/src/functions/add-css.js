@@ -37,11 +37,10 @@ export function alignText (val) {
   return area.value;
 }
 
+
 export function makeCustomStyle (val, path) {
-  console.log(path);
   const fs = require("fs");
   let temp = fs.readFileSync(path + '/EPUB/styles/stylesheet.css').toString();
-  console.log(temp);
   let range = '', font = '', backgroundColor = '', fontColor = '';
   if (val.range === '왼쪽 정렬') {
     range = ` text-align: left;\n`;
@@ -49,8 +48,11 @@ export function makeCustomStyle (val, path) {
   else if (val.range == '오른쪽 정렬') {
     range = ` text-align: right;\n`;
   }
-  else if (val.range == '가운데 정렬'){
+  else if (val.range == '가운데 정렬') {
     range = ` text-align: center;\n`;
+  }
+  else {
+    range = ` text-align: justify;\n`;
   }
 
   if (val.font != '') {
@@ -71,7 +73,7 @@ ${fontColor}${backgroundColor}${range}${font}
 }\n\n`;
   console.log(cssStr);
 
-  fs.writeFile(path + '/EPUB/styles/stylesheet.css', cssStr, (err) => {
+  fs.writeFile(path + '/EPUB/styles/stylesheet.css', temp + cssStr, (err) => {
     if (err) {
       console.log(err);
     }
@@ -82,7 +84,7 @@ ${fontColor}${backgroundColor}${range}${font}
 export function attachCustomStyleTag (title) {
   const area = document.getElementById("area");
   let preStr = `\n  <div class ="user_${title}">\n    `;
-  let postStr = `\n </div>`;
+  let postStr = `\n  </div>`;
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
     area.setRangeText(preStr + selected + postStr);
