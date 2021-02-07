@@ -3,10 +3,6 @@
   src: url('../fonts/KoPubDotumBold.ttf');
 }
 @font-face {
-  font-family: "kopub_dot_m";
-  src: url('../fonts/KoPubDotumMedium.ttf');
-}
-@font-face {
   font-family: "kopub_dot_l";
   src: url('../fonts/KoPubDotumLight.ttf');
 }
@@ -19,14 +15,6 @@
   src: url('../fonts/KoPubBatangBold.ttf');
 }
 @font-face {
-  font-family: "fopub_bat_m";
-  src: url('../Fonts/KoPubBatangMedium.ttf');
-}
-@font-face {
-  font-family: "hanamina";
-  src: url('../fonts/HanaMinA.ttf');
-}
-@font-face {
   font-family: 'noto_li';
-  src: url('../Fonts/NotoSerif-LightItalic.ttf');
+  src: url('../fonts/NotoSerif-LightItalic.ttf');
 }

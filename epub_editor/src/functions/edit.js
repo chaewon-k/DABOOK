@@ -17,44 +17,48 @@ export function Save (res){
 
 
 export function cut(){
-  //console.log("cut");
+  console.log("cut");
   document.execCommand('cut');
 }
 export function copy(){
-  //console.log("copy");
+  console.log("copy");
   document.execCommand('copy');
 }
 export function paste(){
-  //console.log("paste");
+  console.log("paste");
   document.execCommand('paste');
 }
 
 export function undo(){ 
-  //console.log("undo");
+
+  console.log("undo");
   if (arrPoint == 0) {
     return arr[arrPoint];
   }
   arrPoint-=1;
-  var area=document.getElementById("area").value;
-  area=arr[arrPoint];
-  return area;
+  var area=document.getElementById("area");
+  area.value=arr[arrPoint];
+
 }
 
 export function redo(){
-  //console.log("redo");
-  var area=document.getElementById("area").value;
+
+  console.log("redo");
+  var area=document.getElementById("area");
   if (arrPoint == arr.length-1){
     return arr[arrPoint];
   }
   arrPoint+=1;
-  area=arr[arrPoint];
-  return area;
+  area.value=arr[arrPoint];
+
 }
 
 export function set(res){
-  //console.log("Set");
+  console.log("Set");
   let data= document.getElementById("area").value;
   let point=document.getElementById("area").selectionStart;
+  console.log("data area 값 "+data);
+  console.log("res 값  : "+res);
   data=data.substring(0,point)+res+data.substring(point);
   if(arrPoint==arrSize){
     arrPoint-=1;
@@ -62,11 +66,8 @@ export function set(res){
   }
   arrPoint+=1;
   arr[arrPoint]=data;
+  console.log(arr);
 }
-
-
-
-
 
 export function findText (inputText, findText) {
   const result = [];
@@ -97,4 +98,12 @@ export function replaceText (inputText, replaceText, findText, findIndexArray, r
   } else {
     return inputText.replace(findText, replaceText);
   }
+}
+
+export function setCursor (index, length) {
+  var area = document.getElementById("area");
+  area.selectionStart = index;
+  area.selectionEnd = index + length;
+  area.focus();
+  return area.value;
 }
