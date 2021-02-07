@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 //http://localhost:8080/swagger-ui.html
-@CrossOrigin({"*"})
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
 public class UserController {

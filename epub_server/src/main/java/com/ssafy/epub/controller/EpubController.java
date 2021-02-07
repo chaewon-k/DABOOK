@@ -19,7 +19,7 @@ import com.ssafy.epub.repository.FileRepository;
 import io.swagger.annotations.ApiOperation;
 
 //http://localhost:8080/swagger-ui.html
-@CrossOrigin({"*"})
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
 public class EpubController {

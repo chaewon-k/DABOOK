@@ -2,8 +2,9 @@ package com.ssafy.epub;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-//@EnableMongoRepositories("com.ssafy.epub.repository")
+@EnableMongoRepositories(basePackages = "com.ssafy.epub.repository")
 //(exclude = {DataSourceAutoConfiguration.class})
 @SpringBootApplication
 public class EpubServerApplication{
