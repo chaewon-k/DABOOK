@@ -1,63 +1,50 @@
 <template>
+  <!----------- EditTab menus ----------->
   <v-tabs show-arrows v-model="tab">
-    <v-tooltip bottom
-      ><template v-slot:activator="{ on }">
-        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('undo')"
-          ><v-icon medium>mdi-undo</v-icon></v-btn
-        ></template
-      >
-      <span>undo</span>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('undo')"><v-icon medium>mdi-undo</v-icon></v-btn>
+      </template>
+      <span>뒤로가기</span>
     </v-tooltip>
-    <v-tooltip bottom
-      ><template v-slot:activator="{ on }">
-        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('redo')"
-          ><v-icon medium>mdi-redo</v-icon></v-btn
-        ></template
-      >
-      <span>redo</span>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('redo')"><v-icon medium>mdi-redo</v-icon></v-btn>
+      </template>
+      <span>되돌리기</span>
     </v-tooltip>
-    <v-tooltip bottom
-      ><template v-slot:activator="{ on }">
-        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('cut')"
-          ><v-icon medium>mdi-content-cut</v-icon></v-btn
-        ></template
-      >
-      <span>cut</span>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('cut')"><v-icon medium>mdi-content-cut</v-icon></v-btn>
+      </template>
+      <span>오려두기</span>
     </v-tooltip>
-    <v-tooltip bottom
-      ><template v-slot:activator="{ on }">
-        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('copy')"
-          ><v-icon medium>mdi-content-copy</v-icon></v-btn
-        ></template
-      >
-      <span>copy</span>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('copy')"><v-icon medium>mdi-content-copy</v-icon></v-btn>
+      </template>
+      <span>복사하기</span>
     </v-tooltip>
-    <v-tooltip bottom
-      ><template v-slot:activator="{ on }">
-        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('paste')"
-          ><v-icon medium>mdi-content-paste</v-icon></v-btn
-        ></template
-      >
-      <span>paste</span>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('paste')"><v-icon medium>mdi-content-paste</v-icon></v-btn>
+      </template>
+      <span>붙여넣기</span>
     </v-tooltip>
-    <v-tooltip bottom
-      ><template v-slot:activator="{ on }">
-        <v-btn class="align-self-center" v-on="on" icon medium @click.stop="openFindMenu" text
-          ><v-icon medium>mdi-file-find-outline</v-icon></v-btn
-        ></template
-      >
-      <span>find</span>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium @click.stop="openFindMenu" text><v-icon medium>mdi-file-find-outline</v-icon></v-btn>
+      </template>
+      <span>단어 찾기</span>
     </v-tooltip>
-    <v-tooltip bottom
-      ><template v-slot:activator="{ on }">
-        <v-btn class="align-self-center" v-on="on" icon medium @click.stop="replaceDialog = true" text
-          ><v-icon medium>mdi-find-replace</v-icon></v-btn
-        ></template
-      >
-      <span>replace</span>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium @click.stop="replaceDialog = true" text><v-icon medium>mdi-find-replace</v-icon></v-btn>
+      </template>
+      <span>단어 변환하기</span>
     </v-tooltip>
 
-    <!-- replace dialog -->
+    <!----------- replace dialog ----------->
     <v-dialog v-model="replaceDialog" max-width="500">
       <v-card>
         <v-card-title class="header-color">단어 변환</v-card-title>
@@ -76,6 +63,7 @@
             required
           ></v-text-field>
         </v-card-text>
+
         <v-container>
           <v-row class="ml-2">
             <v-col cols="3">
@@ -95,8 +83,7 @@
             text
             @click="
               replace(findText, replaceText, replaceAlphabet, replaceAllText);
-              replaceDialog = false;
-            "
+              replaceDialog = false;"
             style="color: #423f8c"
           >
             단어 변환
@@ -170,6 +157,8 @@ export default {
       let findMenu = document.getElementById("findMenu");
       findMenu.style.display = "block";
     },
+
+    // 찾기 창 닫기
     closeFindMenu: function () {
       let findMenu = document.getElementById("findMenu");
       findMenu.style.display = "none";
@@ -177,6 +166,8 @@ export default {
       this.findTextIndex = 0;
       this.findTextArray = [];
     },
+
+
     findUp: function () {
       if (this.findTextIndex == 0) {
         eventBus.$emit(
@@ -193,6 +184,8 @@ export default {
         );
       }
     },
+
+    
     findDown: function () {
       if (this.findTextIndex == this.findTextArray.length - 1) {
         eventBus.$emit(

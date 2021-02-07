@@ -7,7 +7,7 @@
     <v-btn class="align-self-center" @click.stop="epubDialog = true" text>e-pub으로 내보내기</v-btn>
     <v-btn class="align-self-center" @click.stop="chapterDialog = true" text>chapter 추가하기</v-btn>
     
-    <!-- eBook dialog -->
+    <!------- eBook dialog ------>
     <v-dialog v-model="eBookDialog" max-width="600">
       <v-card>
         <v-card-title class="header-color">
@@ -15,34 +15,30 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-              <v-row class="my-3">
-          <v-text-field class="my-3" label="e-book 이름" v-model="eBookText" required></v-text-field>
-              </v-row>
-              <v-row>
-                <div class="my-3 d-flex align-center">
-                  <v-btn @click="selectPath">위치 선택</v-btn>
-                  <p class="my-0 mx-3">{{selectedEBookLocation}}</p>
-                </div>
-              </v-row>
-              <v-row class="my-3">
-                <v-file-input
-                  v-model="eBookCover"
-                  accept="image/png, image/jpeg, image/bmp"
-                  prepend-icon="mdi-camera"
-                  label="기본 이미지"
-                ></v-file-input>
-              </v-row>
-            </v-container>
+            <v-row class="my-3">
+              <v-text-field class="my-3" label="e-book 이름" v-model="eBookText" required></v-text-field>
+            </v-row>
+            <v-row>
+              <div class="my-3 d-flex align-center">
+                <v-btn @click="selectPath">위치 선택</v-btn>
+                <p class="my-0 mx-3">{{selectedEBookLocation}}</p>
+              </div>
+            </v-row>
+            <v-row class="my-3">
+              <v-file-input
+                v-model="eBookCover"
+                accept="image/png, image/jpeg, image/bmp"
+                prepend-icon="mdi-camera"
+                label="기본 이미지"
+              ></v-file-input>
+            </v-row>
+          </v-container>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="eBookDialog = false">
-            취소
-          </v-btn>
-          <v-btn text @click="createNewEBook" style="color: #423F8C;">
-            e-book 생성하기
-          </v-btn>
+          <v-btn color="red darken-1" text @click="eBookDialog = false">취소</v-btn>
+          <v-btn text @click="createNewEBook" style="color: #423F8C;">e-book 생성하기</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -54,16 +50,16 @@
       labelText = "epub 이름"
       :dialogMethod = "makeEpub"
       @toggle-dialog = "epubDialog = false"
-     /> 
+    /> 
 
     <!-- chapter dialog -->
-     <Dialog
+    <Dialog
       :isDialog = "chapterDialog"
       title = "chapter 추가하기"
       labelText = "chapter 이름"
       :dialogMethod = "makeChapter"
       @toggle-dialog = "chapterDialog = false"
-     /> 
+    /> 
   </v-tabs>
 </template>
 
@@ -109,12 +105,11 @@ export default {
       eBookCover: [],
     }
   }, 
-  created:function(){
-    eventBus.$on('shortcut',(res)=>{
-      if(res=="save"){
+  created: function () {
+    eventBus.$on('shortcut',(res) => {
+      if (res=="save") {
         this.storeInputText();
       }
-
     })
   },
 
@@ -137,13 +132,12 @@ export default {
       - 선택한 위치에 TITLE 명의 폴더 생성 
       - src.assets.NewEbook에 있는 기본 EPUB파일 복사
       */
-
       try {
         this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
         this.$store.dispatch('setEbookDirectory', this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
         fs.mkdir(this.eBookLocation, function (err) {
           if (err) {
-            console.log(err);
+            console.log('디렉토리 생성 실패');
           }
         });
 
@@ -155,7 +149,6 @@ export default {
         새 ebook 만들기 
         - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
           */
-
         if (this.eBookCover.length === 0) {   // 기본 이미지를 선택할 경우
           this.eBookCover.name = 'default.jpg';
         } else {  // 이미지를 선택할 경우
@@ -170,58 +163,56 @@ export default {
         this.eBookText = '';
         this.selectedEBookLocation = '';
         this.$store.dispatch('setEditingText', '');
-        this.$store.dispatch('setAlertMessage',"새로운 e-book 생성에 성공했습니다");
+        this.$store.dispatch('setAlertMessage', "새로운 e-book 생성에 성공했습니다");
       }
-      catch(err){
+      catch (err) {
         console.log(err);
         this.eBookDialog = false;
         this.eBookText = '';
         this.selectedEBookLocation = '';
-        this.$store.dispatch('setAlertMessage',"새로운 e-book 생성에 실패했습니다");
+        this.$store.dispatch('setAlertMessage', "새로운 e-book 생성에 실패했습니다");
       }
     },
 
     // 목차 읽어오기
     readToc: function () {
-      try{
+      try {
         const data = readDirectory(this.eBookLocation, [], [], 0);
         this.chapterNum = data['maxV'];
         this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
 
         const fileToText = fs.readFileSync(data['toc'][0]).toString();
         this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
-      }
-      catch(err){
-        console.log(err);
+      } catch (err) {
+        console.log('목차 읽어오기 실패');
         this.$store.dispatch('setAlertMessage',"목차 읽어오기에 실패했습니다");
       }
     },
 
     // 나만의 style 읽어오기
     readCustomStyle: function () {
-      let data = readCustomStyle(this.eBookLocation);
-      console.log(data);
+      // let data = readCustomStyle(this.eBookLocation);
+      // console.log(data);
       this.$store.dispatch('setCustomStyleArray', readCustomStyle(this.eBookLocation));
     },
 
     // 이미지 이름 재설정
     renameImageTag: function () {
-      let coverLocation=path.resolve(this.eBookLocation+'/EPUB/images/'+this.eBookCover.name);
-      let newCoverLocation=path.resolve(this.eBookLocation+'/EPUB/images/cover.jpg');
-      fs.rename(coverLocation, newCoverLocation, function(err){
+      let coverLocation = path.resolve(this.eBookLocation + '/EPUB/images/' + this.eBookCover.name);
+      let newCoverLocation = path.resolve(this.eBookLocation + '/EPUB/images/cover.jpg');
+      fs.rename(coverLocation, newCoverLocation, function(err) {
         if (err) throw err;
-        console.log('File Renamed!');
+        // console.log('File Renamed!');
       });
     },
 
     // 저장하기
     storeInputText: function () { 
-      try{
+      try {
         const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
         fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
-      }
-      catch(err){
-        console.log(err);
+      } catch(err) {
+        console.log('저장하기 실패');
         this.$store.dispatch('setAlertMessage',"저장하기에 실패했습니다");
       }
     },
@@ -245,27 +236,30 @@ export default {
 
     // epub 내보내기
     makeEpub: function (val) { 
-      try{
+      try {
         this.epubDialog = false;
         this.savePath = makeEpubFile(this.eBookLocation, val);
         this.epubText = '';
         this.$store.dispatch('setAlertMessage',"e-book 내보내기에 실패했습니다");
-      }
-      catch(err){
-        console.log(err);
+      } catch (err) {
+        console.log('epub 내보내기 실패');
         this.$store.dispatch('setAlertMessage',"e-book 내보내기에 실패했습니다");
       }
     },
 
     // e-book 미리보기
     preview: function () { 
-      const win = new BrowserWindow({ width: 800, height: 1500 });
-      win.loadURL("file://" + this.$store.state.selectedFileDirectory);
+      try {
+        const win = new BrowserWindow({ width: 800, height: 1500 });
+        win.loadURL("file://" + this.$store.state.selectedFileDirectory);
+      } catch {
+        console.log('ebook 미리보기 실패')
+      }   
     },
 
     // chapter 추가하기
     makeChapter: function (val) {
-      try{
+      try {
         this.chapterDialog = false;
         let num = '';
         let path = this.eBookLocation + '/EPUB/text/';
@@ -287,9 +281,8 @@ export default {
         this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
         this.$store.dispatch('addTableOfContents', val);
         this.chapterText = '';
-      }
-      catch(err){
-        console.log(err);
+      } catch(err){
+        console.log('chapter 추가 실패');
         this.$store.dispatch('setAlertMessage',"챕터 추가에 실패했습니다");
       }
     },
