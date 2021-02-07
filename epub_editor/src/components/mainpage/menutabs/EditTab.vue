@@ -3,43 +3,43 @@
   <v-tabs show-arrows v-model="tab">
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="edit('undo')"><v-icon medium>mdi-undo</v-icon></v-btn>
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('undo')"><v-icon medium>mdi-undo</v-icon></v-btn>
       </template>
       <span>뒤로가기</span>
     </v-tooltip>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="edit('redo')"><v-icon medium>mdi-redo</v-icon></v-btn>
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('redo')"><v-icon medium>mdi-redo</v-icon></v-btn>
       </template>
       <span>되돌리기</span>
     </v-tooltip>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="edit('cut')"><v-icon medium>mdi-content-cut</v-icon></v-btn>
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('cut')"><v-icon medium>mdi-content-cut</v-icon></v-btn>
       </template>
       <span>오려두기</span>
     </v-tooltip>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="edit('copy')"><v-icon medium>mdi-content-copy</v-icon></v-btn>
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('copy')"><v-icon medium>mdi-content-copy</v-icon></v-btn>
       </template>
       <span>복사하기</span>
     </v-tooltip>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click="edit('paste')"><v-icon medium>mdi-content-paste</v-icon></v-btn>
+        <v-btn class="align-self-center" v-on="on" icon medium @click="edit('paste')"><v-icon medium>mdi-content-paste</v-icon></v-btn>
       </template>
       <span>붙여넣기</span>
     </v-tooltip>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click.stop="openFindMenu" text><v-icon medium>mdi-file-find-outline</v-icon></v-btn>
+        <v-btn class="align-self-center" v-on="on" icon medium @click.stop="openFindMenu" text><v-icon medium>mdi-file-find-outline</v-icon></v-btn>
       </template>
       <span>단어 찾기</span>
     </v-tooltip>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium @click.stop="replaceDialog = true" text><v-icon medium>mdi-find-replace</v-icon></v-btn>
+        <v-btn class="align-self-center" v-on="on" icon medium @click.stop="replaceDialog = true" text><v-icon medium>mdi-find-replace</v-icon></v-btn>
       </template>
       <span>단어 변환하기</span>
     </v-tooltip>
