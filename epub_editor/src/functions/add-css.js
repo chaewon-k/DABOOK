@@ -54,7 +54,7 @@ export function makeCustomStyle (val, path) {
   }
 
   if (val.font != '') {
-    font = `  font-family:${val.font};\n`;
+    font = ` font-family:${val.font};\n`;
   }
 
   if (val.backgroundColor != '') {
@@ -62,7 +62,7 @@ export function makeCustomStyle (val, path) {
   }
 
   if (val.fontColor != '') {
-    fontColor = ` color:${val.fontColor};`;
+    fontColor = ` color:${val.fontColor};\n`;
   }
 
   let cssStr = `.user_${val.title}
@@ -77,16 +77,19 @@ ${fontColor}${backgroundColor}${range}${font}
     }
   });
 
+}
+
+export function attachCustomStyleTag (title) {
   const area = document.getElementById("area");
-  let preStr = `<div class ="user_${val.title}">\n`;
-  let postStr = `\n</div>`;
+  let preStr = `\n  <div class ="user_${title}">\n    `;
+  let postStr = `\n </div>`;
   if (area.selectionStart != area.selectionEnd) {
     let selected = area.value.slice(area.selectionStart, area.selectionEnd);
     area.setRangeText(preStr + selected + postStr);
   }
   return area.value;
-
 }
+
 export function setFontColor (val) {
   const area = document.getElementById("area");
   const start = area.selectionStart;  // 드래그 한 단어 시작
