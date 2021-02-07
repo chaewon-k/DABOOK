@@ -1,6 +1,6 @@
 <template>
   <div id="subMenuBar">
-    <div class="left">
+    <v-tabs show-arrows v-model="tab" class="left">
       <v-tooltip bottom><template v-slot:activator="{ on }">
         <v-btn v-on="on" icon medium><v-icon medium @click="selectTag(1)">mdi-format-header-1</v-icon></v-btn></template>
         <span>H1</span>
@@ -42,7 +42,7 @@
       <span>Blockquote</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium text><v-icon medium @click="selectTag('CiteTag')">mdi-comment-text-outline</v-icon></v-btn></template>
+        <v-btn v-on="on" icon medium><v-icon medium @click="selectTag('CiteTag')">mdi-comment-text-outline</v-icon></v-btn></template>
       <span>Cite</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
@@ -73,28 +73,19 @@
         <v-btn v-on="on" icon medium><v-icon medium @click="selectTag('OrderedListTag')">mdi-format-list-numbered</v-icon></v-btn></template>
       <span>OrderedList</span>
       </v-tooltip>
-    </div>
-    <v-divider inset vertical/>
-    <div class="right" style="height: 100%">
-      <v-btn text x-large value="images">
-        <div>
-          <v-icon large @click="selectTag('ImageTag')">mdi-image-search-outline</v-icon>
-          <p class="caption">Images</p>
-        </div>
-      </v-btn>
-      <v-btn text x-large>
-        <div>
-          <v-icon large @click="selectTag('Link')">mdi-link-box-variant-outline</v-icon>
-          <p class="caption">Link</p>
-        </div>
-        </v-btn>
-      <v-btn text x-large>
-        <div>
-          <v-icon large @click="selectTag('Table')">mdi-table-large-plus</v-icon>
-          <p class="caption">Table</p>
-        </div>
-      </v-btn>
-    </div>
+      <v-tooltip bottom><template v-slot:activator="{ on }">
+        <v-btn v-on="on" icon medium><v-icon medium @click="selectTag('ImageTag')">mdi-image-search-outline</v-icon></v-btn></template>
+      <span>Images</span>
+      </v-tooltip>
+      <v-tooltip bottom><template v-slot:activator="{ on }">
+        <v-btn v-on="on" icon medium><v-icon medium @click="selectTag('Link')">mdi-link-box-variant-outline</v-icon></v-btn></template>
+      <span>Link</span>
+      </v-tooltip>
+      <v-tooltip bottom><template v-slot:activator="{ on }">
+        <v-btn v-on="on" icon medium><v-icon medium @click="selectTag('Table')">mdi-table-large-plus</v-icon></v-btn></template>
+      <span>Table</span>
+      </v-tooltip>
+    </v-tabs>
   </div>
 </template>
 
@@ -103,6 +94,11 @@ import eventBus from '@/eventBus.js';
 
 export default {
   name: 'ToolsTab',
+  data: function () {
+    return {
+      tab: null,
+    }
+  },
   methods: {
     selectTag: function(index) {
       eventBus.$emit('pushIndexData', index);

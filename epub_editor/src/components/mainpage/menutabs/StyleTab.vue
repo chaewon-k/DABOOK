@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-tabs show-arrows v-model="tab">
     <div class="d-flex">
       <div v-for="(tab, idx) in tabs" :key="idx">
         <v-tooltip bottom
@@ -276,7 +276,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-tabs>
 </template>
 
 <script>
@@ -287,6 +287,7 @@ export default {
   name: "StyleTab",
   data: function () {
     return {
+      tab: null,
       tabs: [
         {
           name: "왼쪽 정렬",
