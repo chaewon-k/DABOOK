@@ -5,7 +5,7 @@
       solo
       hide-details
       spellcheck="false"
-      style="width: auto;"
+      style="width: auto; border-radius: 0%;"
       ma-auto
       height="100%"
       label="textarea 입니다"

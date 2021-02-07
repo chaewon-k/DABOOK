@@ -82,9 +82,6 @@ div.right {
   color: #423F8C;
 }
 
-/*  textarea 높이 맞추는 style */
-
-
 /* 우클릭 시 나오는 div의 style */
 .contextmenu {
   display: none;
@@ -125,16 +122,6 @@ div.right {
   display: none;
   position: absolute;
   right: 2%;
-  width: auto;
-  border-radius: 5px;
-  z-index: 999999;
-}
-
-/* 나만의 style bar style */
-#customStyleMenu {
-  display: none;
-  position: absolute;
-  right: 50%;
   width: auto;
   border-radius: 5px;
   z-index: 999999;
