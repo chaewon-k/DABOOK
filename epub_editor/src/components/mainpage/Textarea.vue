@@ -9,6 +9,7 @@
       ma-auto
       height="100%"
       label="textarea 입니다"
+      no-resize
       placeholder="책을 작성해볼까요?"
       v-model="inputText"
       @keydown="isSave"
@@ -31,7 +32,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="tableDialog" max-width="290">
+    <v-dialog v-model="tableDialog" max-width="700">
       <v-card>
         <v-card-title> 생성할 표의 행과 열을 입력하세요. </v-card-title>
         <v-row>
@@ -96,26 +97,26 @@ import * as edit from "@/functions/edit.js";
 
 const fs = require('fs');
 
-window.onkeypress = (e) => {
-  //console.log(e);
-  if (e.keyCode === 19 && e.ctrlKey === true) {
-    eventBus.$emit("shortcut", "save");
-  } else if (e.keyCode === 5 && e.ctrlKey === true) {
-    edit.copy();
-  } else if (e.keyCode === 23 && e.ctrlKey === true) {
-    edit.cut();
-  } else if (e.keyCode === 4 && e.ctrlKey === true) {
-    edit.paste();
-  } else if (e.keyCode === 17 && e.ctrlKey === true) {
-    edit.undo();
-  } else if(e.keyCode === 6 && e.ctrlKey === true) {
-    edit.redo();
-  }
-};
+
 
 export default {
   name: 'Textarea',
   created: function () {
+    window.onkeypress = (e) => {
+      if (e.keyCode === 19 && e.ctrlKey === true) {
+        eventBus.$emit("shortcut", "save");
+      } else if (e.keyCode === 5 && e.ctrlKey === true) {
+        edit.copy();
+      } else if (e.keyCode === 23 && e.ctrlKey === true) {
+        edit.cut();
+      } else if (e.keyCode === 4 && e.ctrlKey === true) {
+        edit.paste();
+      } else if (e.keyCode === 17 && e.ctrlKey === true) {
+        this.inputText = edit.undo();
+      } else if(e.keyCode === 6 && e.ctrlKey === true) {
+        this.inputText = edit.redo();
+      }
+    };
     eventBus.$on("edit", (res) => {
       this.edit(res);
     });
@@ -224,10 +225,10 @@ export default {
           edit.paste();
           break;
         case 'undo':
-          edit.undo();
+          this.inputText = edit.undo();
           break;
         case 'redo':
-          edit.redo();
+          this.inputText = edit.redo();
           break;
       }
     },

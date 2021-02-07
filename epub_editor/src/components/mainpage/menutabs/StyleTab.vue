@@ -45,7 +45,7 @@
       max-width="500"
       width="200"
     >
-      <v-toolbar color="deep-purple accent-4" dark>
+      <v-toolbar color="accent-4" dark>
         <v-toolbar-title>나만의 style</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="customDialog = false;"><v-icon>mdi-close</v-icon></v-btn>
@@ -383,37 +383,41 @@ export default {
   },
   methods: {
     styleMethod: function (i) {
-      if (i == 0) {
-        this.$store.dispatch("setEditingText", css.alignText("left"));
+      if (this.$store.state.selectedFileDirectory !== '') {
+        if (i == 0) {
+          this.$store.dispatch("setEditingText", css.alignText("left"));
+        }
+        else if (i == 1) {
+          this.$store.dispatch('setEditingText', css.alignText('center'));
+        }
+        else if (i == 2) {
+          this.$store.dispatch('setEditingText', css.alignText('right'));
+        }
+        else if (i == 3) {
+          this.$store.dispatch('setEditingText', css.alignText('justify'));
+        }
+        else if (i == 4) {
+          this.$store.dispatch('setEditingText', css.setFontColor(this.tabs[4].color));
+        }
+        else if (i == 5) {
+          this.$store.dispatch('setEditingText', css.setBackgroundColor(this.tabs[5].color));
+        }
+        else if (i == 6) {
+          this.fontDialog = !this.fontDialog;
+        }
+        else if (i == 7) {
+          this.$store.dispatch('setEditingText', css.fontSize('down'));
+        }
+        else if (i == 8) {
+          this.$store.dispatch('setEditingText', css.fontSize('up'));
+        }
+        else if (i == 9) {
+          this.openCustomStyleMenu();
+        }
+        edit.set('');
+      } else {
+        this.$store.dispatch('setAlertMessage', 'text 폴더의 파일을 선택해주세요.')
       }
-      else if (i == 1) {
-        this.$store.dispatch('setEditingText', css.alignText('center'));
-      }
-      else if (i == 2) {
-        this.$store.dispatch('setEditingText', css.alignText('right'));
-      }
-      else if (i == 3) {
-        this.$store.dispatch('setEditingText', css.alignText('justify'));
-      }
-      else if (i == 4) {
-        this.$store.dispatch('setEditingText', css.setFontColor(this.tabs[4].color));
-      }
-      else if (i == 5) {
-        this.$store.dispatch('setEditingText', css.setBackgroundColor(this.tabs[5].color));
-      }
-      else if (i == 6) {
-        this.fontDialog = !this.fontDialog;
-      }
-      else if (i == 7) {
-        this.$store.dispatch('setEditingText', css.fontSize('down'));
-      }
-      else if (i == 8) {
-        this.$store.dispatch('setEditingText', css.fontSize('up'));
-      }
-      else if (i == 9) {
-        this.openCustomStyleMenu();
-      }
-      edit.set('');
     },
     pickColor: function () {
       if (this.selected == "font") {

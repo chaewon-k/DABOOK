@@ -17,7 +17,9 @@ export function Save (res) {
 
 export function cut () {
   // console.log("cut");
+  set('');
   document.execCommand('cut');
+  set('');
 }
 
 export function copy () {
@@ -27,7 +29,9 @@ export function copy () {
 
 export function paste () {
   // console.log("paste");
+  set('');
   document.execCommand('paste');
+  set('');
 }
 
 export function undo () { 
@@ -36,20 +40,16 @@ export function undo () {
   direction = 1;
   if (arr[arrPoint + 1] === undefined)
     this.set('');
-  // console.log("undo");
   if (arrPoint == 0) {
     return arr[arrPoint];
   }
   arrPoint -= 1;
-  var area = document.getElementById("area");
-  area.value = arr[arrPoint];
   direction = 1;
+  return arr[arrPoint];
 }
 
 export function redo () {
   direction = 1;
-  // console.log("redo");
-  var area = document.getElementById("area");
   if (arrPoint == arr.length - 1){
     return arr[arrPoint];
   }
@@ -57,7 +57,7 @@ export function redo () {
     return arr[arrPoint];
   }
   arrPoint += 1;
-  area.value = arr[arrPoint];
+  return arr[arrPoint];
 }
 
 export function set (res) {

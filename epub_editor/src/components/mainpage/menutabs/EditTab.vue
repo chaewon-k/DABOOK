@@ -140,22 +140,41 @@ export default {
   },
   methods: {
     edit: function (res) {
+      if (this.$store.state.selectedFileDirectory !== '') {
       eventBus.$emit("edit", res);
+      } else {
+        this.$store.dispatch('setAlertMessage', 'text 폴더의 파일을 선택해주세요.')
+      }
     },
-
     // 찾기
     find: function () {
-      eventBus.$emit("findText", this.findText);
-      this.findTextArray = this.$store.state.findTextArray;
-      eventBus.$emit(
-        "setCursor",
-        this.findTextArray[this.findTextIndex],
-        this.findText.length
-      );
+      if (this.$store.state.selectedFileDirectory !== '') {
+        if (this.findText === '') {
+          this.$store.dispatch('setAlertMessage',"찾을 단어를 입력해주세요.");
+        } else {
+          eventBus.$emit("findText", this.findText);
+          this.findTextArray = this.$store.state.findTextArray;
+          if (this.findTextArray.length === 0) {
+            this.$store.dispatch('setAlertMessage',"찾는 단어가 없습니다.");
+          } else {
+            eventBus.$emit(
+              "setCursor",
+              this.findTextArray[this.findTextIndex],
+              this.findText.length
+            );
+          }
+        }
+      } else {
+        this.$store.dispatch('setAlertMessage', 'text 폴더의 파일을 선택해주세요.')
+      }
     },
     openFindMenu: function () {
-      let findMenu = document.getElementById("findMenu");
-      findMenu.style.display = "block";
+      if (this.$store.state.selectedFileDirectory !== '') {
+        let findMenu = document.getElementById("findMenu");
+        findMenu.style.display = "block";
+      } else {
+        this.$store.dispatch('setAlertMessage', 'text 폴더의 파일을 선택해주세요.')
+      }
     },
 
     // 찾기 창 닫기
@@ -166,8 +185,6 @@ export default {
       this.findTextIndex = 0;
       this.findTextArray = [];
     },
-
-
     findUp: function () {
       if (this.findTextIndex == 0) {
         eventBus.$emit(
@@ -205,12 +222,16 @@ export default {
 
     // 문자 대체하기
     replace: function (findText, replaceText, replaceAlphabet, replaceAllText) {
-      this.find(findText);
-      eventBus.$emit("replaceText", [
-        replaceText,
-        replaceAlphabet,
-        replaceAllText,
-      ]);
+      if (this.$store.state.selectedFileDirectory !== '') {
+        this.find(findText);
+        eventBus.$emit("replaceText", [
+          replaceText,
+          replaceAlphabet,
+          replaceAllText,
+        ]);
+      } else {
+        this.$store.dispatch('setAlertMessage', 'text 폴더의 파일을 선택해주세요.')
+      }
     },
   },
 };
