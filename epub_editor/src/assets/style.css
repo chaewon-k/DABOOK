@@ -89,3 +89,13 @@ div.right {
   border-radius: 5px;
   z-index: 999999;
 }
+
+/* 나만의 style bar style */
+#customStyleMenu {
+  display: none;
+  position: absolute;
+  right: 50%;
+  width: auto;
+  border-radius: 5px;
+  z-index: 999999;
+}

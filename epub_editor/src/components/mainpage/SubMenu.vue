@@ -23,7 +23,7 @@
     <!---------------------- style tap end ---------------------->
 
     <!-------------------- manual tap start -------------------->
-    <template v-else>
+    <div v-show="itemIndex === 4">
       <v-btn text @click="popUpEditor">editor 사용 설명서 보기</v-btn>
       <v-btn text>마크다운 설명서 보기</v-btn>
     </div>

@@ -11,7 +11,7 @@ export default new Vuex.Store({
     tableOfContents: [], // TableOfContents' item
     editingText: '', //textarea's text value
     editingHTMLText: '',  //default HTML text value
-    customStyleArray: []
+    customStyleArray: [],
     findTextArray: [],
     alertMessage:'',
     alertDialog:false,
