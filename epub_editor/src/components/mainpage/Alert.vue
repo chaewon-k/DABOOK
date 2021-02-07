@@ -1,5 +1,5 @@
 <template>
-  <div v-if="alertDialog">
+  <div id="alert" v-if="alertDialog">
     <div>
       <v-alert id="alertMessage" border="left" color="#433e8a">
         {{alertMessage}}
@@ -21,9 +21,10 @@ export default {
   },
   methods:{
     cancel:function(){
+      console.log(document.getElementById("alert").value);
       console.log("cancel");
       this.$store.dispatch('cancelAlertMessage');
-    }
+    },
   },
 }
 </script>
