@@ -1,23 +1,20 @@
 <template>
   <v-app>
     <v-main>
-      <Editor />
+      <router-view/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Editor from './views/Editor';
-
 export default {
   name: 'App',
 
   components: {
-    Editor,
   },
 
   data: () => ({
-    //
+    
   }),
 };
 </script>
