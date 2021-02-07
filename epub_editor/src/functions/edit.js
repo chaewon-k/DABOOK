@@ -78,7 +78,6 @@ export function set (res) {
   }
   arrPoint+=1;
   arr[arrPoint]=data;
-  console.log(arr);
   maxStack=maxStack+1;
 }
 
