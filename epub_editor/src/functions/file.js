@@ -31,6 +31,7 @@ export function readDirectory (dirPath, arrayOfFiles, toc, maxV) {
       }
       arrayOfFiles.push({name: file, children: temp_array});
     } else {
+      const extension = file.split('.')[1]
       if (file.split('.')[0] === "toc") {
         toc.push(dirPath + "/" + file);
       } else if (file.slice(0, 7) === "chapter") {
@@ -39,7 +40,7 @@ export function readDirectory (dirPath, arrayOfFiles, toc, maxV) {
           maxV = a;
         }
       }
-      arrayOfFiles.push({name: file, dirPath: dirPath + "/" + file});
+      arrayOfFiles.push({name: file, dirPath: dirPath + "/" + file, file: extension});
     }
   });
   return { arrayOfFiles, toc, maxV };

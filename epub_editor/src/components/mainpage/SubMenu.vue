@@ -24,8 +24,10 @@
 
     <!-------------------- manual tap start -------------------->
     <div v-show="itemIndex === 4">
-      <v-btn text @click="popUpEditor">editor 사용 설명서 보기</v-btn>
-      <v-btn text>마크다운 설명서 보기</v-btn>
+      <v-tabs show-arrows v-model="tab">
+        <v-btn text @click="popUpEditor">editor 사용 설명서 보기</v-btn>
+        <v-btn text>마크다운 설명서 보기</v-btn>
+      </v-tabs>
     </div>
     <!-------------------- manual tap end -------------------->
 
@@ -51,6 +53,11 @@ export default {
   },
   props: {
     itemIndex: { type: Number }
+  },
+  data: function () {
+    return {
+      tab: null,
+    }
   },
   methods:{
     popUpEditor(){
