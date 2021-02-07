@@ -95,6 +95,9 @@ export default new Vuex.Store({
     },
     setAlertMessage : function({commit}, value) {
       commit('SET_ALERTMESSAGE',value);
+      setTimeout(function(){
+        commit('CANCEL_ALERTMESSAGE');
+      },3000);
     },
     cancelAlertMessage: function({commit}){
       commit('CANCEL_ALERTMESSAGE');
