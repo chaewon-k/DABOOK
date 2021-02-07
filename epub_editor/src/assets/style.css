@@ -4,7 +4,7 @@
 
 #header {
   position: fixed;
-  height: 84px;
+  height: 96px;
   width: 100%;
   background-color: #5d106b;
   z-index: 2;
@@ -15,7 +15,7 @@
 }
 
 #wrap {
-  padding-top: 84px;
+  padding-top: 96px;
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -27,6 +27,10 @@
   width: 300px;
   position: fixed;
   background: blue;
+}
+
+#tableOfContents {
+  height: 100%;
 }
 
 #content {
@@ -49,7 +53,6 @@
 
 #subMenuBar {
   width: 100%;
-  height: 80px;
 }
 
 /* div.left {

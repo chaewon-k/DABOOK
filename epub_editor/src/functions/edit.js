@@ -57,8 +57,8 @@ export function set (res) {
   console.log("Set");
   let data= document.getElementById("area").value;
   let point=document.getElementById("area").selectionStart;
-  console.log("data area 값 "+data);
-  console.log("res 값  : "+res);
+  // console.log("data area 값 "+data);
+  // console.log("res 값  : "+res);
   data=data.substring(0,point)+res+data.substring(point);
   if(arrPoint==arrSize){
     arrPoint-=1;
