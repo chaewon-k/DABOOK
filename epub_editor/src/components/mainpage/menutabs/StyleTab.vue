@@ -15,8 +15,9 @@
       </div>
     </div>
 
-    <v-card id="customStyleMenu" class="mx-auto" style="display:none;" max-width="300" tile>
-      <v-list flat>
+    <!-- <v-card id="customStyleMenu" class="mx-auto" style="display:none;" max-width="300" flat>
+      <v-toolbar dense floating>
+      <v-list>
         <v-list-item-group color="primary">
           <v-list-item v-for="(style, i) in customStyleList" :key="i" @click="applyCustomStyle(i)">
             <v-list-item-content>
@@ -29,9 +30,48 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-    </v-card>
+      </v-toolbar>
+    </v-card> -->
 
+    <v-card
+    id="customStyleMenu" style="display:none;"
+    class="mx-auto"
+    max-width="500"
+  >
+    <v-toolbar
+      color="deep-purple accent-4"
+      dark
+    >
 
+      <v-toolbar-title>나만의 style</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon @click="styleDialog = true">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-toolbar>
+
+    <v-list subheader>
+
+      <v-list-item
+        v-for="(style, i) in customStyleList" :key="i" @click="applyCustomStyle(i)"
+      >
+
+        <v-list-item-content>
+          <v-list-item-title v-text="style.title"></v-list-item-title>
+        </v-list-item-content>
+
+        <v-list-item-icon>
+          <v-icon>
+            mdi-check-bold
+          </v-icon>
+        </v-list-item-icon>
+      </v-list-item>
+    </v-list>
+
+    <v-divider></v-divider>
+  </v-card>
 
     <v-dialog v-model="styleDialog" persistent width="300px">
       <v-card>
@@ -62,7 +102,6 @@
                 label="글꼴"
                 required
               ></v-select>
-              <!-- <span style= "font-family:"></span> -->
             </v-col>
             <v-col sm>
               <v-row>
@@ -144,29 +183,56 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="colorDialog1" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">글씨 색상 선택</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col class="d-flex justify-center">
+                <v-color-picker v-model="tabs[5].color"></v-color-picker>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="colorDialog1 = false">
+            닫기
+          </v-btn>
+          <v-btn color="green darken-1" text @click="colorDialog1 = false"> 선택 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     
-    <v-dialog
-      v-model="colorDialog1"
-      width="316px"
-    >
-      <v-color-picker
-        class="ma-2"
-        show-swatches
-        swatches-max-height="300px"
-        v-model="tabs[5].color"
-      ></v-color-picker>
+
+    <v-dialog v-model="colorDialog2" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">배경 색상 선택</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col class="d-flex justify-center">
+                <v-color-picker v-model="tabs[7].color"></v-color-picker>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="colorDialog2 = false">
+            닫기
+          </v-btn>
+          <v-btn color="green darken-1" text @click="colorDialog2 = false"> 선택 </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
-    <v-dialog
-      v-model="colorDialog2"
-      width="316px"
-    >
-      <v-color-picker
-        class="ma-2"
-        show-swatches
-        swatches-max-height="300px"
-        v-model="tabs[7].color"
-      ></v-color-picker>
-    </v-dialog>
+    
     <v-dialog
       v-model="fontDialog"
       scrollable
@@ -288,16 +354,28 @@ export default {
       },
     fonts: [
       {
+        name: '바탕체',
+        value: '바탕체',
+      },
+      {
+        name: '돋움체',
+        value: '돋움체',
+      },
+      {
+        name: '굴림체',
+        value: '굴림체',
+      },
+      {
+        name: '궁서체',
+        value: '궁서체',
+      },
+      {
         name: 'KoPubBatangBold',
         value: 'kopub_bat_b',
       },
       {
         name: 'KoPubBatangLight',
         value: 'kopub_bat_l',
-      },
-      {
-        name: 'KoPubBatangMedium',
-        value: 'kopub_bat_m',
       },
       {
         name: 'KoPubDotumBold',
@@ -308,29 +386,14 @@ export default {
         value: 'kopub_dot_l',
       },
       {
-        name: 'KoPubDotumMedium',
-        value: 'kopub_dot_m',
-      },
-      {
         name: 'NotoSerif-Lightitalic',
         value: 'noto_li',
-      },
-      {
-        name: 'HanaMinA',
-        value: 'hanamina',
       },
     ],
       colorDialog1: false,
       colorDialog2: false,
       fontDialog: false,
       selectedFont: '',
-      swatches : [
-        ['#FF0000', '#AA0000', '#550000'],
-        ['#FFFF00', '#AAAA00', '#555500'],
-        ['#00FF00', '#00AA00', '#005500'],
-        ['#00FFFF', '#00AAAA', '#005555'],
-        ['#0000FF', '#0000AA', '#000055'],  
-      ],
     }
   },
   methods: {
@@ -348,7 +411,7 @@ export default {
         this.$store.dispatch('setEditingText', css.alignText('justify'));
       }
       else if (i == 4) {
-        this.colorDialog = !this.colorDialog;
+        this.colorDialog1 = !this.colorDialog1;
       }
       else if (i == 5) {
         this.$store.dispatch('setEditingText', css.setFontColor(this.tabs[5].color));
@@ -383,6 +446,7 @@ export default {
     },
     addStyle: function () {
       //css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
+      this.customStyleMenu = false;
       this.customStyleList.push(this.customStyle);
       this.customStyle = {};
       this.$store.dispatch('setCustomStyleArray', this.customStyleList);
@@ -397,6 +461,7 @@ export default {
        }
     },
     applyCustomStyle: function (index) {
+      css.attachCustomStyleTag(this.customStyle.title);
       this.$store.dispatch("setEditingText", css.makeCustomStyle(this.customStyleList[index], this.$store.state.ebookDirectory));
     },
     setFont: function (font) {
