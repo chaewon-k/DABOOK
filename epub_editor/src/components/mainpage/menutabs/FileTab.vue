@@ -1,11 +1,11 @@
 <template>
-  <v-tabs show-arrows v-model="tab">
-    <v-btn @click.stop="eBookDialog = true" text>e-book 생성하기</v-btn>
-    <v-btn @click="loadEbook" text>e-book 불러오기</v-btn>
-    <v-btn @click="storeInputText" text>저장하기</v-btn>
-    <v-btn @click="preview" text>e-book 미리보기</v-btn>
-    <v-btn @click.stop="epubDialog = true" text>e-pub으로 내보내기</v-btn>
-    <v-btn @click.stop="chapterDialog = true" text>chapter 추가하기</v-btn>
+  <v-tabs id="fileTab" show-arrows v-model="tab">
+    <v-btn class="align-self-center" @click.stop="eBookDialog = true" text>e-book 생성하기</v-btn>
+    <v-btn class="align-self-center" @click="loadEbook" text>e-book 불러오기</v-btn>
+    <v-btn class="align-self-center" @click="storeInputText" text>저장하기</v-btn>
+    <v-btn class="align-self-center" @click="preview" text>e-book 미리보기</v-btn>
+    <v-btn class="align-self-center" @click.stop="epubDialog = true" text>e-pub으로 내보내기</v-btn>
+    <v-btn class="align-self-center" @click.stop="chapterDialog = true" text>chapter 추가하기</v-btn>
     
     <!-- eBook dialog -->
     <v-dialog v-model="eBookDialog" max-width="600">

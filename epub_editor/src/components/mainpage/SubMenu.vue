@@ -1,32 +1,33 @@
 <template>
-  <div>
+  <div id="subMenu">
     <!-------------------- file tap start -------------------->
-    <div v-show="itemIndex===0">
-      <FileTab/>
-    </div>
+    <FileTab
+      v-show="itemIndex===0"
+      class="align-self-center"
+    />
     <!--------------------- file tap end --------------------->
 
     <!-------------------- edit tap start -------------------->
-    <div v-show="itemIndex===1">
-      <EditTab/>
-    </div>
+    <EditTab
+      v-show="itemIndex===1"
+    />
     <!---------------------- edit tap end ---------------------->
 
-    <div v-show="itemIndex === 2">
-      <ToolsTab/>
-    </div>
+    <ToolsTab
+      v-show="itemIndex === 2"
+    />
 
     <!-------------------- style tap start -------------------->
-    <div v-show="itemIndex === 3">
-      <StyleTab/>
-    </div>
+    <StyleTab
+      v-show="itemIndex === 3"
+    />
     <!---------------------- style tap end ---------------------->
 
     <!-------------------- manual tap start -------------------->
     <div v-show="itemIndex === 4">
       <v-tabs show-arrows v-model="tab">
-        <v-btn text @click="popUpEditor">editor 사용 설명서 보기</v-btn>
-        <v-btn text>마크다운 설명서 보기</v-btn>
+        <v-btn class="align-self-center" text @click="popUpEditor">editor 사용 설명서 보기</v-btn>
+        <v-btn class="align-self-center" text>마크다운 설명서 보기</v-btn>
       </v-tabs>
     </div>
     <!-------------------- manual tap end -------------------->
