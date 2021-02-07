@@ -60,7 +60,7 @@
     <!-- replace dialog -->
     <v-dialog v-model="replaceDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline header-color">단어 변환</v-card-title>
+        <v-card-title class="header-color">단어 변환</v-card-title>
         <v-card-text class="d-flex flex-row mt-4 pa-0">
           <v-text-field
             class="my-3 mx-5"

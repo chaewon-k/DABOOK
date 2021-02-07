@@ -48,14 +48,16 @@ export function readDirectory (dirPath, arrayOfFiles, toc, maxV) {
 
 export function tocToList (toc, arrayOfContents) {
   const init = toc.indexOf("<navPoint");
-  let start = toc.indexOf("<text>", init);
-  let end = toc.indexOf("</text>", start);
-  let temp = '';
-  while (start !== -1) {
-    temp = toc.slice(start + 6, end);
-    arrayOfContents.push({ text: temp });
-    start = toc.indexOf("<text>", end);
-    end = toc.indexOf("</text>", start);
+  if (init !== -1) {
+    let start = toc.indexOf("<text>", init);
+    let end = toc.indexOf("</text>", start);
+    let temp = '';
+    while (start !== -1) {
+      temp = toc.slice(start + 6, end);
+      arrayOfContents.push({ text: temp });
+      start = toc.indexOf("<text>", end);
+      end = toc.indexOf("</text>", start);
+    }
   }
   return arrayOfContents;
 }

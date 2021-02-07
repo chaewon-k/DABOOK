@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap');
+
+html, body {
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+#app {
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+
+
 #editor {
   height: 100%;
 }
@@ -6,7 +18,6 @@
   position: fixed;
   height: 96px;
   width: 100%;
-  background-color: #5d106b;
   z-index: 2;
 }
 
@@ -26,7 +37,6 @@
   height: 100%;
   width: 300px;
   position: fixed;
-  background: blue;
 }
 
 #tableOfContents {
@@ -34,7 +44,6 @@
 }
 
 #content {
-  background: green;
   padding-left: 300px;
   float: left;
   width: 100%;
@@ -45,9 +54,14 @@
   height: 100%;
 }
 
-#textarea div {
+#textarea > .v-input {
   height: 100%;
 }
+
+#textarea > .v-input > .v-input__control {
+  height: 100%;
+}
+
 
 /* 도구상자 버튼 정렬하는 style */
 
