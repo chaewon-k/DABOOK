@@ -3,11 +3,13 @@
 let arrPoint=-1;
 let arr=[];
 let arrSize=20;
+let direction=0;
+let maxStack=0;
 
-export function Save (res){
-  if(res>=37&&res<=40) // 방향키
-    set('');
-  else if(res==9) //tab
+export function Save (res) {
+  //if(res>=37&&res<=40) // 방향키
+  // set('');
+  if(res==9) //tab
     set('');
   else if(res==13) //enter
     set('');
@@ -16,21 +18,25 @@ export function Save (res){
 }
 
 
-export function cut(){
+export function cut () {
   console.log("cut");
   document.execCommand('cut');
 }
-export function copy(){
+export function copy () {
   console.log("copy");
   document.execCommand('copy');
 }
-export function paste(){
+export function paste () {
   console.log("paste");
   document.execCommand('paste');
 }
 
-export function undo(){ 
-
+export function undo () { 
+  if(maxStack==arrPoint)
+    this.set('');
+  direction=1;
+  if(arr[arrPoint+1]===undefined)
+    this.set('');
   console.log("undo");
   if (arrPoint == 0) {
     return arr[arrPoint];
@@ -38,28 +44,34 @@ export function undo(){
   arrPoint-=1;
   var area=document.getElementById("area");
   area.value=arr[arrPoint];
-
+  direction=1;
 }
 
-export function redo(){
-
+export function redo () {
+  direction=1;
   console.log("redo");
   var area=document.getElementById("area");
   if (arrPoint == arr.length-1){
     return arr[arrPoint];
   }
+  if(arrPoint==maxStack){
+    return arr[arrPoint];
+  }
   arrPoint+=1;
   area.value=arr[arrPoint];
-
 }
 
-export function set(res){
+export function set (res) {
+  if(direction==1){
+    maxStack=arrPoint;
+    direction=0;
+  }
   console.log("Set");
   let data= document.getElementById("area").value;
   let point=document.getElementById("area").selectionStart;
-  console.log("data area 값 "+data);
-  console.log("res 값  : "+res);
   data=data.substring(0,point)+res+data.substring(point);
+  if(arr[arrPoint]==data)
+    return;
   if(arrPoint==arrSize){
     arrPoint-=1;
     arr.shift();
@@ -67,6 +79,7 @@ export function set(res){
   arrPoint+=1;
   arr[arrPoint]=data;
   console.log(arr);
+  maxStack=maxStack+1;
 }
 
 export function findText (inputText, findText) {
