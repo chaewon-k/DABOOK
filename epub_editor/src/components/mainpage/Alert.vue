@@ -1,11 +1,15 @@
 <template>
   <div id="alert" v-if="alertDialog">
     <div>
-      <v-alert id="alertMessage" border="left" color="#433e8a">
+      <v-alert id="alertMessage"
+        color="purple"
+        dense
+        outlined
+        text
+        type="success"
+      >
         {{alertMessage}}
-        <v-btn icon x-small @click="cancel">
-          <v-icon>mdi-close-circle</v-icon>
-        </v-btn>
+        <!-- <v-btn icon x-small @click="cancel"><v-icon>mdi-close-circle</v-icon></v-btn> -->
       </v-alert>
     </div>
   </div>

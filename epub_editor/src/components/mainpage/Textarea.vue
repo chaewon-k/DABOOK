@@ -18,12 +18,16 @@
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
     
-    <v-dialog v-model="linkDialog" max-width="290">
+    <v-dialog v-model="linkDialog" max-width="500">
       <v-card>
-        <v-card-title> 링크를 입력해주세요. </v-card-title>
-        <v-card-text>
-          <v-text-field label="Link" v-model="linkText" required></v-text-field>
-        </v-card-text>
+        <v-container>
+          <v-row class="header-color">
+            <v-card-title> 링크를 입력해주세요. </v-card-title>
+          </v-row>
+          <v-row class="mt-7">
+            <v-text-field class="mx-5" label="Link" v-model="linkText" required></v-text-field>
+          </v-row>
+        </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-1" text @click="linkDialog = false">취소</v-btn>
@@ -32,17 +36,19 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="tableDialog" max-width="700">
+    <v-dialog v-model="tableDialog" max-width="600">
       <v-card>
-        <v-card-title> 생성할 표의 행과 열을 입력하세요. </v-card-title>
-        <v-row>
-          <v-col>
-            <v-text-field label="행" v-model="tableRow">
+        <v-row class="ma-0 header-color">
+          <v-card-title> 생성할 표의 행과 열을 입력하세요. </v-card-title>
+        </v-row>
+        <v-row class="ma-0"> 
+          <v-col class="pa-0 mt-5">
+            <v-text-field class="ml-15" label="행" v-model="tableRow">
               <v-icon slot="append" color="red" @click="plusRow()">mdi-plus</v-icon>
               <v-icon slot="prepend" color="green" @click="minusRow()">mdi-minus</v-icon>
             </v-text-field>
           </v-col>
-          <v-col>
+          <v-col class="pa-0 mt-5">
             <v-text-field label="열" v-model="tableCol">
               <v-icon slot="append" color="red" @click="plusCol()">mdi-plus</v-icon>
               <v-icon slot="prepend" color="green" @click="minusCol()">mdi-minus</v-icon>
