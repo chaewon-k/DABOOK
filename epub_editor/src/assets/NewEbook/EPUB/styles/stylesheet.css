@@ -31,3 +31,18 @@ p {
   display: block;
   margin: 0;
 }
+
+table, th, td {
+  margin: auto;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+table {
+  width: 80%;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+}

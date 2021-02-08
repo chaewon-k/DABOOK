@@ -1,17 +1,17 @@
 <template>
   <v-tabs id="fileTab" show-arrows v-model="tab">
-    <v-btn class="align-self-center" @click.stop="eBookDialog = true" text>e-book 생성하기</v-btn>
-    <v-btn class="align-self-center" @click="loadEbook" text>e-book 불러오기</v-btn>
+    <v-btn class="align-self-center" @click.stop="eBookDialog = true" text>이북 생성하기</v-btn>
+    <v-btn class="align-self-center" @click="loadEbook" text>이북 불러오기</v-btn>
     <v-btn class="align-self-center" @click="storeInputText" text>저장하기</v-btn>
-    <v-btn class="align-self-center" @click="preview" text>e-book 미리보기</v-btn>
-    <v-btn class="align-self-center" @click.stop="epubDialog = true" text>e-pub으로 내보내기</v-btn>
-    <v-btn class="align-self-center" @click.stop="chapterDialog = true" text>chapter 추가하기</v-btn>
+    <v-btn class="align-self-center" @click="preview" text>이북 미리보기</v-btn>
+    <v-btn class="align-self-center" @click.stop="epubDialog = true" text>ePUB으로 내보내기</v-btn>
+    <v-btn class="align-self-center" @click.stop="chapterDialog = true" text>목차 추가하기</v-btn>
     
     <!------- eBook dialog ------>
     <v-dialog v-model="eBookDialog" max-width="600">
       <v-card>
         <v-card-title class="header-color">
-          E-BOOK 생성하기
+          이북 생성하기
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -38,7 +38,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-1" text @click="eBookDialog = false">취소</v-btn>
-          <v-btn text @click="createNewEBook" style="color: #423F8C;">e-book 생성하기</v-btn>
+          <v-btn text @click="createNewEBook" style="color: #423F8C;">이북 생성하기</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -55,12 +55,12 @@
     <v-dialog v-model="epubDialog" max-width="600">
       <v-card>
         <v-card-title class="header-color">
-          epub 내보내기
+          ePUB 내보내기
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row class="my-3">
-              <v-text-field class="my-3" label="e-book 이름" v-model="eBookText" required></v-text-field>
+              <v-text-field class="my-3" label="책 이름" v-model="eBookText" required></v-text-field>
             </v-row>
             <v-row class="my-3">
               <v-text-field class="my-3" label="작성자" v-model="eBookAuthor" required></v-text-field>
@@ -71,7 +71,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-1" text @click="epubDialog = false">취소</v-btn>
-          <v-btn text @click="makeEpub(eBookText)" style="color: #423F8C;">epub 내보내기</v-btn>
+          <v-btn text @click="makeEpub(eBookText)" style="color: #423F8C;">ePUB 내보내기</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -80,8 +80,8 @@
     <!-- chapter dialog -->
     <Dialog
       :isDialog = "chapterDialog"
-      title = "chapter 추가하기"
-      labelText = "chapter 이름"
+      title = "목차 추가하기"
+      labelText = "목차 이름"
       :dialogMethod = "makeChapter"
       @toggle-dialog = "chapterDialog = false"
     /> 
@@ -196,14 +196,14 @@ export default {
           this.eBookText = '';
           this.selectedEBookLocation = '';
           this.$store.dispatch('setEditingText', '');
-          this.$store.dispatch('setAlertMessage', "새로운 e-book 생성에 성공했습니다");
+          this.$store.dispatch('setAlertMessage', "새로운 이북 생성에 성공했습니다");
         }
         catch (err) {
           console.log(err);
           this.eBookDialog = false;
           this.eBookText = '';
           this.selectedEBookLocation = '';
-          this.$store.dispatch('setAlertMessage', "새로운 e-book 생성에 실패했습니다");
+          this.$store.dispatch('setAlertMessage', "새로운 이북 생성에 실패했습니다");
         }
       }  
     },
@@ -265,7 +265,7 @@ export default {
       }
       catch (err) {
         console.log(err);
-        this.$store.dispatch('setAlertMessage',"e-book 불러오기에 실패했습니다"); 
+        this.$store.dispatch('setAlertMessage',"이북 불러오기에 실패했습니다"); 
       }
     },
 
@@ -275,10 +275,10 @@ export default {
         changeTitleAuthor(this.eBookLocation, val, this.eBookAuthor)
         this.epubDialog = false;
         this.savePath = makeEpubFile(this.eBookLocation, val);
-        this.$store.dispatch('setAlertMessage', "epub 내보내기에 성공했습니다");
+        this.$store.dispatch('setAlertMessage', "ePUB 내보내기에 성공했습니다");
       } catch (err) {
         console.log('epub 내보내기 실패');
-        this.$store.dispatch('setAlertMessage', "epub 내보내기에 실패했습니다");
+        this.$store.dispatch('setAlertMessage', "ePUB 내보내기에 실패했습니다");
       }
       this.eBookText = '';
       this.eBookAuthor = '';
@@ -313,14 +313,14 @@ export default {
         
         const data = readDirectory(this.eBookLocation, [], [], 0);
         //alert('새 chapter가 추가되었습니다!');
-        this.$store.dispatch('setAlertMessage',"챕터 추가에 성공했습니다");
+        this.$store.dispatch('setAlertMessage',"목차 추가에 성공했습니다");
  
         this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
         this.$store.dispatch('addTableOfContents', val);
         this.chapterText = '';
       } catch (err) {
         console.log('chapter 추가 실패');
-        this.$store.dispatch('setAlertMessage',"챕터 추가에 실패했습니다");
+        this.$store.dispatch('setAlertMessage',"목차 추가에 실패했습니다");
       }
     },
   }

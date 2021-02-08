@@ -1,27 +1,39 @@
 <template>
-  <!----------- StyleTab menus ----------->  
+  <!----------- StyleTab menus ----------->
   <v-tabs show-arrows v-model="tab">
     <div class="d-flex">
       <div class="align-self-center" v-for="(tab, idx) in tabs" :key="idx">
-        <div v-if="idx===4">
+        <div v-if="idx === 4">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn v-on="on" icon medium @click="styleMethod(idx)" @mousedown.right.stop.prevent="colorDialog1 = true;"
+              <v-btn
+                v-on="on"
+                icon
+                medium
+                @click="styleMethod(idx)"
+                @mousedown.right.stop.prevent="colorDialog1 = true"
                 ><v-icon v-bind:style="{ color: tab.color }" medium>{{
                   tab.icon
-                }}</v-icon></v-btn>
-              </template>
+                }}</v-icon></v-btn
+              >
+            </template>
             <span>{{ tab.name }}</span>
           </v-tooltip>
         </div>
-        <div v-else-if="idx===5">
+        <div v-else-if="idx === 5">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn v-on="on" icon medium @click="styleMethod(idx)" @mousedown.right.stop.prevent="colorDialog2 = true;"
+              <v-btn
+                v-on="on"
+                icon
+                medium
+                @click="styleMethod(idx)"
+                @mousedown.right.stop.prevent="colorDialog2 = true"
                 ><v-icon v-bind:style="{ color: tab.color }" medium>{{
                   tab.icon
-                }}</v-icon></v-btn>
-              </template>
+                }}</v-icon></v-btn
+              >
+            </template>
             <span>{{ tab.name }}</span>
           </v-tooltip>
         </div>
@@ -31,8 +43,9 @@
               <v-btn v-on="on" icon medium @click="styleMethod(idx)"
                 ><v-icon v-bind:style="{ color: tab.color }" medium>{{
                   tab.icon
-                }}</v-icon></v-btn>
-              </template>
+                }}</v-icon></v-btn
+              >
+            </template>
             <span>{{ tab.name }}</span>
           </v-tooltip>
         </div>
@@ -42,17 +55,18 @@
     <v-dialog
       v-model="customDialog"
       class="mx-auto"
-      max-width="500"
-      width="200"
+      max-width="400"
     >
-      <v-toolbar color="accent-4" dark>
-        <v-toolbar-title>나만의 style</v-toolbar-title>
+      <v-toolbar color="#c0bfd9">
+        <v-toolbar-title>나만의 스타일</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click="customDialog = false;"><v-icon>mdi-close</v-icon></v-btn>
+        <v-btn icon @click="customDialog = false"
+          ><v-icon>mdi-close</v-icon></v-btn
+        >
       </v-toolbar>
 
       <v-list subheader>
-         <v-list-item
+        <v-list-item
           v-for="(style, index) in customStyleList"
           :key="index"
           @click="applyCustomStyle(index)"
@@ -62,21 +76,21 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item  @click="styleDialog = true">
+        <v-list-item @click="styleDialog = true">
           <v-list-item-icon>
             <v-icon> mdi-plus</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title> style 추가하기</v-list-item-title>
+            <v-list-item-title> 스타일 추가하기</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
     </v-dialog>
 
-    <v-dialog v-model="styleDialog" persistent width="300px">
+    <v-dialog v-model="styleDialog" persistent max-width="400px">
       <v-card>
-        <v-card-title>
+        <v-card-title class="header-color">
           <span>나만의 style 추가하기</span>
         </v-card-title>
         <v-card-text>
@@ -91,9 +105,13 @@
             <v-col cols="10">
               <v-select
                 v-model="customStyle.range"
-                :items="['왼쪽 정렬', '오른쪽 정렬', '가운데 정렬', '양쪽 정렬']"
+                :items="[
+                  '왼쪽 정렬',
+                  '오른쪽 정렬',
+                  '가운데 정렬',
+                  '양쪽 정렬',
+                ]"
                 label="정렬"
-                required
               ></v-select>
             </v-col>
             <v-col cols="10">
@@ -101,22 +119,23 @@
                 v-model="customStyle.font"
                 :items="['바탕체', '굴림체', '돋움체', '궁서체']"
                 label="글꼴"
-                required
-              ></v-select>
+              >
+              </v-select>
             </v-col>
             <v-col sm>
               <v-row>
                 <v-text-field
                   v-model="customStyle.fontColor"
                   label="글씨색"
-                  required
                   @click="
                     selected = 'font';
                     colorDialog = true;
                   "
                 ></v-text-field>
                 <v-btn v-if="customStyle.fontColor != ''" icon medium>
-                  <v-icon medium v-bind:style="{ color: customStyle.fontColor }">mdi-checkbox-blank-circle</v-icon>
+                  <v-icon medium v-bind:style="{ color: customStyle.fontColor }"
+                    >mdi-checkbox-blank-circle</v-icon
+                  >
                 </v-btn>
               </v-row>
             </v-col>
@@ -125,13 +144,18 @@
                 <v-text-field
                   v-model="customStyle.backgroundColor"
                   label="배경색"
-                  required
                   @click="
                     selected = 'background';
                     colorDialog = true;
-                  "></v-text-field>
+                  "
+                ></v-text-field>
                 <v-btn v-if="customStyle.backgroundColor != ''" icon medium>
-                  <v-icon medium v-bind:style="{ color: customStyle.backgroundColor }">mdi-checkbox-blank-circle</v-icon></v-btn>
+                  <v-icon
+                    medium
+                    v-bind:style="{ color: customStyle.backgroundColor }"
+                    >mdi-checkbox-blank-circle</v-icon
+                  ></v-btn
+                >
               </v-row>
             </v-col>
           </v-container>
@@ -139,14 +163,17 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="styleDialog = false">닫기</v-btn>
+          <v-btn color="red darken-1" text @click="styleDialog = false"
+            >닫기</v-btn
+          >
           <v-btn
             color="green darken-1"
             text
             @click="
               addStyle();
               styleDialog = false;
-            ">
+            "
+          >
             만들기
           </v-btn>
         </v-card-actions>
@@ -155,7 +182,7 @@
 
     <v-dialog v-model="colorDialog" persistent max-width="400px">
       <v-card>
-        <v-card-title>
+        <v-card-title class="header-color">
           <span>색상 선택</span>
         </v-card-title>
         <v-card-text>
@@ -179,7 +206,7 @@
 
     <v-dialog v-model="colorDialog1" persistent max-width="400px">
       <v-card>
-        <v-card-title>
+        <v-card-title class="header-color">
           <span>글씨 색상 선택</span>
         </v-card-title>
         <v-card-text>
@@ -196,14 +223,16 @@
           <v-btn color="red darken-1" text @click="colorDialog1 = false">
             닫기
           </v-btn>
-          <v-btn color="green darken-1" text @click="colorDialog1 = false"> 선택 </v-btn>
+          <v-btn color="green darken-1" text @click="colorDialog1 = false">
+            선택
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
+
     <v-dialog v-model="colorDialog2" persistent max-width="400px">
       <v-card>
-        <v-card-title>
+        <v-card-title class="header-color">
           <span>배경 색상 선택</span>
         </v-card-title>
         <v-card-text>
@@ -217,51 +246,50 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="colorDialog2 = false">닫기</v-btn>
-          <v-btn color="green darken-1" text @click="colorDialog2 = false"> 선택 </v-btn>
+          <v-btn color="red darken-1" text @click="colorDialog2 = false"
+            >닫기</v-btn
+          >
+          <v-btn color="green darken-1" text @click="colorDialog2 = false">
+            선택
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
-    <v-dialog
-      v-model="fontDialog"
-      scrollable
-      max-width="300px"
-    >
+
+    <v-dialog v-model="fontDialog" max-width="300px" height="auto">
       <v-card>
-        <v-card-title>글꼴을 선택해주세요.</v-card-title>
+        <v-card-title class="header-color">글꼴 선택</v-card-title>
         <v-divider></v-divider>
         <v-card-text style="height: 300px;">
-          <v-radio-group
-            v-model="selectedFont"
-            column
-          >
-            <div
-              v-for="(font, idx) in fonts"
-              :key="idx"
-            >
+          <template>
+            <v-radio-group v-model="selectedFont" column>
               <v-radio
+                
+                v-for="(font, idx) in fonts"
+                :key="idx"
                 :label="font.name"
                 :value="font.value"
-              ></v-radio>
-            </div>
-          </v-radio-group>
+                v-bind:style="{ 'font-family': font.value }"
+              >
+              </v-radio>
+            </v-radio-group>
+          </template>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="fontDialog = false"
-          >
-            취소
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="fontDialog = false">
+            닫기
           </v-btn>
           <v-btn
-            color="blue darken-1"
+            color="green darken-1"
             text
-            @click="fontDialog = false; setFont(selectedFont)"
+            @click="
+              fontDialog = false;
+              setFont(selectedFont);
+            "
           >
-            적용
+            선택
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -275,7 +303,7 @@ import * as edit from "@/functions/edit.js";
 
 export default {
   name: "StyleTab",
-  data: function () {
+  data: function() {
     return {
       tab: null,
       tabs: [
@@ -296,26 +324,26 @@ export default {
           icon: "mdi-format-align-justify",
         },
         {
-          name: '글자색 적용',
-          icon: 'mdi-format-color-text',
-          color: 'red',
+          name: "글자색 적용",
+          icon: "mdi-format-color-text",
+          color: "red",
         },
         {
-          name: '배경색 적용',
-          icon: 'mdi-square',
-          color: 'red',
+          name: "배경색 적용",
+          icon: "mdi-square",
+          color: "red",
         },
         {
-          name: '글꼴',
-          icon: 'mdi-format-font',
+          name: "글꼴",
+          icon: "mdi-format-font",
         },
         {
-          name: '글자크기 축소',
-          icon: 'mdi-format-font-size-decrease',
+          name: "글자크기 축소",
+          icon: "mdi-format-font-size-decrease",
         },
         {
-          name: '글자크기 확대',
-          icon: 'mdi-format-font-size-increase',
+          name: "글자크기 확대",
+          icon: "mdi-format-font-size-increase",
         },
         {
           name: "나만의 style",
@@ -331,95 +359,95 @@ export default {
       pickedColor: "",
       selected: "",
       customStyle: {
-        title: '',
-        range: '',
-        font: '',
-        fontColor: '',
-        backgroundColor: ''
+        title: "",
+        range: "",
+        font: "",
+        fontColor: "",
+        backgroundColor: "",
       },
-    fonts: [
-      {
-        name: '바탕체',
-        value: '바탕체',
-      },
-      {
-        name: '돋움체',
-        value: '돋움체',
-      },
-      {
-        name: '굴림체',
-        value: '굴림체',
-      },
-      {
-        name: '궁서체',
-        value: '궁서체',
-      },
-      {
-        name: 'KoPubBatangBold',
-        value: 'kopub_bat_b',
-      },
-      {
-        name: 'KoPubBatangLight',
-        value: 'kopub_bat_l',
-      },
-      {
-        name: 'KoPubDotumBold',
-        value: 'kopub_dot_b',
-      },
-      {
-        name: 'KoPubDotumLight',
-        value: 'kopub_dot_l',
-      },
-      {
-        name: 'NotoSerif-Lightitalic',
-        value: 'noto_li',
-      },
-    ],
+      fonts: [
+        {
+          name: "바탕체",
+          value: "바탕체",
+        },
+        {
+          name: "돋움체",
+          value: "돋움체",
+        },
+        {
+          name: "굴림체",
+          value: "굴림체",
+        },
+        {
+          name: "궁서체",
+          value: "궁서체",
+        },
+        {
+          name: "KoPub 굵은 바탕체",
+          value: "kopub_bat_b",
+        },
+        {
+          name: "KoPub 얇은 바탕체",
+          value: "kopub_bat_l",
+        },
+        {
+          name: "KoPub 굵은 돋움체",
+          value: "kopub_dot_b",
+        },
+        {
+          name: "KoPub 얇은 돋움체",
+          value: "kopub_dot_l",
+        },
+        {
+          name: "NotoSerif-Lightitalic",
+          value: "noto_li",
+        },
+      ],
       colorDialog1: false,
       colorDialog2: false,
       fontDialog: false,
-      selectedFont: '',
-    }
+      selectedFont: "",
+    };
   },
   methods: {
-    styleMethod: function (i) {
-      if (this.$store.state.selectedFileDirectory !== '') {
+    styleMethod: function(i) {
+      if (this.$store.state.selectedFileDirectory !== "") {
         if (i == 0) {
           this.$store.dispatch("setEditingText", css.alignText("left"));
-        }
-        else if (i == 1) {
-          this.$store.dispatch('setEditingText', css.alignText('center'));
-        }
-        else if (i == 2) {
-          this.$store.dispatch('setEditingText', css.alignText('right'));
-        }
-        else if (i == 3) {
-          this.$store.dispatch('setEditingText', css.alignText('justify'));
-        }
-        else if (i == 4) {
-          this.$store.dispatch('setEditingText', css.setFontColor(this.tabs[4].color));
-        }
-        else if (i == 5) {
-          this.$store.dispatch('setEditingText', css.setBackgroundColor(this.tabs[5].color));
-        }
-        else if (i == 6) {
+        } else if (i == 1) {
+          this.$store.dispatch("setEditingText", css.alignText("center"));
+        } else if (i == 2) {
+          this.$store.dispatch("setEditingText", css.alignText("right"));
+        } else if (i == 3) {
+          this.$store.dispatch("setEditingText", css.alignText("justify"));
+        } else if (i == 4) {
+          this.$store.dispatch(
+            "setEditingText",
+            css.setFontColor(this.tabs[4].color)
+          );
+        } else if (i == 5) {
+          this.$store.dispatch(
+            "setEditingText",
+            css.setBackgroundColor(this.tabs[5].color)
+          );
+        } else if (i == 6) {
           this.fontDialog = !this.fontDialog;
-        }
-        else if (i == 7) {
-          this.$store.dispatch('setEditingText', css.fontSize('down'));
-        }
-        else if (i == 8) {
-          this.$store.dispatch('setEditingText', css.fontSize('up'));
-        }
-        else if (i == 9) {
+        } else if (i == 7) {
+          this.$store.dispatch("setEditingText", css.fontSize("down"));
+        } else if (i == 8) {
+          this.$store.dispatch("setEditingText", css.fontSize("up"));
+        } else if (i == 9) {
           this.openCustomStyleMenu();
         }
-        edit.set('');
+        edit.set("");
       } else {
-        this.$store.dispatch('setAlertMessage', 'text 폴더의 파일을 선택해주세요.')
+        this.$store.dispatch(
+          "setAlertMessage",
+          "text 폴더의 파일을 선택해주세요."
+        );
       }
     },
-    pickColor: function () {
+    pickColor: function() {
       if (this.selected == "font") {
         this.customStyle.fontColor = this.pickedColor;
       } else {
@@ -427,27 +455,32 @@ export default {
       }
       this.colorDialog = false;
     },
-    addStyle: function () {
+    addStyle: function() {
       this.customStyleMenu = false;
       this.customStyleList.push(this.customStyle.title);
       css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
       this.customStyle = {};
-      this.$store.dispatch('setCustomStyleArray', this.customStyleList);
+      this.$store.dispatch("setCustomStyleArray", this.customStyleList);
     },
-    openCustomStyleMenu: function () {
+    openCustomStyleMenu: function() {
       this.customStyleList = this.$store.state.customStyleArray;
       this.customDialog = true;
     },
-    applyCustomStyle: function (index) {
+    applyCustomStyle: function(index) {
       this.$store.dispatch(
         "setEditingText",
         css.attachCustomStyleTag(this.customStyleList[index])
       );
       this.customDialog = false;
     },
-    setFont: function (font) {
-      this.$store.dispatch('setEditingText', css.setFont(font))
+    setFont: function(font) {
+      this.$store.dispatch("setEditingText", css.setFont(font));
     },
-  }
-}
+    fontBinding: function(val) {
+      let font = '"font-family : ' + val + '"';
+      console.log(font);
+      return font;
+    },
+  },
+};
 </script>
