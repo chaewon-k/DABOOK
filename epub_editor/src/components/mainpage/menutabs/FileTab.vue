@@ -8,19 +8,20 @@
     <v-btn class="align-self-center" @click="addChapter" text>목차 추가하기</v-btn>
     
     <!------- eBook dialog ------>
-    <v-dialog v-model="eBookDialog" max-width="600">
+    <v-dialog v-model="eBookDialog" max-width="500">
       <v-card>
-        <v-card-title class="header-color">
+        <v-card-title class="header-color font-weight-black">
           이북 생성하기
         </v-card-title>
         <v-card-text>
           <v-container>
               <v-row class="my-3">
+                <v-icon style="color: #423F8C;" class="mr-3 header-color">mdi-book-open-outline</v-icon>
                 <v-text-field class="my-3" :rules="[rules.required, rules.check]" label="e-book 이름" v-model="eBookText" required></v-text-field>
               </v-row>
               <v-row>
                 <div class="my-3 d-flex align-center">
-                  <v-btn  @click="selectPath">위치 선택</v-btn>
+                  <v-btn outlineds style="color: #423F8C;" @click="selectPath">위치 선택</v-btn>
                   <p class="my-0 mx-3">{{selectedEBookLocation}}</p>
                 </div>
               </v-row>
@@ -31,7 +32,7 @@
                 <v-file-input
                   v-model="eBookCover"
                   accept="image/png, image/jpeg, image/bmp"
-                  prepend-icon="mdi-camera"
+                  prepend-icon="mdi-image-search-outline"
                   label="기본 이미지"
                 ></v-file-input>
               </v-row>
@@ -46,17 +47,20 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="epubDialog" max-width="600">
+    <v-dialog v-model="epubDialog" max-width="500">
       <v-card>
-        <v-card-title class="header-color">
-          ePUB 내보내기
+        <v-card-title>
+          <v-icon style="color: #423F8C;">mdi-book-check-outline</v-icon>
+          <div class="ml-3 font-weight-bold header-color">ePUB 내보내기</div>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row class="my-3">
+              <v-icon class="mr-5" style="color: #423F8C;">mdi-book-open-outline</v-icon>
               <v-text-field class="my-3" label="책 이름" v-model="eBookText" required></v-text-field>
             </v-row>
             <v-row class="my-3">
+              <v-icon class="mr-5" style="color: #423F8C;">mdi-account-outline</v-icon>
               <v-text-field class="my-3" label="작성자" v-model="eBookAuthor" required></v-text-field>
             </v-row>
           </v-container>
@@ -317,7 +321,7 @@ export default {
 
     // epub 내보내기 조건 추가 (생성한 후에만 내보내기 가능)
     exportFile: function () {
-      if (this.$store.state.selectedFileDirectory === '') {
+      if (this.$store.state.ebookDirectoryTree.length === 0) {
         this.$store.dispatch('setAlertMessage', "내보내기할 이북이 없습니다.");
       } else {
         this.epubDialog = true;
@@ -368,7 +372,7 @@ export default {
       }
     },
     addChapter: function () {
-      if (this.$store.state.selectedFileDirectory === '') {
+      if (this.$store.state.ebookDirectoryTree.length === 0) {
         this.$store.dispatch('setAlertMessage', "이북을 먼저 생성해주세요!");
       } else {
         this.chapterDialog = true;

@@ -3,7 +3,11 @@
     <v-card>
       <v-card-title class="header-color">{{ title }}</v-card-title>
       <v-card-text>
-        <v-text-field class="my-3" :label="labelText" v-model="inputText" required></v-text-field>
+        <v-row class="my-3 mx-1">
+          <v-icon class="mr-3" style="color: #423F8C;">mdi-pencil-plus-outline</v-icon>
+          <v-text-field class="my-3" :label="labelText" v-model="inputText" required></v-text-field>
+        </v-row>
+        
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
