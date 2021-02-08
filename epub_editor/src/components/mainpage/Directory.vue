@@ -12,7 +12,7 @@
       <v-icon small style="padding: 0 5px;" v-if="!item.file">
         {{ 'mdi-folder' }}
       </v-icon>
-      <v-icon v-else style="padding: 0 5px;">
+      <v-icon v-else small style="padding: 0 5px;">
         {{ files[item.file] }}
       </v-icon>
       <span @click="openFile(item)">{{ item.name }}</span>
