@@ -7,12 +7,13 @@ export function readPath () {
   };
   const r = dialog.showOpenDialogSync(options);
   if (!r) {
-    const result = window.confirm('경로를 선택해주세요');
+    /*const result = window.confirm('경로를 선택해주세요');
     if (result === true) {
       return readPath();
     } else {
       return false;
-    }      
+    }     */
+    return; 
   }
   return r[0];
 }

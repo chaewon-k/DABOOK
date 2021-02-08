@@ -22,6 +22,7 @@
 
 <script>
 import eventBus from '@/eventBus.js';
+import * as edit from '@/functions/edit.js';
 
 const fs = require('fs');
 
@@ -81,6 +82,7 @@ export default {
             this.$store.dispatch('setAlertMessage', "text파일만 작성가능합니다.");
           }
         }
+        edit.reset();
       }
     }
   },
