@@ -53,7 +53,7 @@
     </div>
 
     <v-dialog v-model="customDialog" class="mx-auto" max-width="400">
-      <v-toolbar color="#c0bfd9">
+      <v-toolbar style="color: #423F8C;">
         <v-toolbar-title>나만의 스타일</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="customDialog = false"
@@ -173,7 +173,7 @@
             >닫기</v-btn
           >
           <v-btn
-            color="green darken-1"
+            style="color: #423F8C;"
             text
             @click="
               addStyle();
@@ -229,7 +229,7 @@
           <v-btn color="red darken-1" text @click="colorDialog1 = false">
             닫기
           </v-btn>
-          <v-btn color="green darken-1" text @click="colorDialog1 = false">
+          <v-btn style="color: #423F8C;" text @click="colorDialog1 = false">
             선택
           </v-btn>
         </v-card-actions>
@@ -255,7 +255,7 @@
           <v-btn color="red darken-1" text @click="colorDialog2 = false"
             >닫기</v-btn
           >
-          <v-btn color="green darken-1" text @click="colorDialog2 = false">
+          <v-btn style="color: #423F8C;" text @click="colorDialog2 = false">
             선택
           </v-btn>
         </v-card-actions>
@@ -287,7 +287,7 @@
             닫기
           </v-btn>
           <v-btn
-            color="green darken-1"
+            style="color: #423F8C;"
             text
             @click="
               fontDialog = false;

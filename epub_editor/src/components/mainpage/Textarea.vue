@@ -24,7 +24,8 @@
             <v-card-title> 링크를 입력해주세요. </v-card-title>
           </v-row>
           <v-row class="mt-7">
-            <v-text-field class="mx-5" label="Link" v-model="linkText" required></v-text-field>
+            <v-icon class="ml-4" style="color: #423F8C;">mdi-link-variant</v-icon>
+            <v-text-field class="mx-4" label="Link" v-model="linkText" required></v-text-field>
           </v-row>
         </v-container>
         <v-card-actions>
@@ -32,7 +33,7 @@
           <v-btn color="red darken-1" text @click="linkDialog = false"
             >취소</v-btn
           >
-          <v-btn color="green darken-1" text @click="attachLinkTag()"
+          <v-btn style="color: #423F8C;" text @click="attachLinkTag()"
             >생성</v-btn
           >
         </v-card-actions>
@@ -70,7 +71,7 @@
           <v-btn color="red darken-1" text @click="tableDialog = false"
             >취소</v-btn
           >
-          <v-btn color="green darken-1" text @click="attachTableTag()"
+          <v-btn style="color: #423F8C;" text @click="attachTableTag()"
             >생성</v-btn
           >
         </v-card-actions>
