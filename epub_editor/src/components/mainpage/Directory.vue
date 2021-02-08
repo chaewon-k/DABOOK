@@ -12,7 +12,7 @@
       <v-icon small style="padding: 0 5px;" v-if="!item.file">
         {{ 'mdi-folder' }}
       </v-icon>
-      <v-icon v-else style="padding: 0 5px;">
+      <v-icon v-else small style="padding: 0 5px;">
         {{ files[item.file] }}
       </v-icon>
       <span @click="openFile(item)">{{ item.name }}</span>
@@ -67,7 +67,7 @@ export default {
           if (original !== this.$store.state.editingText) {  // 원본과 수정 중 파일이 다르다면
             // 저장 할 것인지 물어보고 저장 / 취소
             const result = window.confirm("이전 파일의 변경 내역을 저장하시겠습니까?")
-            if (result) {
+            if (result === true) {
               const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
               fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
             }
