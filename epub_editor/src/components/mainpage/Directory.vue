@@ -22,6 +22,7 @@
 
 <script>
 import eventBus from '@/eventBus.js';
+import * as edit from '@/functions/edit.js';
 
 const fs = require('fs');
 
@@ -77,6 +78,7 @@ export default {
           this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
           eventBus.$emit('loadData', temp);
         }
+        edit.reset();
       }
     }
   },
