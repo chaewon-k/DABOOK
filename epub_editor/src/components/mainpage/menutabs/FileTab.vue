@@ -16,7 +16,7 @@
         <v-card-text>
           <v-container>
               <v-row class="my-3">
-                <v-text-field class="my-3" :rules="[rules.required]" label="e-book 이름" v-model="eBookText" required></v-text-field>
+                <v-text-field class="my-3" :rules="[rules.required, rules.check]" label="e-book 이름" v-model="eBookText" required></v-text-field>
               </v-row>
               <v-row>
                 <div class="my-3 d-flex align-center">
@@ -135,6 +135,7 @@ export default {
       
       rules: {
           required: value => !!value || 'Required.',
+          check: value => !this.checkExp(value)|| '특수문자 사용불가',
         },
     }
   }, 
@@ -145,7 +146,6 @@ export default {
       }
     })
   },
-
   computed: {
     ...mapState(["alertDialog","editingText", "editingHTMLText", "ebookDirectory",'editingTextArr']),
   },
@@ -160,6 +160,17 @@ export default {
     }
   },
   methods: {
+    checkExp: function(value){
+      var special_pattern =  /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/gi;
+      if(special_pattern.test(value)==true){
+        return true;
+      }
+      else{
+        return false;
+      }
+    },
+
+
     // 새 e-book 생성
     // 위치 선택
     selectPath: function () {
@@ -179,6 +190,8 @@ export default {
   
         try {
           if(this.eBookText=='' || this.selectedEBookLocation==undefined)
+            return;
+          if(this.checkExp(this.eBookText))
             return;
           this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
           this.$store.dispatch('setEbookDirectory', this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
