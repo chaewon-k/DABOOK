@@ -17,15 +17,6 @@
       @mousedown.left="closeMenu"
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
-<<<<<<< HEAD
-
-    <v-dialog v-model="linkDialog" max-width="250">
-      <v-card>
-        <v-card-title class="header-color"> 링크를 입력해주세요. </v-card-title>
-        <v-card-text>
-          <v-text-field label="링크" v-model="linkText" required></v-text-field>
-        </v-card-text>
-=======
     
     <v-dialog v-model="linkDialog" max-width="500">
       <v-card>
@@ -37,7 +28,6 @@
             <v-text-field class="mx-5" label="Link" v-model="linkText" required></v-text-field>
           </v-row>
         </v-container>
->>>>>>> 44d1c8aa88048608ce831da19ba25c794c2fb303
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-1" text @click="linkDialog = false"
@@ -50,7 +40,6 @@
       </v-card>
     </v-dialog>
 
-<<<<<<< HEAD
     <v-dialog v-model="tableDialog" max-width="250">
       <v-card>
         <v-card-title class="header-color">표 생성</v-card-title>
@@ -74,24 +63,6 @@
               <v-icon slot="prepend" color="green" @click="minusCol()"
                 >mdi-minus</v-icon
               >
-=======
-    <v-dialog v-model="tableDialog" max-width="600">
-      <v-card>
-        <v-row class="ma-0 header-color">
-          <v-card-title> 생성할 표의 행과 열을 입력하세요. </v-card-title>
-        </v-row>
-        <v-row class="ma-0"> 
-          <v-col class="pa-0 mt-5">
-            <v-text-field class="ml-15" label="행" v-model="tableRow">
-              <v-icon slot="append" color="red" @click="plusRow()">mdi-plus</v-icon>
-              <v-icon slot="prepend" color="green" @click="minusRow()">mdi-minus</v-icon>
-            </v-text-field>
-          </v-col>
-          <v-col class="pa-0 mt-5">
-            <v-text-field label="열" v-model="tableCol">
-              <v-icon slot="append" color="red" @click="plusCol()">mdi-plus</v-icon>
-              <v-icon slot="prepend" color="green" @click="minusCol()">mdi-minus</v-icon>
->>>>>>> 44d1c8aa88048608ce831da19ba25c794c2fb303
             </v-text-field>
         </v-card-text>
 
