@@ -33,7 +33,13 @@ export function paste () {
   document.execCommand('paste');
   set('');
 }
-
+export function reset(){
+  console.log("reset");
+  arr.length=0;
+  arrPoint=-1;
+  maxStack=0;
+  direction=0;
+}
 export function undo () { 
   if (maxStack == arrPoint)
     this.set('');

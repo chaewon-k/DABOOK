@@ -140,3 +140,14 @@ div.right {
   border-radius: 5px;
   z-index: 999999;
 }
+
+
+
+
+/*새 ebook 만들기*/
+.confirmMessage {
+  margin-bottom: -5px;
+  color: red;
+  font-size: smaller;
+}
+
