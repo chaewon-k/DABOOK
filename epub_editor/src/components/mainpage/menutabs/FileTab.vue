@@ -15,24 +15,27 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row class="my-3">
-              <v-text-field class="my-3" label="e-book 이름" v-model="eBookText" required></v-text-field>
-            </v-row>
-            <v-row>
-              <div class="my-3 d-flex align-center">
-                <v-btn @click="selectPath">위치 선택</v-btn>
-                <p class="my-0 mx-3">{{selectedEBookLocation}}</p>
-              </div>
-            </v-row>
-            <v-row class="my-3">
-              <v-file-input
-                v-model="eBookCover"
-                accept="image/png, image/jpeg, image/bmp"
-                prepend-icon="mdi-camera"
-                label="기본 이미지"
-              ></v-file-input>
-            </v-row>
-          </v-container>
+              <v-row class="my-3">
+                <v-text-field class="my-3" :rules="[rules.required, rules.check]" label="e-book 이름" v-model="eBookText" required></v-text-field>
+              </v-row>
+              <v-row>
+                <div class="my-3 d-flex align-center">
+                  <v-btn  @click="selectPath">위치 선택</v-btn>
+                  <p class="my-0 mx-3">{{selectedEBookLocation}}</p>
+                </div>
+              </v-row>
+              <v-row>
+                <p class="mt-3 confirmMessage"  style="visibility:hidden"  id="location"> Required. </p>
+              </v-row>
+              <v-row class="my-3">
+                <v-file-input
+                  v-model="eBookCover"
+                  accept="image/png, image/jpeg, image/bmp"
+                  prepend-icon="mdi-camera"
+                  label="기본 이미지"
+                ></v-file-input>
+              </v-row>
+            </v-container>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -129,6 +132,11 @@ export default {
       // Array
       findIndexArray: [],
       eBookCover: [],
+      
+      rules: {
+          required: value => !!value || 'Required.',
+          check: value => !this.checkExp(value)|| '특수문자 사용불가',
+        },
     }
   }, 
   created: function () {
@@ -138,11 +146,31 @@ export default {
       }
     })
   },
-
   computed: {
     ...mapState(["alertDialog","editingText", "editingHTMLText", "ebookDirectory",'editingTextArr']),
   },
+  watch:{
+    selectedEBookLocation: function(){
+      if(this.selectedEBookLocation==undefined){
+        document.getElementById("location").style.visibility="visible";
+      }
+      else{
+        document.getElementById("location").style.visibility="hidden";
+      }
+    }
+  },
   methods: {
+    checkExp: function(value){
+      var special_pattern =  /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/gi;
+      if(special_pattern.test(value)==true){
+        return true;
+      }
+      else{
+        return false;
+      }
+    },
+
+
     // 새 e-book 생성
     // 위치 선택
     selectPath: function () {
@@ -159,13 +187,12 @@ export default {
       - src.assets.NewEbook에 있는 기본 EPUB파일 복사
       */
 
-      if (this.eBookLocation === '' || this.eBookText === '') {
-        this.$store.dispatch('setAlertMessage',"이북 생성에 실패했습니다.");
-        this.eBookDialog = false;
-      } else {
-      
-
+  
         try {
+          if(this.eBookText=='' || this.selectedEBookLocation==undefined)
+            return;
+          if(this.checkExp(this.eBookText))
+            return;
           this.eBookLocation = this.eBookLocation + '/' + this.eBookText + '/';
           this.$store.dispatch('setEbookDirectory', this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
           fs.mkdir(this.eBookLocation, function (err) {
@@ -205,7 +232,7 @@ export default {
           this.selectedEBookLocation = '';
           this.$store.dispatch('setAlertMessage', "새로운 이북 생성에 실패했습니다");
         }
-      }  
+     
     },
 
     // 목차 읽어오기
