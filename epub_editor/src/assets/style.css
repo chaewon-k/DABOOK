@@ -1,5 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap');
 
+@font-face {
+  font-family: "kopub_dot_b";
+  src: url('./NewEbook/EPUB/fonts/KoPubDotumBold.ttf');
+}
+@font-face {
+  font-family: "kopub_dot_l";
+  src: url('./NewEbook/EPUB/fonts/KoPubDotumLight.ttf');
+}
+@font-face {
+  font-family: "kopub_bat_l";
+  src: url('./NewEbook/EPUB/fonts/KoPubBatangLight.ttf');
+}
+@font-face {
+  font-family: "kopub_bat_b";
+  src: url('./NewEbook/EPUB/fonts/KoPubBatangBold.ttf');
+}
+@font-face {
+  font-family: 'noto_li';
+  src: url('./NewEbook/EPUB/fonts/NotoSerif-LightItalic.ttf');
+}
+
 html, body {
   font-family: 'Nanum Myeongjo', serif;
 }
