@@ -13,7 +13,6 @@
       placeholder="책을 작성해볼까요?"
       v-model="inputText"
       @keydown="isSave"
-      @keyup.enter="attachPTag()"
       @mousedown.left="closeMenu"
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
@@ -156,7 +155,7 @@ export default {
   name: "Textarea",
   created: function() {
     window.onkeypress = (e) => {
-      if (e.keyCode === 19 && e.ctrlKey === true) {
+      if (e.keyCode === 83 && e.ctrlKey === true) {
         eventBus.$emit("shortcut", "save");
       } else if (e.keyCode === 5 && e.ctrlKey === true) {
         edit.copy();
@@ -168,6 +167,9 @@ export default {
         this.inputText = edit.undo();
       } else if (e.keyCode === 6 && e.ctrlKey === true) {
         this.inputText = edit.redo();
+      } else if (e.keyCode === 13) {
+        e.preventDefault();
+        this.attachPTag();
       }
     };
     eventBus.$on("edit", (res) => {
