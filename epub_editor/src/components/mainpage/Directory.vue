@@ -73,9 +73,13 @@ export default {
           } 
         }
         if (this.$store.state.selectedFileDirectory !== val.dirPath) {  // 자기 자신을 다시 클릭한 것이 아니라면 새 파일을 가져온다.
-          const temp = fs.readFileSync(val.dirPath).toString();
-          this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
-          eventBus.$emit('loadData', temp);
+          if (val.dirPath.slice(-5) === 'xhtml') {    // xhtml 파일이라면 불러온다.
+            const temp = fs.readFileSync(val.dirPath).toString();
+            this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
+            eventBus.$emit('loadData', temp);
+          } else {    // xhtml 파일이 아니라면 alert 를 띄운다. 
+            this.$store.dispatch('setAlertMessage', "text파일만 작성가능합니다.");
+          }
         }
       }
     }
