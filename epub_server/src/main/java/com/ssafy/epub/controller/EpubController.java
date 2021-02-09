@@ -52,7 +52,7 @@ public class EpubController {
 	@ApiOperation(value = "upload")
 	public ResponseEntity<Boolean> upload(@RequestParam("file") MultipartFile mfFile,@RequestParam("email") String email,@RequestParam("epubName") String epubName) {
 		//List<MultipartFile> files = uploadFilesInfo.getFiles();
-		
+		System.out.println(storagePath);
 		//String filePath = storagePath + "/" + uploadFilesInfo.getEmail() + "/" + uploadFilesInfo.getEpubName() + "/";
 		String filePath = storagePath + "/" + email + "/" + epubName + "/";
 		
