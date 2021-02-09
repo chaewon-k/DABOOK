@@ -180,25 +180,25 @@ export function linkTag (link) {
 }
 
 export function tableTag (row, col) {
-  var resultString = `<table>
-      <caption>표 이름</caption>
-      <thead>
-        <tr>\n`;
+  var resultString = `\n    <table>
+     <caption>표 이름</caption>
+     <thead>
+      <tr>\n`;
   for (let i = 0; i < col; i++) {
-    resultString += `           <th>제목</th>\n`;
+    resultString += `       <th>제목</th>\n`;
   }
-  resultString += `       </tr>
-      </thead>
-      <tbody>\n`;
+  resultString += `     </tr>
+    </thead>
+    <tbody>\n`;
   for (let i = 0; i < row; i++) {
-    resultString += `       <tr>\n`;
+    resultString += `     <tr>\n`;
     for (let j = 0; j < col; j++) {
-      resultString += `         <td>data</td>\n`;
+      resultString += `      <td>data</td>\n`;
     }
-    resultString += `       </tr>\n`;
+    resultString += `     </tr>\n`;
   }
-    resultString += `     </tbody>
-    </table>`;
+    resultString += `    </tbody>
+   </table>`;
   var area = document.getElementById("area");
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
   return area.value;
