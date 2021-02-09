@@ -4,13 +4,11 @@
     <FileTab
       v-show="itemIndex===0"
     />
-    <!--------------------- file tap end --------------------->
 
     <!-------------------- edit tap start -------------------->
     <EditTab
       v-show="itemIndex===1"
     />
-    <!---------------------- edit tap end ---------------------->
 
     <ToolsTab
       v-show="itemIndex === 2"
@@ -20,7 +18,6 @@
     <StyleTab
       v-show="itemIndex === 3"
     />
-    <!---------------------- style tap end ---------------------->
 
     <!-------------------- manual tap start -------------------->
     <div v-show="itemIndex === 4">
@@ -29,8 +26,6 @@
         <!-- <v-btn class="align-self-center" text>마크다운 설명서 보기</v-btn> -->
       </v-tabs>
     </div>
-    <!-------------------- manual tap end -------------------->
-
   </div>
 </template>
 

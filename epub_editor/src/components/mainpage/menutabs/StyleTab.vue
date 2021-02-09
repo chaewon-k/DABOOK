@@ -419,7 +419,7 @@ export default {
   methods: {
     styleMethod: function(i) {
       if (!css.inTag()) {
-        console.log("tag 안입니다");
+        // console.log("tag 안입니다");
         this.$store.dispatch(
           "setAlertMessage",
           "태그 밖에서만 스타일 적용이 가능합니다."

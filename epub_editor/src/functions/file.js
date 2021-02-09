@@ -130,7 +130,7 @@ export function changeTitleAuthor (path, title, author) {
   let temp = fs.readFileSync(path + '/EPUB/toc.ncx').toString();
   let start = temp.indexOf("<docTitle>");
   let end = temp.indexOf("</text>");
-  console.log(title, author)
+  // console.log(title, author)
   temp = temp.slice(0, start + 22) + title + temp.slice(end, temp.length);
   fs.writeFile(path + '/EPUB/toc.ncx', temp, (err) => {
     if (err) {
