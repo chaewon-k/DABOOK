@@ -93,12 +93,21 @@
 <script>
 import eventBus from '@/eventBus.js';
 
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
+
 export default {
   name: 'ToolsTab',
   data: function () {
     return {
       tab: null,
     }
+  },
+  mounted: function () {
+    this.eBookDialog = false;
+    ipcRenderer.on('toolsTab', function (event, message) {
+      this.selectTag(message)
+    }.bind(this))
   },
   methods: {
     selectTag: function(index) {

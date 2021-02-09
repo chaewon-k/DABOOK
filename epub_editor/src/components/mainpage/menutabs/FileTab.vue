@@ -90,13 +90,12 @@ import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, chang
 import { mapState } from 'vuex';
 import eventBus from "@/eventBus.js";
 import Dialog from '@/components/mainpage/Dialog';
-import { ipcRenderer } from 'electron';
 
 const fs = require('fs');
 const path=require('path');
 const electron = require('electron');
 const BrowserWindow = electron.remote.BrowserWindow;
-// const ipcRenderer = electron.ipcRenderer;
+const ipcRenderer = electron.ipcRenderer;
 const fse = require('fs-extra');
 
 export default {
@@ -136,14 +135,29 @@ export default {
     }
   }, 
   created: function () {
-    ipcRenderer.on('ping', function (event, message) {
-      console.log(message, '33333')
-    })
     eventBus.$on('shortcut',(res) => {
       if (res=="save") {
         this.storeInputText();
       }
     })
+  },
+  mounted: function () {
+    this.eBookDialog = false;
+    ipcRenderer.on('fileTab', function (event, message) {
+      if (message === 0) {
+        this.eBookDialog = !this.eBookDialog;
+      } else if (message === 1) {
+        this.loadEbook();
+      } else if (message === 2) {
+        this.storeInputText();
+      } else if (message === 3) {
+        this.preview();
+      } else if (message === 4) {
+        this.exportFile();
+      } else if (message === 5) {
+        this.addChapter();
+      }
+    }.bind(this))
   },
   computed: {
     ...mapState(["alertDialog","editingText", "editingHTMLText", "ebookDirectory",'editingTextArr']),
@@ -159,6 +173,9 @@ export default {
     }
   },
   methods: {
+    test: function () {
+      console.log('111')
+    },
     checkExp: function(value){
       var special_pattern =  /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/gi;
       if(special_pattern.test(value)==true){

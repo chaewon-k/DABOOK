@@ -42,7 +42,9 @@ import StyleTab from '@/components/mainpage/menutabs/StyleTab';
 
 const path = require('path');
 const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
 const BrowserWindow = electron.remote.BrowserWindow;
+
 export default {
   name: 'SubMenu',
   components: {
@@ -58,6 +60,14 @@ export default {
     return {
       tab: null,
     }
+  },
+  mounted: function () {
+    this.eBookDialog = false;
+    ipcRenderer.on('helpTab', function (event, message) {
+      if (message === 0) {
+        this.popUpEditor();
+      }
+    }.bind(this))
   },
   methods:{
     popUpEditor: function (){

@@ -123,6 +123,10 @@
 
 <script>
 import eventBus from "@/eventBus.js";
+
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
+
 export default {
   name: "EditTab",
   data: function () {
@@ -137,6 +141,26 @@ export default {
       findTextArray: [],
       findTextIndex: 0,
     };
+  },
+  mounted: function () {
+    this.eBookDialog = false;
+    ipcRenderer.on('editTab', function (event, message) {
+      if (message === 0) {
+        this.edit('undo');
+      } else if (message === 1) {
+        this.edit('redo');
+      } else if (message === 2) {
+        this.edit('cut');
+      } else if (message === 3) {
+        this.edit('copy');
+      } else if (message === 4) {
+        this.edit('paste');
+      } else if (message === 5) {
+        this.openFindMenu();
+      } else if (message === 6) {
+        this.replaceDialog = !this.replaceDialog;
+      }
+    }.bind(this))
   },
   methods: {
     edit: function (res) {
