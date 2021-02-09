@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <!-- <v-system-bar>
-      <v-icon>mdi-message</v-icon>
-      <span>로고?</span>
-    </v-system-bar> -->
-    <v-card class="rounded-0">
+  <div id="topMenu">
+    <v-card>
       <v-tabs
         show-arrows
         v-model="tab"
@@ -25,31 +21,30 @@
   </div>
 </template>
 <script>
-import SubMenu from './SubMenu.vue'
+import SubMenu from './SubMenu.vue';
+
 export default {
+  name: 'TopMenu',
   components: {
     SubMenu
   },
   data: function () {
       return {
-        itemIndex: 0,     //선택한 메뉴 인덱스
+        itemIndex: 0,
         tab: null,
         items: [
           { tab: '파일' },
           { tab: '편집' },
           { tab: '도구상자' },
+          { tab: '스타일' },
           { tab: '도움말' }
         ],
-      }
+      };
     },
   methods: {
     selectedIndex: function (idx) {
-      this.itemIndex = idx
+      this.itemIndex = idx;
     }
   }
 }
 </script>
-
-<style>
-
-</style>

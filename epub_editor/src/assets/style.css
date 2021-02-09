@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap');
+
+@font-face {
+  font-family: "kopub_dot_b";
+  src: url('./NewEbook/EPUB/fonts/KoPubDotumBold.ttf');
+}
+@font-face {
+  font-family: "kopub_dot_l";
+  src: url('./NewEbook/EPUB/fonts/KoPubDotumLight.ttf');
+}
+@font-face {
+  font-family: "kopub_bat_l";
+  src: url('./NewEbook/EPUB/fonts/KoPubBatangLight.ttf');
+}
+@font-face {
+  font-family: "kopub_bat_b";
+  src: url('./NewEbook/EPUB/fonts/KoPubBatangBold.ttf');
+}
+@font-face {
+  font-family: 'noto_li';
+  src: url('./NewEbook/EPUB/fonts/NotoSerif-LightItalic.ttf');
+}
+
+html, body {
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+#app {
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+
+
+#editor {
+  height: 100%;
+}
+
+#header {
+  position: fixed;
+  height: 96px;
+  width: 100%;
+  z-index: 2;
+}
+
+#topMenu {
+  width: 100%;
+}
+
+#wrap {
+  padding-top: 96px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+#aside {
+  height: 100%;
+  width: 300px;
+  position: fixed;
+}
+
+#tableOfContents {
+  height: 100%;
+}
+
+#content {
+  padding-left: 300px;
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
+#textarea {
+  height: 100%;
+}
+
+#textarea > .v-input {
+  height: 100%;
+}
+
+#textarea > .v-input > .v-input__control {
+  height: 100%;
+}
+
+
+/* 도구상자 버튼 정렬하는 style */
+
+#subMenuBar {
+  width: 100%;
+}
+
+/* div.left {
+    width: 60%;
+    float: left;
+    height: 10%;
+}
+
+div.right {
+  top:20%;
+  width: 39%;
+  float: right;
+  position: relative;
+} */
+
+/* dialog 글씨 및 배경 색 변경하는 style */
+
+.v-text-field {
+  width: 150px;
+}
+
+.header-color {
+  color: #423F8C;
+}
+
+.font-color {
+  color: #423F8C;
+}
+
+/* 우클릭 시 나오는 div의 style */
+.contextmenu {
+  display: none;
+  position: absolute;
+  width: 180px;
+  height: 220px;
+  margin-top: 2px;
+  padding: 0;
+  background: #FFFFFF;
+  border-radius: 5px;
+  list-style: none;
+  box-shadow:
+    0 15px 35px rgba(50,50,90,0.1),
+    0 5px 15px rgba(0,0,0,0.07);
+  overflow: hidden;
+  z-index: 999999;
+}
+
+.contextmenu span {
+  display: block;
+  padding: 2px;
+  margin-left: 5px;
+  text-decoration: none;
+  transition: ease .2s;
+}
+
+.contextmenu span:hover {
+  background: #5d106b;
+  color: white;
+}
+
+.divider-margin {
+  margin: 7px;
+}
+
+/* 찾기 bar style */
+#findMenu {
+  display: none;
+  position: absolute;
+  right: 2%;
+  width: auto;
+  border-radius: 5px;
+  z-index: 999999;
+}
+
+
+
+
+/*새 ebook 만들기*/
+.confirmMessage {
+  margin-bottom: -5px;
+  color: red;
+  font-size: smaller;
+}
+

@@ -1,30 +1,126 @@
-export function findText(inputText, findText) {
-  const result = []
-  let index = 0
+let arrPoint=-1;
+let arr=[];
+let arrSize=20;
+let direction=0;
+let maxStack=0;
+
+export function Save (res) {
+  //if(res>=37&&res<=40) // 방향키
+  // set('');
+  if (res == 9) //tab
+    set('');
+  else if (res == 13) //enter
+    set('');
+  else if (res == 32) //space
+    set(' ');
+}
+
+export function cut () {
+  // console.log("cut");
+  set('');
+  document.execCommand('cut');
+  set('');
+}
+
+export function copy () {
+  // console.log("copy");
+  document.execCommand('copy');
+}
+
+export function paste () {
+  // console.log("paste");
+  set('');
+  document.execCommand('paste');
+  set('');
+}
+export function reset(){
+  console.log("reset");
+  arr.length=0;
+  arrPoint=-1;
+  maxStack=0;
+  direction=0;
+}
+export function undo () { 
+  if (maxStack == arrPoint)
+    this.set('');
+  direction = 1;
+  if (arr[arrPoint + 1] === undefined)
+    this.set('');
+  if (arrPoint == 0) {
+    return arr[arrPoint];
+  }
+  arrPoint -= 1;
+  direction = 1;
+  return arr[arrPoint];
+}
+
+export function redo () {
+  direction = 1;
+  if (arrPoint == arr.length - 1){
+    return arr[arrPoint];
+  }
+  if(arrPoint == maxStack){
+    return arr[arrPoint];
+  }
+  arrPoint += 1;
+  return arr[arrPoint];
+}
+
+export function set (res) {
+  if (direction == 1) {
+    maxStack = arrPoint;
+    direction = 0;
+  }
+  // console.log("Set");
+  let data = document.getElementById("area").value;
+  let point = document.getElementById("area").selectionStart;
+  data = data.substring(0,point) + res + data.substring(point);
+  if (arr[arrPoint] == data)
+    return;
+  if (arrPoint == arrSize) {
+    arrPoint -= 1;
+    arr.shift();
+  }
+  arrPoint += 1;
+  arr[arrPoint] = data;
+  maxStack = maxStack + 1;
+}
+
+export function findText (inputText, findText) {
+  const result = [];
+  let index = 0;
   do {
     index = inputText.indexOf(findText, index);
     if (index == -1) {
-      break
+      break;
     } else {
-      result.push(index)
-      index += findText.length
+      result.push(index);
+      index += findText.length;
     }
   } while (index < inputText.length)
-  return result
+  return result;
 }
 
-export function replaceText(inputText, replaceText, findText, findIndexArray, replaceAlphabet, replaceAllText) {
-  console.log(findIndexArray)
+export function replaceText (inputText, replaceText, findText, findIndexArray, replaceAlphabet, replaceAllText) {
+  // console.log(findIndexArray);
   if (replaceAlphabet && replaceAllText) {
     let regExp = new RegExp(findText, "gi");
-    return inputText.replace(regExp, replaceText)
+    return inputText.replace(regExp, replaceText);
   } else if (replaceAlphabet) {
-    let regExp = new RegExp(findText, "i")
-    return inputText.replace(regExp, replaceText)
+    let regExp = new RegExp(findText, "i");
+    return inputText.replace(regExp, replaceText);
   } else if (replaceAllText) {
-    let regExp = new RegExp(findText, "g")
-    return inputText.replace(regExp, replaceText)
+    let regExp = new RegExp(findText, "g");
+    return inputText.replace(regExp, replaceText);
   } else {
-    return inputText.replace(findText, replaceText)
+    return inputText.replace(findText, replaceText);
   }
+}
+
+export function setCursor (index, length) {
+  var area = document.getElementById("area");
+  area.selectionStart = index;
+  area.selectionEnd = index + length;
+  area.focus();
+  return area.value;
 }

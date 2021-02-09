@@ -7,13 +7,13 @@
     <dc:publisher>다독다독</dc:publisher>
     <dc:date id="epub-date">2019-04-25</dc:date>
     <dc:language>ko</dc:language>
-    <meta property="dcterms:modified">2019-04-25</meta>
     <meta content="cover.jpg" name="cover"/>
   </metadata>
   <manifest>
     <!-- 목차 --> 
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
     <item href="images/cover.jpg" id="cover.jpg" media-type="image/jpeg"/>
+    <!-- 이미지 파일 추가 위치 -->
     <!-- css 위치 --> 
     <item id="stylesheet1" href="styles/stylesheet.css" media-type="text/css" />
     

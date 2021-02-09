@@ -1,176 +1,113 @@
 <template>
+  <!----------- ToolsTab menus ----------->
   <div id="subMenuBar">
-    <div class="left">
+    <v-tabs show-arrows v-model="tab" class="left">
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectHTag(1)">mdi-format-header-1</v-icon></v-btn></template>
-        <span>H1</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag(1)">mdi-format-header-1</v-icon></v-btn></template>
+        <span>제목1</span>
       </v-tooltip>  
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectHTag(2)">mdi-format-header-2</v-icon></v-btn></template>
-      <span>H2</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag(2)">mdi-format-header-2</v-icon></v-btn></template>
+      <span>제목2</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectHTag(3)">mdi-format-header-3</v-icon></v-btn></template>
-      <span>H3</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag(3)">mdi-format-header-3</v-icon></v-btn></template>
+      <span>제목3</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectHTag(4)">mdi-format-header-4</v-icon></v-btn></template>
-      <span>H4</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag(4)">mdi-format-header-4</v-icon></v-btn></template>
+      <span>제목4</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectHTag(5)">mdi-format-header-5</v-icon></v-btn></template>
-      <span>H5</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag(5)">mdi-format-header-5</v-icon></v-btn></template>
+      <span>제목5</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectHTag(6)">mdi-format-header-6</v-icon></v-btn></template>
-      <span>H6</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag(6)">mdi-format-header-6</v-icon></v-btn></template>
+      <span>제목6</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectItalicTag()">mdi-format-italic</v-icon></v-btn></template>
-      <span>Italic</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('Italic')">mdi-format-italic</v-icon></v-btn></template>
+      <span>이탤릭체</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectPTag()">mdi-format-paragraph</v-icon></v-btn></template>
-      <span>Enter</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('Enter')">mdi-format-paragraph</v-icon></v-btn></template>
+      <span>줄 바꿈</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectLineTag()">mdi-minus</v-icon></v-btn></template>
-      <span>Line</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('LineTag')">mdi-minus</v-icon></v-btn></template>
+      <span>선</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectBlockquoteTag()">mdi-comment-text-multiple-outline</v-icon></v-btn></template>
-      <span>Blockquote</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('BlockquoteTag')">mdi-comment-text-multiple-outline</v-icon></v-btn></template>
+      <span>인용구</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium text><v-icon medium @click="selectCiteTag()">mdi-comment-text-outline</v-icon></v-btn></template>
-      <span>Cite</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('CiteTag')">mdi-comment-text-outline</v-icon></v-btn></template>
+      <span>인용문</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectBoldTag()">mdi-format-bold</v-icon></v-btn></template>
-      <span>Bold</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('BoldTag')">mdi-format-bold</v-icon></v-btn></template>
+      <span>굵게</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectUnderlineTag()">mdi-format-underline</v-icon></v-btn></template>
-      <span>Underline</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('UnderlineTag')">mdi-format-underline</v-icon></v-btn></template>
+      <span>밑줄</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectMediumlineTag()">mdi-format-strikethrough</v-icon></v-btn></template>
-      <span>Mediumline</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('MediumlineTag')">mdi-format-strikethrough</v-icon></v-btn></template>
+      <span>취소선</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectSubscriptTag()">mdi-format-letter-case-lower</v-icon></v-btn></template>
-      <span>Subscript</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('SubscriptTag')">mdi-format-letter-case-lower</v-icon></v-btn></template>
+      <span>아래첨자</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectSuperscriptTag()">mdi-format-letter-case-upper</v-icon></v-btn></template>
-      <span>Superscript</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('SuperscriptTag')">mdi-format-letter-case-upper</v-icon></v-btn></template>
+      <span>윗첨자</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectUnorderedListTag()">mdi-format-list-bulleted</v-icon></v-btn></template>
-      <span>UnorderedList</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('UnorderedListTag')">mdi-format-list-bulleted</v-icon></v-btn></template>
+      <span>순서 없는 목록</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon medium><v-icon medium @click="selectOrderedListTag()">mdi-format-list-numbered</v-icon></v-btn></template>
-      <span>OrderedList</span>
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('OrderedListTag')">mdi-format-list-numbered</v-icon></v-btn></template>
+      <span>순서 있는 목록</span>
       </v-tooltip>
-    </div>
-    <v-divider inset vertical/>
-    <div class="right" style="height: 100%">
-      <v-btn text x-large value="images">
-        <div>
-          <v-icon large @click="selectImageTag()">mdi-image-search-outline</v-icon>
-          <p class="caption">Images</p>
-        </div>
-      </v-btn>
-      <v-btn text x-large>
-        <div>
-          <v-icon large @click="selectLink()">mdi-link-box-variant-outline</v-icon>
-          <p class="caption">Link</p>
-        </div>
-        </v-btn>
-      <v-btn text x-large>
-        <div>
-          <v-icon large @click="selectTable()">mdi-table-large-plus</v-icon>
-          <p class="caption">Table</p>
-        </div>
-      </v-btn>
-    </div>
-    
+      <v-tooltip bottom><template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('ImageTag')">mdi-image-search-outline</v-icon></v-btn></template>
+      <span>이미지</span>
+      </v-tooltip>
+      <v-tooltip bottom><template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('Link')">mdi-link-box-variant-outline</v-icon></v-btn></template>
+      <span>링크</span>
+      </v-tooltip>
+      <v-tooltip bottom><template v-slot:activator="{ on }">
+        <v-btn class="align-self-center" v-on="on" icon medium><v-icon medium @click="selectTag('Table')">mdi-table-large-plus</v-icon></v-btn></template>
+      <span>표</span>
+      </v-tooltip>
+    </v-tabs>
   </div>
 </template>
 
 <script>
-import eventBus from '@/eventBus.js'
-export default {
-  methods: {
-    // 도구상자 모음 탭
-    selectHTag: function(index) {
-      eventBus.$emit('pushIndexData', index);
-    },
-    selectItalicTag: function () {
-      eventBus.$emit('pushIndexData', 'Italic');
-    },
-    selectPTag: function () {
-      eventBus.$emit('pushIndexData', 'Enter');
-    },
-    selectLineTag: function () {
-      eventBus.$emit('pushIndexData', 'LineTag');
-    },
-    selectBlockquoteTag: function () {
-      eventBus.$emit('pushIndexData', 'BlockquoteTag');
-    },
-    selectCiteTag: function () {
-      eventBus.$emit('pushIndexData', 'CiteTag');
-    },
-    selectBoldTag: function () {
-      eventBus.$emit('pushIndexData', 'BoldTag');
-    },
-    selectUnderlineTag: function () {
-      eventBus.$emit('pushIndexData', 'UnderlineTag');
-    },
-    selectMediumlineTag: function () {
-      eventBus.$emit('pushIndexData', 'MediumlineTag');
-    },
-    selectSubscriptTag: function () {
-      eventBus.$emit('pushIndexData', 'SubscriptTag');
-    },
-    selectSuperscriptTag: function () {
-      eventBus.$emit('pushIndexData', 'SuperscriptTag');
-    },
-    selectUnorderedListTag: function () {
-      eventBus.$emit('pushIndexData', 'UnorderedListTag');
-    },
-    selectOrderedListTag: function () {
-      eventBus.$emit('pushIndexData', 'OrderedListTag');
-    },
-    selectImageTag: function () {
-      eventBus.$emit('pushIndexData', 'ImageTag');
-    },
-    selectLink: function () {
-      eventBus.$emit('pushIndexData', 'Link');
-    },
-    selectTable: function () {
-      eventBus.$emit('pushIndexData', 'Table');
-    },
+import eventBus from '@/eventBus.js';
 
+export default {
+  name: 'ToolsTab',
+  data: function () {
+    return {
+      tab: null,
+    }
+  },
+  methods: {
+    selectTag: function(index) {
+      if (this.$store.state.selectedFileDirectory !== '') {
+        eventBus.$emit('pushIndexData', index);
+      } else {
+        this.$store.dispatch('setAlertMessage', 'text 폴더의 파일을 선택해주세요.')
+      }
+    }
   }
 }
 </script>
-
-<style>
-    #subMenuBar{
-      width: 100%;
-      height: 80px;
-    }
-    div.left {
-        width: 60%;
-        float: left;
-        height: 10%;
-    }
-    div.right {
-      top:20%;
-      width: 39%;
-      float: right;
-      position: relative;
-    }
-</style>
