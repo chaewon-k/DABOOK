@@ -173,9 +173,6 @@ export default {
     }
   },
   methods: {
-    test: function () {
-      console.log('111')
-    },
     checkExp: function(value){
       var special_pattern =  /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/gi;
       if(special_pattern.test(value)==true){
@@ -216,7 +213,7 @@ export default {
         });
 
         this.eBookDialog = false;
-        let eBookSettingDirectory = 'src/assets/NewEbook'; //기본 ebook 디렉토리 위치
+        let eBookSettingDirectory = `${this.$store.state.osDirectory}/src/assets/NewEbook`; //기본 ebook 디렉토리 위치
         fse.copySync(eBookSettingDirectory,this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
         /*
         새 ebook 만들기 
@@ -370,7 +367,7 @@ export default {
         this.chapterDialog = false;
         let num = '';
         let path = this.eBookLocation + '/EPUB/text/';
-        const temp = fs.readFileSync('src/assets/chapter01.xhtml').toString();
+        const temp = fs.readFileSync(`${this.$store.state.osDirectory}src/assets/chapter01.xhtml`).toString();
         this.chapterNum++;
         if (this.chapterNum < 10) {
           num = '0' + this.chapterNum;

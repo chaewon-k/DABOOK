@@ -7,9 +7,15 @@ module.exports = {
       nodeIntegration: true,
       nodeModulesPath: ['../../node_modules', './node_modules'],
       builderOptions: {
+        extraResources: [
+          "src/assets/**",
+        ],
         appId: 'com.dabook.app',
+        nsis: {
+          shortcutName: 'DABOOK'
+        },
         productName: 'DABOOK',
-        asar: true,
+        asar: false,
         protocols: {
           name: 'DABOOK',
           schemes: [
@@ -31,6 +37,17 @@ module.exports = {
           icon: "build/MyIcon.icns",
           provisioningProfile : "build/dabook.provisionprofile",
         },
+        win: {
+          target: [
+            {
+              target: "nsis",
+              arch: [
+                'x64',
+                'ia32'
+              ],
+            }
+          ]
+        }
       },
     }
   },

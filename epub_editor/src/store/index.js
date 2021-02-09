@@ -15,6 +15,7 @@ export default new Vuex.Store({
     findTextArray: [],
     alertMessage:'',
     alertDialog:false,
+    osDirectory: './resources/',
   },
 
   mutations: {
@@ -57,12 +58,15 @@ export default new Vuex.Store({
     SET_FINDTEXTARRAY: function (state, value) {
       state.findTextArray = value;
     },
-    SET_ALERTMESSAGE: function (state,value) {
-      state.alertDialog=true;
-      state.alertMessage=value;
+    SET_ALERTMESSAGE: function (state, value) {
+      state.alertDialog = true;
+      state.alertMessage = value;
     },
-    CANCEL_ALERTMESSAGE: function (state){
-      state.alertDialog=false;
+    CANCEL_ALERTMESSAGE: function (state) {
+      state.alertDialog = false;
+    },
+    SET_OSDIRECTORY: function (state, value) {
+      state.osDirectory = value;
     }
   },
   actions: {
@@ -101,7 +105,10 @@ export default new Vuex.Store({
     },
     cancelAlertMessage: function({ commit }){
       commit('CANCEL_ALERTMESSAGE');
-    }
+    },
+    setOsDirectory: function({ commit }, value){
+      commit('SET_OSDIRECTORY', value);
+    },
   },
 
   modules: {
