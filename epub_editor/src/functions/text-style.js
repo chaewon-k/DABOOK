@@ -4,9 +4,39 @@ const fs = require("fs");
 
 export function pTag () {
   var area = document.getElementById("area");
-  const remember = area.selectionStart;
-  area.value = area.value.slice(0,  area.selectionStart) + "    <p></p>" + area.value.slice(area.selectionStart);
-  area.selectionEnd = remember + 7;
+  let pos = 0, remember = area.selectionStart;
+  let preTag = area.value.indexOf('<p>', remember);
+  let postTag = area.value.indexOf('</p>', remember);
+  console.log(preTag, postTag);
+  if (preTag < postTag && preTag != -1) {
+    remember = area.selectionStart;
+    area.value = area.value.slice(0,  area.selectionStart) + "\n\n    <p></p>" + area.value.slice(area.selectionEnd);
+    console.log(area.selectionStart, area.selectionEnd);
+    area.selectionEnd = remember + 9;
+    return area.value;
+  }
+
+  // p 태그가 있을 때, 가장 가까운 </p> 뒤에 커서 위치 후, 새 <p></p> 삽입
+  while(area.value.indexOf('</p>', pos) != -1) {
+    if (area.value.indexOf('</p>', pos) >= area.selectionStart) {
+      area.selectionStart = area.value.indexOf('</p>', pos) + 4;
+      remember = area.selectionStart;
+      area.value = area.value.slice(0,  area.selectionStart) + "\n\n    <p></p>" + area.value.slice(area.selectionEnd);
+      console.log(area.selectionStart, area.selectionEnd);
+      area.selectionEnd = remember + 9;
+      return area.value;
+    }
+    pos = area.selectionStart;
+  }
+
+  // p 태그가 없을 때, 새로 생성
+  if (area.value.indexOf('</p>', pos) == -1) {
+    remember = area.selectionStart;
+    area.value = area.value.slice(0,  area.selectionStart) + "\n\n    <p></p>" + area.value.slice(area.selectionEnd);
+    console.log(area.selectionStart, area.selectionEnd);
+    area.selectionEnd = remember + 9;
+  }
+
   return area.value;
 }
 
@@ -195,3 +225,4 @@ export function orderedListTag () {
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
   return area.value;
 }
+

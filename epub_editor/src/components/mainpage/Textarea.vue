@@ -13,7 +13,6 @@
       placeholder="책을 작성해볼까요?"
       v-model="inputText"
       @keydown="isSave"
-      @keyup.enter="attachPTag()"
       @mousedown.left="closeMenu"
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
@@ -25,7 +24,8 @@
             <v-card-title> 링크를 입력해주세요. </v-card-title>
           </v-row>
           <v-row class="mt-7">
-            <v-text-field class="mx-5" label="Link" v-model="linkText" required></v-text-field>
+            <v-icon class="ml-4" style="color: #423F8C;">mdi-link-variant</v-icon>
+            <v-text-field class="mx-4" label="Link" v-model="linkText" required></v-text-field>
           </v-row>
         </v-container>
         <v-card-actions>
@@ -33,7 +33,7 @@
           <v-btn color="red darken-1" text @click="linkDialog = false"
             >취소</v-btn
           >
-          <v-btn color="green darken-1" text @click="attachLinkTag()"
+          <v-btn style="color: #423F8C;" text @click="attachLinkTag()"
             >생성</v-btn
           >
         </v-card-actions>
@@ -71,7 +71,7 @@
           <v-btn color="red darken-1" text @click="tableDialog = false"
             >취소</v-btn
           >
-          <v-btn color="green darken-1" text @click="attachTableTag()"
+          <v-btn style="color: #423F8C;" text @click="attachTableTag()"
             >생성</v-btn
           >
         </v-card-actions>
@@ -156,7 +156,7 @@ export default {
   name: "Textarea",
   created: function() {
     window.onkeypress = (e) => {
-      if (e.keyCode === 19 && e.ctrlKey === true) {
+      if (e.keyCode === 83 && e.ctrlKey === true) {
         eventBus.$emit("shortcut", "save");
       } else if (e.keyCode === 5 && e.ctrlKey === true) {
         edit.copy();
@@ -168,6 +168,9 @@ export default {
         this.inputText = edit.undo();
       } else if (e.keyCode === 6 && e.ctrlKey === true) {
         this.inputText = edit.redo();
+      } else if (e.keyCode === 13) {
+        e.preventDefault();
+        this.attachPTag();
       }
     };
     eventBus.$on("edit", (res) => {
