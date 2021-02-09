@@ -1,269 +1,406 @@
 <template>
-  <v-col cols="9" style="height:35em;">
+  <div id="textarea">
     <v-textarea
       id="area"
       solo
       hide-details
-      style="width: auto;"
+      spellcheck="false"
+      style="width: auto; border-radius: 0%;"
       ma-auto
       height="100%"
       label="textarea 입니다"
+      no-resize
       placeholder="책을 작성해볼까요?"
       v-model="inputText"
-      @keyup.enter="attachPTag()"
+      @keydown="isSave"
+      @mousedown.left="closeMenu"
+      @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
-    <v-dialog v-model="linkDialog" max-width="290">
+    
+    <v-dialog v-model="linkDialog" max-width="500">
       <v-card>
-        <v-card-title class="headline"> 링크를 입력해주세요. </v-card-title>
-        <v-card-text>
-          <v-text-field label="Link" v-model="linkText" required></v-text-field>
+        <v-container>
+          <v-row class="header-color">
+            <v-card-title> 링크를 입력해주세요. </v-card-title>
+          </v-row>
+          <v-row class="mt-7">
+            <v-icon class="ml-4" style="color: #423F8C;">mdi-link-variant</v-icon>
+            <v-text-field class="mx-4" label="Link" v-model="linkText" required></v-text-field>
+          </v-row>
+        </v-container>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click="linkDialog = false"
+            >취소</v-btn
+          >
+          <v-btn style="color: #423F8C;" text @click="attachLinkTag()"
+            >생성</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="tableDialog" max-width="250">
+      <v-card>
+        <v-card-title class="header-color">표 생성</v-card-title>
+        <v-space></v-space>
+        <v-card-text >
+            <v-text-field label="행" v-model="tableRow" style="left:70%; margin-top:15%;">
+              <v-icon slot="append" color="red" @click="plusRow()"
+                >mdi-plus</v-icon
+              >
+              <v-icon slot="prepend" color="green" @click="minusRow()"
+                >mdi-minus</v-icon
+              >
+            </v-text-field>
+        </v-card-text>
+
+        <v-card-text width="auto">
+            <v-text-field label="열" v-model="tableCol" style="left:70%;">
+              <v-icon slot="append" color="red" @click="plusCol()"
+                >mdi-plus</v-icon
+              >
+              <v-icon slot="prepend" color="green" @click="minusCol()"
+                >mdi-minus</v-icon
+              >
+            </v-text-field>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="linkDialog = false">
-            취소
-          </v-btn>
-
-          <v-btn color="green darken-1" text @click="attachLinkTag()">
-            링크 추가
-          </v-btn>
+          <v-btn color="red darken-1" text @click="tableDialog = false"
+            >취소</v-btn
+          >
+          <v-btn style="color: #423F8C;" text @click="attachTableTag()"
+            >생성</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="tableDialog" max-width="290">
-      <v-card>
-        <v-card-title class="headline"> 생성할 표의 행과 열을 입력하세요. </v-card-title>
-        <v-row>
-          <v-col>
-            <v-text-field label="행" v-model="tableRow">
-              <v-icon slot="append" color="red" @click="plusRow()"> mdi-plus </v-icon>
-              <v-icon slot="prepend" color="green" @click="minusRow()"> mdi-minus </v-icon>
-            </v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field label="열" v-model="tableCol">
-              <v-icon slot="append" color="red" @click="plusCol()"> mdi-plus </v-icon>
-              <v-icon slot="prepend" color="green" @click="minusCol()"> mdi-minus </v-icon>
-            </v-text-field>
-          </v-col>
-        </v-row>
+    <div class="contextmenu" id="menu" @click="closeMenu">
+      <span>오려두기</span>
+      <span>복사하기</span>
+      <span>붙여넣기</span>
+      <v-divider class="divider-margin"></v-divider>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="tableDialog = false">
-            취소
-          </v-btn>
+      <v-btn x-small class="mx-1"
+        ><v-icon medium @click="attachBoldTag()">mdi-format-bold</v-icon></v-btn
+      >
+      <v-btn x-small class="mx-1"
+        ><v-icon medium @click="attachItalicTag()"
+          >mdi-format-italic</v-icon
+        ></v-btn
+      >
+      <v-btn x-small class="mx-1"
+        ><v-icon medium @click="attachUnderlineTag()"
+          >mdi-format-underline</v-icon
+        ></v-btn
+      >
 
-          <v-btn color="green darken-1" text @click="attachTableTag()">
-            표 생성
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      <v-btn x-small class="mx-1"
+        ><v-icon medium @click="attachMediumlineTag()"
+          >mdi-format-strikethrough</v-icon
+        ></v-btn
+      >
+      <v-btn x-small class="mx-1"
+        ><v-icon medium @click="attachUnorderdListTag()"
+          >mdi-format-list-bulleted</v-icon
+        ></v-btn
+      >
+      <v-btn x-small class="mx-1"
+        ><v-icon medium @click="attachOrderedListTag()"
+          >mdi-format-list-numbered</v-icon
+        ></v-btn
+      >
 
-  </v-col>
+      <v-btn x-small class="mx-1"
+        ><v-icon medium @click="attachImageTag()"
+          >mdi-image-search-outline</v-icon
+        ></v-btn
+      >
+      <v-btn x-small class="mx-1"
+        ><v-icon medium @click="linkDialog = true"
+          >mdi-link-box-variant-outline</v-icon
+        ></v-btn
+      >
+      <v-btn x-small class="mx-1"
+        ><v-icon medium @click="tableDialog = true"
+          >mdi-table-large-plus</v-icon
+        ></v-btn
+      >
+
+      <v-divider class="divider-margin"></v-divider>
+
+      <span @mouseover="openHeaders">제목▸</span>
+    </div>
+
+    <div id="headers" class="contextmenu" @click="closeMenu">
+      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{
+        "제목" + hTag
+      }}</span>
+    </div>
+  </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
 import eventBus from "@/eventBus.js";
+import { readDirectory, tocToList } from "@/functions/file.js";
 import { findText, replaceText } from "@/functions/edit.js";
-import {
-  pTag,
-  enterTag,
-  lineTag,
-  hTag,
-  italicTag,
-  blockquoteTag,
-  citeTag,
-  boldTag,
-  underlineTag,
-  mediumlineTag,
-  subscriptTag,
-  superscriptTag,
-  imageTag,
-  linkTag,
-  tableTag,
-  unorderedListTag,
-  orderedListTag
-} from "@/functions/text-style.js";
+import * as textStyle from "@/functions/text-style.js";
+import * as edit from "@/functions/edit.js";
+
+const fs = require("fs");
 
 export default {
-  data() {
-    return {
-      inputText: "",
-      defaultHTMLText: "",
-      linkText: "",
-      tableData: { col: [], row: [] },
-      hTags: [1, 2, 3, 4, 5, 6],
-      linkDialog: false,
-      tableDialog: false,
-      tableRow: 0,
-      tableCol: 0,
-      findText: '',
-      findIndexArray: [],
-
-      
+  name: "Textarea",
+  created: function() {
+    window.onkeypress = (e) => {
+      if (e.keyCode === 83 && e.ctrlKey === true) {
+        eventBus.$emit("shortcut", "save");
+      } else if (e.keyCode === 5 && e.ctrlKey === true) {
+        edit.copy();
+      } else if (e.keyCode === 23 && e.ctrlKey === true) {
+        edit.cut();
+      } else if (e.keyCode === 4 && e.ctrlKey === true) {
+        edit.paste();
+      } else if (e.keyCode === 17 && e.ctrlKey === true) {
+        this.inputText = edit.undo();
+      } else if (e.keyCode === 6 && e.ctrlKey === true) {
+        this.inputText = edit.redo();
+      } else if (e.keyCode === 13) {
+        e.preventDefault();
+        this.attachPTag();
+      }
     };
-  },
-  created() {
-    eventBus.$on('set',()=>{
-      this.inputText=this.editingText;
+    eventBus.$on("edit", (res) => {
+      this.edit(res);
     });
     eventBus.$on("findText", (res) => {
-      this.findText = res
-      this.findIndexArray = findText(this.inputText, res)
-      console.log(this.findIndexArray)
+      this.findText = res;
+      this.findIndexArray = findText(this.inputText, res);
+      this.$store.dispatch("setFindTextArray", this.findIndexArray);
+    });
+    eventBus.$on("setCursor", (res, length) => {
+      this.setCursor(res, length);
     });
     eventBus.$on("replaceText", (res) => {
-      this.inputText = replaceText(this.inputText, res[0], this.findText, this.findIndexArray, res[1], res[2])
+      this.inputText = replaceText(
+        this.inputText,
+        res[0],
+        this.findText,
+        this.findIndexArray,
+        res[1],
+        res[2]
+      );
     });
     eventBus.$on("loadData", (res) => {
-      console.log(res)
-      this.inputText = res.slice(res.indexOf("<body"), res.indexOf("</body>")+7);
-      this.defaultHTMLText = res.slice(res.indexOf("<?xml"), res.indexOf("<body"));
+      this.inputText = res.slice(
+        res.indexOf("<body"),
+        res.indexOf("</body>") + 7
+      );
+      this.defaultHTMLText = res.slice(
+        res.indexOf("<?xml"),
+        res.indexOf("<body")
+      );
+      edit.set(this.inputText);
     });
     eventBus.$on("pushIndexData", (res) => {
       if (res === "Italic") {
-        this.attachItalicTag();
+        this.inputText = textStyle.italicTag();
       } else if (res === "LineTag") {
-        this.attachLineTag();
+        this.inputText = textStyle.lineTag();
       } else if (res === "Enter") {
-        this.attachEnterTag();
+        this.inputText = textStyle.enterTag();
       } else if (res === "BlockquoteTag") {
-        this.attachBlockquoteTag();
+        this.inputText = textStyle.blockquoteTag();
       } else if (res === "CiteTag") {
-        this.attachCiteTag();
+        this.inputText = textStyle.citeTag();
       } else if (res === "BoldTag") {
-        this.attachBoldTag();
+        this.inputText = textStyle.boldTag();
       } else if (res === "UnderlineTag") {
-        this.attachUnderlineTag();
+        this.inputText = textStyle.underlineTag();
       } else if (res === "MediumlineTag") {
-        this.attachMediumlineTag();
+        this.inputText = textStyle.mediumlineTag();
       } else if (res === "SubscriptTag") {
-        this.attachSubscriptTag();
+        this.inputText = textStyle.subscriptTag();
       } else if (res === "SuperscriptTag") {
-        this.attachSuperscriptTag();
+        this.inputText = textStyle.superscriptTag();
       } else if (res === "ImageTag") {
-        this.attachImageTag();
+        this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
+        const data = readDirectory(this.$store.state.ebookDirectory, [], [], 0);
+        this.chapterNum = data["maxV"];
+        this.$store.dispatch("setEbookDirectoryTree", data["arrayOfFiles"]);
+        const fileToText = fs.readFileSync(data["toc"][0]).toString();
+        this.$store.dispatch("setTableOfContents", tocToList(fileToText, []));
       } else if (res === "UnorderedListTag") {
-        this.attachUnorderedListTag();
+        this.inputText = textStyle.unorderedListTag();
       } else if (res === "OrderedListTag") {
-        this.attachOrderedListTag();
+        this.inputText = textStyle.orderedListTag();
       } else if (res === "Link") {
         this.linkDialog = true;
       } else if (res === "Table") {
         this.tableDialog = true;
       } else {
-        this.attachHTag(res);
+        this.inputText = textStyle.hTag(res);
       }
+      edit.set("");
     });
   },
+  watch: {
+    inputText: function() {
+      this.$store.dispatch("setEditingText", this.inputText);
+      this.$store.dispatch("setHTMLText", this.defaultHTMLText);
+    },
+    getEditingText: function() {
+      this.inputText = this.getEditingText;
+    },
+  },
+  data: function() {
+    return {
+      test: "",
+      inputText: "",
+      defaultHTMLText: "",
+      linkText: "",
+      tableData: {
+        col: [],
+        row: [],
+      },
+      hTags: [1, 2, 3, 4, 5, 6],
+      linkDialog: false,
+      tableDialog: false,
+      tableRow: 0,
+      tableCol: 0,
+      findText: "",
+      findIndexArray: [],
+      cursorPosition: { posX: 0, posY: 0 },
+    };
+  },
   computed: {
-    ...mapState(['editingText','editingTextArrPoint','arrSize','editingTextArr']),
+    getEditingText: function() {
+      return this.$store.state.editingText;
+    },
   },
   methods: {
-    ...mapMutations(["SET_EDITINGTEXT", "SET_EDITINGHTML",'PUSH_EDITINGTEXTARR','SHIFT_EDITINGTEXTARR','DOWN_EDITINGTEXTARRPOINT','UP_EDITINGTEXTARRPOINT']),
-    plusRow: function () {
+    edit: function(res) {
+      switch (res) {
+        case "cut":
+          edit.cut();
+          break;
+        case "copy":
+          edit.copy();
+          break;
+        case "paste":
+          edit.paste();
+          break;
+        case "undo":
+          this.inputText = edit.undo();
+          break;
+        case "redo":
+          this.inputText = edit.redo();
+          break;
+      }
+    },
+    isSave: function(event) {
+      edit.Save(event.keyCode);
+    },
+    plusRow: function() {
       this.tableRow++;
     },
-    minusRow: function () {
+    minusRow: function() {
       this.tableRow--;
     },
-    plusCol: function () {
+    plusCol: function() {
       this.tableCol++;
     },
-    minusCol: function () {
+    minusCol: function() {
       this.tableCol--;
     },
-    attachPTag: function () {
-      this.inputText = pTag();
+    attachPTag: function() {
+      this.inputText = textStyle.pTag();
     },
-    attachEnterTag: function () {
-      this.inputText = enterTag();
+    attachEnterTag: function() {
+      this.inputText = textStyle.enterTag();
     },
-    attachLineTag: function () {
-      this.inputText = lineTag();
+    attachLineTag: function() {
+      this.inputText = textStyle.lineTag();
     },
-    attachHTag: function (index) {
-      this.inputText = hTag(index);
+    attachHTag: function(index) {
+      this.inputText = textStyle.hTag(index);
     },
-    attachItalicTag: function () {
-      this.inputText = italicTag();
+    attachItalicTag: function() {
+      this.inputText = textStyle.italicTag();
     },
-    attachBlockquoteTag: function () {
-      this.inputText = blockquoteTag();
+    attachBlockquoteTag: function() {
+      this.inputText = textStyle.blockquoteTag();
     },
-    attachCiteTag: function () {
-      this.inputText = citeTag();
+    attachCiteTag: function() {
+      this.inputText = textStyle.citeTag();
     },
-    attachBoldTag: function () {
-      this.inputText = boldTag();
+    attachBoldTag: function() {
+      this.inputText = textStyle.boldTag();
     },
-    attachUnderlineTag: function () {
-      this.inputText = underlineTag();
+    attachUnderlineTag: function() {
+      this.inputText = textStyle.underlineTag();
     },
-    attachMediumlineTag: function () {
-      this.inputText = mediumlineTag();
+    attachMediumlineTag: function() {
+      this.inputText = textStyle.mediumlineTag();
     },
-    attachSubscriptTag: function () {
-      this.inputText = subscriptTag();
+    attachSubscriptTag: function() {
+      this.inputText = textStyle.subscriptTag();
     },
-    attachSuperscriptTag: function () {
-      this.inputText = superscriptTag();
+    attachSuperscriptTag: function() {
+      this.inputText = textStyle.superscriptTag();
     },
-    attachImageTag: function () {
-      this.inputText = imageTag();
+    attachImageTag: function() {
+      this.inputText = textStyle.imageTag();
     },
-    attachLinkTag: function () {
+    attachLinkTag: function() {
       this.linkDialog = false;
-      this.inputText = linkTag(this.linkText);
+      this.inputText = textStyle.linkTag(this.linkText);
       this.linkText = "";
     },
-    attachTableTag: function () {
+    attachTableTag: function() {
       this.tableDialog = false;
-      this.inputText = tableTag(this.tableRow, this.tableCol);
+      this.inputText = textStyle.tableTag(this.tableRow, this.tableCol);
       this.tableRow = 0;
       this.tableCol = 0;
     },
-    attachUnorderedListTag: function () {
-      this.inputText = unorderedListTag();
+    attachUnorderedListTag: function() {
+      this.inputText = textStyle.unorderedListTag();
     },
-    attachOrderedListTag: function () {
-      this.inputText = orderedListTag();
+    attachOrderedListTag: function() {
+      this.inputText = textStyle.orderedListTag();
     },
-  },
-  watch: {
-    inputText: function () {
-      this.SET_EDITINGTEXT(this.inputText);
-      this.SET_EDITINGHTML(this.defaultHTMLText);
-
-      if(this.editingTextArr[this.editingTextArrPoint]!=this.inputText){
-        if(this.editingTextArrPoint==this.arrSize){
-          this.DOWN_EDITINGTEXTARRPOINT();
-          this.SHIFT_EDITINGTEXTARR();
-          //console.log("shiFT : "+this.editingTextArr);
-        }
-        this.UP_EDITINGTEXTARRPOINT();
-        this.PUSH_EDITINGTEXTARR();
-        //console.log(this.editingTextArr);
-        //console.log(this.editingTextArrPoint);
-      }
-   },
+    closeMenu: function() {
+      let menu = document.getElementById("menu");
+      menu.style.display = "none";
+      this.cursorPosition.posX = 0;
+      this.cursorPosition.posY = 0;
+      this.closeHeaders();
+    },
+    openMenu: function(event) {
+      let menu = document.getElementById("menu");
+      menu.style.left = event.pageX + "px";
+      menu.style.top = event.pageY + "px";
+      menu.style.display = "block";
+      this.cursorPosition.posX = event.pageX;
+      this.cursorPosition.posY = event.pageY;
+    },
+    openHeaders: function() {
+      let menu = document.getElementById("headers");
+      menu.style.left = this.cursorPosition.posX + 180 + "px";
+      menu.style.top = this.cursorPosition.posY + 190 + "px";
+      menu.style.height = "auto";
+      menu.style.display = "block";
+    },
+    closeHeaders: function() {
+      let menu = document.getElementById("headers");
+      menu.style.display = "none";
+    },
+    setCursor: function(index, length) {
+      edit.setCursor(index, length);
+    },
   },
 };
 </script>
-
-<style>
-#app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder {
-  height: 100%;
-}
-#app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder > div {
-  height: 100%;
-}
-#app > div > main > div > div > div.container.d-flex.flex-column > div > div.col.col-9 > div.v-input.v-textarea.v-input--hide-details.theme--light.v-text-field.v-text-field--single-line.v-text-field--solo.v-text-field--is-booted.v-text-field--enclosed.v-text-field--placeholder > div > div {
-  height: 100%;
-}
-</style>
