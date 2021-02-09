@@ -8,12 +8,12 @@ module.exports = {
       nodeModulesPath: ['../../node_modules', './node_modules'],
       builderOptions: {
         appId: 'com.dabook.app',
-        productName: 'dabook',
+        productName: 'DABOOK',
         asar: true,
         protocols: {
-          name: 'dabook',
+          name: 'DABOOK',
           schemes: [
-            'dabook'
+            'DABOOK'
           ],
         },
         mas: {
@@ -25,7 +25,7 @@ module.exports = {
         },
         mac: {
           category: 'public.app-category.utilities',
-          target: 'mas',
+          target: ['mas', 'dmg'],
           cscLink: "build/all-certs.p12",//'String - The name of certificate to use when signing. Consider using environment variables CSC_LINK or CSC_NAME instead of specifying this option. MAS installer identity is specified in the mas.',
           cscKeyPassword : "skrgnswnqls@123",
           icon: "build/MyIcon.icns",
