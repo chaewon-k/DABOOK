@@ -34,7 +34,7 @@ public class EpubController {
 	@Autowired
 	private FileRepository fileRepository;
 	@Value("${spring.file.location}")
-	private String storagePath = "C:/storage/";
+	private String storagePath;
 	
 	@GetMapping("/epub")
 	@ApiOperation(value = "getAllEpubs", produces = MediaType.TEXT_PLAIN_VALUE)
