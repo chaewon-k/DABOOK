@@ -86,17 +86,20 @@ export function readCustomStyle (path) {
 export function makeEpubFile (path, title) {
   var zipFolder = require('zip-folder');
   const savePath = readPath();
+  if (savePath == undefined) return false;
   const electron = require('electron');
   const { shell } = electron;
   path = path.replace('\\\\', '/');
+  console.log(path)
+  console.log(savePath)
+  console.log(title)
   zipFolder(path, savePath + '/' + title + '.epub', function(err) {
       if(err) {
           console.log('makeEpubFile 실패');
+          return false;
       } else {
-          // console.log(savePath + '/' + title + '.epub');
-          // console.log('EXCELLENT');
-          //alert('파일이 저장되었습니다!');
           shell.openPath(savePath);
+          return true;
       }
   });
 
@@ -130,7 +133,7 @@ export function changeTitleAuthor (path, title, author) {
   let temp = fs.readFileSync(path + '/EPUB/toc.ncx').toString();
   let start = temp.indexOf("<docTitle>");
   let end = temp.indexOf("</text>");
-  console.log(title, author)
+  // console.log(title, author)
   temp = temp.slice(0, start + 22) + title + temp.slice(end, temp.length);
   fs.writeFile(path + '/EPUB/toc.ncx', temp, (err) => {
     if (err) {

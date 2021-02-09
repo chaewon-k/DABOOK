@@ -204,7 +204,7 @@ export function inTag() {
   let current = area.selectionStart;
   let preBracket = area.value.indexOf('<', current);
   let postBracket = area.value.indexOf('>', current);
-  console.log(preBracket, postBracket);
+  // console.log(preBracket, postBracket);
   if (preBracket > postBracket) {
     return false;
   } 

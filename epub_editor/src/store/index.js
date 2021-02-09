@@ -13,9 +13,10 @@ export default new Vuex.Store({
     editingHTMLText: '',  //default HTML text value
     customStyleArray: [],
     findTextArray: [],
-    alertMessage:'',
-    alertDialog: false,
     osDirectory: '/Applications/DABOOK.app/Contents/Resources/',
+    alertMessage: '',
+    alertDialog: false,
+    dirToggle: true,
   },
 
   mutations: {
@@ -67,6 +68,9 @@ export default new Vuex.Store({
     },
     SET_OSDIRECTORY: function (state, value) {
       state.osDirectory = value;
+    },
+    SETDIRTOGGLE: function (state) {
+      state.dirToggle = !state.dirToggle;
     }
   },
   actions: {
@@ -103,14 +107,16 @@ export default new Vuex.Store({
         commit('CANCEL_ALERTMESSAGE');
       }, 3000);
     },
-    cancelAlertMessage: function({ commit }){
+    cancelAlertMessage: function({ commit }) {
       commit('CANCEL_ALERTMESSAGE');
     },
     setOsDirectory: function({ commit }, value){
       commit('SET_OSDIRECTORY', value);
     },
+    setDirToggle: function({ commit }) {
+      commit('SETDIRTOGGLE');
+    }
   },
-
   modules: {
   }
 })
