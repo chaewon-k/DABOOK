@@ -14,8 +14,8 @@ export default new Vuex.Store({
     customStyleArray: [],
     findTextArray: [],
     alertMessage:'',
-    alertDialog:false,
-    osDirectory: './resources/',
+    alertDialog: false,
+    osDirectory: '/Applications/DABOOK.app/Contents/Resources/',
   },
 
   mutations: {
