@@ -7,7 +7,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const isMac = process.platform === 'darwin'
 let win;
 
-
 const template = [
   // { role: 'appMenu' }
   ...(isMac ? [{
@@ -356,7 +355,7 @@ async function createWindow() {
   win = new BrowserWindow({
     width: 950,
     height: 700,
-    // autoHideMenuBar: true,
+    // autoHideMenuBar: ismac ? false : true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
