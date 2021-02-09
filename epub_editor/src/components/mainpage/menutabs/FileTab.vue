@@ -299,6 +299,7 @@ export default {
             this.$store.dispatch('setAlertMessage',"이북 불러오기에 성공했습니다"); 
           }
         }
+        this.$store.dispatch('setAlertMessage',"ebook 불러오기에 성공했습니다");
       }
       catch (err) {
         console.log(err);
