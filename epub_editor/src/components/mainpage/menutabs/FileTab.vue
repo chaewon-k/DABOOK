@@ -90,11 +90,13 @@ import { readDirectory, tocToList, makeEpubFile, addContentOpf, addTocNcx, chang
 import { mapState } from 'vuex';
 import eventBus from "@/eventBus.js";
 import Dialog from '@/components/mainpage/Dialog';
+import { ipcRenderer } from 'electron';
 
 const fs = require('fs');
 const path=require('path');
 const electron = require('electron');
 const BrowserWindow = electron.remote.BrowserWindow;
+// const ipcRenderer = electron.ipcRenderer;
 const fse = require('fs-extra');
 
 export default {
@@ -134,6 +136,9 @@ export default {
     }
   }, 
   created: function () {
+    ipcRenderer.on('ping', function (event, message) {
+      console.log(message, '33333')
+    })
     eventBus.$on('shortcut',(res) => {
       if (res=="save") {
         this.storeInputText();
