@@ -64,8 +64,14 @@ html, body {
   height: 100%;
 }
 
-#content {
+.content-first {
   padding-left: 300px;
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
+.content-second {
   float: left;
   width: 100%;
   height: 100%;

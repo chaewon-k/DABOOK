@@ -13,8 +13,9 @@ export default new Vuex.Store({
     editingHTMLText: '',  //default HTML text value
     customStyleArray: [],
     findTextArray: [],
-    alertMessage:'',
-    alertDialog:false,
+    alertMessage: '',
+    alertDialog: false,
+    dirToggle: true,
   },
 
   mutations: {
@@ -58,11 +59,14 @@ export default new Vuex.Store({
       state.findTextArray = value;
     },
     SET_ALERTMESSAGE: function (state,value) {
-      state.alertDialog=true;
-      state.alertMessage=value;
+      state.alertDialog = true;
+      state.alertMessage = value;
     },
-    CANCEL_ALERTMESSAGE: function (state){
-      state.alertDialog=false;
+    CANCEL_ALERTMESSAGE: function (state) {
+      state.alertDialog = false;
+    },
+    SETDIRTOGGLE: function (state) {
+      state.dirToggle = !state.dirToggle;
     }
   },
   actions: {
@@ -99,8 +103,11 @@ export default new Vuex.Store({
         commit('CANCEL_ALERTMESSAGE');
       }, 3000);
     },
-    cancelAlertMessage: function({ commit }){
+    cancelAlertMessage: function({ commit }) {
       commit('CANCEL_ALERTMESSAGE');
+    },
+    setDirToggle: function({ commit }) {
+      commit('SETDIRTOGGLE');
     }
   },
 
