@@ -18,14 +18,14 @@ export default {
   components: {
     Editor,
   },
-  mounted: function (event, message) {
-    ipcRenderer.on('isMac', function () {
+  mounted: function () {
+    ipcRenderer.on('isMac', function (event, message) {
+      console.log('22')
       if (message === true) {
-        this.$store.dispatch('setIsMac','./Contents/Resources/')
-      } else if (message === false) {
-        return
+        console.log('33')
+        this.$store.dispatch('setOsDirectory','/Contents/Resources/')
       }
-    })
+    }.bind(this))
   },
   data: function () {
     return {
