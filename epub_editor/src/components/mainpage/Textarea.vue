@@ -162,7 +162,7 @@ export default {
   },
   created: function () {
     window.onkeypress = (e) => {
-      if (e.keyCode === 83 && e.ctrlKey === true) {
+      if (e.keyCode === 19 && e.ctrlKey === true) {
         eventBus.$emit("shortcut", "save");
       } else if (e.keyCode === 5 && e.ctrlKey === true) {
         edit.copy();
