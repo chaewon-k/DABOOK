@@ -240,7 +240,6 @@ export default {
         if (folders.includes('EPUB') && folders.includes('META-INF') && folders.includes('mimetype')) {
           // 선택한 디렉토리에 필수 폴더들이 모두 있는 경우에만 디렉토리에 로드한다.
           this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
-          console.log(data['arrayOfFiles'])
           const fileToText = fs.readFileSync(data['toc'][0]).toString();
           this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
           return true
