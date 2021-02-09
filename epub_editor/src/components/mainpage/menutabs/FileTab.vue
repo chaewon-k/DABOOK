@@ -289,6 +289,7 @@ export default {
           this.readCustomStyle();
           this.$store.dispatch('setEditingText', '');
         }
+        this.$store.dispatch('setAlertMessage',"ebook 불러오기에 성공했습니다");
       }
       catch (err) {
         console.log(err);
