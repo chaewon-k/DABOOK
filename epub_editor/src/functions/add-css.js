@@ -198,3 +198,16 @@ export function fontSize(val) {
   }
   return area.value;
 }
+
+export function inTag() {
+  const area = document.getElementById("area");
+  let current = area.selectionStart;
+  let preBracket = area.value.indexOf('<', current);
+  let postBracket = area.value.indexOf('>', current);
+  console.log(preBracket, postBracket);
+  if (preBracket > postBracket) {
+    return false;
+  } 
+  return true;
+
+}

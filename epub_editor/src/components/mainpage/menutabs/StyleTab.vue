@@ -52,12 +52,8 @@
       </div>
     </div>
 
-    <v-dialog
-      v-model="customDialog"
-      class="mx-auto"
-      max-width="400"
-    >
-      <v-toolbar color="#c0bfd9">
+    <v-dialog v-model="customDialog" class="mx-auto" max-width="400">
+      <v-toolbar style="color: #423F8C;">
         <v-toolbar-title>나만의 스타일</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="customDialog = false"
@@ -115,12 +111,22 @@
               ></v-select>
             </v-col>
             <v-col cols="10">
-              <v-select
+              <!-- <v-select
                 v-model="customStyle.font"
-                :items="['바탕체', '굴림체', '돋움체', '궁서체']"
+                :items="fonts"
                 label="글꼴"
+                item-text="name"
+                item-value="value"
               >
-              </v-select>
+              </v-select> -->
+              <select>
+                <option
+                  v-for="(font, idx) in fonts"
+                  :key="idx"
+                  :style="{ 'font-family' : font.value}"
+                  >{{ font.name }}</option
+                >
+              </select>
             </v-col>
             <v-col sm>
               <v-row>
@@ -152,7 +158,7 @@
                 <v-btn v-if="customStyle.backgroundColor != ''" icon medium>
                   <v-icon
                     medium
-                    v-bind:style="{ color: customStyle.backgroundColor }"
+                    :style="{ color: customStyle.backgroundColor }"
                     >mdi-checkbox-blank-circle</v-icon
                   ></v-btn
                 >
@@ -167,7 +173,7 @@
             >닫기</v-btn
           >
           <v-btn
-            color="green darken-1"
+            style="color: #423F8C;"
             text
             @click="
               addStyle();
@@ -223,7 +229,7 @@
           <v-btn color="red darken-1" text @click="colorDialog1 = false">
             닫기
           </v-btn>
-          <v-btn color="green darken-1" text @click="colorDialog1 = false">
+          <v-btn style="color: #423F8C;" text @click="colorDialog1 = false">
             선택
           </v-btn>
         </v-card-actions>
@@ -249,7 +255,7 @@
           <v-btn color="red darken-1" text @click="colorDialog2 = false"
             >닫기</v-btn
           >
-          <v-btn color="green darken-1" text @click="colorDialog2 = false">
+          <v-btn style="color: #423F8C;" text @click="colorDialog2 = false">
             선택
           </v-btn>
         </v-card-actions>
@@ -264,7 +270,6 @@
           <template>
             <v-radio-group v-model="selectedFont" column>
               <v-radio
-                
                 v-for="(font, idx) in fonts"
                 :key="idx"
                 :label="font.name"
@@ -282,7 +287,7 @@
             닫기
           </v-btn>
           <v-btn
-            color="green darken-1"
+            style="color: #423F8C;"
             text
             @click="
               fontDialog = false;
@@ -411,6 +416,14 @@ export default {
   },
   methods: {
     styleMethod: function(i) {
+      if (!css.inTag()) {
+        console.log("tag 안입니다");
+        this.$store.dispatch(
+          "setAlertMessage",
+          "태그 밖에서만 스타일 적용이 가능합니다."
+        );
+        return;
+      }
       if (this.$store.state.selectedFileDirectory !== "") {
         if (i == 0) {
           this.$store.dispatch("setEditingText", css.alignText("left"));

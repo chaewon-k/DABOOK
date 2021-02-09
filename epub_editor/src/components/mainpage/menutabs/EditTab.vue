@@ -66,10 +66,10 @@
 
         <v-container>
           <v-row class="ml-2">
-            <v-col cols="3">
+            <v-col>
               <v-checkbox v-model="replaceAlphabet" label="Aa"></v-checkbox>
             </v-col>
-            <v-col cols="3">
+            <v-col>
               <v-checkbox v-model="replaceAllText" label="All"></v-checkbox>
             </v-col>
           </v-row>
