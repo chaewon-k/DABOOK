@@ -1,12 +1,13 @@
 <template>
   <!----------- StyleTab menus ----------->
-  <v-tabs show-arrows v-model="tab">
+  <v-tabs class="ml-3" show-arrows v-model="tab">
     <div class="d-flex">
       <div class="align-self-center" v-for="(tab, idx) in tabs" :key="idx">
         <div v-if="idx === 4">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn
+                class="rounded-sm"
                 v-on="on"
                 icon
                 medium
@@ -24,6 +25,7 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn
+                class="rounded-sm"
                 v-on="on"
                 icon
                 medium
@@ -40,7 +42,7 @@
         <div v-else>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn v-on="on" icon medium @click="styleMethod(idx)"
+              <v-btn v-on="on" class="rounded-sm" icon medium @click="styleMethod(idx)"
                 ><v-icon v-bind:style="{ color: tab.color }" medium>{{
                   tab.icon
                 }}</v-icon></v-btn
@@ -56,7 +58,7 @@
       <v-toolbar style="color: #423F8C;">
         <v-toolbar-title>나만의 스타일</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click="customDialog = false"
+        <v-btn icon class="rounded-sm" @click="customDialog = false"
           ><v-icon>mdi-close</v-icon></v-btn
         >
       </v-toolbar>
@@ -138,7 +140,7 @@
                     colorDialog = true;
                   "
                 ></v-text-field>
-                <v-btn v-if="customStyle.fontColor != ''" icon medium>
+                <v-btn class="rounded-sm" v-if="customStyle.fontColor != ''" icon medium>
                   <v-icon medium v-bind:style="{ color: customStyle.fontColor }"
                     >mdi-checkbox-blank-circle</v-icon
                   >
@@ -155,7 +157,7 @@
                     colorDialog = true;
                   "
                 ></v-text-field>
-                <v-btn v-if="customStyle.backgroundColor != ''" icon medium>
+                <v-btn class="rounded-sm" v-if="customStyle.backgroundColor != ''" icon medium>
                   <v-icon
                     medium
                     :style="{ color: customStyle.backgroundColor }"
