@@ -1,0 +1,553 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>manual</title><link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; --title-bar-height:20px; }
+.mac-os-11 { --title-bar-height:28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.html-for-mac .inline-math-svg .MathJax_SVG { vertical-align: 0.2px; }
+.md-math-block .MathJax_SVG_Display { text-align: center; margin: 0px; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; overflow-y: hidden; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: var(--monospace); }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: 400; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; overflow-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none 0s ease 0s; }
+.MathJax_SVG_Display svg { vertical-align: middle !important; margin-bottom: 0px !important; margin-top: 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+mark .md-meta { color: rgb(0, 0, 0); opacity: 0.3 !important; }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-require-zoom-fix foreignobject { font-size: var(--mermaid-font-zoom); }
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+  /* open-sans-italic - latin-ext_latin */
+    /* open-sans-700 - latin-ext_latin */
+    /* open-sans-700italic - latin-ext_latin */
+  html {
+    font-size: 16px;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border-top: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+.html-for-mac .context-menu {
+    --item-hover-bg-color: #E6F0FE;
+}
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+
+</style>
+</head>
+<body class='typora-export os-windows'>
+<div id='write'  class=''><h1><a name="editor-기능-설명서" class="md-header-anchor"></a><span>Editor 기능 설명서</span></h1><h2><a name="상단-메뉴바" class="md-header-anchor"></a><span>상단 메뉴바</span></h2><h3><a name="파일" class="md-header-anchor"></a><span>파일</span></h3><h4><a name="새-e-book-생성" class="md-header-anchor"></a><span>새 E-BOOK 생성</span></h4><p><span>새로운 E-BOOK 생성하여 작업할 수 있습니다</span></p><ol start='' ><li><h5><a name="파일-탭--새-e-book-생성-클릭" class="md-header-anchor"></a><span>파일 탭 &gt; 새 E-BOOK 생성 클릭</span></h5></li></ol><p><img src=".\assets\image-20210201133438583-1612427898565.png" referrerpolicy="no-referrer" alt="image-20210201133438583"></p><p>&nbsp;</p><ol start='2' ><li><h5><a name="새로-만들-e-book-에-대한-정보를-입력합니다" class="md-header-anchor"></a><span>새로 만들 E-BOOK 에 대한 정보를 입력합니다</span></h5><ol start='' ><li><span>E-BOOK Title : 새 E-BOOK의 제목을 의미하며, 작성한 Title로 폴더가 생각됩니다.</span></li><li><span>위치 선택 :  새 E-BOOK을 생성할 위치를 설정합니다. 설정된 위치에 기본 ePUB 디렉토리가 생성됩니다.</span></li><li><span>E-BOOK Image : 새 E-BOOK 의 표지 이미지를 의미합니다. E-BOOK image를 선택하지 않고 기본 이미지로 저장 버튼을  클릭 시, 옆에 안내문구가 나오며 미리 제작된 기본 이미지로 E-BOOK이 생성됩니다. </span></li></ol></li></ol><p><img src=".\assets\image-20210201132651358.png" referrerpolicy="no-referrer" alt="image-20210201132651358"></p><p><img src=".\assets\image-20210201134212670.png" referrerpolicy="no-referrer" alt="image-20210201134212670"></p><blockquote><p><span>E-BOOK Title : </span><strong><span>Editor User Guide</span></strong></p><p><span>위치 선택 : </span><strong><span>바탕화면 </span></strong></p><p><span>E-Book Image :  </span><strong><span>기본 이미지로 저장</span></strong></p></blockquote><p>&nbsp;</p><ol start='3' ><li><h5><a name="save-버튼-클릭-시-새-e-book-이-생성됩니다" class="md-header-anchor"></a><span>save 버튼 클릭 시, 새 E-BOOK 이 생성됩니다. </span></h5></li></ol><p><img src=".\assets\image-20210201134507507.png" referrerpolicy="no-referrer" alt="image-20210201134507507"></p><p>&nbsp;</p><blockquote><p><strong><span>생성 성공시 화면</span></strong></p><p><img src=".\assets\image-20210201134622740.png" referrerpolicy="no-referrer" alt="image-20210201134622740"></p><p>&nbsp;</p></blockquote><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h4><a name="e-book-불러오기" class="md-header-anchor"></a><span>E-BOOK 불러오기</span></h4><p><span>기존에 작성한  E-BOOK과 구매한 E-BOOK를 불러와서 편집이 가능합니다. </span></p><ol start='' ><li><strong><span>E-BOOK 불러오기 클릭</span></strong></li></ol><p><img src=".\assets\image-20210201135142066.png" referrerpolicy="no-referrer" alt="image-20210201135142066"></p><p>&nbsp;</p><ol start='2' ><li><strong><span>E-PUB 폴더 선택 &lt;저작권 추후 수정요망&gt;</span></strong></li></ol><p><img src=".\assets\image-20210201135359040.png" referrerpolicy="no-referrer" alt="image-20210201135359040"></p><p>&nbsp;</p><blockquote><p><span>불러오기 성공 화면</span></p><p><img src=".\assets\image-20210201135424075.png" referrerpolicy="no-referrer" alt="image-20210201135424075"></p></blockquote><p>&nbsp;</p><p>&nbsp;</p><h4><a name="저장하기" class="md-header-anchor"></a><span>저장하기</span></h4><p><span>저장하기 버튼 클릭 시, 작성한 EBOOK을 기존의 디렉토리에 저장합니다. </span></p><p><img src=".\assets\image-20210201135926269.png" referrerpolicy="no-referrer" alt="image-20210201135926269"></p><p>&nbsp;</p><p>&nbsp;</p><h4><a name="e-book-미리보기" class="md-header-anchor"></a><span>E-BOOK 미리보기</span></h4><p><span>작성 중인 페이지를 미리보기로 확인이 가능합니다. </span></p><p><img src=".\assets\image-20210201140727165.png" referrerpolicy="no-referrer" alt="image-20210201140727165"><span>\</span></p><p>&nbsp;</p><blockquote><p><strong><span>미리보기 화면</span></strong></p><p><img src=".\assets\image-20210201140630585.png" referrerpolicy="no-referrer" alt="image-20210201140630585"></p></blockquote><p>&nbsp;</p><p>&nbsp;</p><h4><a name="epub으로-내보내기" class="md-header-anchor"></a><span>E_PUB으로 내보내기</span></h4><p><span>작성한 E-BOOK 파일은 다른 E-BOOK 리더기에서 읽을 수 있도록 E-PUB 파일로 내보내기를 지원합니다.</span></p><p><span> </span></p><ol start='' ><li><strong><span>ePUB으로 내보내기 클릭</span></strong></li></ol><p><img src=".\assets\image-20210201140936343.png" referrerpolicy="no-referrer" alt="image-20210201140936343"></p><p>&nbsp;</p><ol start='2' ><li><strong><span>내보낼 ePUB 파일의 이름을 작성합니다</span></strong></li></ol><p><img src=".\assets\image-20210201141036440.png" referrerpolicy="no-referrer" alt="image-20210201141036440"></p><p>&nbsp;</p><ol start='3' ><li><strong><span>ePUB 파일 위치 선택</span></strong></li></ol><p><img src=".\assets\image-20210201141731145.png" referrerpolicy="no-referrer" alt="image-20210201141731145"></p><p>&nbsp;</p><blockquote><p><strong><span>저장 성공 화면 </span></strong></p><p><span>확인 버튼 시, 저장했던 폴더 창이 뜹니다</span></p><p><img src=".\assets\image-20210201163546911.png" referrerpolicy="no-referrer" alt="image-20210201163546911"></p></blockquote><p>&nbsp;</p><h4><a name="챕터-추가하기" class="md-header-anchor"></a><span>챕터 추가하기</span></h4><p><span>E-BOOK에서 챕터를 추가하는 기능입니다. 챕터 추가할 경우, 1번부터 순차적으로 증가하며 챕터가 추가됩니다. </span></p><p><img src=".\assets\image-20210201163808637.png" referrerpolicy="no-referrer" alt="image-20210201163808637"></p><p>&nbsp;</p><p><img src=".\assets\image-20210201163654826.png" referrerpolicy="no-referrer" alt="image-20210201163654826"></p><p>&nbsp;</p><blockquote><p><strong><span>추가 완료 화면</span></strong></p><p><img src=".\assets\image-20210201164100921.png" referrerpolicy="no-referrer" alt="image-20210201164100921"></p></blockquote><p>&nbsp;</p><p><span>디렉토리 &gt; EPUB &gt; text 에서 추가된 챕터 확인이 가능합니다.</span></p><p><img src=".\assets\image-20210201164141619.png" referrerpolicy="no-referrer" alt="image-20210201164141619"></p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><h3><a name="편집" class="md-header-anchor"></a><span>편집</span></h3><h4><a name="취소하기-redo--되돌리기-undo" class="md-header-anchor"></a><span>취소하기 redo / 되돌리기 undo</span></h4><p><span>태그 추가 포함하여 되돌리기 및 취소하기를 지원합니다. </span></p><h4><a name="잘라내기--복사-붙여넣기" class="md-header-anchor"></a><span>잘라내기 / 복사/ 붙여넣기</span></h4><p><span>프로그램 외에서 복사한 항목의 붙여넣기를 지원합니다. </span></p><p><img src=".\assets\image-20210201164544850.png" referrerpolicy="no-referrer" alt="image-20210201164544850"></p><h4><a name="찾기" class="md-header-anchor"></a><span>찾기</span></h4><p><span>xhtml 내용 중에서 찾고자하는 단어를 입력하면 위치를 확인할 수 있다. </span></p><p><img src=".\assets\image-20210201203015505.png" referrerpolicy="no-referrer" alt="image-20210201203015505"></p><p>&nbsp;</p><h4><a name="바꾸기" class="md-header-anchor"></a><span>바꾸기</span></h4><p><span>찾은 단어를 원하는 단어로 변경이 가능합니다. </span></p><ul><li><span>All  체크 시, 찾은 모든 단어를 변경합니다</span></li><li><span>Aa 체크 시, 대소문자 구별 없이 변경합니다. </span></li></ul><p><img src=".\assets\image-20210201203135760.png" referrerpolicy="no-referrer" alt="image-20210201203135760"></p><p>&nbsp;</p><p>&nbsp;</p><h3><a name="도구상자" class="md-header-anchor"></a><span>도구상자</span></h3><h4><a name="드래그-후-클릭" class="md-header-anchor"></a><span>드래그 후 클릭</span></h4><h5><a name="h1-h2-h3-h4-h5" class="md-header-anchor"></a><span>h1/ h2/ h3/ h4/ h5 </span></h5><p><span>제목을 의미하며, h1이 가장 큰 제목이며, h4가 가장 작은 제목이다. </span></p><p><span>효과를 넣은 문자를 드래그하고 버튼을 누르면 효과가 적용된다. </span></p><p><img src=".\assets\image-20210201203505387.png" referrerpolicy="no-referrer" alt="image-20210201203505387"></p><blockquote><p><strong><span>st에 대해 h6태그를 적용한 결과</span></strong></p><p><img src=".\assets\image-20210201205017588.png" referrerpolicy="no-referrer" alt="image-20210201205017588"></p></blockquote><p>&nbsp;</p><h5><a name="italic--기울림-효과" class="md-header-anchor"></a><span>Italic : 기울림 효과</span></h5><p><code>&lt;em&gt;</code><span>태그</span></p><h5><a name="p--enter-효과" class="md-header-anchor"></a><span>P : enter 효과</span></h5><h5><a name="line--가로선-추가" class="md-header-anchor"></a><span>Line : 가로선 추가</span></h5><h5><a name="blockquote-" class="md-header-anchor"></a><span>Blockquote : </span></h5><h5><a name="cite-" class="md-header-anchor"></a><span>Cite : </span></h5><h5><a name="bold--글자-진하게-효과" class="md-header-anchor"></a><span>Bold : 글자 진하게 효과</span></h5><h5><a name="underline--글자-아래-줄-효과" class="md-header-anchor"></a><span>Underline : 글자 아래 줄 효과</span></h5><h5><a name="mediumline--글자-중앙-줄-효과" class="md-header-anchor"></a><span>Mediumline : 글자 중앙 줄 효과</span></h5><h5><a name="subscript-" class="md-header-anchor"></a><span>Subscript :</span></h5><h5><a name="superscript-" class="md-header-anchor"></a><span>Superscript : </span></h5><p><img src=".\assets\image-20210201212507836.png" referrerpolicy="no-referrer" alt="image-20210201212507836"></p><p>&nbsp;</p><h4><a name="클릭-후-기입" class="md-header-anchor"></a><span>클릭 후 기입</span></h4><h5><a name="unorderedlist--글머리기호" class="md-header-anchor"></a><span>UnorderedList : 글머리기호</span></h5><p><span>버튼 클릭 후 생성되는 </span><li><span> 태그 내에 내용을 입력합니다.</span></p><p><img src=".\assets\image-20210201212630469.png" referrerpolicy="no-referrer" alt="image-20210201212630469"></p><blockquote><p><strong><span>결과</span></strong></p><p><img src=".\assets\image-20210201212736010.png" referrerpolicy="no-referrer" alt="image-20210201212736010"></p></blockquote><p>&nbsp;</p><h5><a name="orderedlist--숫자-번호-기호" class="md-header-anchor"></a><span>OrderedList : 숫자 번호 기호</span></h5><p><span>버튼 클릭 후 생성되는 </span><li><span> 태그 내에 내용을 입력합니다. </span></p><p><img src=".\assets\image-20210201212933851.png" referrerpolicy="no-referrer" alt="image-20210201212933851"></p><p>&nbsp;</p><blockquote><p><strong><span>결과</span></strong></p><p><img src=".\assets\image-20210201212953038.png" referrerpolicy="no-referrer" alt="image-20210201212953038"></p></blockquote><p>&nbsp;</p><h4><a name="images" class="md-header-anchor"></a><span>IMAGES</span></h4><ol start='' ><li><strong><span>IMAGES 버튼 클릭</span></strong></li></ol><p><img src=".\assets\image-20210201213108185.png" referrerpolicy="no-referrer" alt="image-20210201213108185"></p><ol start='2' ><li><p><strong><span>원하는 사진 선택 </span></strong></p><p><img src=".\assets\image-20210201213405367.png" referrerpolicy="no-referrer" alt="image-20210201213405367"></p></li><li><p><strong><span>파일에 경로로 이미자파일 삽입</span></strong></p><p><img src=".\assets\image-20210201213711764.png" referrerpolicy="no-referrer" alt="image-20210201213711764"></p></li></ol><p>&nbsp;</p><h4><a name="link" class="md-header-anchor"></a><span>LINK</span></h4><ol start='' ><li><p><span>하이퍼링크를 삽입할 단어 드래그</span></p></li><li><p><span>LINK 버튼 클릭</span></p><p><img src=".\assets\image-20210201213904646.png" referrerpolicy="no-referrer" alt="image-20210201213904646"></p></li><li><p><strong><span>링크 삽입</span></strong></p><p><img src=".\assets\image-20210201213943183.png" referrerpolicy="no-referrer" alt="image-20210201213943183"></p></li></ol><p>&nbsp;</p><h4><a name="table" class="md-header-anchor"></a><span>TABLE</span></h4><ol start='' ><li><p><strong><span>테이블 버튼 클릭 </span></strong></p><p><img src=".\assets\image-20210201214124688.png" referrerpolicy="no-referrer" alt="image-20210201214124688"></p></li><li><p><strong><span>만들 표의 행과 열을 입력</span></strong></p><p><img src=".\assets\image-20210201214219916.png" referrerpolicy="no-referrer" alt="image-20210201214219916"></p></li><li><p><strong><span>표생성 완료</span></strong></p><p><img src=".\assets\image-20210201214243645.png" referrerpolicy="no-referrer" alt="image-20210201214243645"></p><blockquote><p><strong><span>결과</span></strong></p><p><img src=".\assets\image-20210201214317881.png" referrerpolicy="no-referrer" alt="image-20210201214317881"></p></blockquote></li></ol><p>&nbsp;</p><p>&nbsp;</p><h2><a name="디렉토리--목차" class="md-header-anchor"></a><span>디렉토리 / 목차</span></h2><p><span>버튼 클릭 시, 목차와 디렉토리로 내용이 변경되어 보여진다.</span></p><p><span>버튼 안의 내용은 현재 내용을 의미한다. </span></p><p><span>	</span><img src=".\assets\image-20210201215405424.png" referrerpolicy="no-referrer" alt="image-20210201215405424"></p><p>&nbsp;</p><p><span>		</span><img src=".\assets\image-20210201215255111.png" referrerpolicy="no-referrer" alt="image-20210201215255111"></p><p>&nbsp;</p></div>
+</body>
+</html>
