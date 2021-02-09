@@ -1,9 +1,25 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, Menu, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+const template = [
+  {
+    label: 'Filter',
+    submenu: [
+      {
+        label: 'Hello',
+        accelerator: 'Shift+CmdOrCtrl+H',
+        click() {
+            console.log('Oh, hi there!')
+        }
+      }
+    ]
+  }
+];
+const menu = Menu.buildFromTemplate(template)
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -61,8 +77,11 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+  Menu.setApplicationMenu(menu);
   createWindow()
 })
+
+
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
