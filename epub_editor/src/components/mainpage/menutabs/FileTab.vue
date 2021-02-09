@@ -211,7 +211,7 @@ export default {
   },
   methods: {
     checkExp: function (value) {
-      var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/gi;
+      var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
       if (special_pattern.test(value) == true) {
         return true;
       } else {
