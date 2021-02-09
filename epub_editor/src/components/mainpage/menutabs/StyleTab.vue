@@ -306,6 +306,9 @@
 import * as css from "@/functions/add-css.js";
 import * as edit from "@/functions/edit.js";
 
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
+
 export default {
   name: "StyleTab",
   data: function() {
@@ -413,6 +416,12 @@ export default {
       fontDialog: false,
       selectedFont: "",
     };
+  },
+  mounted: function () {
+    this.eBookDialog = false;
+    ipcRenderer.on('toolsTab', function (event, message) {
+      this.styleMethod(message)
+    }.bind(this))
   },
   methods: {
     styleMethod: function(i) {

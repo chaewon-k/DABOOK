@@ -6,7 +6,7 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 // const { ipcMain } = require('electron')
 // const { webContents } = require('electron')
-// let menuMessage = 0
+let win;
 
 
 const template = [
@@ -16,37 +16,37 @@ const template = [
       {
         label: '이북 생성하기',
         click: function () {
-          console.log('이북 생성하기')
+          win.webContents.send('fileTab', 0);
         }
       },
       {
         label: '이북 불러오기',
         click: function () {
-          console.log('이북 불러오기')
+          win.webContents.send('fileTab', 1);
         }
       },
       {
         label: '저장하기',
         click: function () {
-          console.log('저장하기')
+          win.webContents.send('fileTab', 2);
         }
       },
       {
         label: '이북 미리보기',
         click: function () {
-          console.log('이북 미리보기')
+          win.webContents.send('fileTab', 3);
         }
       },
       {
         label: 'ePub으로 내보내기',
         click: function () {
-          console.log('ePub으로 내보내기')
+          win.webContents.send('fileTab', 4);
         }
       },
       {
         label: '목차 추가하기',
         click: function () {
-          console.log('목차 추가하기')
+          win.webContents.send('fileTab', 5);
         }
       },
     ],
@@ -57,43 +57,43 @@ const template = [
       {
         label: '실행취소',
         click: function () {
-          console.log('실행취소')
+          win.webContents.send('editTab', 0);
         }
       },
       {
         label: '되돌리기',
         click: function () {
-          console.log('되돌리기')
+          win.webContents.send('editTab', 1);
         }
       },
       {
         label: '잘라내기',
         click: function () {
-          console.log('잘라내기')
+          win.webContents.send('editTab', 2);
         }
       },
       {
         label: '복사하기',
         click: function () {
-          console.log('복사하기')
+          win.webContents.send('editTab', 3);
         }
       },
       {
         label: '붙여넣기',
         click: function () {
-          console.log('붙여넣기')
+          win.webContents.send('editTab', 4);
         }
       },
       {
         label: '찾기',
         click: function () {
-          console.log('찾기')
+          win.webContents.send('editTab', 5);
         }
       },
       {
         label: '바꾸기',
         click: function () {
-          console.log('바꾸기')
+          win.webContents.send('editTab', 6);
         }
       },
     ],
@@ -104,37 +104,37 @@ const template = [
       {
         label: '제목1',
         click: function () {
-          console.log('제목1')
+          win.webContents.send('toolsTab', 1);
         }
       },
       {
         label: '제목2',
         click: function () {
-          console.log('제목2')
+          win.webContents.send('toolsTab', 2);
         }
       },
       {
         label: '제목3',
         click: function () {
-          console.log('제목3')
+          win.webContents.send('toolsTab', 3);
         }
       },
       {
         label: '제목4',
         click: function () {
-          console.log('제목4')
+          win.webContents.send('toolsTab', 4);
         }
       },
       {
         label: '제목5',
         click: function () {
-          console.log('제목5')
+          win.webContents.send('toolsTab', 5);
         }
       },
       {
         label: '제목6',
         click: function () {
-          console.log('제목6')
+          win.webContents.send('toolsTab', 6);
         }
       },
       {
@@ -143,91 +143,91 @@ const template = [
       {
         label: '이탤릭체',
         click: function () {
-          console.log('이탤릭체')
+          win.webContents.send('toolsTab', 'Italic');
         }
       },
       {
         label: '줄 바꿈',
         click: function () {
-          console.log('줄 바꿈')
+          win.webContents.send('toolsTab', 'Enter');
         }
       },
       {
         label: '선',
         click: function () {
-          console.log('선')
+          win.webContents.send('toolsTab', 'LineTag');
         }
       },
       {
         label: '인용구',
         click: function () {
-          console.log('인용구')
+          win.webContents.send('toolsTab', 'BlockquoteTag');
         }
       },
       {
         label: '인용문',
         click: function () {
-          console.log('인용문')
+          win.webContents.send('toolsTab', 'CiteTag');
         }
       },
       {
         label: '굵게',
         click: function () {
-          console.log('굵게')
+          win.webContents.send('toolsTab', 'BoldTag');
         }
       },
       {
         label: '밑줄',
         click: function () {
-          console.log('밑줄')
+          win.webContents.send('toolsTab', 'UnderlineTag');
         }
       },
       {
         label: '취소선',
         click: function () {
-          console.log('취소선')
+          win.webContents.send('toolsTab', 'MediumlineTag');
         }
       },
       {
         label: '아래첨자',
         click: function () {
-          console.log('아래첨자')
+          win.webContents.send('toolsTab', 'SubscriptTag');
         }
       },
       {
         label: '윗첨자',
         click: function () {
-          console.log('윗첨자')
+          win.webContents.send('toolsTab', 'SuperscriptTag');
         }
       },
       {
         label: '순서 없는 목록',
         click: function () {
-          console.log('순서 없는 목록')
+          win.webContents.send('toolsTab', 'UnorderedListTag');
         }
       },
       {
         label: '순서 있는 목록',
         click: function () {
-          console.log('순서 있는 목록')
+          win.webContents.send('toolsTab', 'OrderedListTag');
         }
       },
       {
         label: '이미지',
         click: function () {
-          console.log('이미지')
+          win.webContents.send('toolsTab', 'ImageTag');
         }
       },
       {
         label: '링크',
         click: function () {
-          console.log('링크')
+          win.webContents.send('toolsTab', 'Link');
         }
       },
       {
         label: '표',
         click: function () {
-          console.log('표')
+          win.webContents.send('toolsTab', 'Table');
         }
       },
     ],
@@ -238,61 +238,61 @@ const template = [
       {
         label: '왼쪽 정렬',
         click: function () {
-          console.log('왼쪽 정렬')
+          win.webContents.send('styleTab', 0);
         }
       },
       {
         label: '가운데 정렬',
         click: function () {
-          console.log('가운데 정렬')
+          win.webContents.send('styleTab', 1);
         }
       },
       {
         label: '오른쪽 정렬',
         click: function () {
-          console.log('오른쪽 정렬')
+          win.webContents.send('styleTab', 2);
         }
       },
       {
         label: '양쪽 정렬',
         click: function () {
-          console.log('양쪽 정렬')
+          win.webContents.send('styleTab', 3);
         }
       },
       {
         label: '글자색 적용',
         click: function () {
-          console.log('글자색 적용')
+          win.webContents.send('styleTab', 4);
         }
       },
       {
         label: '배경색 적용',
         click: function () {
-          console.log('배경색 적용')
+          win.webContents.send('styleTab', 5);
         }
       },
       {
         label: '글꼴',
         click: function () {
-          console.log('글꼴')
+          win.webContents.send('styleTab', 6);
         }
       },
       {
         label: '글자크기 축소',
         click: function () {
-          console.log('글자크기 축소')
+          win.webContents.send('styleTab', 7);
         }
       },
       {
         label: '글자크기 확대',
         click: function () {
-          console.log('글자크기 확대')
+          win.webContents.send('styleTab', 8);
         }
       },
       {
         label: '나만의 style',
         click: function () {
-          console.log('나만의 style')
+          win.webContents.send('styleTab', 9);
         }
       },
     ],
@@ -303,7 +303,7 @@ const template = [
       {
         label: 'editor 사용 설명서 보기',
         click: function () {
-          console.log('editor 사용 설명서 보기')
+          win.webContents.send('helpTab', 0);
         }
       },
     ],
@@ -318,7 +318,7 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 950,
     height: 700,
     // autoHideMenuBar: true,
