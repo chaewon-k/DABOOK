@@ -4,12 +4,26 @@ import { app, protocol, Menu, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-// const { ipcMain } = require('electron')
-// const { webContents } = require('electron')
+const isMac = process.platform === 'darwin'
 let win;
 
 
 const template = [
+  // { role: 'appMenu' }
+  ...(isMac ? [{
+    label: app.name,
+    submenu: [
+      { role: 'about' },
+      { type: 'separator' },
+      { role: 'services' },
+      { type: 'separator' },
+      { role: 'hide' },
+      { role: 'hideothers' },
+      { role: 'unhide' },
+      { type: 'separator' },
+      { role: 'quit' }
+    ]
+  }] : []),
   {
     label: '파일',
     submenu: [
@@ -296,6 +310,27 @@ const template = [
         }
       },
     ],
+  },
+  {
+    label: '윈도우',
+    submenu: [
+      { 
+        label: '최소화',
+        role: 'minimize'
+      },
+      { role: 'zoom' },
+      ...(isMac ? [
+        { type: 'separator' },
+        { role: 'front' },
+        { type: 'separator' },
+        { role: 'window' }
+      ] : [
+        { 
+          label: '닫기',
+          role: 'close'
+        }
+      ])
+    ]
   },
   {
     label: '도움말',
