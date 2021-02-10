@@ -1,11 +1,5 @@
 <template>
   <v-tabs id="fileTab" show-arrows v-model="tab">
-    <v-btn v-if="dirToggle" class="align-self-center" @click="changeToggle" text
-      >디렉토리 닫기</v-btn
-    >
-    <v-btn v-else class="align-self-center" @click="changeToggle" text
-      >디렉토리 열기</v-btn
-    >
     <v-btn class="align-self-center" @click.stop="eBookDialog = true" text
       >이북 생성하기</v-btn
     >
@@ -199,7 +193,6 @@ export default {
       "editingHTMLText",
       "ebookDirectory",
       "editingTextArr",
-      "dirToggle",
     ]),
   },
   watch: {
@@ -397,6 +390,7 @@ export default {
           "setAlertMessage",
           "ebook 불러오기에 성공했습니다"
         );
+        this.$store.dispatch("setDirToggle");
       } catch (err) {
         console.log(err);
         this.$store.dispatch("setAlertMessage", "이북 불러오기에 실패했습니다");
@@ -499,9 +493,6 @@ export default {
       } else {
         this.chapterDialog = true;
       }
-    },
-    changeToggle: function () {
-      this.$store.dispatch("setDirToggle");
     },
     //eBookText 값 받아오기
     setEbookText: function (sendData) {
