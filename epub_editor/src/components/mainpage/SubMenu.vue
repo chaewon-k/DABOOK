@@ -67,7 +67,8 @@ export default {
   methods:{
     popUpEditor: function (){
       const win = new BrowserWindow({ width: 800, height: 1500 });
-      const p = path.resolve(`/Applications/DABOOK.app/Contents/Resources/src/assets/manual/manual.html`);
+        const p = path.resolve(`/Applications/DABOOK.app/Contents/Resources/src/assets/manual/manual.html`);  // for build
+        // const p = path.resolve(`./src/assets/manual/manual.html`);  // for test
       win.loadURL('file://' + p, function () { 
 
       });

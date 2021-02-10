@@ -274,7 +274,8 @@ export default {
         });
 
         this.eBookDialog = false;
-        let eBookSettingDirectory = `/Applications/DABOOK.app/Contents/Resources/src/assets/NewEbook`; //기본 ebook 디렉토리 위치
+        let eBookSettingDirectory = `/Applications/DABOOK.app/Contents/Resources/src/assets/NewEbook`; //기본 ebook 디렉토리 위치  // for build
+        // let eBookSettingDirectory = `./src/assets/NewEbook`; //기본 ebook 디렉토리 위치  // for test
         const p = path.resolve('file://', eBookSettingDirectory);
         fse.copySync(p, this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
         /*
@@ -487,7 +488,8 @@ export default {
         }
         let num = "";
         let path = this.eBookLocation + "/EPUB/text/";
-        const temp = fs.readFileSync("/Applications/DABOOK.app/Contents/Resources/src/assets/chapter01.xhtml").toString();
+        const temp = fs.readFileSync("/Applications/DABOOK.app/Contents/Resources/src/assets/chapter01.xhtml").toString();  // for build
+        // const temp = fs.readFileSync("./src/assets/chapter01.xhtml").toString();  // for test
         this.chapterNum++;
         if (this.chapterNum < 10) {
           num = "0" + this.chapterNum;
