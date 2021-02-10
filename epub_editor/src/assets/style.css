@@ -184,8 +184,9 @@ div.right {
   color: white;
   z-index: 999999;
   bottom: 0;
+  right:0;
   position: absolute;
-  margin: 0 0 16px 16px;
+  margin: 0 16px 16px 16px;
   padding : 8px;
   border-radius: 50%;
 }
