@@ -177,7 +177,6 @@ export default {
       }
     };
     window.onkeypress = (e) => {
-      console.log(e);
       if(e.keyCode==1&&e.ctrlKey==true&&e.shiftKey==true){
         eventBus.$emit("shortcut","preview");
       }

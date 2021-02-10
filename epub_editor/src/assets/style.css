@@ -78,6 +78,7 @@ html, body {
 }
 
 #area{
+  margin-top: 10px;
   font-size: 15px;
   line-height: 130%;
 }
@@ -183,3 +184,22 @@ div.right {
   font-size: smaller;
 }
 
+/* 이미지 버튼*/
+#iconBtn{
+  z-index: 999999;
+  bottom: 0;
+  position: absolute;
+  margin: 0 0 16px 16px;
+  border-radius: 50%;
+}
+
+#iconBtn{
+  background-color: #716f8f;
+  color: white;
+  z-index: 999999;
+  bottom: 0;
+  position: absolute;
+  margin: 0 0 16px 16px;
+  padding : 8px;
+  border-radius: 50%;
+}

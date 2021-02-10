@@ -15,7 +15,7 @@ export default new Vuex.Store({
     findTextArray: [],
     alertMessage: '',
     alertDialog: false,
-    dirToggle: true,
+    dirToggle: false,
   },
 
   mutations: {
