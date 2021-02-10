@@ -1,15 +1,17 @@
 <template>
-  <v-app-bar flat color="white" style="padding: 4% 2% 13% 2%">
-    <v-toolbar-title class="header-color" style="font-size: 2em">
-      {{ title }}
-    </v-toolbar-title>
-
-    <v-spacer></v-spacer>
-
-    <v-btn color="primary" icon @click="toggleDialog()">
-      <v-icon>mdi-close</v-icon>
-    </v-btn>
-  </v-app-bar>
+  <v-card flat>
+    <v-container>
+      <v-row class="mx-2 mt-2">
+        <v-toolbar-title class="ml-1" style="font-size: 2em">
+          {{ title }}
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" icon @click="toggleDialog()">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-row>
+    </v-container>
+  </v-card>
 </template>
 
 <script>
@@ -23,5 +25,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

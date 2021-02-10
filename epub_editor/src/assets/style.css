@@ -29,8 +29,6 @@ html, body {
   font-family: 'Nanum Myeongjo', serif;
 }
 
-
-
 #editor {
   height: 100%;
 }
@@ -94,7 +92,6 @@ html, body {
 #textarea > .v-input > .v-input__control {
   height: 100%;
 }
-
 
 /* 도구상자 버튼 정렬하는 style */
 
@@ -174,9 +171,6 @@ div.right {
   z-index: 999999;
 }
 
-
-
-
 /*새 ebook 만들기*/
 .confirmMessage {
   margin-bottom: -5px;
@@ -186,14 +180,6 @@ div.right {
 
 /* 이미지 버튼*/
 #iconBtn{
-  z-index: 999999;
-  bottom: 0;
-  position: absolute;
-  margin: 0 0 16px 16px;
-  border-radius: 50%;
-}
-
-#iconBtn{
   background-color: #716f8f;
   color: white;
   z-index: 999999;
@@ -202,4 +188,29 @@ div.right {
   margin: 0 0 16px 16px;
   padding : 8px;
   border-radius: 50%;
+}
+
+/* Light mode */
+.theme--light.v-card {
+  color: #423F8C;
+}
+
+.theme--light.v-btn.v-btn--icon {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+/* Dark mode */
+.theme--dark.v-card {
+  color: #9C9BBF;
+}
+
+.theme--dark.v-btn,
+.theme--dark.v-btn.v-btn--icon,
+.theme--dark.v-treeview, 
+.theme--dark.v-icon {
+  color: #b7b6ca;
+}
+
+.theme--dark.v-input textarea {
+  color: #cfcddf;
 }
