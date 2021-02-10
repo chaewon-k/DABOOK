@@ -1,7 +1,7 @@
 <template>
 
   <v-icon 
-	id="iconBtn" fab large bottom left
+	id="iconBtn" fab large
 	@click="btnClick">
     mdi-folder
   </v-icon>

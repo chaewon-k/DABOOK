@@ -384,13 +384,9 @@ export default {
               "setAlertMessage",
               "이북 불러오기에 성공했습니다"
             );
+            this.$store.dispatch("setDirToggle");
           }
         }
-        this.$store.dispatch(
-          "setAlertMessage",
-          "ebook 불러오기에 성공했습니다"
-        );
-        this.$store.dispatch("setDirToggle");
       } catch (err) {
         console.log(err);
         this.$store.dispatch("setAlertMessage", "이북 불러오기에 실패했습니다");

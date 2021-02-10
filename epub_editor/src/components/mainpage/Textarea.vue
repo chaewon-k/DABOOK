@@ -5,7 +5,7 @@
       solo
       hide-details
       spellcheck="false"
-      style="width: auto; border-radius: 0%"
+      style="width: auto; border-radius: 0%;"
       ma-auto
       height="100%"
       label="textarea 입니다"
@@ -22,7 +22,7 @@
         <DialogTitle
           title="링크 추가하기"
           @toggle-dialog="linkDialog = false"
-        />
+        /> 
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
@@ -273,6 +273,8 @@ export default {
   },
   watch: {
     inputText: function () {
+      let area =document.getElementById("area");
+      area.scrollTop=area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);
       this.$store.dispatch("setHTMLText", this.defaultHTMLText);
     },
