@@ -187,6 +187,9 @@ export default {
       if (res == "save") {
         this.storeInputText();
       }
+      else if(res=="preview"){
+        this.preview();
+      }
     });
   },
   computed: {
