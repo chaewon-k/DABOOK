@@ -21,7 +21,7 @@
           <v-switch
             dense
             class="mt-2"
-            color="#423F8C"
+            color="#9C9BBF"
             v-model="$vuetify.theme.dark"
             persistent-hint
           ></v-switch>
