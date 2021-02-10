@@ -1,65 +1,82 @@
 <template>
-  <div>
-    <v-alert outlined dense icon="mdi-alert-circle-outline" :color="type" v-if="type">
-      {{ message }}
-    </v-alert>
-    <v-card class="ma-auto" max-width="500">
-      <v-card-title class="title font-weight-regular justify-space-between">
-        <span>Signup</span>
-      </v-card-title>
-      <v-card-text>
-        <v-container>
-          <v-row>
-            <v-text-field
-              label="Email"
-              v-model="email"
-              :rules="rules"
-            ></v-text-field>
-            <v-btn @click="emailConfirm">이메일 인증</v-btn>
-          </v-row>
-          <v-row class="my-3">
-            <v-text-field
-              label="Name"
-              v-model="name"
-              :rules="rules"
-            ></v-text-field>
-          </v-row>
-          <v-row class="my-3">
-            <v-text-field
-              label="Nickname"
-              v-model="nickname"
-              :rules="rules"
-            ></v-text-field>
-            <v-btn @click="nicknameConfirm">닉네임 중복확인</v-btn>
-          </v-row>
-          <v-row class="my-3">
-            <v-text-field
-              class="mx-2"
-              label="Password"
-              type="password"
-              v-model="password"
-              :rules="rules"
-            ></v-text-field>
-            <v-text-field
-              class="mx-2"
-              label="PasswordConfirm"
-              type="Password"
-              v-model="passwordConfirm"
-              :rules="rules"
-            ></v-text-field>
-          </v-row>
-        </v-container>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-checkbox
-        v-model="checkbox"
-        label="Do you agree?"
-      ></v-checkbox>
-      <v-card-actions>
-        <v-btn @click="signUp">SIGNUP</v-btn>
-      </v-card-actions>
-    </v-card>
-  </div>
+  <v-container fluid fill-height>
+    <!---------------Alert 창-------------------->
+    <v-row>
+      <v-alert outlined dense style="width:100%;" icon="mdi-alert-circle-outline" :color="type" v-if="type">
+        {{ message }}
+      </v-alert>
+    </v-row>
+    
+    <!---------------Signup form----------------->
+    <v-layout align-center justify-center>
+      <v-card width="500">
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <router-link  text :to="{name:'Login'}"><v-icon>mdi-arrow-left</v-icon></router-link>
+            </v-row>
+            <v-row>
+              <v-card-text align="center" class="mb-6">
+                <h1>Signup</h1>
+              </v-card-text>
+            </v-row>
+            <v-row>
+              <v-icon class="mr-3">mdi-email-outline</v-icon>
+              <v-text-field
+                label="Email"
+                v-model="email"
+                :rules="emailRules"
+              ></v-text-field>
+              <v-btn @click="emailConfirm">이메일 인증</v-btn>
+            </v-row>
+            <v-row class="my-3">
+              <v-icon class="mr-3">mdi-account</v-icon>
+              <v-text-field
+                label="Name"
+                v-model="name"
+                :rules="rules"
+              ></v-text-field>
+            </v-row>
+            <v-row class="my-3">
+              <v-icon class="mr-3">mdi-emoticon-happy-outline</v-icon>
+              <v-text-field
+                label="Nickname"
+                v-model="nickname"
+                :rules="rules"
+              ></v-text-field>
+              <v-btn @click="nicknameConfirm">닉네임 중복확인</v-btn>
+            </v-row>
+            <v-row class="my-3">
+              <v-icon class="mr-3">mdi-lock-outline</v-icon>
+              <v-text-field
+                class="mr-2"
+                label="Password"
+                type="password"
+                v-model="password"
+                :rules="rules"
+              ></v-text-field>
+              <v-text-field
+                class="ml-2"
+                label="PasswordConfirm"
+                type="Password"
+                v-model="passwordConfirm"
+                :rules="rules"
+              ></v-text-field>
+            </v-row>
+            <v-row class="mb-3">
+              <v-checkbox
+                v-model="checkbox"
+                label="Do you agree?"
+              ></v-checkbox>
+            </v-row>
+            <v-row>
+              <v-btn block class="mb-5" @click="signUp">SIGNUP</v-btn>
+            </v-row>
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -67,21 +84,31 @@ import axios from 'axios'
 export default {
   name: 'Signup',
   data: () => ({
+    // 서버에 보낼 데이터
     name: '',
     email: '',
     nickname: '',
     password: '',
+
+    // 정보 확인용 데이터
     passwordConfirm: '',
     checkbox: false,
 
+    // Alert 용 데이터
     message: '',
     type: null,
     elapse:null,
+
+    // 각 데이터별 기본 규칙
     rules: [
-        value => !!value || 'Required.'
+        value => !!value || 'Required.',
     ],
+    emailRules: [
+      value => /.+@.+\..+/.test(value) || "E-mail must be valid"
+    ]
   }),
   methods: {
+    // 3초 후 사라지는 alert 구현 함수
     showAlert (type) {
       this.type = type
       let timer = this.showAlert.timer
@@ -108,8 +135,10 @@ export default {
         }
       }, 1000)
     },
+
+    // 회원가입 
     signUp: function () {
-      const data = { 'email': this.email, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': true }
+      const data = { 'email': this.email, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': false }
       if (this.password === this.passwordConfirm) {
         if (this.checkbox === true) {
           axios.post("https://contact.dabook.site/api/user", data)
@@ -129,6 +158,8 @@ export default {
         this.showAlert('error')
       }
     },
+
+    // 이메일 중복 확인
     emailConfirm: function () {  //false - 이미 이메일 존재
       axios.get(`https://contact.dabook.site/api/user/email/${this.email}`)
         .then(res => {
@@ -137,12 +168,14 @@ export default {
             this.showAlert('error')
           }
           else {
-            this.message = '이메일을 발송했습니다!'
+            this.message = '사용 가능한 이메일입니다!'
             this.showAlert('purple')
           }
         })
         .catch(err => console.log(err))
     },
+
+    //닉네임 중복 확인
     nicknameConfirm: function () {  //false - 닉네임 이미 존재
       axios.get(`https://contact.dabook.site/api/user/nickname/${this.nickname}`)
         .then(res => {
