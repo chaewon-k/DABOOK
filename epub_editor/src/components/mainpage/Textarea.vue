@@ -153,6 +153,7 @@ import DialogTitle from "@/components/Dialog/DialogTitle";
 
 const fs = require("fs");
 
+
 export default {
   name: "Textarea",
   components: {
@@ -160,9 +161,27 @@ export default {
     DialogInput,
     DialogTitle,
   },
-  created: function () {
+  mounted: function () {
+    window.onmousewheel=(e)=>{
+      if(e.ctrlKey==false)
+        return;
+      if (e.wheelDelta > 0 ) {
+        this.fontSize+=1;
+        document.getElementById("area").style.fontSize=this.fontSize+"px";
+        console.log(this.fontSize);
+      }
+      else {
+        this.fontSize-=1;
+        document.getElementById("area").style.fontSize=this.fontSize+"px";
+        console.log(this.fontSize);
+      }
+    };
     window.onkeypress = (e) => {
-      if (e.keyCode === 19 && e.ctrlKey === true) {
+      console.log(e);
+      if(e.keyCode==1&&e.ctrlKey==true&&e.shiftKey==true){
+        eventBus.$emit("shortcut","preview");
+      }
+      else if (e.keyCode === 19 && e.ctrlKey === true) {
         eventBus.$emit("shortcut", "save");
       } else if (e.keyCode === 5 && e.ctrlKey === true) {
         edit.copy();
@@ -280,6 +299,8 @@ export default {
       findText: "",
       findIndexArray: [],
       cursorPosition: { posX: 0, posY: 0 },
+
+      fontSize:15,
     };
   },
   computed: {

@@ -75,6 +75,11 @@ html, body {
   height: 100%;
 }
 
+#area{
+  font-size: 15px;
+  line-height: 130%;
+}
+
 #textarea {
   height: 100%;
 }
