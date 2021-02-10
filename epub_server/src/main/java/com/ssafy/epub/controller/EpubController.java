@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.epub.model.Epub;
 import com.ssafy.epub.model.FileDTO;
+import com.ssafy.epub.model.FileVO;
 import com.ssafy.epub.repository.EpubRepository;
 import com.ssafy.epub.repository.FileRepository;
 
@@ -48,13 +48,15 @@ public class EpubController {
 		return new ResponseEntity<>(fileRepository.findAll(),HttpStatus.OK);
 	}
 	//, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
-	@PostMapping(value = "/upload", consumes = {"multipart/form-data"})
+	@PostMapping(value = "/upload")
 	@ApiOperation(value = "upload")
-	public ResponseEntity<Boolean> upload(@RequestParam("file") MultipartFile mfFile,@RequestParam("email") String email,@RequestParam("epubName") String epubName) {
+	public ResponseEntity<Boolean> upload(FileVO fileVo) {
 		//List<MultipartFile> files = uploadFilesInfo.getFiles();
-		System.out.println(storagePath);
+		
 		//String filePath = storagePath + "/" + uploadFilesInfo.getEmail() + "/" + uploadFilesInfo.getEpubName() + "/";
-		String filePath = storagePath + "/" + email + "/" + epubName + "/";
+		String filePath = storagePath + "/" + fileVo.getEmail() + "/" + fileVo.getEpubName() + fileVo.getPath() + "/";
+		
+		MultipartFile mfFile = fileVo.getFile();
 		
 		//for(MultipartFile mfFile : files) {
 			File file = new File(filePath + mfFile.getOriginalFilename());
