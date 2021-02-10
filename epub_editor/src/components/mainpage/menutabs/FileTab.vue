@@ -315,15 +315,13 @@ export default {
           folders.includes("mimetype")
         ) {
           // 선택한 디렉토리에 필수 폴더들이 모두 있는 경우에만 디렉토리에 로드한다.
-          this.$store.dispatch("setEbookDirectoryTree", data["arrayOfFiles"]);
-          console.log(data["arrayOfFiles"]);
-          const fileToText = fs.readFileSync(data["toc"][0]).toString();
-          this.$store.dispatch("setTableOfContents", tocToList(fileToText, []));
-          return true;
-        } else {
-          // 필수 폴더들이 모두 있지 않은 경우 알림창을 띄운다.
-          this.$store.dispatch("setAlertMessage", "EPUB 폴더가 아닙니다.");
-          return false;
+          this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
+          const fileToText = fs.readFileSync(data['toc'][0]).toString();
+          this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
+          return true
+        } else {  // 필수 폴더들이 모두 있지 않은 경우 알림창을 띄운다. 
+          this.$store.dispatch('setAlertMessage',"EPUB 폴더가 아닙니다.")
+          return false
         }
       } catch (err) {
         console.log("목차 읽어오기 실패");
