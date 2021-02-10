@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="inspire">
     <v-main>
       <Editor />
     </v-main>
@@ -16,9 +16,7 @@ export default {
   components: {
     Editor,
   },
-
   data: () => ({
-    
   }),
 };
 </script>
