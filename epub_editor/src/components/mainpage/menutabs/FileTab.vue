@@ -374,7 +374,7 @@ export default {
     loadEbook: function () {
       try {
         this.eBookLocation = readPath();
-        if (this.eBookLocation) {
+        if (this.eBookLocation != null) {
           if (this.readToc()) {
             // EPUB 필수 폴더들이 있는 경로를 선택한 경우에만 디렉토리에 로드한다.
             this.$store.dispatch("setEbookDirectory", this.eBookLocation);
@@ -386,11 +386,6 @@ export default {
             );
           }
         }
-        this.$store.dispatch(
-          "setAlertMessage",
-          "ebook 불러오기에 성공했습니다"
-        );
-        this.$store.dispatch("setDirToggle");
       } catch (err) {
         console.log(err);
         this.$store.dispatch("setAlertMessage", "이북 불러오기에 실패했습니다");
