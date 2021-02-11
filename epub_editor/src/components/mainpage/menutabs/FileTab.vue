@@ -1,14 +1,5 @@
 <template>
   <v-tabs id="fileTab" show-arrows v-model="tab">
-    <v-btn v-if="dirToggle" class="align-self-center" @click="changeLocale" text
-      >{{ $i18n.locale == 'ko' ? '한글' : 'English' }}</v-btn
-    >
-    <v-btn v-if="dirToggle" class="align-self-center" @click="changeToggle" text
-      >디렉토리 닫기</v-btn
-    >
-    <v-btn v-else class="align-self-center" @click="changeToggle" text
-      >디렉토리 열기</v-btn
-    >
     <v-btn class="align-self-center" @click.stop="eBookDialog = true" text
       >{{ $t("filetab.create") }}</v-btn
     >
@@ -24,6 +15,9 @@
     >
     <v-btn class="align-self-center" @click="addChapter" text
       >{{ $t("filetab.chapter") }}</v-btn
+    >
+    <v-btn class="align-self-center" @click="changeLocale" text
+      >{{ $i18n.locale == 'ko' ? '한글' : 'English' }}</v-btn
     >
 
     <v-dialog v-model="chapterDialog" max-width="400">
@@ -190,6 +184,9 @@ export default {
       if (res == "save") {
         this.storeInputText();
       }
+      else if(res=="preview"){
+        this.preview();
+      }
     });
   },
   computed: {
@@ -199,7 +196,6 @@ export default {
       "editingHTMLText",
       "ebookDirectory",
       "editingTextArr",
-      "dirToggle",
     ]),
   },
   watch: {
@@ -218,7 +214,7 @@ export default {
       else this.$i18n.locale = 'en'
     },
     checkExp: function (value) {
-      var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/gi;
+      var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
       if (special_pattern.test(value) == true) {
         return true;
       } else {
@@ -319,15 +315,13 @@ export default {
           folders.includes("mimetype")
         ) {
           // 선택한 디렉토리에 필수 폴더들이 모두 있는 경우에만 디렉토리에 로드한다.
-          this.$store.dispatch("setEbookDirectoryTree", data["arrayOfFiles"]);
-          console.log(data["arrayOfFiles"]);
-          const fileToText = fs.readFileSync(data["toc"][0]).toString();
-          this.$store.dispatch("setTableOfContents", tocToList(fileToText, []));
-          return true;
-        } else {
-          // 필수 폴더들이 모두 있지 않은 경우 알림창을 띄운다.
-          this.$store.dispatch("setAlertMessage", "EPUB 폴더가 아닙니다.");
-          return false;
+          this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
+          const fileToText = fs.readFileSync(data['toc'][0]).toString();
+          this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
+          return true
+        } else {  // 필수 폴더들이 모두 있지 않은 경우 알림창을 띄운다. 
+          this.$store.dispatch('setAlertMessage',"EPUB 폴더가 아닙니다.")
+          return false
         }
       } catch (err) {
         console.log("목차 읽어오기 실패");
@@ -387,7 +381,7 @@ export default {
     loadEbook: function () {
       try {
         this.eBookLocation = readPath();
-        if (this.eBookLocation) {
+        if (this.eBookLocation != null) {
           if (this.readToc()) {
             // EPUB 필수 폴더들이 있는 경로를 선택한 경우에만 디렉토리에 로드한다.
             this.$store.dispatch("setEbookDirectory", this.eBookLocation);
@@ -397,12 +391,9 @@ export default {
               "setAlertMessage",
               "이북 불러오기에 성공했습니다"
             );
+            this.$store.dispatch("setDirToggle");
           }
         }
-        this.$store.dispatch(
-          "setAlertMessage",
-          "ebook 불러오기에 성공했습니다"
-        );
       } catch (err) {
         console.log(err);
         this.$store.dispatch("setAlertMessage", "이북 불러오기에 실패했습니다");
@@ -505,9 +496,6 @@ export default {
       } else {
         this.chapterDialog = true;
       }
-    },
-    changeToggle: function () {
-      this.$store.dispatch("setDirToggle");
     },
     //eBookText 값 받아오기
     setEbookText: function (sendData) {

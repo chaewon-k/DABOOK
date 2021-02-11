@@ -7,11 +7,11 @@ export function pTag () {
   let pos = 0, remember = area.selectionStart;
   let preTag = area.value.indexOf('<p>', remember);
   let postTag = area.value.indexOf('</p>', remember);
-  console.log(preTag, postTag);
+  // console.log(preTag, postTag);
   if (preTag < postTag && preTag != -1) {
     remember = area.selectionStart;
     area.value = area.value.slice(0,  area.selectionStart) + "\n\n    <p></p>" + area.value.slice(area.selectionEnd);
-    console.log(area.selectionStart, area.selectionEnd);
+    // console.log(area.selectionStart, area.selectionEnd);
     area.selectionEnd = remember + 9;
     return area.value;
   }
@@ -22,7 +22,7 @@ export function pTag () {
       area.selectionStart = area.value.indexOf('</p>', pos) + 4;
       remember = area.selectionStart;
       area.value = area.value.slice(0,  area.selectionStart) + "\n\n    <p></p>" + area.value.slice(area.selectionEnd);
-      console.log(area.selectionStart, area.selectionEnd);
+      // console.log(area.selectionStart, area.selectionEnd);
       area.selectionEnd = remember + 9;
       return area.value;
     }
@@ -33,7 +33,7 @@ export function pTag () {
   if (area.value.indexOf('</p>', pos) == -1) {
     remember = area.selectionStart;
     area.value = area.value.slice(0,  area.selectionStart) + "\n\n    <p></p>" + area.value.slice(area.selectionEnd);
-    console.log(area.selectionStart, area.selectionEnd);
+    // console.log(area.selectionStart, area.selectionEnd);
     area.selectionEnd = remember + 9;
   }
 
