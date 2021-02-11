@@ -11,7 +11,7 @@
           :key="idx"
           @click="selectedIndex(idx)"
         >
-          {{ item.tab }}
+          {{ $t("tab." + item.tab) }}
         </v-tab>
       </v-tabs>
       <SubMenu
@@ -33,11 +33,11 @@ export default {
         itemIndex: 0,
         tab: null,
         items: [
-          { tab: '파일' },
-          { tab: '편집' },
-          { tab: '도구상자' },
-          { tab: '스타일' },
-          { tab: '도움말' }
+          { tab: 'file' },
+          { tab: 'edit' },
+          { tab: 'tool' },
+          { tab: 'style' },
+          { tab: 'help' }
         ],
       };
     },

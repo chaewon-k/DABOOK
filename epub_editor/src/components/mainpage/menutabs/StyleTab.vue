@@ -18,7 +18,7 @@
                 }}</v-icon></v-btn
               >
             </template>
-            <span>{{ tab.name }}</span>
+            <span>{{ $t("styletab." + tab.name) }}</span>
           </v-tooltip>
         </div>
         <div v-else-if="idx === 5">
@@ -36,7 +36,7 @@
                 }}</v-icon></v-btn
               >
             </template>
-            <span>{{ tab.name }}</span>
+            <span>{{ $t("styletab." + tab.name) }}</span>
           </v-tooltip>
         </div>
         <div v-else>
@@ -53,7 +53,7 @@
                 }}</v-icon></v-btn
               >
             </template>
-            <span>{{ tab.name }}</span>
+            <span>{{ $t("styletab." + tab.name) }}</span>
           </v-tooltip>
         </div>
       </div>
@@ -243,45 +243,45 @@ export default {
       tab: null,
       tabs: [
         {
-          name: "왼쪽 정렬",
+          name: "left",
           icon: "mdi-format-align-left",
         },
         {
-          name: "가운데 정렬",
+          name: "center",
           icon: "mdi-format-align-center",
         },
         {
-          name: "오른쪽 정렬",
+          name: "right",
           icon: "mdi-format-align-right",
         },
         {
-          name: "양쪽 정렬",
+          name: "justify",
           icon: "mdi-format-align-justify",
         },
         {
-          name: "글자색 적용",
+          name: "fontcolor",
           icon: "mdi-format-color-text",
           color: "red",
         },
         {
-          name: "배경색 적용",
+          name: "backgroundcolor",
           icon: "mdi-square",
           color: "red",
         },
         {
-          name: "글꼴",
+          name: "font",
           icon: "mdi-format-font",
         },
         {
-          name: "글자크기 축소",
+          name: "reducefont",
           icon: "mdi-format-font-size-decrease",
         },
         {
-          name: "글자크기 확대",
+          name: "expandfont",
           icon: "mdi-format-font-size-increase",
         },
         {
-          name: "나만의 style",
+          name: "customstyle",
           icon: "mdi-bookmark",
         },
       ],

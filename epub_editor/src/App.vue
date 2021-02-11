@@ -16,7 +16,9 @@ export default {
   components: {
     Editor,
   },
-
+  created: function() {
+    this.$i18n.locale = 'ko';
+  },
   data: () => ({
     
   }),

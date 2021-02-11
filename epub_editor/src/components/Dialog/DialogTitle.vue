@@ -1,7 +1,8 @@
 <template>
   <v-app-bar flat color="white" style="padding: 4% 2% 13% 2%">
     <v-toolbar-title class="header-color" style="font-size: 2em">
-      {{ title }}
+      <!-- {{ $t("dialogtitle." + title) }} -->
+      {{title}}
     </v-toolbar-title>
 
     <v-spacer></v-spacer>

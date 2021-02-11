@@ -7,8 +7,8 @@
     <div id="wrap">
       <aside v-if="dirToggle" id="aside">
         <v-card max-height="100%" min-height="100%" class="overflow-y-auto" style="border-radius: 0%;">
-          <v-btn v-if="dirTableToggle===true" @click="toggle" block text>디렉토리</v-btn>
-          <v-btn v-else @click="toggle" block text>목차</v-btn>
+          <v-btn v-if="dirTableToggle===true" @click="toggle" block text>{{ $t("directory") }}</v-btn>
+          <v-btn v-else @click="toggle" block text>{{ $t("toc") }}</v-btn>
           <Directory
             v-show="dirTableToggle===true"
           />

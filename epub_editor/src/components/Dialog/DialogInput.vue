@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     resetText: function () {
-      this.inputText = "";
+      this.inputText = null;
     },
     sendData: function () {
       this.$emit("changeData", this.inputText);

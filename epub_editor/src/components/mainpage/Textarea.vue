@@ -8,7 +8,6 @@
       style="width: auto; border-radius: 0%"
       ma-auto
       height="100%"
-      label="textarea 입니다"
       no-resize
       placeholder="책을 작성해볼까요?"
       v-model="inputText"

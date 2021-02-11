@@ -25,7 +25,7 @@
     <!-------------------- manual tap start -------------------->
     <div v-show="itemIndex === 4">
       <v-tabs show-arrows v-model="tab">
-        <v-btn class="align-self-center" text @click="popUpEditor">editor 사용 설명서 보기</v-btn>
+        <v-btn class="align-self-center" text @click="popUpEditor">{{ $t("manual") }}</v-btn>
         <!-- <v-btn class="align-self-center" text>마크다운 설명서 보기</v-btn> -->
       </v-tabs>
     </div>

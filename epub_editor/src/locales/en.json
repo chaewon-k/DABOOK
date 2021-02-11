@@ -1,0 +1,77 @@
+{
+  "tab": {
+    "file": "file",
+    "edit": "edit",
+    "style": "style",
+    "tool": "tool",
+    "help": "help"
+  },
+  "filetab": {
+    "create": "create e-book",
+    "load": "load",
+    "save": "save",
+    "preview": "preview",
+    "epub": "create epub",
+    "chapter": "chapter"
+  },
+  "edittab": {
+    "undo": "undo",
+    "redo": "redo",
+    "cut": "cut",
+    "copy": "copy",
+    "paste": "paste",
+    "find": "find",
+    "replace": "replace"
+  },
+  "toolstab": {
+    "h1": "title1",
+    "h2": "title2",
+    "h3": "title3",
+    "h4": "title4",
+    "h5": "title5",
+    "h6": "title6",
+    "italic": "italic",
+    "enter": "enter",
+    "line": "line",
+    "quote": "quote",
+    "cite": "cite",
+    "bole": "bole",
+    "underline": "underline",
+    "mediumline": "mediumline",
+    "subscript": "subscript",
+    "superscript": "superscript",
+    "unorderedlist": "unordered list",
+    "orderedlist": "ordered list",
+    "image": "image",
+    "link": "link",
+    "table": "table"
+  },
+  "styletab": {
+    "left": "left-aligned",
+    "center": "centered",
+    "right": "right-aligned",
+    "justify": "justify-aligned",
+    "fontcolor": "font color",
+    "backgroundcolor": "background color",
+    "font": "font",
+    "reducefont": "reduce font size",
+    "expandfont": "expand font size",
+    "customstyle": "my style"
+  },
+  "dialogtitle": {
+    "file-ebook": "create e-book",
+    "file-epub": "crate ePUB",
+    "file-chapter": "add chapter"
+  },
+  "dialoginput": {
+      "file-ebook-title": "e-book title",
+      "file-ebook-path": "save path",
+      "file-ebook-iamge": "cover image"
+  },
+  "dialogbutton": {
+      "create" : "create"
+  },
+  "manual": "manual",
+  "directory": "directory",
+  "toc": "toc"
+}
