@@ -22,6 +22,9 @@
     <v-btn class="align-self-center" @click="addChapter" text
       >목차 추가하기</v-btn
     >
+    <v-btn class="align-self-center" @click="test" text
+      >테스트</v-btn
+    >
 
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
@@ -132,17 +135,25 @@ import {
   readCustomStyle,
   changeTitleAuthor,
 } from "@/functions/file.js";
+import * as test from '@/functions/test.js'
 import { mapState } from "vuex";
 import eventBus from "@/eventBus.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
+// import axios from 'axios'
+// import restler from 'axios'
+
 
 const fs = require("fs");
 const path = require("path");
 const electron = require("electron");
 const BrowserWindow = electron.remote.BrowserWindow;
 const fse = require("fs-extra");
+// const streamToBlob = require('stream-to-blob')
+
+// import * as FormData from "form-data";
+
 
 export default {
   name: "FileTab",
@@ -213,6 +224,9 @@ export default {
     // }
   },
   methods: {
+    test: function () {
+      test.test();
+    },
     checkExp: function (value) {
       var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
       if (special_pattern.test(value) == true) {
@@ -379,7 +393,7 @@ export default {
 
     // e-book 불러오기
     loadEbook: function () {
-      try {
+      try {  // 시도한다.
         this.eBookLocation = readPath();
         if (this.eBookLocation) {
           if (this.readToc()) {
@@ -392,11 +406,12 @@ export default {
               "이북 불러오기에 성공했습니다"
             );
           }
+        } else {
+          this.$store.dispatch(
+            "setAlertMessage",
+            "ebook 불러오기에 실패했습니다"
+          );
         }
-        this.$store.dispatch(
-          "setAlertMessage",
-          "ebook 불러오기에 성공했습니다"
-        );
       } catch (err) {
         console.log(err);
         this.$store.dispatch("setAlertMessage", "이북 불러오기에 실패했습니다");
