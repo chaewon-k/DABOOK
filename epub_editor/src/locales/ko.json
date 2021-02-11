@@ -4,6 +4,7 @@
         "edit": "편집",
         "style": "스타일",
         "tool": "도구상자",
+        "setting": "설정",
         "help": "도움말"
     },
     "filetab": {
@@ -61,16 +62,70 @@
     "dialogtitle": {
         "file-ebook": "이북 생성하기",
         "file-epub": "ePUB으로 내보내기",
-        "file-chapter": "목차 추가하기"
+        "file-chapter": "목차 추가하기",
+        "edit-find": "단어 찾기",
+        "edit-replace": "단어 변환하기",
+        "style-font": "글꼴 선택",
+        "style-color": "색상 선택",
+        "style-add": "스타일 추가하기",
+        "style-custom": "나만의 스타일",
+        "tool-link": "링크 추가하기",
+        "tool-table": "표 추가하기"
     },
     "dialoginput": {
-        "file-ebook-title": "이북 이름",
-        "file-ebook-path": "저장 위치",
-        "file-ebook-iamge": "커버 이미지"
+        "file-title": "이북 이름",
+        "file-path": "저장 위치",
+        "file-image": "커버 이미지",
+        "file-author": "작가",
+        "file-chapter": "목차 이름",
+        "edit-find": "찾고싶은 단어",
+        "edit-replace": "바꾸고싶은 단어",
+        "style-title": "스타일 이름",
+        "style-align": "정렬",
+        "style-font": "글꼴",
+        "style-fontcolor": "글자색",
+        "style-backgroundcolor": "배경색"
     },
     "dialogbutton": {
-        "create" : "생성하기"
+        "create" : "생성하기",
+        "export": "내보내기",
+        "add": "추가하기",
+        "replace": "변환하기",
+        "apply": "적용하기"
     },
+    "success": {
+        "create-ebook": "이북 생성 성공",
+        "create-epub": "ePUB 내보내기에 성공했습니다.",
+        "save-ebook": "저장되었습니다.",
+        "load-ebook": "이북 불러오기에 성공했습니다.",
+        "add-chapter": "목차 추가하기에 성공했습니다.",
+
+        "replace": "단어 변환을 완료하였습니다."
+    },
+    "error": {
+        "create-ebook-input": "이북 이름과 저장 위치를 입력해주세요.",
+        "create-ebook": "이북 생성 실패",
+        "create-epub": "ePUB 내보내기에 실패했습니다.",
+        "create-epub-none": "내보내기할 이북이 없습니다.",
+        "load-ebook": "이북 불러오기에 실패했습니다.",
+        "load-not-ebook": "이북 폴더가 아닙니다.",
+        "load-toc": "목차 읽어오기에 실패했습니다.",
+        "save-ebook-file-none": "저장할 xhtml 파일을 선택해주세요.",
+        "add-chapter": "목차 추가하기에 실패했습니다.",
+        "add-chapter-input": "목차를 입력해주세요.",
+        "input": "모든 입력값을 넣어주세요.",
+        "preview": "미리보기할 이북이 없습니다.",
+        "ebook-none": "이북을 먼저 생성해주세요.",
+
+        "select-text": "text 폴더의 파일을 선택해주세요.",
+        "find-input": "찾을 단어를 입력해주세요.",
+        "find-word": "찾는 단어가 없습니다.",
+
+        "in-tag": "태그 밖에서만 스타일이 적용 가능합니다.",
+        "add-style": "스타일 이름을 적어주세요."
+    },
+    "title": "제목",
+    "addstyle": "스타일 추가하기",
     "manual": "사용 설명서",
     "directory": "파일 구조",
     "toc": "목차"

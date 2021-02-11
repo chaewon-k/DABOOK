@@ -4,6 +4,7 @@
     "edit": "edit",
     "style": "style",
     "tool": "tool",
+    "setting": "setting",
     "help": "help"
   },
   "filetab": {
@@ -59,18 +60,72 @@
     "customstyle": "my style"
   },
   "dialogtitle": {
-    "file-ebook": "create e-book",
-    "file-epub": "crate ePUB",
-    "file-chapter": "add chapter"
+    "file-ebook": "Create e-book",
+    "file-epub": "Create ePUB",
+    "file-chapter": "Add chapter",
+    "edit-find": "Find words",
+    "edit-replace": "Replacing words",
+    "style-font": "Select font",
+    "style-color": "Select color",
+    "style-add": "Add style",
+    "style-custom": "My style",
+    "tool-link": "Add link",
+    "tool-table": "Add table"
   },
   "dialoginput": {
-      "file-ebook-title": "e-book title",
-      "file-ebook-path": "save path",
-      "file-ebook-iamge": "cover image"
+      "file-title": "e-book title",
+      "file-path": "save path",
+      "file-iamge": "cover image",
+      "file-author": "author",
+      "file-chapter": "chapter title",
+      "edit-find": "word to find",
+      "edit-replace": "word to replace",
+      "style-title": "style title",
+      "style-align": "alignment",
+      "style-font": "font",
+      "style-fontcolor": "font color",
+      "style-backgroundcolor": "background color"
   },
   "dialogbutton": {
-      "create" : "create"
+      "create" : "create",
+      "export": "export",
+      "add": "add",
+      "replace": "replace",
+      "apply": "apply"
   },
+  "success": {
+    "create-ebook": "e-book creation was successful.",
+    "create-epub": "ePUB creation was successful.",
+    "save-ebook": "Saved.",
+    "load-ebook": "Importing the book was successful.",
+    "add-chapter": "adding chapter was successful.",
+
+    "replace": "Word conversion completed."
+  },
+  "error": {
+    "create-ebook-input": "Please enter a name and storage location for the book.",
+    "create-ebook": "e-book creation was failed.",
+    "create-epub": "ePUB creation was failed.",
+    "create-epub-none": "There is no e-book to make ePUB file.",
+    "load-ebook": "Importing the book was failed.",
+    "load-not-ebook": "This is not a e-book folder.",
+    "load-toc": "Reading table of contents was failed.",
+    "save-ebook-file-none": "Select an xhtml file to save.",
+    "add-chapter": "Adding chapter was failed.",
+    "add-chapter-input": "Please enter the chpater title.",
+    "input": "Please put in all the input values.",
+    "preview": "There are no e-book to preview.",
+    "ebook-none": "Please create an e-book first.",
+
+    "select-text": "Please select a file in the text folder.",
+    "find-input": "Please enter a word to find.",
+    "find-word": "There are no words to find.",
+
+    "in-tag": "Style can only be applied outside the tag.",
+    "add-style": "Please enter a style title."
+},
+  "title": "title",
+  "addstyle": "add style",
   "manual": "manual",
   "directory": "directory",
   "toc": "toc"

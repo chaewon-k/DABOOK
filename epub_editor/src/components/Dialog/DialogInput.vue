@@ -3,11 +3,13 @@
     <v-text-field
       class="my-3"
       v-model="inputText"
-      :label="labelText"
+      label="$t('dialoginput.' + labelText)"
       :prepend-icon="icon"
       :rules="[rules.required]"
       @keyup="sendData()"
-    ></v-text-field>
+    >
+    </v-text-field>
+    {{ $t("dialoginput." + labelText) }}
   </v-row>
 </template>
 

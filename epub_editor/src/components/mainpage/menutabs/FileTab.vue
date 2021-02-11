@@ -23,13 +23,13 @@
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
         <DialogTitle
-          title="file-ebook"
+          title="file-chapter"
           @toggle-dialog="chapterDialog = false"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
-              labelText="목차 이름"
+              labelText="file-chapter"
               icon="mdi-book-open-outline"
               required="true"
               check="true"
@@ -38,20 +38,20 @@
             />
           </v-container>
         </v-card-text>
-        <DialogButton buttonText="추가하기" :dialogMethod="makeChapter" />
+        <DialogButton buttonText="add" :dialogMethod="makeChapter" />
       </v-card>
     </v-dialog>
 
     <v-dialog v-model="eBookDialog" max-width="400">
       <v-card>
         <DialogTitle
-          title="이북 생성하기"
+          title="file-ebook"
           @toggle-dialog="eBookDialog = false"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
-              labelText="이북 이름"
+              labelText="file-title"
               icon="mdi-book-open-outline"
               required="true"
               check="true"
@@ -81,20 +81,20 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <DialogButton buttonText="생성하기" :dialogMethod="createNewEBook" />
+        <DialogButton buttonText="create" :dialogMethod="createNewEBook" />
       </v-card>
     </v-dialog>
 
     <v-dialog v-model="epubDialog" max-width="400">
       <v-card>
         <DialogTitle
-          title="ePUB으로 내보내기"
+          title="file-epub"
           @toggle-dialog="epubDialog = false"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
-              labelText="이북 이름"
+              labelText="file-title"
               icon="mdi-book-open-outline"
               required="true"
               check="true"
@@ -102,7 +102,7 @@
               ref="ebookTextInput"
             />
             <DialogInput
-              labelText="작가"
+              labelText="file-author"
               icon="mdi-account-outline"
               required="true"
               check="true"
@@ -111,7 +111,7 @@
             />
           </v-container>
         </v-card-text>
-        <DialogButton buttonText="내보내기" :dialogMethod="makeEpub" />
+        <DialogButton buttonText="export" :dialogMethod="makeEpub" />
       </v-card>
     </v-dialog>
   </v-tabs>
@@ -244,6 +244,7 @@ export default {
         ) {
           this.$store.dispatch(
             "setAlertMessage",
+            // error.create-ebook-input
             "이북 이름과 저장 위치를 입력해주세요."
           );
           return;
@@ -282,7 +283,7 @@ export default {
         this.$store.dispatch("setEditingText", "");
         this.$store.dispatch(
           "setAlertMessage",
-          "새로운 이북 생성에 성공했습니다"
+          "success.create-ebook"
         );
         this.$refs.ebookTextInput.resetText();
       } catch (err) {
@@ -292,7 +293,7 @@ export default {
         this.selectedEBookLocation = "";
         this.$store.dispatch(
           "setAlertMessage",
-          "새로운 이북 생성에 실패했습니다"
+          "error.create-ebook"
         );
         this.$refs.ebookTextInput.resetText();
       }
@@ -320,11 +321,13 @@ export default {
           this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
           return true
         } else {  // 필수 폴더들이 모두 있지 않은 경우 알림창을 띄운다. 
+          // error.load-not-ebook
           this.$store.dispatch('setAlertMessage',"EPUB 폴더가 아닙니다.")
           return false
         }
       } catch (err) {
         console.log("목차 읽어오기 실패");
+        // error.load-toc
         this.$store.dispatch("setAlertMessage", "목차 읽어오기에 실패했습니다");
       }
     },
@@ -361,6 +364,7 @@ export default {
           this.$store.state.editingText +
           "</html>";
         fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
+        // success.save-ebook
         this.$store.dispatch("setAlertMessage", "저장되었습니다");
       } catch (err) {
         console.log("저장하기 실패");
@@ -368,10 +372,12 @@ export default {
           // 이북을 생성한 상태에서 textarea가 비어있을 경우
           this.$store.dispatch(
             "setAlertMessage",
+            // error.save-ebook-file-none
             "저장할 xhtml 파일을 선택해주세요"
           );
         } else {
           // 이북을 생성하지 않은 상태에서 저장할 경우
+          // error.ebook-none
           this.$store.dispatch("setAlertMessage", "이북을 생성해주세요");
         }
       }
@@ -389,6 +395,7 @@ export default {
             this.$store.dispatch("setEditingText", "");
             this.$store.dispatch(
               "setAlertMessage",
+              // success.load-ebook
               "이북 불러오기에 성공했습니다"
             );
             this.$store.dispatch("setDirToggle");
@@ -396,6 +403,7 @@ export default {
         }
       } catch (err) {
         console.log(err);
+        // error.load-ebook
         this.$store.dispatch("setAlertMessage", "이북 불러오기에 실패했습니다");
       }
     },
@@ -410,6 +418,7 @@ export default {
           this.eBookLocation == undefined ||
           this.eBookLocation == ""
         ) {
+          //error.input
           this.$store.dispatch("setAlertMessage", "모든 입력값을 넣어주세요.");
           return;
         }
@@ -418,10 +427,12 @@ export default {
         if (makeEpubFile(this.eBookLocation, val) == true)
           this.$store.dispatch(
             "setAlertMessage",
+            // success.create-epub
             "ePUB 내보내기에 성공했습니다"
           );
       } catch (err) {
         console.log("epub 내보내기 실패");
+        //error.create-epub
         this.$store.dispatch("setAlertMessage", "ePUB 내보내기에 실패했습니다");
       }
       this.eBookText = "";
@@ -433,6 +444,7 @@ export default {
     // epub 내보내기 조건 추가 (생성한 후에만 내보내기 가능)
     exportFile: function () {
       if (this.$store.state.ebookDirectoryTree.length === 0) {
+        // error.create-epub-none
         this.$store.dispatch("setAlertMessage", "내보내기할 이북이 없습니다.");
       } else {
         this.epubDialog = true;
@@ -445,6 +457,7 @@ export default {
         if (this.$store.state.selectedFileDirectory === "") {
           this.$store.dispatch(
             "setAlertMessage",
+            // error.preview
             "미리보기할 이북이 없습니다."
           );
         } else {
@@ -462,6 +475,7 @@ export default {
         this.chapterDialog = false;
         let val = this.chapterText;
         if (val == undefined || val.trim() == "") {
+          // error.add-chapter-input
           this.$store.dispatch("setAlertMessage", "목차를 입력하세요.");
           return;
         }
@@ -480,6 +494,7 @@ export default {
 
         const data = readDirectory(this.eBookLocation, [], [], 0);
         //alert('새 chapter가 추가되었습니다!');
+        // success.add-chapter
         this.$store.dispatch("setAlertMessage", "목차 추가에 성공했습니다");
 
         this.$store.dispatch("setEbookDirectoryTree", data["arrayOfFiles"]);
@@ -487,11 +502,13 @@ export default {
         this.chapterText = "";
       } catch (err) {
         console.log("chapter 추가 실패");
+        // error.add-chapter
         this.$store.dispatch("setAlertMessage", "목차 추가에 실패했습니다");
       }
     },
     addChapter: function () {
       if (this.$store.state.ebookDirectoryTree.length === 0) {
+        //error.ebook-none
         this.$store.dispatch("setAlertMessage", "이북을 먼저 생성해주세요!");
       } else {
         this.chapterDialog = true;

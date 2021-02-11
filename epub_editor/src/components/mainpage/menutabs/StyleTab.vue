@@ -62,7 +62,7 @@
     <v-dialog v-model="customDialog" max-width="320">
       <v-card>
         <DialogTitle
-          title="나만의 스타일"
+          title="style-custom"
           @toggle-dialog="customDialog = false"
         />
         <v-list style="padding: 3% 6% 3% 6%">
@@ -81,7 +81,7 @@
               <v-icon> mdi-plus</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title style="font-size:1.2em;"> 스타일 추가하기</v-list-item-title>
+              <v-list-item-title style="font-size:1.2em;">{{ $t('addstyle') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -91,13 +91,13 @@
     <v-dialog v-model="styleDialog" max-width="350">
       <v-card>
         <DialogTitle
-          title="스타일 추가하기"
+          title="style-add"
           @toggle-dialog="styleDialog = false"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
-              labelText="스타일 이름"
+              :labelText="label.title"
               icon="mdi-textbox"
               required="true"
               check="true"
@@ -115,7 +115,7 @@
                   '가운데 정렬',
                   '양쪽 정렬',
                 ]"
-                label="정렬"
+                :label="label.align"
               ></v-select>
             </v-row>
             <v-row>
@@ -134,7 +134,7 @@
                 :items="fonts"
                 item-text="name"
                 item-value="value"
-                label="글꼴"
+                :label="label.font"
               >
               </v-select>
             </v-row>
@@ -147,7 +147,7 @@
               <v-text-field
               class="my-3"
                 v-model="customStyle.fontColor"
-                label="글씨색"
+                :label="label.fontcolor"
                 @click="
                   selected = 'font';
                   colorDialog = true;
@@ -165,7 +165,7 @@
               <v-text-field
               class="my-3"
                 v-model="customStyle.backgroundColor"
-                label="배경색"
+                :label="label.backgroundcolor"
                 @click="
                   selected = 'background';
                   colorDialog = true;
@@ -174,14 +174,14 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <DialogButton buttonText="추가하기" :dialogMethod="addStyle" />
+        <DialogButton buttonText="add" :dialogMethod="addStyle" />
       </v-card>
     </v-dialog>
 
     <v-dialog v-model="colorDialog" max-width="350">
       <v-card>
         <DialogTitle
-          title="색상 선택"
+          title="style-color"
           @toggle-dialog="colorDialog = false"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
@@ -193,14 +193,14 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <DialogButton buttonText="적용하기" :dialogMethod="pickColor" />
+        <DialogButton buttonText="apply" :dialogMethod="pickColor" />
       </v-card>
     </v-dialog>
    
     <v-dialog v-model="fontDialog" max-width="300">
       <v-card>
         <DialogTitle
-          title="글꼴 선택"
+          title="style-font"
           @toggle-dialog="fontDialog = false"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
@@ -217,7 +217,7 @@
             </v-radio-group>
           </template>
         </v-card-text>
-        <DialogButton buttonText="적용하기" :dialogMethod="setFont" />
+        <DialogButton buttonText="apply" :dialogMethod="setFont" />
       </v-card>
     </v-dialog>
 
@@ -341,14 +341,21 @@ export default {
       colorDialog2: false,
       fontDialog: false,
       selectedFont: "",
+      label: {
+        "title": "style-title",
+        "align" : "style-align",
+        "font" : "style-font",
+        "fontcolor": "style-fontcolor",
+        "backgroundcolor": "style-backgroundcolor"
+      }
     };
   },
   methods: {
     styleMethod: function(i) {
       if (!css.inTag()) {
-        // console.log("tag 안입니다");
         this.$store.dispatch(
           "setAlertMessage",
+          // error.in-tag
           "태그 밖에서만 스타일 적용이 가능합니다."
         );
         return;
@@ -385,6 +392,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
+          // error.select-text
           "text 폴더의 파일을 선택해주세요."
         );
       }
@@ -405,6 +413,7 @@ export default {
       if (this.customStyle.title.trim() == "" || this.customStyle.title == undefined) {
         this.$store.dispatch(
           "setAlertMessage",
+          //error.add-style
           "스타일 이름을 적어주세요."
         );
         return;
