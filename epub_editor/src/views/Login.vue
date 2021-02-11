@@ -1,30 +1,30 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container fluid fill-height class="pa-0 bg">
     <!---------------Alert 창-------------------->
     <v-row>
-      <v-alert outlined dense style="width:100%;" icon="mdi-alert-circle-outline" :color="type" v-if="type">
+      <v-alert text dense class="mt-3" style="width:100%;" icon="mdi-alert-circle-outline" :color="color" v-if="type">
         {{ message }}
       </v-alert>
     </v-row>
     
     <!---------------login form------------------>
     <v-layout align-center justify-center>
-      <v-card width="500">
+      <v-card flat width="500">
         <v-card-text>
           <v-container>
             <v-row>
               <v-card-text align="center" class="mb-6">
-                <h1>Login</h1>
+                <h1 style="color: #6A68A6;">Login</h1>
               </v-card-text>
             </v-row>
-            <v-row>
+            <v-row class="my-3">
               <v-icon class="mr-3">mdi-email-outline</v-icon>
               <v-text-field
                 label="Email"
                 v-model="inputEmail"
               ></v-text-field>
             </v-row>
-            <v-row>
+            <v-row class="mb-1">
               <v-icon class="mr-3">mdi-lock-outline</v-icon>
               <v-text-field
                 label="Password"
@@ -35,21 +35,23 @@
 
             <!-------------비밀번호 찾기 ----------------->
             <v-row justify="end">
-              <v-btn text class="float-right" @click="findPassword">비밀번호를 잊으셨나요?</v-btn>
+              <a class="float-right" style="color: #6A68A6" @click="findPassword">Forgot password?</a>
             </v-row>
 
             <!----------------- buttons ----------------->
             <v-row class="mt-7">
-              <v-btn block @click="logIn">LOGIN</v-btn>
+              <v-btn block @click="logIn" style="background-color: #6A68A6; color: #ffffff;">LOGIN</v-btn>
             </v-row>
-            <v-row>
+            <!-- <v-row>
               <v-btn block class="my-5" :disabled="signedIn" @click="handleLogin"><v-icon>mdi-google</v-icon>oogle</v-btn>
-            </v-row>
+            </v-row> -->
           </v-container>
         </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <p class="ma-auto">Don't have an account?<v-btn text @click="signUp">SIGNUP</v-btn></p>
+        <v-card-actions class="pt-0">
+          <p class="ma-auto">
+            Don't have an account?
+            <v-btn text @click="signUp" style="color: #6A68A6;">SIGNUP</v-btn>
+          </p>
         </v-card-actions>
       </v-card>
     </v-layout>
@@ -69,6 +71,7 @@ export default {
       // Alert 용 데이터
       message: '',
       type: null,
+      color: null,
       elapse:null,
 
       // 로그인 
@@ -107,20 +110,23 @@ export default {
     // 로그인 
     logIn: function () {
       const data = {"email" : this.inputEmail, "password" : this.inputPassword}
-      axios.post("https://i4a103.p.ssafy.io/api/login", data)
+      axios.post("https://contact.dabook.site/api/login", data)
         .then(res => {
           const message = res.data.result
           if (message === "ERROR_ID"){
             this.message = '존재하지 않는 ID입니다.'
             this.showAlert('error')
+            this.color = '#EF5350'
           }
           else if (message === "ERROR_STATUS"){
             this.message = '이메일 인증을 해주세요.'
             this.showAlert('error')
+            this.color = '#EF5350'
           }
           else if (message === "ERROR_PASSWORD"){
             this.message = '존재하지 않는 비밀번호입니다.'
             this.showAlert('error')
+            this.color = '#EF5350'
           }
           else {
             console.log(res)
@@ -141,13 +147,21 @@ export default {
 
     // 임시 비밀번호 발급
     findPassword: function () {
-      axios.get(`https://i4a103.p.ssafy.io/password?email=${this.inputEmail}`)
-        .then(res =>{
-          console.log(res)
-        })
-        .catch(err => console.log(err))
-      this.message = '해당 이메일로 임시 비밀번호를 전송했습니다.'
-      this.showAlert('purple')
+      if (this.inputEmail === '') {
+        this.message = '이메일을 입력해주세요!'
+        this.showAlert('error')
+        this.color = '#EF5350'
+      }
+      else {
+        axios.get(`https://contact.dabook.site/password?email=${this.inputEmail}`)
+          .then(res =>{
+            console.log(res)
+          })
+          .catch(err => console.log(err))
+        this.message = '해당 이메일로 임시 비밀번호를 전송했습니다.'
+        this.showAlert('success')
+        this.color = '#D1C4E9'
+      }
     },
 
     // 구글 로그인 연동
@@ -167,3 +181,10 @@ export default {
   }
 }
 </script>
+<style>
+.bg {
+  background-image: url('../assets/accountImg/background.png');
+  width: 100%;
+  height: 100%;
+}
+</style>

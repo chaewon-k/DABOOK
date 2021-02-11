@@ -1,33 +1,40 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container fluid fill-height class="pa-0 bg">
     <!---------------Alert 창-------------------->
     <v-row>
-      <v-alert outlined dense style="width:100%;" icon="mdi-alert-circle-outline" :color="type" v-if="type">
+      <v-alert text dense class="mt-3" style="width:100%;" icon="mdi-alert-circle-outline" :color="color" v-if="type">
         {{ message }}
       </v-alert>
     </v-row>
     
     <!---------------Signup form----------------->
     <v-layout align-center justify-center>
-      <v-card width="500">
+      <v-card flat :loading="loading" width="500">
+        <template slot="progress">
+          <v-progress-linear
+            color="deep-purple"
+            height="7"
+            indeterminate
+          ></v-progress-linear>
+        </template>
         <v-card-text>
           <v-container>
             <v-row>
-              <router-link  text :to="{name:'Login'}"><v-icon>mdi-arrow-left</v-icon></router-link>
+              <v-icon @click="back">mdi-arrow-left</v-icon>
             </v-row>
             <v-row>
               <v-card-text align="center" class="mb-6">
-                <h1>Signup</h1>
+                <h1 style="color: #6A68A6;">Signup</h1>
               </v-card-text>
             </v-row>
-            <v-row>
+            <v-row class="my-3">
               <v-icon class="mr-3">mdi-email-outline</v-icon>
               <v-text-field
                 label="Email"
                 v-model="email"
                 :rules="emailRules"
               ></v-text-field>
-              <v-btn @click="emailConfirm">이메일 인증</v-btn>
+              <v-btn outlined style="color: #6A68A6;" @click="emailConfirm">Check</v-btn>
             </v-row>
             <v-row class="my-3">
               <v-icon class="mr-3">mdi-account</v-icon>
@@ -44,7 +51,7 @@
                 v-model="nickname"
                 :rules="rules"
               ></v-text-field>
-              <v-btn @click="nicknameConfirm">닉네임 중복확인</v-btn>
+              <v-btn outlined style="color: #6A68A6;" @click="nicknameConfirm">Check</v-btn>
             </v-row>
             <v-row class="my-3">
               <v-icon class="mr-3">mdi-lock-outline</v-icon>
@@ -63,14 +70,27 @@
                 :rules="rules"
               ></v-text-field>
             </v-row>
-            <v-row class="mb-3">
-              <v-checkbox
-                v-model="checkbox"
-                label="Do you agree?"
-              ></v-checkbox>
+            <v-row class="mb-4">
+              <v-container pa-0>
+                <v-checkbox v-model="checkbox">
+                  <template v-slot:label>
+                    <div>
+                      I agree about
+                      <a
+                        target="_blank"
+                        href="https://contact.dabook.site/privacy.html"
+                        @click.stop
+                        style="color: #6A68A6;"
+                      >
+                        Privacy Policy
+                      </a>
+                    </div>
+                  </template>
+                </v-checkbox>
+              </v-container>
             </v-row>
             <v-row>
-              <v-btn block class="mb-5" @click="signUp">SIGNUP</v-btn>
+              <v-btn block class="mb-1" @click="signUp" style="background-color: #6A68A6; color: #ffffff;">SIGNUP</v-btn>
             </v-row>
           </v-container>
         </v-card-text>
@@ -97,7 +117,11 @@ export default {
     // Alert 용 데이터
     message: '',
     type: null,
+    color: null,
     elapse:null,
+
+    // loaging
+    loading: false,
 
     // 각 데이터별 기본 규칙
     rules: [
@@ -136,12 +160,19 @@ export default {
       }, 1000)
     },
 
+    // 뒤로가기 (Login 창으로 이동)
+    back: function () {
+      this.$router.push({ name: 'Login'})
+    },
+
     // 회원가입 
     signUp: function () {
       const data = { 'email': this.email, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': false }
+      this.loading = true
+
       if (this.password === this.passwordConfirm) {
         if (this.checkbox === true) {
-          axios.post("https://i4a103.p.ssafy.io/api/user", data)
+          axios.post("https://contact.dabook.site/api/user", data)
             .then(res => {
               console.log(res)
               this.$router.push({ name: 'Login'})
@@ -151,25 +182,29 @@ export default {
         else {
           this.message = '약관에 동의해주십시오.'
           this.showAlert('error')
+          this.color = '#EF5350'
         }
       }
       else {
         this.message = '비밀번호가 맞지 않습니다!'
         this.showAlert('error')
+        this.color = '#EF5350'
       }
     },
 
     // 이메일 중복 확인
     emailConfirm: function () {  //false - 이미 이메일 존재
-      axios.get(`https://i4a103.p.ssafy.io/api/user/email/${this.email}`)
+      axios.get(`https://contact.dabook.site/api/user/email/${this.email}`)
         .then(res => {
           if (res.data === false) {
             this.message = '이메일이 이미 존재합니다!'
             this.showAlert('error')
+            this.color = '#EF5350'
           }
           else {
             this.message = '사용 가능한 이메일입니다!'
-            this.showAlert('purple')
+            this.showAlert('success')
+            this.color = '#D1C4E9'
           }
         })
         .catch(err => console.log(err))
@@ -177,15 +212,17 @@ export default {
 
     //닉네임 중복 확인
     nicknameConfirm: function () {  //false - 닉네임 이미 존재
-      axios.get(`https://i4a103.p.ssafy.io/api/user/nickname/${this.nickname}`)
+      axios.get(`https://contact.dabook.site/api/user/nickname/${this.nickname}`)
         .then(res => {
           if (res.data === false) {
             this.message = '닉네임이 이미 존재합니다!'
             this.showAlert('error')
+            this.color = '#EF5350'
           }
           else {
             this.message = '사용할 수 있는 닉네임입니다!'
-            this.showAlert('purple')
+            this.showAlert('success')
+            this.color = '#D1C4E9'
           }
         })
         .catch(err => console.log(err))
