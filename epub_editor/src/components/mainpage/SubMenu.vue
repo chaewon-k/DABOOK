@@ -4,13 +4,11 @@
     <FileTab
       v-show="itemIndex===0"
     />
-    <!--------------------- file tap end --------------------->
 
     <!-------------------- edit tap start -------------------->
     <EditTab
       v-show="itemIndex===1"
     />
-    <!---------------------- edit tap end ---------------------->
 
     <ToolsTab
       v-show="itemIndex === 2"
@@ -20,7 +18,6 @@
     <StyleTab
       v-show="itemIndex === 3"
     />
-    <!---------------------- style tap end ---------------------->
 
     <!-------------------- manual tap start -------------------->
     <div v-show="itemIndex === 4">
@@ -29,8 +26,6 @@
         <!-- <v-btn class="align-self-center" text>마크다운 설명서 보기</v-btn> -->
       </v-tabs>
     </div>
-    <!-------------------- manual tap end -------------------->
-
   </div>
 </template>
 
@@ -43,6 +38,7 @@ import StyleTab from '@/components/mainpage/menutabs/StyleTab';
 const path = require('path');
 const electron = require('electron');
 const BrowserWindow = electron.remote.BrowserWindow;
+let win;
 export default {
   name: 'SubMenu',
   components: {
@@ -61,11 +57,17 @@ export default {
   },
   methods:{
     popUpEditor: function (){
-      const win = new BrowserWindow({ width: 800, height: 1500 });
-      const p = path.resolve("./src/assets/manual/manual.html");
-      win.loadURL('file://' + p, function () { 
-        // console.log("123");
-      });
+      console.log(BrowserWindow.getAllWindows());
+      if(BrowserWindow.getAllWindows().length>=2){
+        win.focus();
+      }
+      else{
+        win = new BrowserWindow({ width: 800, height: 1500 });
+        const p = path.resolve("./src/assets/manual/manual.html");
+        win.loadURL('file://' + p, function () { 
+          // console.log("123");
+        });
+      }
     }
   }
 }

@@ -20,7 +20,6 @@ export default {
     this.$i18n.locale = 'ko';
   },
   data: () => ({
-    
   }),
 };
 </script>
