@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const isSave = false;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -15,13 +16,28 @@ async function createWindow() {
   const win = new BrowserWindow({
     width: 950,
     height: 700,
-    autoHideMenuBar: true,
+    //autoHideMenuBar: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
   })
+
+  win.on('close', function(e) {
+    if (!isSave) {
+      const choice = require('electron').dialog.showMessageBoxSync(this,
+        {
+          type: 'question',
+          buttons: ['네', '아니오'],
+          title: 'DABOOK 종료',
+          message: '저장하지 않은 파일이 있습니다.\n그래도 종료하시겠습니까?'
+        });
+      if (choice === 1) {
+        e.preventDefault();
+      } 
+    }
+  });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode

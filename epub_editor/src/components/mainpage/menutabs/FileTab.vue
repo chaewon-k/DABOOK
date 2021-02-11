@@ -1,5 +1,8 @@
 <template>
   <v-tabs id="fileTab" show-arrows v-model="tab">
+    <v-btn v-if="dirToggle" class="align-self-center" @click="changeLocale" text
+      >{{ $i18n.locale == 'ko' ? '한글' : 'English' }}</v-btn
+    >
     <v-btn v-if="dirToggle" class="align-self-center" @click="changeToggle" text
       >디렉토리 닫기</v-btn
     >
@@ -7,26 +10,26 @@
       >디렉토리 열기</v-btn
     >
     <v-btn class="align-self-center" @click.stop="eBookDialog = true" text
-      >이북 생성하기</v-btn
+      >{{ $t("filetab.create") }}</v-btn
     >
     <v-btn class="align-self-center" @click="loadEbook" text
-      >이북 불러오기</v-btn
+      >{{ $t("filetab.load") }}</v-btn
     >
     <v-btn class="align-self-center" @click="storeInputText" text
-      >저장하기</v-btn
+      >{{ $t("filetab.save") }}</v-btn
     >
-    <v-btn class="align-self-center" @click="preview" text>이북 미리보기</v-btn>
+    <v-btn class="align-self-center" @click="preview" text>{{ $t("filetab.preview") }}</v-btn>
     <v-btn class="align-self-center" @click="exportFile" text
-      >ePUB으로 내보내기</v-btn
+      >{{ $t("filetab.epub") }}</v-btn
     >
     <v-btn class="align-self-center" @click="addChapter" text
-      >목차 추가하기</v-btn
+      >{{ $t("filetab.chapter") }}</v-btn
     >
 
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
         <DialogTitle
-          title="목차 추가하기"
+          title="file-ebook"
           @toggle-dialog="chapterDialog = false"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
@@ -210,6 +213,10 @@ export default {
     // }
   },
   methods: {
+    changeLocale: function () {
+      if (this.$i18n.locale === 'en') this.$i18n.locale = 'ko'
+      else this.$i18n.locale = 'en'
+    },
     checkExp: function (value) {
       var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/gi;
       if (special_pattern.test(value) == true) {
