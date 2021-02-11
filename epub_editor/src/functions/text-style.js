@@ -1,3 +1,5 @@
+import * as file from '@/functions/file.js'
+
 const { dialog } = require('electron').remote;
 const fse = require('fs-extra');
 const fs = require("fs");
@@ -133,7 +135,7 @@ export function citeTag () {
   return area.value;
 }
 
-export function imageTag (location) {
+export function imageTag (location, bookName, email) {
   var area = document.getElementById("area");
   const options = {
     filters: [
@@ -153,14 +155,15 @@ export function imageTag (location) {
   let temp2 = fs.readFileSync(location + '/EPUB/content.opf').toString();
   let start = temp2.indexOf("<!-- 이미지 파일 추가 위치 -->");
   temp2 = temp2.slice(0, start-1).concat(` <item id="${fileName}" href="images/${fileName}" media-type="image/${extension}" />\n    `, temp2.slice(start, temp2.length));
-  fs.writeFile(location + '/EPUB/content.opf', temp2, (err) => {
+  fs.writeFileSync(location + '/EPUB/content.opf', temp2, (err) => {
     if (err) {
       console.log('해당 디렉토리에 이미지 저장 실패');
     }
   });
   var resultString = `<img src="../images/${fileName}" />`;
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
-
+  file.uploadFile(imgLocation, '/EPUB/images', bookName, email);
+  file.uploadFile(location + '/EPUB/content.opf', '/EPUB', bookName, email);
   return area.value;
 }
 

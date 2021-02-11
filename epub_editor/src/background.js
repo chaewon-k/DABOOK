@@ -4,10 +4,36 @@ import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const fs = require("fs");
+
+import axios from 'axios';
+import FormData from 'form-data';
+import { ipcMain } from 'electron';
+
+ipcMain.on('upload', async (event, url, file, email, epubName, path) => {
+  console.log(`${file} 업로드 중`)
+  const f = new FormData();
+  f.append('file', fs.createReadStream(file));
+  f.append('email', email);
+  f.append('epubName', epubName);
+  f.append('path', path);
+  const config = {
+    headers: f.getHeaders(),
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity
+  }
+  axios.post(url, f, config)
+    .then(function () {
+      console.log('upload success')
+    })
+    .catch(function (err) {
+      console.log(err)
+    })
+});
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
+  { scheme: 'app', privileges: { secure: true, standard: true }}
 ])
 
 async function createWindow() {
