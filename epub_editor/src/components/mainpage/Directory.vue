@@ -76,8 +76,7 @@ export default {
             if (result === 0) {
               const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
               fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
-              // success.save-ebook
-              this.$store.dispatch('setAlertMessage', '저장을 완료했습니다.');
+              this.$store.dispatch('setAlertMessage', 'success.save-ebook');
             }
           } 
         }
@@ -87,8 +86,7 @@ export default {
             this.$store.dispatch('setSelectedFileDirectory', val.dirPath);
             eventBus.$emit('loadData', temp);
           } else {    // xhtml 파일이 아니라면 alert 를 띄운다. 
-            // error.select-text
-            this.$store.dispatch('setAlertMessage', 'text파일만 작성가능합니다.');
+            this.$store.dispatch('setAlertMessage', 'error.select-text');
           }
         }
         edit.reset();

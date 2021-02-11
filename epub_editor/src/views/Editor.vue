@@ -20,8 +20,11 @@
       </aside>
       <content :class="{'content-first': dirToggle, 'content-second': !dirToggle }">
         <Textarea />
+      <ToggleBar/>
       </content>
+      
     </div>
+    
   </div>
 </template>
 
@@ -32,6 +35,7 @@ import TableOfContents from '@/components/mainpage/TableOfContents';
 import Textarea from '@/components/mainpage/Textarea';
 import Alert from "@/components/mainpage/Alert"
 import IconButtton from "@/components/mainpage/IconButton";
+import ToggleBar from "@/components/mainpage/ToggleBar";
 import { mapState } from "vuex";
 
 export default {
@@ -43,6 +47,7 @@ export default {
     Textarea,
     Alert,
     IconButtton,
+    ToggleBar
   },
   data: function () {
     return {

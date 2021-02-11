@@ -199,8 +199,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
-          //error.select-text
-          "text 폴더의 파일을 선택해주세요."
+          "error.select-text"
         );
       }
     },
@@ -208,14 +207,12 @@ export default {
     find: function() {
       if (this.$store.state.selectedFileDirectory !== "") {
         if (this.findText === "") {
-          // error.find-input
-          this.$store.dispatch("setAlertMessage", "찾을 단어를 입력해주세요.");
+          this.$store.dispatch("setAlertMessage", "error.find-input");
         } else {
           eventBus.$emit("findText", this.findText);
           this.findTextArray = this.$store.state.findTextArray;
           if (this.findTextArray.length === 0) {
-            // error.find-word
-            this.$store.dispatch("setAlertMessage", "찾는 단어가 없습니다.");
+            this.$store.dispatch("setAlertMessage", "error.find-word");
           } else {
             eventBus.$emit(
               "setCursor",
@@ -227,8 +224,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
-          // error.select-text
-          "text 폴더의 파일을 선택해주세요."
+          "error.select-text"
         );
       }
     },
@@ -239,8 +235,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
-          // error.select-text
-          "text 폴더의 파일을 선택해주세요."
+          "error.select-text"
         );
       }
     },
@@ -303,8 +298,7 @@ export default {
         ]);
         this.$store.dispatch(
           "setAlertMessage",
-          // success.replace
-          "변환을 완료하였습니다."
+          "success.replace"
         );
         this.findText = "";
         this.replaceText = "";
@@ -313,8 +307,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
-          // select-text
-          "text 폴더의 파일을 선택해주세요."
+          "select-text"
         );
       }
     },

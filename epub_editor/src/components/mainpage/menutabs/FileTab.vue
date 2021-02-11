@@ -16,9 +16,6 @@
     <v-btn class="align-self-center" @click="addChapter" text
       >{{ $t("filetab.chapter") }}</v-btn
     >
-    <v-btn class="align-self-center" @click="changeLocale" text
-      >{{ $i18n.locale == 'ko' ? '한글' : 'English' }}</v-btn
-    >
 
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
@@ -62,7 +59,7 @@
               <v-text-field
                 class="my-3"
                 :rules="[rules.required]"
-                label="저장 위치"
+                label="`$t('dialoginput.file-path')`"
                 v-model="selectedEBookLocation"
                 required
                 @click="selectPath"
@@ -209,10 +206,6 @@ export default {
     // }
   },
   methods: {
-    changeLocale: function () {
-      if (this.$i18n.locale === 'en') this.$i18n.locale = 'ko'
-      else this.$i18n.locale = 'en'
-    },
     checkExp: function (value) {
       var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
       if (special_pattern.test(value) == true) {
@@ -244,8 +237,7 @@ export default {
         ) {
           this.$store.dispatch(
             "setAlertMessage",
-            // error.create-ebook-input
-            "이북 이름과 저장 위치를 입력해주세요."
+            "error.create-ebook-input"
           );
           return;
         }
@@ -321,21 +313,17 @@ export default {
           this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
           return true
         } else {  // 필수 폴더들이 모두 있지 않은 경우 알림창을 띄운다. 
-          // error.load-not-ebook
-          this.$store.dispatch('setAlertMessage',"EPUB 폴더가 아닙니다.")
+          this.$store.dispatch('setAlertMessage',"error.load-not-ebook")
           return false
         }
       } catch (err) {
         console.log("목차 읽어오기 실패");
-        // error.load-toc
-        this.$store.dispatch("setAlertMessage", "목차 읽어오기에 실패했습니다");
+        this.$store.dispatch("setAlertMessage", "error.load-toc");
       }
     },
 
     // 나만의 style 읽어오기
     readCustomStyle: function () {
-      // let data = readCustomStyle(this.eBookLocation);
-      // console.log(data);
       this.$store.dispatch(
         "setCustomStyleArray",
         readCustomStyle(this.eBookLocation)
@@ -352,7 +340,6 @@ export default {
       );
       fs.rename(coverLocation, newCoverLocation, function (err) {
         if (err) throw err;
-        // console.log('File Renamed!');
       });
     },
 
@@ -364,21 +351,18 @@ export default {
           this.$store.state.editingText +
           "</html>";
         fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
-        // success.save-ebook
-        this.$store.dispatch("setAlertMessage", "저장되었습니다");
+        this.$store.dispatch("setAlertMessage", "success.save-ebook");
       } catch (err) {
         console.log("저장하기 실패");
         if (this.eBookLocation) {
           // 이북을 생성한 상태에서 textarea가 비어있을 경우
           this.$store.dispatch(
             "setAlertMessage",
-            // error.save-ebook-file-none
-            "저장할 xhtml 파일을 선택해주세요"
+            "error.save-ebook-file-none"
           );
         } else {
           // 이북을 생성하지 않은 상태에서 저장할 경우
-          // error.ebook-none
-          this.$store.dispatch("setAlertMessage", "이북을 생성해주세요");
+          this.$store.dispatch("setAlertMessage", "error.ebook-none");
         }
       }
     },
@@ -395,16 +379,14 @@ export default {
             this.$store.dispatch("setEditingText", "");
             this.$store.dispatch(
               "setAlertMessage",
-              // success.load-ebook
-              "이북 불러오기에 성공했습니다"
+              "success.load-ebook"
             );
             this.$store.dispatch("setDirToggle");
           }
         }
       } catch (err) {
         console.log(err);
-        // error.load-ebook
-        this.$store.dispatch("setAlertMessage", "이북 불러오기에 실패했습니다");
+        this.$store.dispatch("setAlertMessage", "error.load-ebook");
       }
     },
 
@@ -418,8 +400,7 @@ export default {
           this.eBookLocation == undefined ||
           this.eBookLocation == ""
         ) {
-          //error.input
-          this.$store.dispatch("setAlertMessage", "모든 입력값을 넣어주세요.");
+          this.$store.dispatch("setAlertMessage", "error.input");
           return;
         }
         changeTitleAuthor(this.eBookLocation, val, this.eBookAuthor);
@@ -427,13 +408,11 @@ export default {
         if (makeEpubFile(this.eBookLocation, val) == true)
           this.$store.dispatch(
             "setAlertMessage",
-            // success.create-epub
-            "ePUB 내보내기에 성공했습니다"
+            "success.create-epub"
           );
       } catch (err) {
         console.log("epub 내보내기 실패");
-        //error.create-epub
-        this.$store.dispatch("setAlertMessage", "ePUB 내보내기에 실패했습니다");
+        this.$store.dispatch("setAlertMessage", "error.create-epub");
       }
       this.eBookText = "";
       this.eBookAuthor = "";
@@ -444,8 +423,7 @@ export default {
     // epub 내보내기 조건 추가 (생성한 후에만 내보내기 가능)
     exportFile: function () {
       if (this.$store.state.ebookDirectoryTree.length === 0) {
-        // error.create-epub-none
-        this.$store.dispatch("setAlertMessage", "내보내기할 이북이 없습니다.");
+        this.$store.dispatch("setAlertMessage", "error.create-epub-none");
       } else {
         this.epubDialog = true;
       }
@@ -457,8 +435,7 @@ export default {
         if (this.$store.state.selectedFileDirectory === "") {
           this.$store.dispatch(
             "setAlertMessage",
-            // error.preview
-            "미리보기할 이북이 없습니다."
+            "error.preview"
           );
         } else {
           const win = new BrowserWindow({ width: 800, height: 1500 });
@@ -475,8 +452,7 @@ export default {
         this.chapterDialog = false;
         let val = this.chapterText;
         if (val == undefined || val.trim() == "") {
-          // error.add-chapter-input
-          this.$store.dispatch("setAlertMessage", "목차를 입력하세요.");
+          this.$store.dispatch("setAlertMessage", "error.add-chapter-input");
           return;
         }
         let num = "";
@@ -493,23 +469,19 @@ export default {
         addTocNcx(this.eBookLocation, val, num);
 
         const data = readDirectory(this.eBookLocation, [], [], 0);
-        //alert('새 chapter가 추가되었습니다!');
-        // success.add-chapter
-        this.$store.dispatch("setAlertMessage", "목차 추가에 성공했습니다");
-
+        this.$store.dispatch("setAlertMessage", "success.add-chapter");
         this.$store.dispatch("setEbookDirectoryTree", data["arrayOfFiles"]);
         this.$store.dispatch("addTableOfContents", val);
         this.chapterText = "";
+        this.$refs.chapterTextInput.resetText();
       } catch (err) {
         console.log("chapter 추가 실패");
-        // error.add-chapter
-        this.$store.dispatch("setAlertMessage", "목차 추가에 실패했습니다");
+        this.$store.dispatch("setAlertMessage", "error.add-chapter");
       }
     },
     addChapter: function () {
       if (this.$store.state.ebookDirectoryTree.length === 0) {
-        //error.ebook-none
-        this.$store.dispatch("setAlertMessage", "이북을 먼저 생성해주세요!");
+        this.$store.dispatch("setAlertMessage", "error.ebook-none");
       } else {
         this.chapterDialog = true;
       }

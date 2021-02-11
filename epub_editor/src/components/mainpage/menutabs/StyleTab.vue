@@ -355,8 +355,7 @@ export default {
       if (!css.inTag()) {
         this.$store.dispatch(
           "setAlertMessage",
-          // error.in-tag
-          "태그 밖에서만 스타일 적용이 가능합니다."
+          "error.in-tag"
         );
         return;
       }
@@ -392,8 +391,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
-          // error.select-text
-          "text 폴더의 파일을 선택해주세요."
+          "error.select-text"
         );
       }
     },
@@ -413,8 +411,7 @@ export default {
       if (this.customStyle.title.trim() == "" || this.customStyle.title == undefined) {
         this.$store.dispatch(
           "setAlertMessage",
-          //error.add-style
-          "스타일 이름을 적어주세요."
+          "error.add-style"
         );
         return;
       }
