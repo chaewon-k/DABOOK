@@ -1,3 +1,5 @@
+import { ipcRenderer } from 'electron';
+
 const { dialog } = require('electron').remote;
 const fs = require("fs");
 
@@ -45,6 +47,17 @@ export function readDirectory (dirPath, arrayOfFiles, toc, maxV) {
     }
   });
   return { arrayOfFiles, toc, maxV };
+}
+
+export function uploadDirectory (arrayOfFiles, bookName, email) {
+  for (let file of arrayOfFiles) {
+    if (file.children) {
+      uploadDirectory(file.children, bookName, email)
+    } else {
+      let temp = file.dirPath.split(bookName)[1].split('/')
+      uploadFile(file.dirPath, '/'+temp.slice(2, temp.length-1).join('/'), bookName, email)
+    }
+  }
 }
 
 export function tocToList (toc, arrayOfContents) {
@@ -111,7 +124,7 @@ export function addContentOpf (path, maxV) {
   temp = temp.slice(0, start-1).concat(` <item id="chapter${maxV}.xhtml" href="text/chapter${maxV}.xhtml" media-type="application/xhtml+xml"/>\n    `, temp.slice(start, temp.length));
   start = temp.indexOf("<!-- 새 챕터 추가 위치2 -->")
   temp = temp.slice(0, start-1).concat(` <itemref idref="chapter${maxV}.xhtml"/>\n    `, temp.slice(start, temp.length));
-  fs.writeFile(path + '/EPUB/content.opf', temp, (err) => {
+  fs.writeFileSync(path + '/EPUB/content.opf', temp, (err) => {
     if (err) {
       console.log('fs.writeFile 실패');
     }
@@ -122,7 +135,7 @@ export function addTocNcx (path, name, maxV) {
   let temp = fs.readFileSync(path + '/EPUB/toc.ncx').toString();
   let start = temp.indexOf("<!-- 새 챕터 추가 위치 -->");
   temp = temp.slice(0, start-1).concat(` <navPoint id="navPoint-${maxV}">\n      <navLabel>\n        <text>${name}</text>\n      </navLabel>\n      <content src="text/chapter${maxV}.xhtml" />\n    </navPoint>\n    `, temp.slice(start, temp.length));
-  fs.writeFile(path + '/EPUB/toc.ncx', temp, (err) => {
+  fs.writeFileSync(path + '/EPUB/toc.ncx', temp, (err) => {
     if (err) {
       console.log('chapter 추가 실패');
     }
@@ -135,7 +148,7 @@ export function changeTitleAuthor (path, title, author) {
   let end = temp.indexOf("</text>");
   // console.log(title, author)
   temp = temp.slice(0, start + 22) + title + temp.slice(end, temp.length);
-  fs.writeFile(path + '/EPUB/toc.ncx', temp, (err) => {
+  fs.writeFileSync(path + '/EPUB/toc.ncx', temp, (err) => {
     if (err) {
       console.log('목차 변경 실패');
     }
@@ -149,7 +162,7 @@ export function changeTitleAuthor (path, title, author) {
   let dateEnd = temp2.indexOf(`</dc:date>`)
   let now = getTimeStamp();
   temp2 = temp2.slice(0, titleStart + 28) + title + temp2.slice(titleEnd, authorStart + 27) + author + temp2.slice(authorEnd, dateStart + 24) + now + temp2.slice(dateEnd, temp2.length);
-  fs.writeFile(path + '/EPUB/content.opf', temp2, (err) => {
+  fs.writeFileSync(path + '/EPUB/content.opf', temp2, (err) => {
     if (err) {
       console.log('content.opf 변경 실패');
     }
@@ -158,7 +171,7 @@ export function changeTitleAuthor (path, title, author) {
 
 export function changeHtag (path, num, str, title) {
   str = str.replace('{{ 사용자 입력 제목 }}', title);
-  fs.writeFile(path + 'chapter' + num + '.xhtml', str, (err) => {
+  fs.writeFileSync(path + 'chapter' + num + '.xhtml', str, (err) => {
     if (err) {
       console.log('change Htag 실패');
     }
@@ -185,4 +198,8 @@ function leadingZeros(n, digits) {
       zero += '0';
   }
   return zero + n;
+}
+
+export function uploadFile (filePath, serverPath, bookName, email) {
+  ipcRenderer.send('upload', 'https://contact.dabook.site/api/upload', filePath, email, bookName, serverPath)
 }

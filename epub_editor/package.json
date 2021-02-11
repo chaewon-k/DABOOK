@@ -20,6 +20,7 @@
     "axios": "^0.21.1",
     "core-js": "^3.8.3",
     "form-data": "^3.0.0",
+    "got": "^11.8.1",
     "ncp": "^2.0.0",
     "restler": "^3.4.0",
     "roboto-fontface": "*",
