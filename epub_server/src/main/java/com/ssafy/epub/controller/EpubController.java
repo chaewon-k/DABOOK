@@ -2,10 +2,16 @@ package com.ssafy.epub.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,7 +56,7 @@ public class EpubController {
 	}
 	//, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
 	@PostMapping(value = "/upload")
-	@ApiOperation(value = "upload")
+	@ApiOperation(value = "upload file")
 	public ResponseEntity<Boolean> upload(FileVO fileVo) {
 		//List<MultipartFile> files = uploadFilesInfo.getFiles();
 		
@@ -91,5 +98,18 @@ public class EpubController {
 		
 		
 		return new ResponseEntity<>(true,HttpStatus.OK);
+	}
+	
+	@GetMapping("/download")
+	@ApiOperation(value = "download file")
+	public ResponseEntity<Resource> download(@RequestParam String email, @RequestParam String epubName, @RequestParam String path, @RequestParam String fileName) throws IOException {
+		Path localPath = Paths.get(storagePath + "/" + email + "/" + epubName + path + "/" + fileName);
+		String contentType = Files.probeContentType(localPath);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+
+		Resource resource = new InputStreamResource(Files.newInputStream(localPath));
+		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
 }
