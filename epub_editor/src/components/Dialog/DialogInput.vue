@@ -3,9 +3,9 @@
     <v-text-field
       class="my-3"
       v-model="inputText"
-      label="$t('dialoginput.' + labelText)"
+      :label="label"
       :prepend-icon="icon"
-      :rules="[rules.required]"
+      :rules="ruleText"
       @keyup="sendData()"
     >
     </v-text-field>
@@ -19,6 +19,7 @@ export default {
   props: ["labelText", "icon", "required", "check"],
   data: function () {
     return {
+      label: "$t('dialoginput.'",
       inputText: "",
       ruleText: "",
       rules: {
@@ -32,10 +33,11 @@ export default {
       this.ruleText = "[rules.required, rules.check]";
     else if (this.required) this.ruleText = "[rules.required]";
     else if (this.check) this.ruleText = "[rules.check]";
+    this.label = this.label + this.labelText + ')';
   },
   methods: {
     resetText: function () {
-      this.inputText = null;
+      this.inputText = undefined;
     },
     sendData: function () {
       this.$emit("changeData", this.inputText);

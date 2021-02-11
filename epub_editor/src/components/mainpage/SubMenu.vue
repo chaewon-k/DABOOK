@@ -70,7 +70,6 @@ export default {
         win = new BrowserWindow({ width: 800, height: 1500 });
         const p = path.resolve("./src/assets/manual/manual.html");
         win.loadURL("file://" + p, function() {
-          // console.log("123");
         });
       }
     },

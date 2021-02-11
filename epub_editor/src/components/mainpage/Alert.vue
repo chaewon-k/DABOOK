@@ -8,11 +8,7 @@
         text
         type="success"
       >
-        <!-- {{ "$t('" + alertMessage + "')"}}
-        {{ alertMessage }} -->
-        <!-- {{ $t("dialogtitle." + title) }} -->
-        {{ $t(`"${alertMessage}"`) }}
-        <!-- <v-btn icon x-small @click="cancel"><v-icon>mdi-close-circle</v-icon></v-btn> -->
+        {{ $t("" + alertMessage) }}
       </v-alert>
     </div>
   </div>
@@ -28,8 +24,6 @@ export default {
   },
   methods: {
     cancel: function () {
-      // console.log(document.getElementById("alert").value);
-      // console.log("cancel");
       this.$store.dispatch('cancelAlertMessage');
     },
   },
