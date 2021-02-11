@@ -105,6 +105,7 @@ export default {
       if (this.$store.state.selectedFileDirectory !== '') {
         eventBus.$emit('pushIndexData', index);
       } else {
+        // error.select-file
         this.$store.dispatch('setAlertMessage', 'text 폴더의 파일을 선택해주세요.')
       }
     }

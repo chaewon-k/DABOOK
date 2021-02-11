@@ -19,7 +19,7 @@
     <v-dialog v-model="linkDialog" max-width="400">
       <v-card>
         <DialogTitle
-          title="링크 추가하기"
+          title="tool-link"
           @toggle-dialog="linkDialog = false"
         /> 
         <v-card-text style="padding: 3% 6% 3% 6%">
@@ -34,13 +34,13 @@
             />
           </v-container>
         </v-card-text>
-        <DialogButton buttonText="추가하기" :dialogMethod="attachLinkTag" />
+        <DialogButton buttonText="add" :dialogMethod="attachLinkTag" />
       </v-card>
     </v-dialog>
 
     <v-dialog v-model="tableDialog" max-width="300">
       <v-card>
-        <DialogTitle title="표 추가하기" @toggle-dialog="tableDialog = false" />
+        <DialogTitle title="tool-table" @toggle-dialog="tableDialog = false" />
         <v-card-text style="padding: 10% 6% 3% 6%">
           <v-row>
             <v-text-field
@@ -71,14 +71,14 @@
             </v-text-field>
           </v-row>
         </v-card-text>
-        <DialogButton buttonText="추가하기" :dialogMethod="attachTableTag" />
+        <DialogButton buttonText="add" :dialogMethod="attachTableTag" />
       </v-card>
     </v-dialog>
 
     <div class="contextmenu" id="menu" @click="closeMenu">
-      <span>오려두기</span>
-      <span>복사하기</span>
-      <span>붙여넣기</span>
+      <span @click="edit(cut)">{{ $t('edittab.cut') }}</span>
+      <span @click="edit(copy)">{{ $t('edittab.copy') }}</span>
+      <span @click="edit(paste)">{{ $t('edittab.paste') }}</span>
       <v-divider class="divider-margin"></v-divider>
 
       <v-btn x-small class="mx-1"
@@ -129,13 +129,11 @@
 
       <v-divider class="divider-margin"></v-divider>
 
-      <span @mouseover="openHeaders">제목▸</span>
+      <span @mouseover="openHeaders">{{$t('title')}}  ▸</span>
     </div>
 
     <div id="headers" class="contextmenu" @click="closeMenu">
-      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{
-        "제목" + hTag
-      }}</span>
+      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{$t('title') + hTag}} </span>
     </div>
   </div>
 </template>

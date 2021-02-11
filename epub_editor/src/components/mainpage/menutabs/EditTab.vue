@@ -99,13 +99,13 @@
     <v-dialog v-model="replaceDialog" max-width="400">
       <v-card>
         <DialogTitle
-          title="단어 변환하기"
+          title="edit-replace"
           @toggle-dialog="replaceDialog = false"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
-              labelText="찾고 싶은 단어"
+              labelText="edit-find"
               required="true"
               @changeData="setFindText"
               ref="findTextInput"
@@ -114,7 +114,7 @@
               <v-icon large style="margin:auto;">mdi-arrow-down</v-icon>
             </v-row>
             <DialogInput
-              labelText="바꾸고 싶은 단어"
+              labelText="edit-replace"
               required="true"
               @changeData="setReplaceText"
               ref="replaceTextInput"
@@ -131,7 +131,7 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <DialogButton buttonText="변환하기" :dialogMethod="replace" />
+        <DialogButton buttonText="replace" :dialogMethod="replace" />
       </v-card>
     </v-dialog>
 
@@ -199,6 +199,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
+          //error.select-text
           "text 폴더의 파일을 선택해주세요."
         );
       }
@@ -207,11 +208,13 @@ export default {
     find: function() {
       if (this.$store.state.selectedFileDirectory !== "") {
         if (this.findText === "") {
+          // error.find-input
           this.$store.dispatch("setAlertMessage", "찾을 단어를 입력해주세요.");
         } else {
           eventBus.$emit("findText", this.findText);
           this.findTextArray = this.$store.state.findTextArray;
           if (this.findTextArray.length === 0) {
+            // error.find-word
             this.$store.dispatch("setAlertMessage", "찾는 단어가 없습니다.");
           } else {
             eventBus.$emit(
@@ -224,6 +227,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
+          // error.select-text
           "text 폴더의 파일을 선택해주세요."
         );
       }
@@ -235,6 +239,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
+          // error.select-text
           "text 폴더의 파일을 선택해주세요."
         );
       }
@@ -298,6 +303,7 @@ export default {
         ]);
         this.$store.dispatch(
           "setAlertMessage",
+          // success.replace
           "변환을 완료하였습니다."
         );
         this.findText = "";
@@ -307,6 +313,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
+          // select-text
           "text 폴더의 파일을 선택해주세요."
         );
       }

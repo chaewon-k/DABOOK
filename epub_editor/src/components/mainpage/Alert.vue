@@ -8,7 +8,10 @@
         text
         type="success"
       >
-        {{alertMessage}}
+        <!-- {{ "$t('" + alertMessage + "')"}}
+        {{ alertMessage }} -->
+        <!-- {{ $t("dialogtitle." + title) }} -->
+        {{ $t(`"${alertMessage}"`) }}
         <!-- <v-btn icon x-small @click="cancel"><v-icon>mdi-close-circle</v-icon></v-btn> -->
       </v-alert>
     </div>
