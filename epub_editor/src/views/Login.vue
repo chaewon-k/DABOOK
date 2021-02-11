@@ -107,7 +107,7 @@ export default {
     // 로그인 
     logIn: function () {
       const data = {"email" : this.inputEmail, "password" : this.inputPassword}
-      axios.post("https://i4a103.p.ssafy.io/api/login", data)
+      axios.post("https://contact.dabook.site/api/login", data)
         .then(res => {
           const message = res.data.result
           if (message === "ERROR_ID"){
@@ -141,7 +141,7 @@ export default {
 
     // 임시 비밀번호 발급
     findPassword: function () {
-      axios.get(`https://i4a103.p.ssafy.io/password?email=${this.inputEmail}`)
+      axios.get(`https://contact.dabook.site/password?email=${this.inputEmail}`)
         .then(res =>{
           console.log(res)
         })
