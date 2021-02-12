@@ -178,14 +178,15 @@ public class UserController {
 	@DeleteMapping("/user")
 	@ApiOperation(value = "deleteUser")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User") })
-	public ResponseEntity<Boolean> deleteUser(@RequestBody User user) {
-
-		if (user != null) {
+	public ResponseEntity<Boolean> deleteUser(@RequestBody Map<String, String> req) {
+		String email = req.get("email");
+		String password = req.get("password");
+		User user = userRepository.findByEmail(email);
+		if (encryptHandler.isMatch(password, user.getPassword())) {
 			userRepository.delete(user);
 			return new ResponseEntity<>(true, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
-
 	}
 	
 //	@GetMapping("/user/epub/list/{email:.+}")
