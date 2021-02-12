@@ -2,6 +2,7 @@ package com.ssafy.epub.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 
@@ -82,8 +83,10 @@ public class UserController {
 	
 	@PostMapping("/user/epub")
 	@ApiOperation(value = "전자책 등록(user와 연결)", produces = MediaType.TEXT_PLAIN_VALUE)
-	@ApiImplicitParams({ @ApiImplicitParam(name = "email", value = "사용자", required = true, dataType = "String") , @ApiImplicitParam(name = "epubName", value = "중복 체크할 전자책 이름", required = true, dataType = "String")})
-	public ResponseEntity<Boolean> addEpubName(String email, String epubName) {
+	public ResponseEntity<Boolean> addEpubName(@RequestBody Map<String, String> req) {
+		String email = req.get("email");
+		String epubName = req.get("epubName");
+		
 		User user = userRepository.findByEmail(email);
 		
 		Epub epub = new Epub();
