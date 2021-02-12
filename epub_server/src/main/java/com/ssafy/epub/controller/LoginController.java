@@ -68,6 +68,7 @@ public class LoginController {
 		result.put("token", token);
 		result.put("result", "SUCCESS_LOGIN");
 		result.put("email", user.getEmail());
+		result.put("name", user.getName());
 		result.put("nickname", user.getNickname());
 			
 		return ResponseEntity.ok().body(result);
