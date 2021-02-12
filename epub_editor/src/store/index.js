@@ -15,7 +15,6 @@ export default new Vuex.Store({
     findTextArray: [],
     alertMessage: '',
     alertDialog: false,
-    dirToggle: false,
   },
 
   mutations: {
@@ -65,9 +64,6 @@ export default new Vuex.Store({
     CANCEL_ALERTMESSAGE: function (state) {
       state.alertDialog = false;
     },
-    SETDIRTOGGLE: function (state) {
-      state.dirToggle = !state.dirToggle;
-    }
   },
   actions: {
     setEditingText: function ({ commit }, value) {
@@ -106,9 +102,6 @@ export default new Vuex.Store({
     cancelAlertMessage: function({ commit }) {
       commit('CANCEL_ALERTMESSAGE');
     },
-    setDirToggle: function({ commit }) {
-      commit('SETDIRTOGGLE');
-    }
   },
 
   modules: {
