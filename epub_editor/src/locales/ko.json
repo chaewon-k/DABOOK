@@ -99,7 +99,6 @@
         "save-ebook": "저장되었습니다.",
         "load-ebook": "이북 불러오기에 성공했습니다.",
         "add-chapter": "목차 추가하기에 성공했습니다.",
-
         "replace": "단어 변환을 완료하였습니다."
     },
     "error": {
@@ -116,13 +115,20 @@
         "input": "모든 입력값을 넣어주세요.",
         "preview": "미리보기할 이북이 없습니다.",
         "ebook-none": "이북을 먼저 생성해주세요.",
-
         "select-text": "text 폴더의 파일을 선택해주세요.",
         "find-input": "찾을 단어를 입력해주세요.",
         "find-word": "찾는 단어가 없습니다.",
-
         "in-tag": "태그 밖에서만 스타일이 적용 가능합니다.",
-        "add-style": "스타일 이름을 적어주세요."
+        "add-style": "스타일 이름을 적어주세요.",
+        "required": "필수 입력 항목입니다."
+    },
+    "confirm": {
+        "save-title": "이전 파일의 변경 내역을 저장하시겠습니까?",
+        "save-confirm": "저장",
+        "save-cancel": "취소",
+        "close-title": "DABOOK을 종료하시겠습니까?",
+        "close-confirm": "네",
+        "close-cancel": "아니오"
     },
     "title": "제목",
     "addstyle": "스타일 추가하기",

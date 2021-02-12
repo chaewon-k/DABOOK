@@ -138,7 +138,7 @@
     <v-card id="findMenu" class="pa-2" flat>
       <v-toolbar dense floating>
         <v-text-field
-          label="단어 찾기"
+          :label="GET_FIND_INPUT"
           v-model="findText"
           hide-details
           append-outer-icon="mdi-magnify"
@@ -191,6 +191,11 @@ export default {
       findTextArray: [],
       findTextIndex: 0,
     };
+  },
+  computed: {
+    GET_FIND_INPUT() {
+      return this.$t('dialogtitle.edit-find');
+    }
   },
   methods: {
     edit: function(res) {

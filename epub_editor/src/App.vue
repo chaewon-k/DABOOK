@@ -9,6 +9,7 @@
 <script>
 import Editor from './views/Editor';
 import "./assets/style.css";
+let ipc = require('electron').ipcRenderer;
 
 export default {
   name: 'App',
@@ -18,9 +19,12 @@ export default {
   },
   created: function() {
     this.$i18n.locale = 'ko';
+    let data = [];
+    data.push({"title": this.$t('confirm.close-title')});
+    data.push({"confirm": this.$t('confirm.close-confirm')});
+    data.push({"cancel": this.$t('confirm.close-cancel')});
+    ipc.send('close_dialog', data);
   },
-  data: () => ({
-  }),
 };
 </script>
 <style>
