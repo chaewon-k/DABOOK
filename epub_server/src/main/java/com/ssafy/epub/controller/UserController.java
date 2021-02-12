@@ -139,22 +139,40 @@ public class UserController {
 			return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
 
 	}
-
-	@PutMapping("/user")
-	@ApiOperation(value = "updateUser")
+	
+	@PutMapping("/user/nickname")
+	@ApiOperation(value = "changeNickname")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User") })
-	public ResponseEntity<Boolean> updateUser(@RequestBody User user) {
-
-		User preUser = userRepository.findByEmail(user.getEmail());
-		if (preUser != null) {
-			preUser.setPassword(encryptHandler.encrypt(user.getPassword()));
-			preUser.setNickname(user.getNickname());
+	public ResponseEntity<String> changeNickname(@RequestBody Map<String, String> req) {
+		String email = req.get("email");
+		String nickname = req.get("nickname");
+		User preUser = userRepository.findByEmail(email);
+		if(userRepository.findByNickname(nickname) == null) {
+			preUser.setNickname(nickname);
 			userRepository.save(preUser);
 			
-			return new ResponseEntity<>(true, HttpStatus.OK);
+			return new ResponseEntity<>("SUCCESS_CHANGE_NICKNAME", HttpStatus.OK);
 		} else
-			return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>("DUPLICATED_NICKNAME", HttpStatus.BAD_REQUEST);
+	}
+	
 
+	@PutMapping("/user/password")
+	@ApiOperation(value = "changePassword")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User") })
+	public ResponseEntity<String> changePassword(@RequestBody Map<String, String> req) {
+		String email = req.get("email");
+		String prevPassword = req.get("prevPassword");
+		String newPassword = req.get("newPassword");
+		User preUser = userRepository.findByEmail(email);
+		if (encryptHandler.isMatch(prevPassword, preUser.getPassword())) {
+			preUser.setPassword(encryptHandler.encrypt(newPassword));
+			//preUser.setNickname(user.getNickname());
+			userRepository.save(preUser);
+			
+			return new ResponseEntity<>("SUCCESS_CHANGE_PASSWORD", HttpStatus.OK);
+		} else
+			return new ResponseEntity<>("ERROR_PREV_PASSWORD", HttpStatus.BAD_REQUEST);
 	}
 
 	@DeleteMapping("/user")
