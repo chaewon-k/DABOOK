@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer dark mini-variant mini-variant-width="65" permanent>
+  <v-navigation-drawer mini-variant mini-variant-width="65" permanent>
     <v-list dense nav>
       <v-list-item v-for="item in items" :key="item.title">
         <v-list-item-action @click="toggleIcon(item.title)">
@@ -12,9 +12,8 @@
 
 <script>
 export default {
-  data() {
+  data: function () {
     return {
-      dirTableToggle: true,
       dirOpen: true,
       items: [
         { title: "Dir", icon: "mdi-folder" },
@@ -23,10 +22,15 @@ export default {
       ],
     };
   },
+  props: {
+    dirTableToggle: {
+      type: Boolean
+    },
+  },
   methods: {
     toggleIcon: function(val) {
       if (val == "Dir") {
-        this.dirTableToggle = !this.dirTableToggle;
+        this.$emit('toggleDir');
       } else if (val == "Lang") {
         if (this.$i18n.locale === "en") this.$i18n.locale = "ko";
         else this.$i18n.locale = "en";
