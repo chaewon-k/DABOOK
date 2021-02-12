@@ -127,7 +127,8 @@ public class EpubController {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
-
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
+		
 		Resource resource = new InputStreamResource(Files.newInputStream(localPath));
 		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
