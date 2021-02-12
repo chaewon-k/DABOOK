@@ -39,6 +39,12 @@ export default {
     items: function () {
       return this.$store.state.ebookDirectoryTree;
     },
+    GET_CONFIRM_BUTTON() {
+      return this.$t('confirm.save-confirm');
+    },
+    GET_CANCEL_BUTTON() {
+      return this.$t('confirm.save-cancel');
+    },
   },
   data: function () {
     return {
@@ -69,8 +75,8 @@ export default {
             // 저장 할 것인지 물어보고 저장 / 취소
             const options = {
               type: 'question',
-              message: '이전 파일의 변경 내역을 저장하시겠습니까?',
-              buttons: ['저장', '취소'],
+              message: this.$t('confirm.save-title'),
+              buttons: [this.GET_CONFIRM_BUTTON, this.GET_CANCEL_BUTTON],
             };
             const result = dialog.showMessageBoxSync(options);
             if (result === 0) {
