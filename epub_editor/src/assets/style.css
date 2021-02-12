@@ -147,7 +147,6 @@ div.right {
   height: 220px;
   margin-top: 2px;
   padding: 0;
-  background: #FFFFFF;
   border-radius: 5px;
   list-style: none;
   box-shadow:
@@ -219,16 +218,17 @@ div.right {
 
 /* Dark mode */
 .theme--dark.v-card {
-  color: #9C9BBF;
+  color: #9C9BBF !important;
 }
 
 .theme--dark.v-btn,
 .theme--dark.v-btn.v-btn--icon,
 .theme--dark.v-treeview, 
 .theme--dark.v-icon {
-  color: #b7b6ca;
+  color: #b7b6ca !important;
 }
 
+
 .theme--dark.v-input textarea {
-  color: #cfcddf;
+  color: #cfcddf !important;
 }
