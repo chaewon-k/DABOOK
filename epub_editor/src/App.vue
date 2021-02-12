@@ -1,20 +1,20 @@
 <template>
   <v-app>
     <v-main>
-      <Editor />
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Editor from './views/Editor';
+// import Editor from './views/Editor';
 import "./assets/style.css";
 
 export default {
   name: 'App',
 
   components: {
-    Editor,
+    // Editor,
   },
   created: function() {
     this.$i18n.locale = 'ko';

@@ -165,19 +165,19 @@ export default {
     },
 
     // 구글 로그인 연동
-    handleLogin: function () {
-      const client = '613406129704-omk18m4bqaei962v5s2hsn654cj2den2.apps.googleusercontent.com'
-      const myApiOauth = new ElectronGoogleOAuth2(
-        client,
-        'FHTLcGOSPrgC0c9CNtSmj43U',
-        ['https://www.googleapis.com/auth/drive.metadata.readonly']
-      );
+    // handleLogin: function () {
+    //   const client = '613406129704-omk18m4bqaei962v5s2hsn654cj2den2.apps.googleusercontent.com'
+    //   const myApiOauth = new ElectronGoogleOAuth2(
+    //     client,
+    //     'FHTLcGOSPrgC0c9CNtSmj43U',
+    //     ['https://www.googleapis.com/auth/drive.metadata.readonly']
+    //   );
     
-      myApiOauth.openAuthWindowAndGetTokens()
-        .then(token => {
-          console.log(token)
-        });
-    }
+    //   myApiOauth.openAuthWindowAndGetTokens()
+    //     .then(token => {
+    //       console.log(token)
+    //     });
+    // }
   }
 }
 </script>
