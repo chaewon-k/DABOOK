@@ -83,7 +83,7 @@ public class UserController {
 	@PostMapping("/user/epub")
 	@ApiOperation(value = "전자책 등록(user와 연결)", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "email", value = "사용자", required = true, dataType = "String") , @ApiImplicitParam(name = "epubName", value = "중복 체크할 전자책 이름", required = true, dataType = "String")})
-	public ResponseEntity<Boolean> addEpubName(@RequestParam String email, @RequestParam String epubName) {
+	public ResponseEntity<Boolean> addEpubName(String email, String epubName) {
 		User user = userRepository.findByEmail(email);
 		
 		Epub epub = new Epub();
