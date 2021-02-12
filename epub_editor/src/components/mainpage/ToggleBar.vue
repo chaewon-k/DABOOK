@@ -6,11 +6,22 @@
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-action>
       </v-list-item>
+      <v-list-item>
+        <v-icon @click="userInfoDialog=true">mdi-account-circle-outline</v-icon>
+      </v-list-item>
+      <v-list-item>
+        <v-icon @click="logout">mdi-logout</v-icon>
+      </v-list-item>
+      <UserInfo
+        :userInfoDialog="userInfoDialog"
+        @close="userInfoDialog=false"
+      />
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
+import UserInfo from '@/components/mainpage/UserInfo'
 export default {
   data: function () {
     return {
@@ -20,12 +31,16 @@ export default {
         { title: "Lang", icon: "mdi-translate" },
         { title: "Dark", icon: "mdi-lightbulb-on-outline" },
       ],
+      userInfoDialog: false
     };
   },
   props: {
     dirTableToggle: {
       type: Boolean
     },
+  },
+  components: {
+    UserInfo
   },
   methods: {
     toggleIcon: function(val) {
@@ -38,6 +53,10 @@ export default {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       }
     },
+    logout: function () {
+      localStorage.clear();
+      this.$router.push({ name: 'Login'});
+    }
   },
 };
 </script>

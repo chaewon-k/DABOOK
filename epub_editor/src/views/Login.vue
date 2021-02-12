@@ -59,7 +59,7 @@
 </template>
 <script>
 import axios from 'axios'
-import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
+// import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 export default {
   name: 'Login',
   data: function () {
@@ -129,9 +129,10 @@ export default {
             this.color = '#EF5350'
           }
           else {
-            console.log(res)
+            // console.log(res)
             // local Storage에 로그인 정보 저장.
             localStorage.setItem('token',res.data.token)
+            localStorage.setItem('name', res.data.name)
             localStorage.setItem('email', res.data.email)
             localStorage.setItem('nickname', res.data.nickname)
             this.$router.push({ name: 'Editor'})

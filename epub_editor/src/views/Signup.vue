@@ -167,7 +167,8 @@ export default {
 
     // 회원가입 
     signUp: function () {
-      const data = { 'email': this.email, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': false }
+      const data = { 'email': this.email, 'name': this.name, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': false }
+      
       this.loading = true
 
       if (this.password === this.passwordConfirm) {
