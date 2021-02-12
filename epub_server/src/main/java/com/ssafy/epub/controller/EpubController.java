@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.epub.model.Epub;
 import com.ssafy.epub.model.FileDTO;
 import com.ssafy.epub.model.FileVO;
+import com.ssafy.epub.model.User;
 import com.ssafy.epub.repository.EpubRepository;
 import com.ssafy.epub.repository.FileRepository;
+import com.ssafy.epub.repository.UserRepository;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -37,22 +40,20 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api")
 public class EpubController {
 	@Autowired
+	private UserRepository userRepository;
+	@Autowired
 	private EpubRepository epubRepository;
 	@Autowired
 	private FileRepository fileRepository;
 	@Value("${spring.file.location}")
 	private String storagePath;
 	
-	@GetMapping("/epub")
-	@ApiOperation(value = "getAllEpubs", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<List<Epub>> getAllEpubs() {
-		return new ResponseEntity<>(epubRepository.findAll(),HttpStatus.OK);
-	}
-	
 	@GetMapping("/file")
 	@ApiOperation(value = "getAllFiles", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<List<FileDTO>> getAllFiles() {
-		return new ResponseEntity<>(fileRepository.findAll(),HttpStatus.OK);
+	public ResponseEntity<List<FileDTO>> getAllFiles(String id) {
+		List<FileDTO> fileList = epubRepository.findBy_id(id).getFileList();
+		
+		return new ResponseEntity<>(fileList,HttpStatus.OK);
 	}
 	//, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
 	@PostMapping(value = "/upload")
@@ -64,38 +65,56 @@ public class EpubController {
 		String filePath = storagePath + "/" + fileVo.getEmail() + "/" + fileVo.getEpubName() + fileVo.getPath() + "/";
 		
 		MultipartFile mfFile = fileVo.getFile();
+		mfFile.getOriginalFilename();
+		User user = userRepository.findByEmail(fileVo.getEmail());
 		
-		//for(MultipartFile mfFile : files) {
-			File file = new File(filePath + mfFile.getOriginalFilename());
-			
-			// 주어진 경로에 존재하지 않는 모든 디렉토리 생성
-			if(file.getParentFile().mkdirs()) {
-				try {
-					// 물리파일 생성
-					file.createNewFile();
-				}
-				catch(IOException ie) {
-					// 파일 생성 중 오류
-					ie.printStackTrace();
-					return ResponseEntity.status(HttpStatus.CONFLICT).build();
-				}			
+		List<Epub> epubList = user.getEpubList();
+		
+		String epubId = "";
+		Epub epub = new Epub();
+		List<FileDTO> fileList = new ArrayList<>();
+		for(Epub tempEpub : epubList) {
+			if(tempEpub.getEpubName().equals(fileVo.getEpubName())) {
+				epubId = new String(tempEpub.get_id());
+				epub = tempEpub;
+				fileList = tempEpub.getFileList();
+				break;
 			}
+		}
+		
+		File file = new File(filePath + mfFile.getOriginalFilename());
 			
+		// 주어진 경로에 존재하지 않는 모든 디렉토리 생성
+		if(file.getParentFile().mkdirs()) {
 			try {
-				// 업로드 임시파일 -> 물리파일 덮어쓰기
-				mfFile.transferTo(file);
+				// 물리파일 생성
+				file.createNewFile();
 			}
 			catch(IOException ie) {
-				// 덮어쓰기 중 오류
+				// 파일 생성 중 오류
 				ie.printStackTrace();
 				return ResponseEntity.status(HttpStatus.CONFLICT).build();
-			}
-			FileDTO fileDTO = new FileDTO();
-			fileDTO.setDataLocation(filePath + mfFile.getOriginalFilename());
-			fileDTO.setFileName(mfFile.getOriginalFilename());
-			fileRepository.save(fileDTO);
-		//}
+			}			
+		}
+			
+		try {
+			// 업로드 임시파일 -> 물리파일 덮어쓰기
+			mfFile.transferTo(file);
+		}
+		catch(IOException ie) {
+			// 덮어쓰기 중 오류
+			ie.printStackTrace();
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+		FileDTO fileDTO = new FileDTO();
+		fileDTO.setPath(fileVo.getPath());
+		fileDTO.setFileName(mfFile.getOriginalFilename());
+		fileDTO.setEpubId(epubId);
+		fileList.add(fileDTO);
+		epub.setFileList(fileList);
 		
+		fileRepository.save(fileDTO);
+		epubRepository.save(epub);
 		
 		return new ResponseEntity<>(true,HttpStatus.OK);
 	}
@@ -111,5 +130,13 @@ public class EpubController {
 
 		Resource resource = new InputStreamResource(Files.newInputStream(localPath));
 		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+	}
+	
+	@GetMapping("/epub/file/list")
+	@ApiOperation(value = "해당 epub에 대한 fileList 반환", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<List<FileDTO>> getFileList(@RequestParam String id) {
+		List<FileDTO> fileList = epubRepository.findBy_id(id).getFileList();
+		
+		return new ResponseEntity<>(fileList, HttpStatus.OK);
 	}
 }

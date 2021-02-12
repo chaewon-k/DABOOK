@@ -17,9 +17,7 @@ public class FileDTO {
 	@Id
 	private String _id;
 	
-	private String type;
 	private String fileName;
-	private String epubLocation;
-	private String dataLocation;
+	private String path;
 	private String epubId;
 }

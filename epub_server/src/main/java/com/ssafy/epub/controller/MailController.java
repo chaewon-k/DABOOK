@@ -1,7 +1,5 @@
 package com.ssafy.epub.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,7 +33,7 @@ public class MailController {
 	public ResponseEntity<Boolean> verifyEmail(String token, String email) {
 		try {
 			// findByEmail의 반환이 List & 회원가입 시 중복체크를 함으로 email에 맞는 User는 한명이다.
-			User findUser = userRepository.findByEmail(email).get(0);
+			User findUser = userRepository.findByEmail(email);
 			if (findUser.getEmailToken().equals(token)) {
 				// 이메일 인증 완료시 Status를 false에서 true로 전환한다.
 				findUser.setStatus(true);
@@ -56,10 +54,9 @@ public class MailController {
 		String tempPassword = getTempPassword();
 		
 		try {
-			List<User> findUserList = userRepository.findByEmail(email);
+			User preUser = userRepository.findByEmail(email);
 			// User가 입력한 이메일이 DB에 없는 경우를 체크
-			if (findUserList.size() == 1) {
-				User preUser = findUserList.get(0);
+			if (preUser != null) {
 				// 비밀번호는 임시 비밀번호로 발송한다.
 				mailService.findPasswordEmailSender(preUser, tempPassword);
 				// 비밀번호는 사용자만 알고있어야함으로 DB에는 암호화되어 저장된다.
