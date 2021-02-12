@@ -66,7 +66,7 @@ public class UserController {
 			return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 	
-	@GetMapping("/user/epubName")
+	@GetMapping("/user/epub")
 	@ApiOperation(value = "user 내에 epubName 중복 체크", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "email", value = "사용자", required = true, dataType = "String") , @ApiImplicitParam(name = "epubName", value = "중복 체크할 전자책 이름", required = true, dataType = "String")})
 	public ResponseEntity<Boolean> checkEpubName(@RequestParam String email, @RequestParam String epubName) {
