@@ -1,15 +1,11 @@
 <template>
   <div id="editor">
     <Alert/>
+    <IconButtton/>
     <header id="header">
       <TopMenu/>
     </header>
     <div id="wrap">
-      <!-- <v-navigation-drawer
-        mini-variant
-        mini-variant-width="50"
-        permanent
-      ></v-navigation-drawer> -->
       <aside v-if="dirToggle" id="aside">
         <v-card max-height="100%" min-height="100%" class="overflow-y-auto" style="border-radius: 0%;">
           <v-btn v-if="dirTableToggle===true" @click="toggle" block text>디렉토리</v-btn>
@@ -35,6 +31,7 @@ import Directory from '@/components/mainpage/Directory';
 import TableOfContents from '@/components/mainpage/TableOfContents';
 import Textarea from '@/components/mainpage/Textarea';
 import Alert from "@/components/mainpage/Alert"
+import IconButtton from "@/components/mainpage/IconButton";
 import { mapState } from "vuex";
 
 export default {
@@ -45,6 +42,7 @@ export default {
     TableOfContents,
     Textarea,
     Alert,
+    IconButtton,
   },
   data: function () {
     return {
