@@ -28,8 +28,6 @@
             <DialogInput
               labelText="file-chapter"
               icon="mdi-book-open-outline"
-              required="true"
-              check="true"
               @changeData="setChapterText"
               ref="chapterTextInput"
             />
@@ -50,8 +48,6 @@
             <DialogInput
               labelText="file-title"
               icon="mdi-book-open-outline"
-              required="true"
-              check="true"
               @changeData="setEbookText"
               ref="ebookTextInput"
             />
@@ -59,7 +55,7 @@
               <v-text-field
                 class="my-3"
                 :rules="[rules.required]"
-                label="`$t('dialoginput.file-path')`"
+                :label="GET_FILE_PATH"
                 v-model="selectedEBookLocation"
                 required
                 @click="selectPath"
@@ -72,7 +68,7 @@
                 v-model="eBookCover"
                 accept="image/png, image/jpeg, image/bmp"
                 prepend-icon="mdi-image-search-outline"
-                label="커버 이미지"
+                :label="GET_COVER_IMAGE"
               >
               </v-file-input>
             </v-row>
@@ -171,7 +167,7 @@ export default {
       eBookCover: [],
 
       rules: {
-        required: (value) => !!value || "필수 입력 항목입니다.",
+        required: (value) => !!value || this.GET_RULE_TEXT,
         check: (value) => !this.checkExp(value) || "특수문자 사용불가",
       },
     };
@@ -194,16 +190,15 @@ export default {
       "ebookDirectory",
       "editingTextArr",
     ]),
-  },
-  watch: {
-    // selectedEBookLocation: function(){
-    //   if(this.selectedEBookLocation==undefined){
-    //     document.getElementById("location").style.visibility="visible";
-    //   }
-    //   else{
-    //     document.getElementById("location").style.visibility="hidden";
-    //   }
-    // }
+    GET_FILE_PATH() {
+      return this.$t('dialoginput.file-path');
+    },
+    GET_COVER_IMAGE() {
+      return this.$t('dialoginput.file-image');
+    },
+    GET_RULE_TEXT() {
+      return this.$t("message.required");
+    }
   },
   methods: {
     checkExp: function (value) {

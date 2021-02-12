@@ -6,6 +6,7 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const isSave = false;
 
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
@@ -25,13 +26,14 @@ async function createWindow() {
   })
 
   win.on('close', function(e) {
+
     if (!isSave) {
       const choice = require('electron').dialog.showMessageBoxSync(this,
         {
           type: 'question',
           buttons: ['네', '아니오'],
           title: 'DABOOK 종료',
-          message: '저장하지 않은 파일이 있습니다.\n그래도 종료하시겠습니까?'
+          message: `$t('message-close')`
         });
       if (choice === 1) {
         e.preventDefault();
