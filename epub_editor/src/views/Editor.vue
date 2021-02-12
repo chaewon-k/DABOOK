@@ -1,11 +1,16 @@
 <template>
   <div id="editor">
     <Alert/>
-    <IconButtton/>
+    <!-- <IconButtton/> -->
     <header id="header">
       <TopMenu/>
     </header>
     <div id="wrap">
+      <div id="togglebar">
+        <ToggleBar
+          @toggleDir='toggleDir'
+        />
+      </div>
       <aside v-if="dirToggle" id="aside">
         <v-card max-height="100%" min-height="100%" class="overflow-y-auto" style="border-radius: 0%;">
           <v-btn v-if="dirTableToggle===true" @click="toggle" block text>{{ $t("directory") }}</v-btn>
@@ -19,8 +24,8 @@
         </v-card>
       </aside>
       <content :class="{'content-first': dirToggle, 'content-second': !dirToggle }">
+      <!-- <content>  -->
         <Textarea />
-      <ToggleBar/>
       </content>
       
     </div>
@@ -34,9 +39,8 @@ import Directory from '@/components/mainpage/Directory';
 import TableOfContents from '@/components/mainpage/TableOfContents';
 import Textarea from '@/components/mainpage/Textarea';
 import Alert from "@/components/mainpage/Alert"
-import IconButtton from "@/components/mainpage/IconButton";
+// import IconButtton from "@/components/mainpage/IconButton";
 import ToggleBar from "@/components/mainpage/ToggleBar";
-import { mapState } from "vuex";
 
 export default {
   name: 'Editor',
@@ -46,22 +50,23 @@ export default {
     TableOfContents,
     Textarea,
     Alert,
-    IconButtton,
+    // IconButtton,
     ToggleBar
   },
   data: function () {
     return {
       dirTableToggle: true,
-      dirOpen: true
+      dirOpen: true,
+      dirToggle: true,
     }
   },
   methods: {
     toggle: function () {
       this.dirTableToggle = !this.dirTableToggle;
     },
-  },
-  computed: {
-    ...mapState(['dirToggle']),
+    toggleDir: function () {
+      this.dirToggle = !this.dirToggle;
+    },
   },
 }
 </script>
