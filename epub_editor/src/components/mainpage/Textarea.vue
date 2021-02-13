@@ -1,6 +1,21 @@
 <template>
   <div id="textarea">
+    <v-btn @click="style('bold')">bold</v-btn>
+    <v-btn @click="style('italic')">italic</v-btn>
+    <v-btn @click="style('underline')">underline</v-btn>
+    <v-btn @click="console">console</v-btn>
+    <iframe
+      v-if ="getUserMode"
+      id="area"
+      style="width:100%; height:100%;"
+      marginwidth="3"
+      marginheight="1"
+      spellcheck="false"
+      @mousedown.left="closeMenu"
+      @mousedown.right.stop.prevent="openMenu"
+    ></iframe>
     <v-textarea
+      v-else-if ="!getUserMode"
       id="area"
       solo
       hide-details
@@ -16,12 +31,11 @@
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
 
+    <textarea id="inputTextarea" style="display:none;"></textarea>
+
     <v-dialog v-model="linkDialog" max-width="400">
       <v-card>
-        <DialogTitle
-          title="tool-link"
-          @toggle-dialog="linkDialog = false"
-        /> 
+        <DialogTitle title="tool-link" @toggle-dialog="linkDialog = false" />
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
@@ -43,11 +57,7 @@
         <DialogTitle title="tool-table" @toggle-dialog="tableDialog = false" />
         <v-card-text style="padding: 10% 6% 3% 6%">
           <v-row>
-            <v-text-field
-            class="my-3"
-              label="행"
-              v-model="tableRow"
-            >
+            <v-text-field class="my-3" label="행" v-model="tableRow">
               <v-icon slot="append" color="red" @click="plusRow()"
                 >mdi-plus</v-icon
               >
@@ -57,11 +67,7 @@
             </v-text-field>
           </v-row>
           <v-row>
-            <v-text-field
-            class="my-3"
-              label="열"
-              v-model="tableCol"
-            >
+            <v-text-field class="my-3" label="열" v-model="tableCol">
               <v-icon slot="append" color="red" @click="plusCol()"
                 >mdi-plus</v-icon
               >
@@ -76,9 +82,9 @@
     </v-dialog>
 
     <div class="contextmenu" id="menu" @click="closeMenu">
-      <span @click="edit(cut)">{{ $t('edittab.cut') }}</span>
-      <span @click="edit(copy)">{{ $t('edittab.copy') }}</span>
-      <span @click="edit(paste)">{{ $t('edittab.paste') }}</span>
+      <span @click="edit(cut)">{{ $t("edittab.cut") }}</span>
+      <span @click="edit(copy)">{{ $t("edittab.copy") }}</span>
+      <span @click="edit(paste)">{{ $t("edittab.paste") }}</span>
       <v-divider class="divider-margin"></v-divider>
 
       <v-btn x-small class="mx-1"
@@ -129,11 +135,13 @@
 
       <v-divider class="divider-margin"></v-divider>
 
-      <span @mouseover="openHeaders">{{$t('title')}}  ▸</span>
+      <span @mouseover="openHeaders">{{ $t("title") }} ▸</span>
     </div>
 
     <div id="headers" class="contextmenu" @click="closeMenu">
-      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{$t('title') + hTag}} </span>
+      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)"
+        >{{ $t("title") + hTag }}
+      </span>
     </div>
   </div>
 </template>
@@ -150,7 +158,6 @@ import DialogTitle from "@/components/Dialog/DialogTitle";
 
 const fs = require("fs");
 
-
 export default {
   name: "Textarea",
   components: {
@@ -158,26 +165,45 @@ export default {
     DialogInput,
     DialogTitle,
   },
-  mounted: function () {
-    window.onmousewheel=(e)=>{
-      if(e.ctrlKey==false)
-        return;
-      if (e.wheelDelta > 0 ) {
-        this.fontSize+=1;
-        document.getElementById("area").style.fontSize=this.fontSize+"px";
-        console.log(this.fontSize);
+  created() {
+    window.onload = function() {
+      var HTMLEDITOR = document.getElementById("area");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      if (
+        editorObj.body &&
+        editorObj.body.contentEditable != undefined &&
+        window.ActiveXObject
+      ) {
+        editorObj.body.contentEditable = "true";
+      } else {
+        editorObj.designMode = "on";
+        editorObj.open();
+        editorObj.writeln("<style>");
+        editorObj.writeln("P {margin-top:2px; margin-left:2px;}");
+        editorObj.writeln("BODY {font-size:25px; font-family: kopub_bat_l; } spellcheck:false;");
+        editorObj.writeln("</style>");
+        console.log(editorObj.getElementsByTagName("body"));
+        editorObj.close();
       }
-      else {
-        this.fontSize-=1;
-        document.getElementById("area").style.fontSize=this.fontSize+"px";
+    };
+  },
+  mounted: function() {
+    window.onmousewheel = (e) => {
+      if (e.ctrlKey == false) return;
+      if (e.wheelDelta > 0) {
+        this.fontSize += 1;
+        document.getElementById("area").style.fontSize = this.fontSize + "px";
+        console.log(this.fontSize);
+      } else {
+        this.fontSize -= 1;
+        document.getElementById("area").style.fontSize = this.fontSize + "px";
         console.log(this.fontSize);
       }
     };
     window.onkeypress = (e) => {
-      if(e.keyCode==1&&e.ctrlKey==true&&e.shiftKey==true){
-        eventBus.$emit("shortcut","preview");
-      }
-      else if (e.keyCode === 19 && e.ctrlKey === true) {
+      if (e.keyCode == 1 && e.ctrlKey == true && e.shiftKey == true) {
+        eventBus.$emit("shortcut", "preview");
+      } else if (e.keyCode === 19 && e.ctrlKey === true) {
         eventBus.$emit("shortcut", "save");
       } else if (e.keyCode === 5 && e.ctrlKey === true) {
         edit.copy();
@@ -269,45 +295,66 @@ export default {
     });
   },
   watch: {
-    inputText: function () {
-      let area =document.getElementById("area");
-      area.scrollTop=area.scrollHeight;
+    inputText: function() {
+      let area = document.getElementById("area");
+      area.scrollTop = area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);
       this.$store.dispatch("setHTMLText", this.defaultHTMLText);
     },
-    getEditingText: function () {
+    getEditingText: function() {
       this.inputText = this.getEditingText;
     },
   },
-  data: function () {
+  data: function() {
     return {
-      test: "",
       inputText: "",
       defaultHTMLText: "",
+      findText: "",
       linkText: "",
-      tableData: {
-        col: [],
-        row: [],
-      },
-      hTags: [1, 2, 3, 4, 5, 6],
+
       linkDialog: false,
       tableDialog: false,
+
       tableRow: 1,
       tableCol: 1,
-      findText: "",
+      fontSize: 15,
+
+      hTags: [1, 2, 3, 4, 5, 6],
       findIndexArray: [],
       cursorPosition: { posX: 0, posY: 0 },
-
-      fontSize:15,
     };
   },
   computed: {
-    getEditingText: function () {
+    getEditingText: function() {
       return this.$store.state.editingText;
     },
+    getIframeText: function() {
+      var HTMLEDITOR = document.getElementById("area");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      return editorObj.body.innerHTML;
+    },
+    getUserMode: function() {
+      return this.$store.state.userMode;
+    }
   },
   methods: {
-    edit: function (res) {
+    console() {
+      let HTMLEDITOR = document.getElementById("area");
+      let editorObj;
+      if (this.getUserMode) {
+      editorObj = HTMLEDITOR.contentWindow.document;
+      } else {
+      editorObj = HTMLEDITOR.value;
+      }
+      console.log(editorObj);
+    },
+    style: function(value) {
+      var HTMLEDITOR = document.getElementById("area");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      editorObj.execCommand(value, null, false);
+      console.log(editorObj);
+    },
+    edit: function(res) {
       switch (res) {
         case "cut":
           edit.cut();
@@ -326,88 +373,88 @@ export default {
           break;
       }
     },
-    isSave: function (event) {
+    isSave: function(event) {
       edit.Save(event.keyCode);
     },
-    plusRow: function () {
+    plusRow: function() {
       this.tableRow++;
     },
-    minusRow: function () {
+    minusRow: function() {
       if (this.tableRow == 1) return;
       this.tableRow--;
     },
-    plusCol: function () {
+    plusCol: function() {
       this.tableCol++;
     },
-    minusCol: function () {
+    minusCol: function() {
       if (this.tableCol == 1) return;
       this.tableCol--;
     },
-    attachPTag: function () {
+    attachPTag: function() {
       this.inputText = textStyle.pTag();
     },
-    attachEnterTag: function () {
+    attachEnterTag: function() {
       this.inputText = textStyle.enterTag();
     },
-    attachLineTag: function () {
+    attachLineTag: function() {
       this.inputText = textStyle.lineTag();
     },
-    attachHTag: function (index) {
+    attachHTag: function(index) {
       this.inputText = textStyle.hTag(index);
     },
-    attachItalicTag: function () {
+    attachItalicTag: function() {
       this.inputText = textStyle.italicTag();
     },
-    attachBlockquoteTag: function () {
+    attachBlockquoteTag: function() {
       this.inputText = textStyle.blockquoteTag();
     },
-    attachCiteTag: function () {
+    attachCiteTag: function() {
       this.inputText = textStyle.citeTag();
     },
-    attachBoldTag: function () {
+    attachBoldTag: function() {
       this.inputText = textStyle.boldTag();
     },
-    attachUnderlineTag: function () {
+    attachUnderlineTag: function() {
       this.inputText = textStyle.underlineTag();
     },
-    attachMediumlineTag: function () {
+    attachMediumlineTag: function() {
       this.inputText = textStyle.mediumlineTag();
     },
-    attachSubscriptTag: function () {
+    attachSubscriptTag: function() {
       this.inputText = textStyle.subscriptTag();
     },
-    attachSuperscriptTag: function () {
+    attachSuperscriptTag: function() {
       this.inputText = textStyle.superscriptTag();
     },
-    attachImageTag: function () {
+    attachImageTag: function() {
       this.inputText = textStyle.imageTag();
     },
-    attachLinkTag: function () {
+    attachLinkTag: function() {
       this.linkDialog = false;
       this.inputText = textStyle.linkTag(this.linkText);
       this.linkText = "";
       this.$refs.linkTextInput.resetText();
     },
-    attachTableTag: function () {
+    attachTableTag: function() {
       this.tableDialog = false;
       this.inputText = textStyle.tableTag(this.tableRow, this.tableCol);
       this.tableRow = 1;
       this.tableCol = 1;
     },
-    attachUnorderedListTag: function () {
+    attachUnorderedListTag: function() {
       this.inputText = textStyle.unorderedListTag();
     },
-    attachOrderedListTag: function () {
+    attachOrderedListTag: function() {
       this.inputText = textStyle.orderedListTag();
     },
-    closeMenu: function () {
+    closeMenu: function() {
       let menu = document.getElementById("menu");
       menu.style.display = "none";
       this.cursorPosition.posX = 0;
       this.cursorPosition.posY = 0;
       this.closeHeaders();
     },
-    openMenu: function (event) {
+    openMenu: function(event) {
       let menu = document.getElementById("menu");
       menu.style.left = event.pageX + "px";
       menu.style.top = event.pageY + "px";
@@ -415,21 +462,21 @@ export default {
       this.cursorPosition.posX = event.pageX;
       this.cursorPosition.posY = event.pageY;
     },
-    openHeaders: function () {
+    openHeaders: function() {
       let menu = document.getElementById("headers");
       menu.style.left = this.cursorPosition.posX + 180 + "px";
       menu.style.top = this.cursorPosition.posY + 190 + "px";
       menu.style.height = "auto";
       menu.style.display = "block";
     },
-    closeHeaders: function () {
+    closeHeaders: function() {
       let menu = document.getElementById("headers");
       menu.style.display = "none";
     },
-    setCursor: function (index, length) {
+    setCursor: function(index, length) {
       edit.setCursor(index, length);
     },
-    setLinkText: function (sendData) {
+    setLinkText: function(sendData) {
       this.linkText = sendData;
     },
   },

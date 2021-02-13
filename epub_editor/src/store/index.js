@@ -15,6 +15,7 @@ export default new Vuex.Store({
     findTextArray: [],
     alertMessage: '',
     alertDialog: false,
+    userMode: true,
   },
 
   mutations: {
@@ -64,6 +65,9 @@ export default new Vuex.Store({
     CANCEL_ALERTMESSAGE: function (state) {
       state.alertDialog = false;
     },
+    SET_USERMODE: function (state, value) {
+      state.userMode = value;
+    }
   },
   actions: {
     setEditingText: function ({ commit }, value) {
@@ -102,6 +106,9 @@ export default new Vuex.Store({
     cancelAlertMessage: function({ commit }) {
       commit('CANCEL_ALERTMESSAGE');
     },
+    setUserMode: function ({commit}, value) {
+      commit('SET_USERMODE', value);
+    }
   },
 
   modules: {

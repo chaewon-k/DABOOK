@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <router-view />
+      <!-- <router-view /> -->
+      <Editor />
     </v-main>
   </v-app>
 </template>
@@ -9,13 +10,14 @@
 <script>
 // import Editor from './views/Editor';
 import "./assets/style.css";
+import Editor from './views/Editor.vue';
 let ipc = require('electron').ipcRenderer;
 
 export default {
   name: 'App',
 
   components: {
-    // Editor,
+    Editor
   },
   created: function() {
     this.$i18n.locale = 'ko';
