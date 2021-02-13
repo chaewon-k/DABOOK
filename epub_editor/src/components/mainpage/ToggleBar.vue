@@ -6,6 +6,12 @@
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-action>
       </v-list-item>
+      <v-list-item>
+        <v-list-item-action @click="toggleIcon('UserMode')">
+          <v-icon v-if ="getUserMode">mdi-account-edit</v-icon>
+          <v-icon v-else-if ="!getUserMode">mdi-laptop</v-icon>
+        </v-list-item-action>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -27,6 +33,11 @@ export default {
       type: Boolean
     },
   },
+  computed: {
+    getUserMode(){
+      return this.$store.state.userMode;
+    }
+  },
   methods: {
     toggleIcon: function(val) {
       if (val == "Dir") {
@@ -34,8 +45,14 @@ export default {
       } else if (val == "Lang") {
         if (this.$i18n.locale === "en") this.$i18n.locale = "ko";
         else this.$i18n.locale = "en";
-      } else {
+      } else if (val == "Dark"){
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      } else {
+        if (this.getUserMode) {
+          this.$store.dispatch("setUserMode", false);
+        } else {
+          this.$store.dispatch("setUserMode", true);
+        }
       }
     },
   },
