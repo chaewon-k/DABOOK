@@ -22,10 +22,9 @@
     <v-btn class="align-self-center" @click="addChapter" text
       >목차 추가하기</v-btn
     >
-    <v-btn class="align-self-center" @click="test" text
-      >테스트</v-btn
+    <v-btn class="align-self-center" @click="getEbookList" text
+      >서버에서 불러오기</v-btn
     >
-
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
         <DialogTitle
@@ -120,6 +119,41 @@
         <DialogButton buttonText="내보내기" :dialogMethod="makeEpub" />
       </v-card>
     </v-dialog>
+    
+    <v-dialog v-model="eBookListDialog" max-width="400">
+      <v-card>
+        <DialogTitle
+          title="서버에서 불러오기"
+          @toggle-dialog="eBookListDialog = false"
+        />
+        <v-card-text style="padding: 3% 6% 3% 6%">
+          <v-container>
+            <v-item-group
+              v-model="eBookSelected"
+            >
+              <v-row>
+                <v-col
+                  v-for="(eBook, i) in eBookList"
+                  :key="i"
+                >
+                  <v-item v-slot="{ active, toggle }">
+                    <div @click="toggle">
+                      <p>{{ eBook.epubName }}</p>
+                      <v-btn
+                        icon                        
+                      >
+                        <v-icon>{{ active ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+                      </v-btn>
+                    </div>
+                  </v-item>
+                </v-col>
+              </v-row>
+            </v-item-group>
+          </v-container>
+        </v-card-text>
+        <DialogButton buttonText="불러오기" :dialogMethod="loadFromServer" />
+      </v-card>
+    </v-dialog>
   </v-tabs>
 </template>
 
@@ -130,21 +164,13 @@ import eventBus from "@/eventBus.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
-import { ipcRenderer } from 'electron';
-// import axios from 'axios'
-// import restler from 'axios'
-// import got from 'got'
-// import FormData from 'form-data'
+import axios from 'axios';
 
 const fs = require("fs");
 const path = require("path");
 const electron = require("electron");
 const BrowserWindow = electron.remote.BrowserWindow;
 const fse = require("fs-extra");
-// const streamToBlob = require('stream-to-blob')
-
-// import * as FormData from "form-data";
-
 
 export default {
   name: "FileTab",
@@ -160,6 +186,7 @@ export default {
       chapterDialog: false,
       epubDialog: false,
       eBookDialog: false,
+      eBookListDialog: false,
 
       // string
       eBookText: "",
@@ -177,6 +204,8 @@ export default {
       // Array
       findIndexArray: [],
       eBookCover: [],
+      eBookList: [],
+      eBookSelected: [],
 
       rules: {
         required: (value) => !!value || "필수 입력 항목입니다.",
@@ -205,17 +234,6 @@ export default {
     ]),
   },
   methods: {
-    test: async function () {
-      ipcRenderer.send('upload', 'https://contact.dabook.site/api/upload', 'C:/Users/Jubin Jang/Desktop/빼꼼루피.png')
-    },
-    // test: function () {
-    //   const filePath = 'C:/Users/Jubin Jang/Desktop/잔망루피.png'
-    //   const serverPath = '/EPUB/images'
-    //   const fileName = '잔망루피.png'
-    //   const bookName = '테스트책'
-    //   const email = 'sunshine4429@gmail.com'
-    //   file.uploadFile(filePath, serverPath, fileName, bookName, email);
-    // },
     checkExp: function (value) {
       var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
       if (special_pattern.test(value) == true) {
@@ -253,42 +271,63 @@ export default {
         }
         if (this.checkExp(this.eBookText)) return;
         this.eBookLocation = this.eBookLocation + "/" + this.eBookText + "/";
-        this.$store.dispatch("setEbookDirectory", this.eBookLocation); // store에 현재 위치 저장, 그럼 스토어에는 저장을 왜하는 것일까?
-        fs.mkdir(this.eBookLocation, function (err) {
-          if (err) {
-            console.log("디렉토리 생성 실패");
-          }
-        });
-
-        this.eBookDialog = false;
-        let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
-        fse.copySync(eBookSettingDirectory, this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
-        /*
-        새 ebook 만들기 
-        - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
-          */
-        if (this.eBookCover.length === 0) {
-          // 기본 이미지를 선택할 경우
-          this.eBookCover.name = "default.jpg";
-        } else {
-          // 이미지를 선택할 경우
-          const coverLocation =
-            this.eBookLocation + "/EPUB/images/" + this.eBookCover.name; //이미지 저장할 위치
-          fse.copySync(this.eBookCover.path, coverLocation); // 입력받은 이미지를 저장할 위치로 복사
-        }
-        this.renameImageTag();
-        this.readToc();
-        file.uploadDirectory(this.$store.state.ebookDirectoryTree, this.eBookText, localStorage.getItem('email'))
-        // Dialog 초기화
-        this.eBookDialog = false;
-        this.eBookText = "";
-        this.selectedEBookLocation = "";
-        this.$store.dispatch("setEditingText", "");
-        this.$store.dispatch(
-          "setAlertMessage",
-          "새로운 이북 생성에 성공했습니다"
-        );
-        this.$refs.ebookTextInput.resetText();
+        this.$store.dispatch("setEbookDirectory", this.eBookLocation); // store에 현재 위치 저장
+        axios.get("https://contact.dabook.site/api/user/epub", { params: { email: localStorage.getItem('email'), epubName: this.eBookText }})
+          .then(res => {
+            if (res.data === true) {
+              const data = { email: localStorage.getItem('email'), epubName: this.eBookText }
+              axios.post("https://contact.dabook.site/api/user/epub", data)
+                .then(res => {
+                  if (res.data === true) {
+                    fs.mkdir(this.eBookLocation, function (err) {
+                      if (err) {
+                        console.log("디렉토리 생성 실패");
+                      }
+                    });
+                    this.eBookDialog = false;
+                    let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
+                    fse.copySync(eBookSettingDirectory, this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
+                    /*
+                    새 ebook 만들기 
+                    - 표지 이미지 파일 EPUB 폴더 내 image 폴더로 파일로 복사
+                      */
+                    if (this.eBookCover.length === 0) {
+                      // 기본 이미지를 선택할 경우
+                      this.eBookCover.name = "default.jpg";
+                    } else {
+                      // 이미지를 선택할 경우
+                      const coverLocation =
+                        this.eBookLocation + "/EPUB/images/" + this.eBookCover.name; //이미지 저장할 위치
+                      fse.copySync(this.eBookCover.path, coverLocation); // 입력받은 이미지를 저장할 위치로 복사
+                    }
+                    this.renameImageTag();
+                    this.readToc();
+                    file.uploadDirectory(this.$store.state.ebookDirectoryTree, this.eBookText, localStorage.getItem('email'))
+                    // Dialog 초기화
+                    this.eBookDialog = false;
+                    this.eBookText = "";
+                    this.selectedEBookLocation = "";
+                    this.$store.dispatch("setEditingText", "");
+                    this.$store.dispatch(
+                      "setAlertMessage",
+                      "새로운 이북 생성에 성공했습니다"
+                    );
+                    this.$refs.ebookTextInput.resetText();
+                  } else {
+                    throw new Error('전자책 생성 실패')
+                  }
+                })
+                .catch(err => {
+                  console.log('여기니?')
+                  console.log(err)
+                })
+            } else {
+              // alert 메시지로 동일한 이름의 책을 만들었다고 알려주기
+              console.log(res)
+              this.$store.dispatch('setAlertMessage', '동일한 이름의 이북이 이미 있습니다.')
+            }
+          })
+          .catch(err => console.log(err))
       } catch (err) {
         console.log(err);
         this.eBookDialog = false;
@@ -534,6 +573,48 @@ export default {
     //chapterText 값 받아오기
     setChapterText: function (sendData) {
       this.chapterText = sendData;
+    },
+    //ebook list 받아오기
+    getEbookList: function () {
+      this.eBookListDialog = true;
+      axios.get("https://contact.dabook.site/api/user/epub/list", { params: { email: localStorage.getItem('email') }})
+        .then((res) => {
+          this.eBookList = res.data
+        })
+        .catch(err => console.log(err))
+    },
+    loadFromServer: function () {
+      const eBookId = this.eBookList[this.eBookSelected]['_id']
+      const eBookName = this.eBookList[this.eBookSelected]['epubName']
+      axios.get("https://contact.dabook.site/api/epub/file/list", { params: { id: eBookId }})
+        .then((res) => {
+          console.log(res.data)
+          const fileList = res.data
+          for (let file of fileList) {
+            console.log(file)
+            axios.get("https://contact.dabook.site/api/download", { headers: { accept: '*/*' }, responseType: 'blob', params: { email: localStorage.getItem('email'), epubName: eBookName, fileName: file.fileName, path: file.path }})
+              .then(res => {
+                console.log(res)
+                const url = window.URL.createObjectURL(new Blob([res.data]));
+                const link = document.createElement('a');
+                const contentDisposition = res.headers['content-disposition']; // 파일 이름
+                let fileName = 'unknown';
+                if (contentDisposition) {
+                  const [ fileNameMatch ] = contentDisposition.split(';').filter(str => str.includes('filename'));
+                  if (fileNameMatch)
+                    [ , fileName ] = fileNameMatch.split('=');
+                }
+                link.href = url;
+                link.setAttribute('download', `${fileName}`);
+                link.style.cssText = 'display:none';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+              })
+              .catch(err => console.log(err))
+          }
+        })
+        .catch(err => console.log(err))
     },
   },
 };
