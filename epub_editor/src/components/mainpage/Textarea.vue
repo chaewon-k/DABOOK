@@ -5,8 +5,8 @@
     <v-btn @click="style('underline')">underline</v-btn>
     <v-btn @click="console">console</v-btn>
     <iframe
-      v-if ="getUserMode"
-      id="area"
+      v-show ="getUserMode"
+      id="iframearea"
       style="width:100%; height:100%;"
       marginwidth="3"
       marginheight="1"
@@ -15,7 +15,7 @@
       @mousedown.right.stop.prevent="openMenu"
     ></iframe>
     <v-textarea
-      v-else-if ="!getUserMode"
+      v-show ="!getUserMode"
       id="area"
       solo
       hide-details
@@ -166,9 +166,9 @@ export default {
     DialogTitle,
   },
   created() {
+    var HTMLEDITOR = document.getElementById("iframearea");
+    var editorObj = HTMLEDITOR.contentWindow.document;
     window.onload = function() {
-      var HTMLEDITOR = document.getElementById("area");
-      var editorObj = HTMLEDITOR.contentWindow.document;
       if (
         editorObj.body &&
         editorObj.body.contentEditable != undefined &&
@@ -182,7 +182,6 @@ export default {
         editorObj.writeln("P {margin-top:2px; margin-left:2px;}");
         editorObj.writeln("BODY {font-size:25px; font-family: kopub_bat_l; } spellcheck:false;");
         editorObj.writeln("</style>");
-        console.log(editorObj.getElementsByTagName("body"));
         editorObj.close();
       }
     };
@@ -295,15 +294,39 @@ export default {
     });
   },
   watch: {
-    inputText: function() {
+    inputText: function(newVal) {
       let area = document.getElementById("area");
       area.scrollTop = area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);
       this.$store.dispatch("setHTMLText", this.defaultHTMLText);
+
+      console.log(newVal)
+
+      var HTMLEDITOR = document.getElementById("iframearea");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+
+      editorObj.designMode = "on";
+      editorObj.open();
+      editorObj.writeln("<style>");
+      editorObj.writeln("P {margin-top:2px; margin-left:2px;}");
+      editorObj.writeln("BODY {font-size:25px; font-family: kopub_bat_l; } spellcheck:false;");
+      editorObj.writeln("</style>");
+      editorObj.writeln(newVal);
+      editorObj.close();
     },
-    getEditingText: function() {
+    getEditingText: function () {
       this.inputText = this.getEditingText;
     },
+    getIframeText: function (newVal) {
+      if (newVal !== undefined) {
+        this.inputText = newVal;
+      }
+    },
+    getUserMode: function (newVal) {
+      if (newVal === true) {
+        this.inputText = this.getIframeText
+      }
+    }
   },
   data: function() {
     return {
@@ -329,27 +352,32 @@ export default {
       return this.$store.state.editingText;
     },
     getIframeText: function() {
-      var HTMLEDITOR = document.getElementById("area");
-      var editorObj = HTMLEDITOR.contentWindow.document;
-      return editorObj.body.innerHTML;
-    },
-    getUserMode: function() {
-      return this.$store.state.userMode;
-    }
-  },
-  methods: {
-    console() {
-      let HTMLEDITOR = document.getElementById("area");
+      let HTMLEDITOR = document.getElementById("iframearea");
       let editorObj;
       if (this.getUserMode) {
       editorObj = HTMLEDITOR.contentWindow.document;
       } else {
       editorObj = HTMLEDITOR.value;
       }
-      console.log(editorObj);
+      return editorObj.body.outerHTML;
+    },
+    getUserMode: function() {
+      return this.$store.state.userMode;
+    },
+  },
+  methods: {
+    console() {
+      let HTMLEDITOR = document.getElementById("iframearea");
+      let editorObj;
+      if (this.getUserMode) {
+      editorObj = HTMLEDITOR.contentWindow.document;
+      } else {
+      editorObj = HTMLEDITOR.value;
+      }
+      console.log(editorObj.body.innerHTML);
     },
     style: function(value) {
-      var HTMLEDITOR = document.getElementById("area");
+      var HTMLEDITOR = document.getElementById("iframearea");
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.execCommand(value, null, false);
       console.log(editorObj);
