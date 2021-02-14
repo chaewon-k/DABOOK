@@ -76,9 +76,9 @@
     </v-dialog>
 
     <div class="contextmenu" id="menu" @click="closeMenu">
-      <span @click="edit(cut)">{{ $t('edittab.cut') }}</span>
-      <span @click="edit(copy)">{{ $t('edittab.copy') }}</span>
-      <span @click="edit(paste)">{{ $t('edittab.paste') }}</span>
+      <span @click="edits('cut')">{{ $t('edittab.cut') }}</span>
+      <span @click="edits('copy')">{{ $t('edittab.copy') }}</span>
+      <span @click="edits('paste')">{{ $t('edittab.paste') }}</span>
       <v-divider class="divider-margin"></v-divider>
 
       <v-btn x-small class="mx-1"
@@ -182,9 +182,10 @@ export default {
       } else if (e.keyCode === 5 && e.ctrlKey === true) {
         edit.copy();
       } else if (e.keyCode === 23 && e.ctrlKey === true) {
-        edit.cut();
+        console.log("shortcut cut");
+        this.inputText=edit.cut();
       } else if (e.keyCode === 4 && e.ctrlKey === true) {
-        edit.paste();
+        this.inputText=edit.paste();
       } else if (e.keyCode === 17 && e.ctrlKey === true) {
         this.inputText = edit.undo();
       } else if (e.keyCode === 6 && e.ctrlKey === true) {
@@ -195,7 +196,7 @@ export default {
       }
     };
     eventBus.$on("edit", (res) => {
-      this.edit(res);
+      this.edits(res);
     });
     eventBus.$on("findText", (res) => {
       this.findText = res;
@@ -307,16 +308,17 @@ export default {
     },
   },
   methods: {
-    edit: function (res) {
+    edits: function (res) {
+      console.log("edits");
       switch (res) {
         case "cut":
-          edit.cut();
+          this.inputText=edit.cut();
           break;
         case "copy":
           edit.copy();
           break;
         case "paste":
-          edit.paste();
+          this.inputText=edit.paste();
           break;
         case "undo":
           this.inputText = edit.undo();
@@ -413,13 +415,13 @@ export default {
       menu.style.left = event.offsetX+20+ "px";
       menu.style.top = event.offsetY+20+ "px";
       menu.style.display = "block";
-      this.cursorPosition.posX = event.pageX;
-      this.cursorPosition.posY = event.pageY;
+      this.cursorPosition.posX = event.offsetX;
+      this.cursorPosition.posY = event.offsetY;
     },
     openHeaders: function () {
       let menu = document.getElementById("headers");
-      menu.style.left = this.cursorPosition.posX + 180 + "px";
-      menu.style.top = this.cursorPosition.posY + 190 + "px";
+      menu.style.left = this.cursorPosition.posX +20 +180 + "px";
+      menu.style.top = this.cursorPosition.posY +20+ 190 + "px";
       menu.style.height = "auto";
       menu.style.display = "block";
     },

@@ -154,7 +154,7 @@ div.right {
     0 15px 35px rgba(50,50,90,0.1),
     0 5px 15px rgba(0,0,0,0.07);
   overflow: hidden;
-  z-index: 999999;
+  z-index: 9;
 }
 
 .contextmenu span {
