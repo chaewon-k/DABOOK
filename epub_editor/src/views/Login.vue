@@ -129,9 +129,10 @@ export default {
             this.color = '#EF5350'
           }
           else {
-            console.log(res)
+            // console.log(res)
             // local Storage에 로그인 정보 저장.
             localStorage.setItem('token',res.data.token)
+            localStorage.setItem('name', res.data.name)
             localStorage.setItem('email', res.data.email)
             localStorage.setItem('nickname', res.data.nickname)
             this.$router.push({ name: 'Editor'})
@@ -184,7 +185,6 @@ export default {
 <style>
 .bg {
   background-image: url('../assets/accountImg/background.png');
-  width: 100%;
-  height: 100%;
+  background-size: 100% 100%;
 }
 </style>
