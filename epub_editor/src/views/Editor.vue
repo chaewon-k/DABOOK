@@ -1,7 +1,6 @@
 <template>
   <div id="editor">
     <Alert/>
-    <!-- <IconButtton/> -->
     <header id="header">
       <TopMenu/>
     </header>
@@ -39,7 +38,6 @@ import Directory from '@/components/mainpage/Directory';
 import TableOfContents from '@/components/mainpage/TableOfContents';
 import Textarea from '@/components/mainpage/Textarea';
 import Alert from "@/components/mainpage/Alert"
-// import IconButtton from "@/components/mainpage/IconButton";
 import ToggleBar from "@/components/mainpage/ToggleBar";
 
 export default {
@@ -50,7 +48,6 @@ export default {
     TableOfContents,
     Textarea,
     Alert,
-    // IconButtton,
     ToggleBar
   },
   data: function () {
