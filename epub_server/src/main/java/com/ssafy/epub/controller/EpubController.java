@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,7 +57,6 @@ public class EpubController {
 	//, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
 	@PostMapping(value = "/upload")
 	@ApiOperation(value = "upload file")
-	@Transactional
 	public ResponseEntity<Boolean> upload(FileVO fileVo) {
 		//List<MultipartFile> files = uploadFilesInfo.getFiles();
 		
@@ -115,6 +113,7 @@ public class EpubController {
 		fileList.add(fileDTO);
 		epub.setFileList(fileList);
 		epubList.add(epub);
+		user.setEpubList(epubList);
 		
 		fileRepository.save(fileDTO);
 		epubRepository.save(epub);
