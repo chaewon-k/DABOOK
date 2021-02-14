@@ -408,9 +408,10 @@ export default {
       this.closeHeaders();
     },
     openMenu: function (event) {
+      this.closeHeaders();
       let menu = document.getElementById("menu");
-      menu.style.left = event.pageX + "px";
-      menu.style.top = event.pageY + "px";
+      menu.style.left = event.offsetX+20+ "px";
+      menu.style.top = event.offsetY+20+ "px";
       menu.style.display = "block";
       this.cursorPosition.posX = event.pageX;
       this.cursorPosition.posY = event.pageY;

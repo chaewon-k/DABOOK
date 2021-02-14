@@ -57,7 +57,7 @@ html, body {
   position: absolute;
   height: 100%;
   width: 65px;
-  z-index: 99;
+  z-index: 1;
 }
 
 #aside {
@@ -191,18 +191,6 @@ div.right {
   font-size: smaller;
 }
 
-/* 이미지 버튼*/
-#iconBtn{
-  background-color: #716f8f;
-  color: white;
-  z-index: 999999;
-  bottom: 0;
-  right:0;
-  position: absolute;
-  margin: 0 16px 16px 16px;
-  padding : 8px;
-  border-radius: 50%;
-}
 
 /* Light mode */
 .theme--light.v-card {
@@ -231,4 +219,9 @@ div.right {
 
 .theme--dark.v-input textarea {
   color: #cfcddf;
+}
+
+v-tooltab span{
+  z-index: 999999;
+  position: relative;
 }
