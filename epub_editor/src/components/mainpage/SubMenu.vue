@@ -32,6 +32,9 @@
         <!-- <v-btn class="align-self-center" text>마크다운 설명서 보기</v-btn> -->
       </v-tabs>
     </div>
+
+  <ToolsTab2 v-show="itemIndex === 6" />
+  <StyleTab2 v-show="itemIndex === 7" />
   </div>
 </template>
 
@@ -39,7 +42,9 @@
 import FileTab from "@/components/mainpage/menutabs/FileTab";
 import EditTab from "@/components/mainpage/menutabs/EditTab";
 import ToolsTab from "@/components/mainpage/menutabs/ToolsTab";
+import ToolsTab2 from "@/components/mainpage/menutabs/ToolsTab2";
 import StyleTab from "@/components/mainpage/menutabs/StyleTab";
+import StyleTab2 from "@/components/mainpage/menutabs/StyleTab2";
 
 const path = require("path");
 const electron = require("electron");
@@ -51,7 +56,9 @@ export default {
     FileTab,
     EditTab,
     ToolsTab,
+    ToolsTab2,
     StyleTab,
+    StyleTab2
   },
   props: {
     itemIndex: { type: Number },

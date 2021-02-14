@@ -38,6 +38,8 @@ export default {
         { tab: "style" },
         { tab: "setting" },
         { tab: "help" },
+        { tab: "exec1" },
+        { tab: "exec2" }
       ],
     };
   },
