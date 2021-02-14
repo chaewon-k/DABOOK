@@ -177,7 +177,7 @@ public class UserController {
 
 	@DeleteMapping("/user")
 	@ApiOperation(value = "deleteUser")
-	public ResponseEntity<Boolean> deleteUser(String email) {
+	public ResponseEntity<Boolean> deleteUser(@RequestBody String email) {
 		User user = userRepository.findByEmail(email);
 		
 		userRepository.delete(user);
