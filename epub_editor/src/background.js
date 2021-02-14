@@ -3,12 +3,14 @@
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-const isDevelopment = process.env.NODE_ENV !== 'production'
-const fs = require("fs");
-
 import axios from 'axios';
 import FormData from 'form-data';
 import { ipcMain } from 'electron';
+
+const isDevelopment = process.env.NODE_ENV !== 'production'
+const fs = require("fs");
+
+let win;
 
 ipcMain.on('upload', async (event, url, file, email, epubName, path) => {
   console.log(`${file} 업로드 중`)
@@ -22,12 +24,14 @@ ipcMain.on('upload', async (event, url, file, email, epubName, path) => {
     maxContentLength: Infinity,
     maxBodyLength: Infinity
   }
-  axios.post(url, f, config)
+  await axios.post(url, f, config)
     .then(function () {
       console.log('upload success')
+      win.webContents.send('upload','success');
     })
     .catch(function (err) {
       console.log(err)
+      win.webContents.send('upload', 'fail');
     })
 });
 
@@ -38,7 +42,7 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 950,
     height: 700,
     autoHideMenuBar: true,
