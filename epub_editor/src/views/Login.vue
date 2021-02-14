@@ -59,7 +59,7 @@
 </template>
 <script>
 import axios from 'axios'
-import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
+//import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 export default {
   name: 'Login',
   data: function () {

@@ -25,7 +25,9 @@
           ><v-icon medium>mdi-redo</v-icon></v-btn
         >
       </template>
+      <div id="btnText">
       <span>{{ $t("edittab.redo") }}</span>
+      </div>
     </v-tooltip>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
