@@ -185,7 +185,6 @@ export default {
 <style>
 .bg {
   background-image: url('../assets/accountImg/background.png');
-  width: 100%;
-  height: 100%;
+  background-size: 100% 100%;
 }
 </style>
