@@ -2,15 +2,16 @@
   <v-navigation-drawer mini-variant mini-variant-width="65" permanent>
     <v-list dense nav>
       <v-list-item v-for="item in items" :key="item.title">
-        <v-list-item-action>
-          <v-icon @click="toggleIcon(item.title)">{{ item.icon }}</v-icon>
+        <v-list-item-action class="ma-0">
+          <v-btn icon class="align-self-center rounded-sm"><v-icon @click="toggleIcon(item.title)">{{ item.icon }}</v-icon></v-btn>
+          
         </v-list-item-action>
       </v-list-item>
       <v-list-item>
-        <v-icon @click="userInfoDialog=true">mdi-account-circle-outline</v-icon>
+        <v-btn icon class="align-self-center rounded-sm"><v-icon @click="userInfoDialog=true">mdi-account-circle-outline</v-icon></v-btn>
       </v-list-item>
       <v-list-item>
-        <v-icon @click="logoutDialog=true">mdi-logout</v-icon>
+        <v-btn icon class="align-self-center rounded-sm"><v-icon @click="logoutDialog=true">mdi-logout</v-icon></v-btn>
       </v-list-item>
       <UserInfo
         :userInfoDialog="userInfoDialog"

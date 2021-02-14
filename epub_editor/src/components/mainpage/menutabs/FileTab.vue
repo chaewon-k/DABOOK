@@ -376,7 +376,6 @@ export default {
               "setAlertMessage",
               "success.load-ebook"
             );
-            this.$store.dispatch("setDirToggle");
           }
         }
       } catch (err) {

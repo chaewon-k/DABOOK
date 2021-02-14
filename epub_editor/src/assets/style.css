@@ -112,19 +112,6 @@ html, body {
   width: 100%;
 }
 
-/* div.left {
-    width: 60%;
-    float: left;
-    height: 10%;
-}
-
-div.right {
-  top:20%;
-  width: 39%;
-  float: right;
-  position: relative;
-} */
-
 /* dialog 글씨 및 배경 색 변경하는 style */
 
 .v-text-field {
@@ -153,7 +140,7 @@ div.right {
     0 15px 35px rgba(50,50,90,0.1),
     0 5px 15px rgba(0,0,0,0.07);
   overflow: hidden;
-  z-index: 999999;
+  z-index: 100;
 }
 
 .contextmenu span {
@@ -217,7 +204,7 @@ div.right {
 .theme--dark.v-btn.v-btn--icon,
 .theme--dark.v-treeview, 
 .theme--dark.v-icon {
-  color: #b7b6ca !important;
+  color: #cdcdd4 !important;
 }
 
 
