@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, globalShortcut } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -24,7 +24,7 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
   })
-
+  win.setMenu(null);
   win.on('close', function(e) {
 
     if (!isSave) {
@@ -61,6 +61,7 @@ app.on('window-all-closed', () => {
   }
 })
 
+
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -71,6 +72,7 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
+
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {
