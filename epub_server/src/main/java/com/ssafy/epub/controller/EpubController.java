@@ -111,6 +111,12 @@ public class EpubController {
 		fileDTO.setPath(fileVo.getPath());
 		fileDTO.setFileName(mfFile.getOriginalFilename());
 		fileDTO.setEpubId(epubId);
+		//파일 중복 처리
+		for(FileDTO tempFile : fileList) {
+			if(tempFile.getFileName().equals(mfFile.getOriginalFilename())) {
+				fileList.remove(tempFile);
+			}
+		}
 		fileList.add(fileDTO);
 		epub.setFileList(fileList);
 		epubList.add(epub);
