@@ -178,8 +178,7 @@ public class UserController {
 	@DeleteMapping("/user")
 	@ApiOperation(value = "deleteUser")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "user", value = "회원 객체", required = true, dataType = "User") })
-	public ResponseEntity<Boolean> deleteUser(@RequestBody Map<String, String> req) {
-		String email = req.get("email");
+	public ResponseEntity<Boolean> deleteUser(String email) {
 		User user = userRepository.findByEmail(email);
 		
 		userRepository.delete(user);
