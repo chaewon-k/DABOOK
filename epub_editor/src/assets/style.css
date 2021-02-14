@@ -205,6 +205,10 @@ div.right {
 
 /* Light mode */
 .theme--light.v-card {
+  color: #423F8C !important;
+}
+
+.theme--light.v-btn {
   color: #423F8C;
 }
 

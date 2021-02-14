@@ -40,7 +40,7 @@ export default {
       return this.$store.state.ebookDirectoryTree;
     },
     GET_CONFIRM_BUTTON() {
-      return this.$t('confirm.save-confirm');
+      return this.$t('userinfotab.NNplaceholder');
     },
     GET_CANCEL_BUTTON() {
       return this.$t('confirm.save-cancel');
