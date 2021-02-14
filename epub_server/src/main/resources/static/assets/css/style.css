@@ -1160,6 +1160,15 @@ section {
   color: #6A68A6;
 }
 
+#footer .footer-top .footer-downloads h4 {
+  font-size: 200px;
+}
+
+#footer .footer-top .row .footer-downloads a > img {
+  height: 40px;
+  width: 160px;
+}
+
 #footer .footer-top .footer-newsletter form {
   margin-top: 30px;
   background: #fff;
