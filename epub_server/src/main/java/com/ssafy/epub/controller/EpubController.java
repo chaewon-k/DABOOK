@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,13 +70,14 @@ public class EpubController {
 		List<Epub> epubList = user.getEpubList();
 		
 		String epubId = "";
-		Epub epub = new Epub();
-		List<FileDTO> fileList = new ArrayList<>();
+		Epub epub = null;
+		List<FileDTO> fileList = null;
 		for(Epub tempEpub : epubList) {
 			if(tempEpub.getEpubName().equals(fileVo.getEpubName())) {
 				epubId = new String(tempEpub.get_id());
 				epub = tempEpub;
 				fileList = tempEpub.getFileList();
+				epubList.remove(tempEpub);
 				break;
 			}
 		}
@@ -112,9 +112,11 @@ public class EpubController {
 		fileDTO.setEpubId(epubId);
 		fileList.add(fileDTO);
 		epub.setFileList(fileList);
+		epubList.add(epub);
 		
 		fileRepository.save(fileDTO);
 		epubRepository.save(epub);
+		userRepository.save(user);
 		
 		return new ResponseEntity<>(true,HttpStatus.OK);
 	}
