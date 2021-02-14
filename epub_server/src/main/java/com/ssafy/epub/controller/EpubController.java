@@ -67,21 +67,6 @@ public class EpubController {
 		mfFile.getOriginalFilename();
 		User user = userRepository.findByEmail(fileVo.getEmail());
 		
-		List<Epub> epubList = user.getEpubList();
-		
-		String epubId = "";
-		Epub epub = null;
-		List<FileDTO> fileList = null;
-		for(Epub tempEpub : epubList) {
-			if(tempEpub.getEpubName().equals(fileVo.getEpubName())) {
-				epubId = new String(tempEpub.get_id());
-				epub = tempEpub;
-				fileList = tempEpub.getFileList();
-				epubList.remove(tempEpub);
-				break;
-			}
-		}
-		
 		File file = new File(filePath + mfFile.getOriginalFilename());
 			
 		// 주어진 경로에 존재하지 않는 모든 디렉토리 생성
@@ -106,6 +91,22 @@ public class EpubController {
 			ie.printStackTrace();
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
+		
+		List<Epub> epubList = user.getEpubList();
+		
+		String epubId = "";
+		Epub epub = null;
+		List<FileDTO> fileList = null;
+		for(Epub tempEpub : epubList) {
+			if(tempEpub.getEpubName().equals(fileVo.getEpubName())) {
+				epubId = new String(tempEpub.get_id());
+				epub = tempEpub;
+				fileList = tempEpub.getFileList();
+				epubList.remove(tempEpub);
+				break;
+			}
+		}
+		
 		FileDTO fileDTO = new FileDTO();
 		fileDTO.setPath(fileVo.getPath());
 		fileDTO.setFileName(mfFile.getOriginalFilename());
