@@ -175,9 +175,9 @@ public class UserController {
 			return new ResponseEntity<>("ERROR_PREV_PASSWORD", HttpStatus.BAD_REQUEST);
 	}
 
-	@DeleteMapping("/user")
+	@DeleteMapping("/user/{email}")
 	@ApiOperation(value = "deleteUser")
-	public ResponseEntity<Boolean> deleteUser(@RequestBody String email) {
+	public ResponseEntity<Boolean> deleteUser(@PathVariable("email") String email) {
 		User user = userRepository.findByEmail(email);
 		
 		userRepository.delete(user);
