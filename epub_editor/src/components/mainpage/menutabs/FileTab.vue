@@ -302,7 +302,7 @@ export default {
                     }
                     this.renameImageTag();
                     this.readToc();
-                    file.uploadDirectory(this.$store.state.ebookDirectoryTree, this.eBookText, localStorage.getItem('email'))
+                    file.uploadDirectory(this.$store.state.ebookDirectoryTree, this.eBookText, localStorage.getItem('email'), 1)
                     // Dialog 초기화
                     this.eBookDialog = false;
                     this.eBookText = "";
@@ -598,7 +598,7 @@ export default {
                 const url = window.URL.createObjectURL(new Blob([res.data]));
                 const link = document.createElement('a');
                 const contentDisposition = res.headers['content-disposition']; // 파일 이름
-                let fileName = 'unknown';
+                let fileName = file.fileName;
                 if (contentDisposition) {
                   const [ fileNameMatch ] = contentDisposition.split(';').filter(str => str.includes('filename'));
                   if (fileNameMatch)

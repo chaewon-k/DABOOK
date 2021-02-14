@@ -49,13 +49,19 @@ export function readDirectory (dirPath, arrayOfFiles, toc, maxV) {
   return { arrayOfFiles, toc, maxV };
 }
 
-export function uploadDirectory (arrayOfFiles, bookName, email) {
+export function uploadDirectory (arrayOfFiles, bookName, email, i) {
   for (let file of arrayOfFiles) {
     if (file.children) {
-      uploadDirectory(file.children, bookName, email)
+      i++;
+      setTimeout(function () {
+        uploadDirectory(file.children, bookName, email, i);
+      }, 2000*i)
     } else {
       let temp = file.dirPath.split(bookName)[1].split('/')
-      uploadFile(file.dirPath, '/'+temp.slice(2, temp.length-1).join('/'), bookName, email)
+      i++;
+      setTimeout(function () {
+        uploadFile(file.dirPath, '/'+temp.slice(2, temp.length-1).join('/'), bookName, email)
+      }, 2000*i)
     }
   }
 }
