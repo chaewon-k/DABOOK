@@ -73,25 +73,25 @@
     "tool-table": "Add table"
   },
   "dialoginput": {
-      "file-title": "e-book title",
-      "file-path": "save path",
-      "file-image": "cover image",
-      "file-author": "author",
-      "file-chapter": "chapter title",
-      "edit-find": "word to find",
-      "edit-replace": "word to replace",
-      "style-title": "style title",
-      "style-align": "alignment",
-      "style-font": "font",
-      "style-fontcolor": "font color",
+    "file-title": "e-book title",
+    "file-path": "save path",
+    "file-image": "cover image",
+    "file-author": "author",
+    "file-chapter": "chapter title",
+    "edit-find": "word to find",
+    "edit-replace": "word to replace",
+    "style-title": "style title",
+    "style-align": "alignment",
+    "style-font": "font",
+    "style-fontcolor": "font color",
       "style-backgroundcolor": "background color"
   },
   "dialogbutton": {
-      "create" : "create",
-      "export": "export",
-      "add": "add",
-      "replace": "replace",
-      "apply": "apply"
+    "create" : "create",
+    "export": "export",
+    "add": "add",
+    "replace": "replace",
+    "apply": "apply"
   },
   "success": {
     "create-ebook": "e-book creation was successful.",
@@ -99,7 +99,9 @@
     "save-ebook": "Saved.",
     "load-ebook": "Importing the book was successful.",
     "add-chapter": "adding chapter was successful.",
-    "replace": "Word conversion completed."
+    "replace": "Word conversion completed.",
+    "change-nickname": "Nickname has been changed.",
+    "change-password": "Password has been changed."
   },
   "error": {
     "create-ebook-input": "Please enter a name and storage location for the book.",
@@ -120,7 +122,11 @@
     "find-word": "There are no words to find.",
     "in-tag": "Style can only be applied outside the tag.",
     "add-style": "Please enter a style title.",
-    "required": "This input is required."
+    "required": "This input is required.",
+    "duplicated-nickname": "Nickname already exists.",
+    "not-match-newpassword": "New password not match.",
+    "not-match-prevpassword": "Password not match.",
+    "fail-signout": "Failed to signout membership. Please contact the customer service center."
   },
   "confirm": {
     "save-title": "Do you want to save the history of changes in the previous file?",
@@ -129,7 +135,37 @@
     "close-title": "Are you sure you want to exit the DABOOK?",
     "close-confirm": "yes",
     "close-cancel": "no"
-},
+  },
+  "userinfotab": {
+    "title": "User Information",
+    "email": "Email",
+    "name": "Name",
+    "nickname": "Nickname",
+    "password-change": "Change Password",
+    "signout": "signout",
+    "NNplaceholder": "Write a nickname to change.",
+    "prevpassword": "current password",
+    "newpassword": "new password",
+    "passwordconfirm": "password confirm",
+    "changebtn": "change",
+    "signouttab": {
+      "title": "Signout",
+      "content-1": "The data you are working on and your personal information will be deleted.",
+      "content-2": "Are you sure you want to proceed with the signout?",
+      "signout-btn": "signout",
+      "cancel": "cancel"
+    }
+  },
+  "togglebar": {
+    "logout": {
+      "icon": "Logout",
+      "title": "Logout",
+      "content-1": "Check that you have saved the data you are working on.",
+      "content-2": "Are you sure you want to logout?",
+      "logout-btn": "logout",
+      "cancel": "cancel"
+    }
+  },
   "title": "title",
   "addstyle": "add style",
   "manual": "manual",
