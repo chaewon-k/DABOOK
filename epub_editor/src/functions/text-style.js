@@ -227,9 +227,9 @@ export function orderedListTag () {
 }
 
 export function convertImageTag (temp, path) {
-  let str = '<img src="file:///' + path + '/EPUB/images/';
+  let str = 'src="file:///' + path + '/EPUB/images/';
   console.log(str)
-  temp = temp.replaceAll('<img src="../images/', str);
+  temp = temp.replaceAll('src="../images/', str);
   // console.log(styleList);
   return temp;
 }
