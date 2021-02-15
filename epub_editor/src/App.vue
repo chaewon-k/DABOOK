@@ -1,14 +1,15 @@
 <template>
   <v-app>
     <v-main>
-      <Editor />
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Editor from './views/Editor';
-import "./assets/style.css";
+// import Editor from './views/Editor';
+import './assets/style.css';
+let ipc = require('electron').ipcRenderer;
 
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
@@ -16,34 +17,44 @@ const ipcRenderer = electron.ipcRenderer;
 export default {
   name: 'App',
   components: {
-    Editor,
+    // Editor,
   },
-  mounted: function () {
-    ipcRenderer.on('isMac', function (event, message) {
-      if (message === true) {
-        this.$store.dispatch('setOsDirectory','/Contents/Resources/')
-      }
-    }.bind(this))
+  created: function() {
+    this.$i18n.locale = 'ko';
+    let data = [];
+    data.push({ title: this.$t('confirm.close-title') });
+    data.push({ confirm: this.$t('confirm.close-confirm') });
+    data.push({ cancel: this.$t('confirm.close-cancel') });
+    ipc.send('close_dialog', data);
   },
-  data: function () {
-    return {
-    }
+  mounted: function() {
+    ipcRenderer.on(
+      'isMac',
+      function(event, message) {
+        if (message === true) {
+          this.$store.dispatch('setOsDirectory', '/Contents/Resources/');
+        }
+      }.bind(this)
+    );
+  },
+  data: function() {
+    return {};
   },
 };
 </script>
 <style>
 /* 스크롤바 웹킷 엔진 */
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 8px;
-    background: #ffffff;
-    /* display: none; */
+  width: 10px;
+  height: 8px;
+  background: #ffffff;
+  /* display: none; */
 }
 ::-webkit-scrollbar-thumb {
-    border-radius: 3.5px;
-    background-color: #dedeeb;
+  border-radius: 3.5px;
+  background-color: #dedeeb;
 }
 ::-webkit-scrollbar-track {
-    background: #ffffff;
+  background: #ffffff;
 }
 </style>

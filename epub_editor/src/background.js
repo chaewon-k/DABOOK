@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, Menu, BrowserWindow } from 'electron'
+import { app, protocol, Menu, BrowserWindow} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const { dialog } = require('electron')
@@ -409,7 +409,7 @@ async function createWindow() {
   win = new BrowserWindow({
     width: 950,
     height: 700,
-    autoHideMenuBar: true,
+    //autoHideMenuBar: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -481,6 +481,7 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
+
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -491,6 +492,7 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
+
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {

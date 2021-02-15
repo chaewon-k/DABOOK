@@ -3,7 +3,7 @@
     <v-container>
       <v-row class="mx-2 mt-2">
         <v-toolbar-title class="ml-1" style="font-size: 2em">
-          {{ title }}
+          {{ $t("dialogtitle." + title) }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn color="primary" icon @click="toggleDialog()">
