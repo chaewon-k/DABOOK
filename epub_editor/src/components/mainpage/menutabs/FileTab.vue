@@ -410,7 +410,8 @@ export default {
           this.$store.dispatch('setAlertMessage', 'error.preview');
         } else {
           const win = new BrowserWindow({ width: 800, height: 1500 });
-          win.loadURL(this.$store.state.selectedFileDirectory);
+          win.loadURL("file://" + this.$store.state.selectedFileDirectory); // for build
+          //win.loadURL(this.$store.state.selectedFileDirectory); // for win test
         }
       } catch {
         console.log('ebook 미리보기 실패');
