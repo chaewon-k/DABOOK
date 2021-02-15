@@ -40,14 +40,9 @@ html {
   margin-top: 10px;
 }
 
-* {
-  font-family: 'kopub_bat_l';
-}
-
 p {
   font-size: 1em;
   line-height: 1.8em;
-  text-align: justify;
   text-indent: 1em;
   display: block;
   margin: 0;

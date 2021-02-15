@@ -43,20 +43,20 @@ export function makeCustomStyle (val, path) {
   let temp = fs.readFileSync(path + '/EPUB/styles/stylesheet.css').toString();
   let range = '', font = '', backgroundColor = '', fontColor = '';
   if (val.range === '왼쪽 정렬') {
-    range = ` text-align: left;\n`;
+    range = ` text-align: left !important;\n`;
   }
   else if (val.range == '오른쪽 정렬') {
-    range = ` text-align: right;\n`;
+    range = ` text-align: right !important;\n`;
   }
   else if (val.range == '가운데 정렬') {
-    range = ` text-align: center;\n`;
+    range = ` text-align: center !important;\n`;
   }
   else {
-    range = ` text-align: justify;\n`;
+    range = ` text-align: justify !important;\n`;
   }
 
   if (val.font != '') {
-    font = ` font-family:${val.font};\n`;
+    font = ` font-family:${val.font} !important;\n`;
   }
 
   if (val.backgroundColor != '') {
@@ -73,7 +73,7 @@ ${fontColor}${backgroundColor}${range}${font}
 }\n\n`;
   // console.log(cssStr);
 
-  fs.writeFile(path + '/EPUB/styles/stylesheet.css', temp + cssStr, (err) => {
+  fs.writeFileSync(path + '/EPUB/styles/stylesheet.css', temp + cssStr, (err) => {
     if (err) {
       console.log('fs.writeFile 실패');
     }

@@ -226,3 +226,14 @@ export function orderedListTag () {
   return area.value;
 }
 
+export function convertImageTag (temp, path) {
+  let str = '<img src="file:///' + path + '/EPUB/images/';
+  console.log(str)
+  temp = temp.replaceAll('<img src="../images/', str);
+  // console.log(styleList);
+  return temp;
+}
+
+String.prototype.replaceAll = function(org, dest) {
+  return this.split(org).join(dest);
+}
