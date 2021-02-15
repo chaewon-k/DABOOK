@@ -7,16 +7,16 @@
           
         </v-list-item-action>
       </v-list-item>
-      <v-list-item>
+      <!-- <v-list-item>
         <v-btn icon class="align-self-center rounded-sm"><v-icon @click="userInfoDialog=true">mdi-account-circle-outline</v-icon></v-btn>
       </v-list-item>
       <v-list-item>
         <v-btn icon class="align-self-center rounded-sm"><v-icon @click="logoutDialog=true">mdi-logout</v-icon></v-btn>
-      </v-list-item>
-      <UserInfo
+      </v-list-item> -->
+      <!-- <UserInfo
         :userInfoDialog="userInfoDialog"
         @close="userInfoDialog=false"
-      />
+      /> -->
     </v-list>
 
     <!----------- logout dialog ----------->
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import UserInfo from '@/components/mainpage/UserInfo'
+// import UserInfo from '@/components/mainpage/UserInfo'
 export default {
   data: function () {
     return {
@@ -73,7 +73,7 @@ export default {
     },
   },
   components: {
-    UserInfo
+    // UserInfo
   },
   methods: {
     toggleIcon: function(val) {
