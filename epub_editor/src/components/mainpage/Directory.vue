@@ -61,7 +61,7 @@ export default {
       return this.$store.state.ebookDirectoryTree;
     },
     GET_CONFIRM_BUTTON() {
-      return this.$t('userinfotab.NNplaceholder');
+      return this.$t('confirm.save-confirm');
     },
     GET_CANCEL_BUTTON() {
       return this.$t('confirm.save-cancel');
@@ -102,7 +102,8 @@ export default {
       if (val.children) {
         return  // 폴더면 그냥 return
       } else {  // 파일을 클릭한 것이면
-        if (this.$store.state.selectedFileDirectory !== '' && this.$store.state.selectedFileDirectory !== val.dirPath) {  // 처음 여는게 아니거나 다른 파일을 열려고 하는 것이면, 변경여부 확인하고 저장여부를 물어본다.
+        if (this.$store.state.selectedFileDirectory !== '' && this.$store.state.selectedFileDirectory !== val.dirPath) {  
+          // 처음 여는게 아니거나 다른 파일을 열려고 하는 것이면, 변경여부 확인하고 저장여부를 물어본다.
           let original = fs.readFileSync(this.$store.state.selectedFileDirectory).toString();  // original: 원래 작성중이던 파일의 원본
           original = original.slice(original.indexOf("<body"), original.indexOf("</body>") + 7);
           if (original !== this.$store.state.editingText) {  // 원본과 수정 중 파일이 다르다면
