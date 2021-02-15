@@ -382,7 +382,7 @@ export default {
       this.inputText = textStyle.superscriptTag();
     },
     attachImageTag: function () {
-      this.inputText = textStyle.imageTag();
+      this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
     },
     attachLinkTag: function () {
       this.linkDialog = false;

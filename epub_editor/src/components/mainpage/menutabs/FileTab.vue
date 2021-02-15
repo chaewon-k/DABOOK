@@ -181,6 +181,10 @@ export default {
         this.preview();
       }
     });
+    eventBus.$on("toc",()=>{
+      this.readToc();
+      this.$store.dispatch("setEditingText", "");
+    });
   },
   computed: {
     ...mapState([
