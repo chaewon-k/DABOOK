@@ -2,12 +2,12 @@
   <div id="textarea">
     <iframe
       v-show="getUserMode"
-      id="iframearea"
+      id="iframeArea"
       style="width:100%; height:100%;"
       marginwidth="3"
       marginheight="1"
     ></iframe>
-    <!-- <v-textarea
+    <v-textarea
       v-show="!getUserMode"
       id="area"
       solo
@@ -18,7 +18,7 @@
       height="100%"
       no-resize
       v-model="inputText"
-    ></v-textarea> -->
+    ></v-textarea>
     <div contentEditable="true" v-show="!getUserMode" height="100%"
       id="area"></div>
   </div>
@@ -41,7 +41,7 @@ export default {
   },
   mounted: function() {
     if (this.getUserMode) {
-      var HTMLEDITOR = document.getElementById("iframearea");
+      var HTMLEDITOR = document.getElementById("iframeArea");
       var editorObj = HTMLEDITOR.innerHTML;
       window.onload = function() {
         if (
@@ -77,7 +77,7 @@ export default {
 
       console.log(newVal);
 
-      var HTMLEDITOR = document.getElementById("iframearea");
+      var HTMLEDITOR = document.getElementById("iframeArea");
       var editorObj = HTMLEDITOR.contentWindow.document;
 
       editorObj.designMode = "on";
@@ -88,7 +88,7 @@ export default {
         "BODY {font-size:25px; font-family: kopub_bat_l; } spellcheck:false;"
       );
       editorObj.writeln("</style>");
-      editorObj.writeln(newVal);
+      editorObj.write(newVal);
       editorObj.close();
     },
   },

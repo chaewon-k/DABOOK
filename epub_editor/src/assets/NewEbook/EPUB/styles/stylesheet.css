@@ -19,6 +19,27 @@
   src: url('../fonts/NotoSerif-LightItalic.ttf');
 }
 
+html {
+  word-break:break-all;
+  margin-top: 10px;
+}
+
+#eBook::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+  background: #ffffff;
+}
+
+#eBook::-webkit-scrollbar-thumb {
+    border-radius: 3.5px;
+    background-color: #dedeeb;
+}
+
+#eBook::-webkit-scrollbar-track {
+  background: #ffffff;
+  margin-top: 10px;
+}
+
 * {
   font-family: 'kopub_bat_l';
 }

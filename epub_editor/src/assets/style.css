@@ -37,7 +37,7 @@ html, body {
   position: fixed;
   height: 96px;
   width: 100%;
-  z-index: 2;
+  z-index: 102;
 }
 
 #topMenu {
@@ -91,7 +91,14 @@ html, body {
   height: 100%;
   position: relative;
 }
+.withPreview {
+  width: 50%;
+  position: absolute;
+}
 
+.withoutPreview {
+  width: 100%;
+}
 #textarea > .v-input {
   height: 100%;
 }
@@ -106,10 +113,25 @@ html, body {
   line-height: 130%;
 }
 
+#preview {
+  z-index: 100;
+}
+
 /* 도구상자 버튼 정렬하는 style */
 
 #subMenuBar {
   width: 100%;
+}
+
+/* alert 창 */
+
+#alertMessage{
+  color: white;
+  position: fixed;
+  float:  right;
+  bottom: 3%;
+  right:  2%;
+  z-index: 999999;
 }
 
 /* div.left {
@@ -127,9 +149,9 @@ div.right {
 
 /* dialog 글씨 및 배경 색 변경하는 style */
 
-.v-text-field {
+/* .v-text-field {
   width: 150px;
-}
+} */
 
 .header-color {
   color: #423F8C;
@@ -232,3 +254,22 @@ div.right {
 .theme--dark.v-input textarea {
   color: #cfcddf;
 }
+
+/* #preview #eBook::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+}
+
+#preview #eBook::-webkit-scrollbar-thumb {
+    border-radius: 3.5px;
+    background-color: #ced4da;
+}
+
+#preview #eBook:hover {
+  background-color: #adb5bd;
+}
+
+#preview #eBook::-webkit-scrollbar-track {
+  background: #ffffff;
+} */
