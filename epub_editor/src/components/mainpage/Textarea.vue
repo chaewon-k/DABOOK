@@ -16,7 +16,7 @@
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
     <iframe
-      v-if="isPreview"
+      v-show="isPreview"
       id="preview"
       style="width:50%; height:100%; position:absolute; margin-left:50%; border: 0px; padding-right:2px;"
       name="preview"
@@ -143,6 +143,7 @@ import { readDirectory, tocToList } from "@/functions/file.js";
 import { findText, replaceText } from "@/functions/edit.js";
 import * as textStyle from "@/functions/text-style.js";
 import * as edit from "@/functions/edit.js";
+import * as file from "@/functions/file.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
@@ -270,14 +271,16 @@ export default {
       area.scrollTop = area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);
       this.$store.dispatch("setHTMLText", this.defaultHTMLText);
-      
       newVal = textStyle.convertImageTag(newVal, this.$store.state.ebookDirectory);
       console.log(newVal);
       var HTMLEDITOR = document.getElementById("preview");
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
       editorObj.open();
-      editorObj.writeln(`<link href='${this.$store.state.ebookDirectory}/EPUB/styles/stylesheet.css' rel="stylesheet" type ="text/css" />`);
+      let cssString = file.readCSS(this.$store.state.ebookDirectory);
+      editorObj.writeln("<style>");
+      editorObj.writeln(cssString)
+      editorObj.writeln("</style>");
       editorObj.writeln(newVal);
       editorObj.designMode = "off";
       editorObj.close();
@@ -290,8 +293,12 @@ export default {
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
       editorObj.open();
-      editorObj.writeln(`<link href='${this.$store.state.ebookDirectory}/EPUB/styles/stylesheet.css' rel="stylesheet" type ="text/css" />`);
-      editorObj.writeln(this.inputText);
+      let cssString = file.readCSS(this.$store.state.ebookDirectory);
+      editorObj.writeln("<style>");
+      editorObj.writeln(cssString)
+      editorObj.writeln("</style>");
+      let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
+      editorObj.writeln(temp);
       editorObj.designMode = "off";
       editorObj.close();
     }

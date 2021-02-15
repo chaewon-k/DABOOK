@@ -227,6 +227,8 @@
 <script>
 import * as css from "@/functions/add-css.js";
 import * as edit from "@/functions/edit.js";
+import * as file from "@/functions/file.js";
+import * as textStyle from "@/functions/text-style.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
@@ -407,7 +409,7 @@ export default {
       }
       this.colorDialog = false;
     },
-    addStyle: async function() {
+    addStyle: function() {
       if (this.customStyle.title.trim() == "" || this.customStyle.title == undefined) {
         this.$store.dispatch(
           "setAlertMessage",
@@ -417,18 +419,21 @@ export default {
       }
       this.styleDialog = false;
       this.customStyleList.push(this.customStyle.title);
-      await css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
+      css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
       this.customStyle = {};
       this.$store.dispatch("setCustomStyleArray", this.customStyleList);
-      document.getElementById("preview").contentWindow.location.reload(true);
-      // var HTMLEDITOR = document.getElementById("preview");
-      // var editorObj = HTMLEDITOR.contentWindow.document;
-      // editorObj.designMode = "on";
-      // editorObj.open();
-      // editorObj.writeln(`<link href='${this.$store.state.ebookDirectory}/EPUB/styles/stylesheet.css' rel="stylesheet" type ="text/css" />`);
-      // editorObj.writeln(this.$store.state.editingText);
-      // editorObj.designMode = "off";
-      // editorObj.close();
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      editorObj.designMode = "on";
+      editorObj.open();
+      let cssString = file.readCSS(this.$store.state.ebookDirectory);
+      editorObj.writeln("<style>");
+      editorObj.writeln(cssString)
+      editorObj.writeln("</style>");
+      let temp = textStyle.convertImageTag(this.$store.state.editingText, this.$store.state.ebookDirectory);
+      editorObj.writeln(temp);
+      editorObj.designMode = "off";
+      editorObj.close();
     },
     openCustomStyleMenu: function() {
       this.customStyleList = this.$store.state.customStyleArray;
