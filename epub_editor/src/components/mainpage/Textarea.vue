@@ -19,7 +19,6 @@
       v-if="isPreview"
       id="preview"
       style="width:50%; height:100%; position:absolute; margin-left:50%; border: 0px; padding-right:2px;"
-      :src="previewURL"
       name="preview"
     ></iframe>
 
@@ -147,18 +146,8 @@ import * as edit from "@/functions/edit.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
-// import $ from 'jquery'
 
 const fs = require("fs");
-
-// localStorage.setItem('dummy', 'zerocho');
-
-// window.addEventListener('message', function(e) {
-//   console.log(e.data); // { hello: 'parent' }
-//   var item = localStorage.getItem('dummy');
-//   console.log(item); // zerocho
-//   document.getElementById('iframe').contentWindow.postMessage(item, '*');
-// });
 
 export default {
   name: "Textarea",
@@ -167,29 +156,8 @@ export default {
     DialogInput,
     DialogTitle,
   },
-  created () {
-
-  },
+  created() {},
   mounted: function() {
-    // var HTMLEDITOR = document.getElementById("preview");
-    // var editorObj = HTMLEDITOR.contentWindow.document;
-    // editorObj.scrollTop = editorObj.scrollHeight;
-    // window.onload = function() {
-    //   if (
-    //     editorObj.body &&
-    //     editorObj.body.contentEditable != undefined &&
-    //     window.ActiveXObject
-    //   ) {
-    //     editorObj.body.contentEditable = "true";
-    //   } else {
-    //     editorObj.designMode = "on";
-        // editorObj.open();
-        // editorObj.writeln("<style>");
-        // editorObj.writeln("html { word-break:break-all; } html::-webkit-scrollbar { width:100px; }");
-        // editorObj.writeln("</style>");
-        // editorObj.close();
-    //   }
-    // };
     window.onmousewheel = (e) => {
       if (e.ctrlKey == false) return;
       if (e.wheelDelta > 0) {
@@ -300,27 +268,32 @@ export default {
     inputText: function(newVal) {
       let area = document.getElementById("area");
       area.scrollTop = area.scrollHeight;
-
-      this.$store.dispatch("setEditingText", newVal);
+      this.$store.dispatch("setEditingText", this.inputText);
       this.$store.dispatch("setHTMLText", this.defaultHTMLText);
-
+      
+      newVal = textStyle.convertImageTag(newVal, this.$store.state.ebookDirectory);
+      console.log(newVal);
       var HTMLEDITOR = document.getElementById("preview");
-      var temp = HTMLEDITOR.contentWindow.document.body
-      console.log(typeof temp)
-  
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      editorObj.designMode = "on";
+      editorObj.open();
+      editorObj.writeln(`<link href='${this.$store.state.ebookDirectory}/EPUB/styles/stylesheet.css' rel="stylesheet" type ="text/css" />`);
+      editorObj.writeln(newVal);
+      editorObj.designMode = "off";
+      editorObj.close();
     },
-    getEditingText: function () {
+    getEditingText: function() {
       this.inputText = this.getEditingText;
     },
-    // getIframeText: function (newVal) {
-    //   if (newVal !== undefined) {
-    //     this.inputText = newVal;
-    //   }
-    // },
-    isPreview: function (newVal) {
-        if (newVal === true) {
-        // this.inputText = this.getIframeText
-      }
+    isPreview: function () {
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      editorObj.designMode = "on";
+      editorObj.open();
+      editorObj.writeln(`<link href='${this.$store.state.ebookDirectory}/EPUB/styles/stylesheet.css' rel="stylesheet" type ="text/css" />`);
+      editorObj.writeln(this.inputText);
+      editorObj.designMode = "off";
+      editorObj.close();
     }
   },
   data: function() {
@@ -343,24 +316,19 @@ export default {
     };
   },
   computed: {
-    getEditingText: function () {
+    getEditingText: function() {
       return this.$store.state.editingText;
     },
-    getIframeText: function () {
-      // return document.querySelector("#eBook")
-      let preview = document.getElementById("preview");
-      console.log(preview['html'])
-      let text = preview.document.getElementById("eBook");
-      console.log(text)
-      return text
-    //   let editorObj;
-    //   editorObj = HTMLEDITOR.contentWindow.document;
-    //   return editorObj.body.innerHTML;
+    getIframeText: function() {
+      let iframe = document.getElementById("preview");
+      let obj = iframe.contentWindow.document;
+      console.log(obj);
+      return obj;
     },
-    isPreview: function () {
+    isPreview: function() {
       return this.$store.state.isPreview;
     },
-    previewURL: function () {
+    previewURL: function() {
       return this.$store.state.selectedFileDirectory;
     },
   },
@@ -369,9 +337,9 @@ export default {
       let HTMLEDITOR = document.getElementById("preview");
       let editorObj;
       if (this.isPreview) {
-      editorObj = HTMLEDITOR.contentWindow.document;
+        editorObj = HTMLEDITOR.contentWindow.document;
       } else {
-      editorObj = HTMLEDITOR.value;
+        editorObj = HTMLEDITOR.value;
       }
       console.log(editorObj.body.innerHTML);
     },

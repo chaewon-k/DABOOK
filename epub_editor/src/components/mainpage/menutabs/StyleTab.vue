@@ -407,7 +407,7 @@ export default {
       }
       this.colorDialog = false;
     },
-    addStyle: function() {
+    addStyle: async function() {
       if (this.customStyle.title.trim() == "" || this.customStyle.title == undefined) {
         this.$store.dispatch(
           "setAlertMessage",
@@ -417,9 +417,18 @@ export default {
       }
       this.styleDialog = false;
       this.customStyleList.push(this.customStyle.title);
-      css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
+      await css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
       this.customStyle = {};
       this.$store.dispatch("setCustomStyleArray", this.customStyleList);
+      document.getElementById("preview").contentWindow.location.reload(true);
+      // var HTMLEDITOR = document.getElementById("preview");
+      // var editorObj = HTMLEDITOR.contentWindow.document;
+      // editorObj.designMode = "on";
+      // editorObj.open();
+      // editorObj.writeln(`<link href='${this.$store.state.ebookDirectory}/EPUB/styles/stylesheet.css' rel="stylesheet" type ="text/css" />`);
+      // editorObj.writeln(this.$store.state.editingText);
+      // editorObj.designMode = "off";
+      // editorObj.close();
     },
     openCustomStyleMenu: function() {
       this.customStyleList = this.$store.state.customStyleArray;
