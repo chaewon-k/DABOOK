@@ -2,14 +2,13 @@
   <div id="alert" v-if="alertDialog">
     <div>
       <v-alert id="alertMessage"
-        color="purple"
+        color="#9C9BBF"
         dense
         outlined
         text
         type="success"
       >
-        {{alertMessage}}
-        <!-- <v-btn icon x-small @click="cancel"><v-icon>mdi-close-circle</v-icon></v-btn> -->
+        {{ $t("" + alertMessage) }}
       </v-alert>
     </div>
   </div>
@@ -25,8 +24,6 @@ export default {
   },
   methods: {
     cancel: function () {
-      // console.log(document.getElementById("alert").value);
-      // console.log("cancel");
       this.$store.dispatch('cancelAlertMessage');
     },
   },

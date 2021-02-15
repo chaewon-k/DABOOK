@@ -3,11 +3,12 @@
     <v-text-field
       class="my-3"
       v-model="inputText"
-      :label="labelText"
+      :label="GET_DIALOG_INPUT"
       :prepend-icon="icon"
       :rules="[rules.required]"
       @keyup="sendData()"
-    ></v-text-field>
+    >
+    </v-text-field>
   </v-row>
 </template>
 
@@ -20,20 +21,21 @@ export default {
       inputText: "",
       ruleText: "",
       rules: {
-        required: (value) => !!value || "필수 입력 항목입니다.",
-        check: (value) => !this.checkExp(value) || "특수문자 사용불가",
+        required: (value) => !!value || this.GET_RULE_TEXT,
       },
     };
   },
-  created: function () {
-    if (this.required && this.check)
-      this.ruleText = "[rules.required, rules.check]";
-    else if (this.required) this.ruleText = "[rules.required]";
-    else if (this.check) this.ruleText = "[rules.check]";
+  computed: {
+    GET_DIALOG_INPUT() {
+      return this.$t("dialoginput." + this.labelText);
+    },
+    GET_RULE_TEXT() {
+      return this.$t("message.required");
+    }
   },
   methods: {
     resetText: function () {
-      this.inputText = "";
+      this.inputText = '';
     },
     sendData: function () {
       this.$emit("changeData", this.inputText);

@@ -8,7 +8,6 @@
       style="width: auto; border-radius: 0%;"
       ma-auto
       height="100%"
-      label="textarea 입니다"
       no-resize
       placeholder="책을 작성해볼까요?"
       v-model="inputText"
@@ -20,7 +19,7 @@
     <v-dialog v-model="linkDialog" max-width="400">
       <v-card>
         <DialogTitle
-          title="링크 추가하기"
+          title="tool-link"
           @toggle-dialog="linkDialog = false"
         /> 
         <v-card-text style="padding: 3% 6% 3% 6%">
@@ -35,13 +34,13 @@
             />
           </v-container>
         </v-card-text>
-        <DialogButton buttonText="추가하기" :dialogMethod="attachLinkTag" />
+        <DialogButton buttonText="add" :dialogMethod="attachLinkTag" />
       </v-card>
     </v-dialog>
 
     <v-dialog v-model="tableDialog" max-width="300">
       <v-card>
-        <DialogTitle title="표 추가하기" @toggle-dialog="tableDialog = false" />
+        <DialogTitle title="tool-table" @toggle-dialog="tableDialog = false" />
         <v-card-text style="padding: 10% 6% 3% 6%">
           <v-row>
             <v-text-field
@@ -72,14 +71,14 @@
             </v-text-field>
           </v-row>
         </v-card-text>
-        <DialogButton buttonText="추가하기" :dialogMethod="attachTableTag" />
+        <DialogButton buttonText="add" :dialogMethod="attachTableTag" />
       </v-card>
     </v-dialog>
 
     <div class="contextmenu" id="menu" @click="closeMenu">
-      <span>오려두기</span>
-      <span>복사하기</span>
-      <span>붙여넣기</span>
+      <span @click="edits('cut')">{{ $t('edittab.cut') }}</span>
+      <span @click="edits('copy')">{{ $t('edittab.copy') }}</span>
+      <span @click="edits('paste')">{{ $t('edittab.paste') }}</span>
       <v-divider class="divider-margin"></v-divider>
 
       <v-btn x-small class="mx-1"
@@ -130,13 +129,11 @@
 
       <v-divider class="divider-margin"></v-divider>
 
-      <span @mouseover="openHeaders">제목▸</span>
+      <span @mouseover="openHeaders">{{$t('title')}}  ▸</span>
     </div>
 
     <div id="headers" class="contextmenu" @click="closeMenu">
-      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{
-        "제목" + hTag
-      }}</span>
+      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{$t('title') + hTag}} </span>
     </div>
   </div>
 </template>
@@ -185,9 +182,10 @@ export default {
       } else if (e.keyCode === 5 && e.ctrlKey === true) {
         edit.copy();
       } else if (e.keyCode === 23 && e.ctrlKey === true) {
-        edit.cut();
+        console.log("shortcut cut");
+        this.inputText=edit.cut();
       } else if (e.keyCode === 4 && e.ctrlKey === true) {
-        edit.paste();
+        this.inputText=edit.paste();
       } else if (e.keyCode === 17 && e.ctrlKey === true) {
         this.inputText = edit.undo();
       } else if (e.keyCode === 6 && e.ctrlKey === true) {
@@ -198,7 +196,7 @@ export default {
       }
     };
     eventBus.$on("edit", (res) => {
-      this.edit(res);
+      this.edits(res);
     });
     eventBus.$on("findText", (res) => {
       this.findText = res;
@@ -310,16 +308,17 @@ export default {
     },
   },
   methods: {
-    edit: function (res) {
+    edits: function (res) {
+      console.log("edits");
       switch (res) {
         case "cut":
-          edit.cut();
+          this.inputText=edit.cut();
           break;
         case "copy":
           edit.copy();
           break;
         case "paste":
-          edit.paste();
+          this.inputText=edit.paste();
           break;
         case "undo":
           this.inputText = edit.undo();
@@ -411,17 +410,18 @@ export default {
       this.closeHeaders();
     },
     openMenu: function (event) {
+      this.closeHeaders();
       let menu = document.getElementById("menu");
-      menu.style.left = event.pageX + "px";
-      menu.style.top = event.pageY + "px";
+      menu.style.left = event.offsetX+20+ "px";
+      menu.style.top = event.offsetY+20+ "px";
       menu.style.display = "block";
-      this.cursorPosition.posX = event.pageX;
-      this.cursorPosition.posY = event.pageY;
+      this.cursorPosition.posX = event.offsetX;
+      this.cursorPosition.posY = event.offsetY;
     },
     openHeaders: function () {
       let menu = document.getElementById("headers");
-      menu.style.left = this.cursorPosition.posX + 180 + "px";
-      menu.style.top = this.cursorPosition.posY + 190 + "px";
+      menu.style.left = this.cursorPosition.posX +20 +180 + "px";
+      menu.style.top = this.cursorPosition.posY +20+ 190 + "px";
       menu.style.height = "auto";
       menu.style.display = "block";
     },

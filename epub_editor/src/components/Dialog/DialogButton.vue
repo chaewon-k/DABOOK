@@ -1,7 +1,7 @@
 <template>
   <v-card-actions style="padding: 1% 6% 5% 6%">
     <v-spacer></v-spacer>
-    <v-btn color="primary" @click="dialogMethod()">{{ buttonText }}</v-btn>
+    <v-btn color="primary" @click="dialogMethod()">{{ $t("dialogbutton." + buttonText) }}</v-btn>
   </v-card-actions>
 </template>
 

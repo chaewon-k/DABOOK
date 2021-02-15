@@ -5,7 +5,10 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       nodeIntegration: true,
-      nodeModulesPath: ['../../node_modules', './node_modules'],
+      nodeModulesPath: [
+        '../../node_modules',
+        './node_modules'
+      ],
       builderOptions: {
         extraResources: [
           "src/assets/**",
@@ -23,11 +26,11 @@ module.exports = {
           ],
         },
         mas: {
-          hardenedRuntime: false, //IMPORTANT!!!!
-          type: "distribution",
-          category: "public.app-category.utilities",
-          entitlements: "build/entitlements.mas.plist",
-          entitlementsInherit: "build/entitlements.mas.inherit.plist"
+          hardenedRuntime: false,
+          type: 'distribution',
+          category: 'public.app-category.utilities',
+          entitlements: 'build/entitlements.mas.plist',
+          entitlementsInherit: 'build/entitlements.mas.inherit.plist'
         },
         mac: {
           category: 'public.app-category.utilities',
@@ -49,6 +52,12 @@ module.exports = {
           ]
         }
       },
+    },
+    i18n: {
+      locale: 'en',
+      fallbackLocale: 'en',
+      localeDir: 'locales',
+      enableInSFC: false
     }
   },
 }

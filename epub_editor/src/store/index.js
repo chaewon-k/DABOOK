@@ -16,7 +16,6 @@ export default new Vuex.Store({
     osDirectory: '/Applications/DABOOK.app/Contents/Resources/',
     alertMessage: '',
     alertDialog: false,
-    dirToggle: false,
   },
 
   mutations: {
