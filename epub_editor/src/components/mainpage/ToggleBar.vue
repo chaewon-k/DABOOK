@@ -8,8 +8,8 @@
       </v-list-item>
       <v-list-item>
         <v-list-item-action @click="toggleIcon('UserMode')">
-          <v-icon v-if ="getUserMode">mdi-account-edit</v-icon>
-          <v-icon v-else-if ="!getUserMode">mdi-laptop</v-icon>
+          <v-icon v-if ="isPreview">mdi-monitor</v-icon>
+          <v-icon v-else-if ="!isPreview">mdi-monitor-off</v-icon>
         </v-list-item-action>
       </v-list-item>
     </v-list>
@@ -34,8 +34,8 @@ export default {
     },
   },
   computed: {
-    getUserMode(){
-      return this.$store.state.userMode;
+    isPreview(){
+      return this.$store.state.isPreview;
     }
   },
   methods: {
@@ -48,10 +48,10 @@ export default {
       } else if (val == "Dark"){
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       } else {
-        if (this.getUserMode) {
-          this.$store.dispatch("setUserMode", false);
+        if (this.isPreview) {
+          this.$store.dispatch("setIsPreview", false);
         } else {
-          this.$store.dispatch("setUserMode", true);
+          this.$store.dispatch("setIsPreview", true);
         }
       }
     },
