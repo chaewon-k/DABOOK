@@ -28,12 +28,13 @@ async function createWindow() {
   win.on('close', function(e) {
 
     if (!isSave) {
+
       const choice = require('electron').dialog.showMessageBoxSync(this,
         {
           type: 'question',
           buttons: ['네', '아니오'],
           title: 'DABOOK 종료',
-          message: `$t('message-close')`
+          message: `정말로 종료하시겠습니까? `
         });
       if (choice === 1) {
         e.preventDefault();

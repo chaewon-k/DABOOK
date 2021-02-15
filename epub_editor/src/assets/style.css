@@ -225,7 +225,13 @@ div.right {
   color: #cfcddf;
 }
 
+
+/*tooltab 맨 앞으로 보이게*/
 v-tooltab span{
   z-index: 999999;
   position: relative;
+}
+
+#toc {
+  float: right;
 }

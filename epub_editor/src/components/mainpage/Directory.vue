@@ -8,14 +8,27 @@
     open-on-click
     @input="openFile"
   >
-    <template slot="label" slot-scope="{ item }">
-      <v-icon small style="padding: 0 5px;" v-if="!item.file">
-        {{ 'mdi-folder' }}
-      </v-icon>
-      <v-icon v-else small style="padding: 0 5px;">
-        {{ files[item.file] }}
-      </v-icon>
-      <span @click="openFile(item)">{{ item.name }}</span>
+    <template slot="label" slot-scope="{ item }" >
+      <div  @mouseover="mouseAction(item,true);" @mouseleave="mouseAction(item,false);">
+        
+          <v-icon small style="padding: 0 5px;" v-if="!item.file">
+            {{ 'mdi-folder' }}
+          </v-icon>
+          <v-icon v-else small style="padding: 0 5px;" >
+            {{ files[item.file] }}
+          </v-icon>
+          <span @click="openFile(item)">{{ item.name }}</span>
+        
+        <span id="toc" v-if="deleteBtn[item.name]">
+          <v-btn
+          class="align-self-center rounded-sm"
+          icon
+          x-small
+         @click="deleteChapter(item)">
+            <v-icon>mdi-trash-can-outline</v-icon>
+          </v-btn>
+        </span>
+      </div>
     </template>
   </v-treeview>
 </template>
@@ -23,6 +36,7 @@
 <script>
 import eventBus from '@/eventBus.js';
 import * as edit from '@/functions/edit.js';
+import Vue from 'vue'
 
 const { dialog } = require('electron').remote;
 const fs = require('fs');
@@ -31,9 +45,16 @@ export default {
   name: 'Directory',
   watch: {
     items: function () {
+      //this.deleteBtn.clear();
+      console.log(this.deleteBtn);
       this.initiallyOpen = ['EPUB', 'text']
+      for(let j=0;j<this.items[0].children[4].children.length;j++){
+        if(this.items[0].children[4].children[j].file==="xhtml"){
+          Vue.set(this.deleteBtn,this.items[0].children[4].children[j].name,false);
+          //this.deleteBtn[this.deleteBtn,this.items[0].children[4].children[j].name.toString]=false;
+        }
+      }
     },
-
   },
   computed: {
     items: function () {
@@ -45,7 +66,7 @@ export default {
     GET_CANCEL_BUTTON() {
       return this.$t('confirm.save-cancel');
     },
-  },
+  }, 
   data: function () {
     return {
       initiallyOpen: ['EPUB', 'text'],
@@ -61,9 +82,22 @@ export default {
         css: 'mdi-language-css3',
       },
       tree: [],
+      deleteBtn: new Object(),
     };
   },
   methods: {
+    deleteChapter(item){
+      fs.unlink(item.dirPath,(err)=>{
+        console.log(err);
+      });
+      eventBus.$emit('toc');
+    },
+    mouseAction(item,set){
+      if(item.file=="xhtml"){
+        this.deleteBtn[item.name]=set;
+        this.$nextTick();
+      }
+    },
     openFile: function (val) { // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
       if (val.children) {
         return  // 폴더면 그냥 return
