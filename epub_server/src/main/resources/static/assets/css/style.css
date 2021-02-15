@@ -1161,11 +1161,11 @@ section {
 }
 
 #footer .footer-top .footer-downloads h4 {
-  font-size: 200px;
+  font-size: 24px;
 }
 
-#footer .footer-top .row .footer-downloads a > img {
-  height: 40px;
+#img-size {
+  height: 55px;
   width: 160px;
 }
 
