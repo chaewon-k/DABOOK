@@ -132,7 +132,8 @@
     "fail-signout": "Failed to signout membership. Please contact the customer service center."
   },
   "confirm": {
-    "save-title": "Do you want to save the history of changes in the previous file?",
+    "save-title": "Save file",
+    "save-content": "Do you want to save the history of changes in the previous file?",
     "save-confirm": "save",
     "save-cancel": "cancel",
     "close-title": "Are you sure you want to exit the DABOOK?",
@@ -174,5 +175,5 @@
   "manual": "manual",
   "directory": "directory",
   "toc": "toc",
-  "textarea-placeholder": "Let's make book :)"
+  "textarea-placeholder": "Let's make a book :)"
 }

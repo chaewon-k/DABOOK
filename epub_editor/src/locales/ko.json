@@ -132,7 +132,8 @@
     "fail-signout": "회원 탈퇴에 실패했습니다. 고객센터에 문의해주세요."
   },
   "confirm": {
-    "save-title": "이전 파일의 변경 내역을 저장하시겠습니까?",
+    "save-title": "파일 저장",
+    "save-content": "이전 파일의 변경 내역을 저장하시겠습니까?",
     "save-confirm": "저장",
     "save-cancel": "취소",
     "close-title": "DABOOK을 종료하시겠습니까?",

@@ -97,14 +97,26 @@
           <!-------------- 회원 탈퇴 -------------->
           <v-divider></v-divider>
           <v-card-actions class="pt-0 pl-0">
+            <v-spacer></v-spacer>
             <v-btn text class="pa-0" @click.stop="signoutDialog=true" style="color: red !important;">{{ $t("userinfotab.signout") }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-layout>
     </v-card>
 
+    <Confirm
+      :dialog="signoutDialog"
+      title="userinfotab.signouttab.title"
+      content1="userinfotab.signouttab.content-1"
+      content2="userinfotab.signouttab.content-2"
+      confirm="userinfotab.signouttab.signout-btn"
+      cancel="userinfotab.signouttab.cancel"
+      @confirm="signout"
+      @cancel="signoutDialog = false"
+     />
+
     <!-------------- 회원 탈퇴 Dialog-------------->
-    <v-dialog
+    <!-- <v-dialog
       v-model="signoutDialog"
       max-width="300"
     >
@@ -132,13 +144,16 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
+
   </v-dialog>
 </template>
 
 <script>
 import axios from 'axios'
 import Alert from "@/components/mainpage/Alert"
+import Confirm from "@/components/mainpage/Confirm"
+
 export default {
   name: 'UserInfo',
   data: function () {
@@ -168,7 +183,8 @@ export default {
     userInfoDialog: Boolean
   },
   components: {
-    Alert
+    Alert,
+    Confirm
   },
   computed: {
     // placeholder의 한/영 버전을 위한 함수
