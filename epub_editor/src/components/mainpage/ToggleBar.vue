@@ -13,6 +13,7 @@
           <v-icon v-else-if ="!isPreview">mdi-monitor-off</v-icon>
         </v-list-item-action>
       </v-list-item>
+      <v-list-item>
         <v-btn icon class="align-self-center rounded-sm"><v-icon @click="userInfoDialog=true">mdi-account-circle-outline</v-icon></v-btn>
       </v-list-item>
       <v-list-item>
@@ -63,6 +64,9 @@ import UserInfo from '@/components/mainpage/UserInfo'
 let ipc = require('electron').ipcRenderer;
 
 export default {
+  components: {
+    UserInfo
+  },
   data: function () {
     return {
       dirOpen: true,
@@ -84,8 +88,6 @@ export default {
     isPreview(){
       return this.$store.state.isPreview;
     }
-  components: {
-    UserInfo
   },
   methods: {
     toggleIcon: function(val) {
