@@ -228,9 +228,14 @@ export function orderedListTag () {
 
 export function convertImageTag (temp, path) {
   let str = 'src="file:///' + path + '/EPUB/images/';
-  console.log(str)
   temp = temp.replaceAll('src="../images/', str);
-  // console.log(styleList);
+  return temp;
+}
+
+export function convertStyleTag (temp, path) {
+  path = path.replaceAll('\\', '/');
+  let str = "url('" + path + '/EPUB/fonts/';
+  temp = temp.replaceAll("url('../fonts/", str);
   return temp;
 }
 

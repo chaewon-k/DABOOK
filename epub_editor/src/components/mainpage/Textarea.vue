@@ -272,12 +272,13 @@ export default {
       this.$store.dispatch("setEditingText", this.inputText);
       this.$store.dispatch("setHTMLText", this.defaultHTMLText);
       newVal = textStyle.convertImageTag(newVal, this.$store.state.ebookDirectory);
-      console.log(newVal);
+      //console.log(newVal);
       var HTMLEDITOR = document.getElementById("preview");
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
       editorObj.open();
       let cssString = file.readCSS(this.$store.state.ebookDirectory);
+      cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
       editorObj.writeln("<style>");
       editorObj.writeln(cssString)
       editorObj.writeln("</style>");
@@ -294,6 +295,7 @@ export default {
       editorObj.designMode = "on";
       editorObj.open();
       let cssString = file.readCSS(this.$store.state.ebookDirectory);
+      cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
       editorObj.writeln("<style>");
       editorObj.writeln(cssString)
       editorObj.writeln("</style>");
