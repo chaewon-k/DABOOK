@@ -9,7 +9,7 @@
       ma-auto
       height="100%"
       no-resize
-      placeholder="책을 작성해볼까요?"
+      :placeholder="getPlaceholder"
       v-model="inputText"
       @keydown="isSave"
       @mousedown.left="closeMenu"
@@ -25,7 +25,7 @@
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
-              labelText="링크"
+              labelText="tool-link"
               icon="mdi-link-variant"
               required="true"
               check="true"
@@ -45,7 +45,7 @@
           <v-row>
             <v-text-field
             class="my-3"
-              label="행"
+              :label="getLabelRow"
               v-model="tableRow"
             >
               <v-icon slot="append" color="red" @click="plusRow()"
@@ -59,7 +59,7 @@
           <v-row>
             <v-text-field
             class="my-3"
-              label="열"
+              :label="getLabelCol"
               v-model="tableCol"
             >
               <v-icon slot="append" color="red" @click="plusCol()"
@@ -305,6 +305,18 @@ export default {
   computed: {
     getEditingText: function () {
       return this.$store.state.editingText;
+    },
+    getPlaceholder: function () {
+      return this.$t('textarea-placeholder');
+    },
+    getLabelLink: function () {
+      return this.$t('dialoginput.tool-link');
+    },
+    getLabelCol: function () {
+      return this.$t('dialoginput.tool-table-col');
+    },
+    getLabelRow: function () {
+      return this.$t('dialoginput.tool-table-row');
     },
   },
   methods: {

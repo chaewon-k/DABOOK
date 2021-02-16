@@ -2,6 +2,7 @@
   <v-app>
     <v-main>
       <router-view />
+      <!-- <Editor /> -->
     </v-main>
   </v-app>
 </template>
@@ -9,21 +10,12 @@
 <script>
 // import Editor from './views/Editor';
 import "./assets/style.css";
-let ipc = require('electron').ipcRenderer;
 
 export default {
   name: 'App',
 
   components: {
     // Editor,
-  },
-  created: function() {
-    this.$i18n.locale = 'ko';
-    let data = [];
-    data.push({"title": this.$t('confirm.close-title')});
-    data.push({"confirm": this.$t('confirm.close-confirm')});
-    data.push({"cancel": this.$t('confirm.close-cancel')});
-    ipc.send('close_dialog', data);
   },
 };
 </script>

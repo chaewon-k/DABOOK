@@ -1,11 +1,17 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, globalShortcut } from 'electron'
+import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-const isSave = false;
+let ipc = require('electron').ipcMain;
+var isKor = true;
 
+ipc.on('close_dialog', (event, arg) => {
+  //console.log(arg)
+  isKor = arg;
+  //console.log('isKor->' + isKor)
+})
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -26,20 +32,35 @@ async function createWindow() {
   })
   win.setMenu(null);
   win.on('close', function(e) {
-
-    if (!isSave) {
-
+    //setTimeout(function () {console.log('isKor ' + isKor)}, 3000);
+    //console.log('isKor : ' + isKor)
+    if (isKor) {
       const choice = require('electron').dialog.showMessageBoxSync(this,
         {
           type: 'question',
           buttons: ['네', '아니오'],
           title: 'DABOOK 종료',
-          message: `정말로 종료하시겠습니까? `
+          message: `정말로 종료하시겠습니까?`
         });
       if (choice === 1) {
         e.preventDefault();
-      } 
+      }
+    } else {
+      const choice = require('electron').dialog.showMessageBoxSync(this,
+        {
+          type: 'question',
+          buttons: ['yes', 'no'],
+          title: 'DABOOK exit',
+          message: `Are you sure you want to exit?`
+        });
+      if (choice === 1) {
+        e.preventDefault();
+      }
     }
+
+
+
+    
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
