@@ -17,6 +17,7 @@ export default new Vuex.Store({
     alertDialog: false,
     isPreview: true,
     ebookTitle: '',
+    isDark: false,
   },
 
   mutations: {
@@ -69,6 +70,9 @@ export default new Vuex.Store({
     },
     SET_ISPREVIEW: function (state, value) {
       state.isPreview = value;
+    },
+    SET_ISDARK: function (state) {
+      state.isDark = !state.isDark;
     }
   },
   actions: {
@@ -108,9 +112,12 @@ export default new Vuex.Store({
     cancelAlertMessage: function({ commit }) {
       commit('CANCEL_ALERTMESSAGE');
     },
-    setIsPreview: function ({commit}, value) {
+    setIsPreview: function ({ commit }, value) {
       commit('SET_ISPREVIEW', value);
-    }
+    },
+    setIsDark: function ({ commit }) {
+      commit('SET_ISDARK');
+    },
   },
 
   modules: {

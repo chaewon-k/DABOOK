@@ -107,7 +107,8 @@
     "add-chapter": "adding chapter was successful.",
     "replace": "Word conversion completed.",
     "change-nickname": "Nickname has been changed.",
-    "change-password": "Password has been changed."
+    "change-password": "Password has been changed.",
+    "download-ebook": "Download completed."
   },
   "error": {
     "create-ebook-input": "Please enter a name and storage location for the book.",
