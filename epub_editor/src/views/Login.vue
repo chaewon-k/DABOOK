@@ -42,9 +42,6 @@
             <v-row class="mt-7">
               <v-btn block @click="logIn" style="background-color: #6A68A6; color: #ffffff;">LOGIN</v-btn>
             </v-row>
-            <!-- <v-row>
-              <v-btn block class="my-5" :disabled="signedIn" @click="handleLogin"><v-icon>mdi-google</v-icon>oogle</v-btn>
-            </v-row> -->
           </v-container>
         </v-card-text>
         <v-card-actions class="pt-0">
@@ -59,7 +56,6 @@
 </template>
 <script>
 import axios from 'axios'
-//import ElectronGoogleOAuth2 from '@getstation/electron-google-oauth2';
 export default {
   name: 'Login',
   data: function () {
@@ -129,9 +125,9 @@ export default {
             this.color = '#EF5350'
           }
           else {
-            console.log(res)
             // local Storage에 로그인 정보 저장.
             localStorage.setItem('token',res.data.token)
+            localStorage.setItem('name', res.data.name)
             localStorage.setItem('email', res.data.email)
             localStorage.setItem('nickname', res.data.nickname)
             this.$router.push({ name: 'Editor'})
@@ -163,28 +159,12 @@ export default {
         this.color = '#D1C4E9'
       }
     },
-
-    // 구글 로그인 연동
-    // handleLogin: function () {
-    //   const client = '613406129704-omk18m4bqaei962v5s2hsn654cj2den2.apps.googleusercontent.com'
-    //   const myApiOauth = new ElectronGoogleOAuth2(
-    //     client,
-    //     'FHTLcGOSPrgC0c9CNtSmj43U',
-    //     ['https://www.googleapis.com/auth/drive.metadata.readonly']
-    //   );
-    
-    //   myApiOauth.openAuthWindowAndGetTokens()
-    //     .then(token => {
-    //       console.log(token)
-    //     });
-    // }
   }
 }
 </script>
 <style>
 .bg {
   background-image: url('../assets/accountImg/background.png');
-  width: 100%;
-  height: 100%;
+  background-size: 100% 100%;
 }
 </style>

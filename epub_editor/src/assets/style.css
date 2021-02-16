@@ -57,7 +57,7 @@ html, body {
   position: absolute;
   height: 100%;
   width: 65px;
-  z-index: 99;
+  z-index: 1;
 }
 
 #aside {
@@ -169,14 +169,13 @@ div.right {
   height: 220px;
   margin-top: 2px;
   padding: 0;
-  background: #FFFFFF;
   border-radius: 5px;
   list-style: none;
   box-shadow:
     0 15px 35px rgba(50,50,90,0.1),
     0 5px 15px rgba(0,0,0,0.07);
   overflow: hidden;
-  z-index: 999999;
+  z-index: 9;
 }
 
 .contextmenu span {
@@ -213,21 +212,13 @@ div.right {
   font-size: smaller;
 }
 
-/* 이미지 버튼*/
-#iconBtn{
-  background-color: #716f8f;
-  color: white;
-  z-index: 999999;
-  bottom: 0;
-  right:0;
-  position: absolute;
-  margin: 0 16px 16px 16px;
-  padding : 8px;
-  border-radius: 50%;
-}
 
 /* Light mode */
 .theme--light.v-card {
+  color: #423F8C !important;
+}
+
+.theme--light.v-btn {
   color: #423F8C;
 }
 
@@ -241,35 +232,28 @@ div.right {
 
 /* Dark mode */
 .theme--dark.v-card {
-  color: #9C9BBF;
+  color: #9C9BBF !important;
 }
 
 .theme--dark.v-btn,
 .theme--dark.v-btn.v-btn--icon,
 .theme--dark.v-treeview, 
 .theme--dark.v-icon {
-  color: #b7b6ca;
+  color: #cdcdd4 !important;
 }
+
 
 .theme--dark.v-input textarea {
   color: #cfcddf;
 }
 
-/* #preview #eBook::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  background: #ffffff;
+
+/*tooltab 맨 앞으로 보이게*/
+v-tooltab span{
+  z-index: 999999;
+  position: relative;
 }
 
-#preview #eBook::-webkit-scrollbar-thumb {
-    border-radius: 3.5px;
-    background-color: #ced4da;
+#toc {
+  float: right;
 }
-
-#preview #eBook:hover {
-  background-color: #adb5bd;
-}
-
-#preview #eBook::-webkit-scrollbar-track {
-  background: #ffffff;
-} */

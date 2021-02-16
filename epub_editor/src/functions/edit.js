@@ -1,3 +1,4 @@
+const {clipboard} =require('electron');
 let arrPoint=-1;
 let arr=[];
 let arrSize=20;
@@ -16,22 +17,36 @@ export function Save (res) {
 }
 
 export function cut () {
-  // console.log("cut");
   set('');
-  document.execCommand('cut');
+  let area=document.getElementById("area");
+  let start = area.selectionStart;
+  let end=area.selectionEnd;
+  let content=area.value.slice(start,end);
+  area.value=area.value.slice(0,start)+area.value.slice(end);
+  clipboard.writeText(content,"save");
   set('');
+  return area.value;
 }
 
 export function copy () {
-  // console.log("copy");
-  document.execCommand('copy');
+  console.log("copy");
+  let area=document.getElementById("area");
+  let start = area.selectionStart;
+  let end=area.selectionEnd;
+  let content=area.value.slice(start,end);
+  clipboard.writeText(content,"save");
 }
 
 export function paste () {
   // console.log("paste");
   set('');
-  document.execCommand('paste');
+  //document.execCommand('paste');
+  let area=document.getElementById("area");
+  let start=area.selectionStart;
+  area.value=area.value.slice(0,start)+clipboard.readText('save')+area.value.slice(start);
+  console.log(clipboard.readText('save'));
   set('');
+  return area.value;
 }
 export function reset(){
   console.log("reset");
