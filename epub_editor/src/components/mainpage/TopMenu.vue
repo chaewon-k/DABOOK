@@ -12,7 +12,7 @@
             >
               {{ $t("tab." + item.tab) }}
             </v-tab>
-            <v-btn id="helpBtn" @click="popUpEditor()" text>도움말</v-btn>
+            <v-btn id="helpBtn" @click="popUpEditor()" text>{{ $t("tab.help") }}</v-btn>
           </v-tabs>
         </v-col>
       </v-row>
@@ -63,25 +63,3 @@ export default {
   },
 };
 </script>
-<style>
-
-#helpBtn{
-  background-color: white;
-  color:rgba(0, 0, 0, 0.54);
-  font-size: 15px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  justify-content: center;
-  min-width: 90px;
-  max-width: 360px;
-  padding: 0 16px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: none;
-  z-index: 3;
-  height: auto;
-}
-
-</style>
