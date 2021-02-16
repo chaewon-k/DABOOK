@@ -3,24 +3,53 @@
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import axios from 'axios';
+import FormData from 'form-data';
+import { ipcMain } from 'electron';
+
+const { download } = require('electron-dl');
 const isDevelopment = process.env.NODE_ENV !== 'production'
 let ipc = require('electron').ipcMain;
 var isKor = true;
 
 ipc.on('close_dialog', (event, arg) => {
-  //console.log(arg)
   isKor = arg;
-  //console.log('isKor->' + isKor)
 })
+const fs = require("fs");
+
+let win;
+
+ipcMain.on('upload', async (event, url, file, email, epubName, path) => {
+  console.log(`${file} 업로드 중`)
+  const f = new FormData();
+  f.append('file', fs.createReadStream(file));
+  f.append('email', email);
+  f.append('epubName', epubName);
+  f.append('path', path);
+  const config = {
+    headers: f.getHeaders(),
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity
+  }
+  await axios.post(url, f, config)
+    .then(function () {
+      console.log('upload success')
+      win.webContents.send('upload','success');
+    })
+    .catch(function (err) {
+      console.log(file, '에러에러에러')
+      win.webContents.send('upload', 'fail');
+    })
+});
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
+  { scheme: 'app', privileges: { secure: true, standard: true }}
 ])
 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 950,
     height: 700,
     //autoHideMenuBar: true,
@@ -126,5 +155,13 @@ app.whenReady().then(() => {
   protocol.registerFileProtocol('file', (request, callback) => {
     const pathname = decodeURI(request.url.replace('file:///', ''));
     callback(pathname);
-  });
+  })
+});
+
+ipcMain.on('download-button', async (event, url, ebookPath, filePath) => {
+  const options = {
+    directory: ebookPath + filePath,
+  }
+  const win = BrowserWindow.getFocusedWindow();
+  await download(win, url, options);
 });

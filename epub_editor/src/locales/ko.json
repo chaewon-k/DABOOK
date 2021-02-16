@@ -13,7 +13,8 @@
     "save": "저장하기",
     "preview": "이북 미리보기",
     "epub": "epub으로 내보내기",
-    "chapter": "목차 추가하기"
+    "chapter": "목차 추가하기",
+    "server": "서버에서 다운받기"
   },
   "edittab": {
     "undo": "뒤로가기",
@@ -70,7 +71,8 @@
     "style-add": "스타일 추가하기",
     "style-custom": "나만의 스타일",
     "tool-link": "링크 추가하기",
-    "tool-table": "표 추가하기"
+    "tool-table": "표 추가하기",
+    "server-load": "서버에서 다운받기"
   },
   "dialoginput": {
     "file-title": "이북 이름",
@@ -94,7 +96,8 @@
     "export": "내보내기",
     "add": "추가하기",
     "replace": "변환하기",
-    "apply": "적용하기"
+    "apply": "적용하기",
+    "download": "다운받기"
   },
   "success": {
     "create-ebook": "이북 생성 성공",
@@ -129,7 +132,8 @@
     "duplicated-nickname": "이미 존재하는 닉네임입니다.",
     "not-match-newpassword": "비밀번호가 일치하지 않습니다.",
     "not-match-prevpassword": "현재 비밀번호가 일치하지 않습니다.",
-    "fail-signout": "회원 탈퇴에 실패했습니다. 고객센터에 문의해주세요."
+    "fail-signout": "회원 탈퇴에 실패했습니다. 고객센터에 문의해주세요.",
+    "duplicated-ebook": "동일한 이름의 이북이 이미 있습니다."
   },
   "confirm": {
     "save-title": "파일 저장",

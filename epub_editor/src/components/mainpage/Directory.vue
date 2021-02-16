@@ -104,7 +104,7 @@ export default {
       fs.unlinkSync(item.dirPath, (err)=>{
         console.log(err);
       });
-      
+      Vue.nextTick();
       //content 변경
       let content= fs.readFileSync(this.$store.state.ebookDirectory+ '/EPUB/content.opf').toString();
       let start=content.indexOf('<item id="'+item.name);
