@@ -2,7 +2,7 @@
   <div id="alert" v-if="alertDialog">
     <div>
       <v-alert id="alertMessage"
-        color="purple"
+        color="#9C9BBF"
         dense
         outlined
         text

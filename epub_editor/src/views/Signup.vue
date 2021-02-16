@@ -90,7 +90,7 @@
               </v-container>
             </v-row>
             <v-row>
-              <v-btn block class="mb-1" @click="signUp" style="background-color: #6A68A6; color: #ffffff;">SIGNUP</v-btn>
+              <v-btn block class="mb-1" @click="signUp" :disabled="disabled" style="background-color: #6A68A6; color: #ffffff;">SIGNUP</v-btn>
             </v-row>
           </v-container>
         </v-card-text>
@@ -122,6 +122,7 @@ export default {
 
     // loaging
     loading: false,
+    disabled: false,
 
     // 각 데이터별 기본 규칙
     rules: [
@@ -167,12 +168,13 @@ export default {
 
     // 회원가입 
     signUp: function () {
-      const data = { 'email': this.email, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': false }
-      this.loading = true
+      const data = { 'email': this.email, 'name': this.name, 'epubList': [], 'nickname': this.nickname, 'password': this.password, 'status': false }
 
       if (this.password === this.passwordConfirm) {
         if (this.checkbox === true) {
-          axios.post("https://contact.dabook.site/api/user", data)
+          this.loading = true;
+          this.disabled = true;
+          axios.post("https://contact.dabook.site/api/user", data) 
             .then(res => {
               console.log(res)
               this.$router.push({ name: 'Login'})

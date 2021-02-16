@@ -181,6 +181,10 @@ export default {
         this.preview();
       }
     });
+    eventBus.$on("toc",()=>{
+      this.readToc();
+      this.$store.dispatch("setEditingText", "");
+    });
   },
   computed: {
     ...mapState([
@@ -376,7 +380,6 @@ export default {
               "setAlertMessage",
               "success.load-ebook"
             );
-            this.$store.dispatch("setDirToggle");
           }
         }
       } catch (err) {
