@@ -97,7 +97,7 @@
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
-              labelText="style-title"
+              :labelText="label.title"
               icon="mdi-textbox"
               required="true"
               check="true"
@@ -115,10 +115,18 @@
                   '가운데 정렬',
                   '양쪽 정렬',
                 ]"
-                :label="getLabelAlign"
+                :label="label.align"
               ></v-select>
             </v-row>
             <v-row>
+              <!-- <select>
+                <option
+                  v-for="(font, idx) in fonts"
+                  :key="idx"
+                  :style="{ 'font-family': font.value }"
+                  >{{ font.name }}</option
+                >
+              </select> -->
               <v-select
                 class="my-3"
                 prepend-icon="mdi-format-font"
@@ -126,7 +134,7 @@
                 :items="fonts"
                 item-text="name"
                 item-value="value"
-                :label="getLabelFont"
+                :label="label.font"
               >
               </v-select>
             </v-row>
@@ -139,7 +147,7 @@
               <v-text-field
               class="my-3"
                 v-model="customStyle.fontColor"
-                :label="getLabelFontColor"
+                :label="label.fontcolor"
                 @click="
                   selected = 'font';
                   colorDialog = true;
@@ -157,7 +165,7 @@
               <v-text-field
               class="my-3"
                 v-model="customStyle.backgroundColor"
-                :label="getLabelBackgroundColor"
+                :label="label.backgroundcolor"
                 @click="
                   selected = 'background';
                   colorDialog = true;
@@ -219,11 +227,10 @@
 <script>
 import * as css from "@/functions/add-css.js";
 import * as edit from "@/functions/edit.js";
-import * as file from "@/functions/file.js";
-import * as textStyle from "@/functions/text-style.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
+import * as exec from "@/functions/exec-command.js";
 
 export default {
   name: "StyleTab",
@@ -335,39 +342,15 @@ export default {
       colorDialog2: false,
       fontDialog: false,
       selectedFont: "",
-      // label: {
-      //   "title": this.$t('dialoginput.style-title'),
-      //   "align" : this.$t('dialoginput.style-align'),
-      //   "font" : this.$t('dialoginput.style-font'),
-      //   "fontcolor": this.$t('dialoginput.style-fontcolor'),
-      //   "backgroundcolor": this.$t('dialoginput.style-backgroundcolor')
-      // }
       label: {
-        "title": 'style-title',
-        "align" : 'style-align',
-        "font" : 'style-font',
-        "fontcolor": 'style-fontcolor',
-        "backgroundcolor": 'style-backgroundcolor'
-      }
+        "title": "style-title",
+        "align" : "style-align",
+        "font" : "style-font",
+        "fontcolor": "style-fontcolor",
+        "backgroundcolor": "style-backgroundcolor"
+      },
+      fontSize: 5
     };
-  },
-  computed: {
-    getLabelAlign: function () {
-      console.log(this.$t('dialoginput.style-align'));
-      return this.$t('dialoginput.style-align');
-    },
-    getLabelFont: function () {
-      console.log(this.$t('dialoginput.style-font'));
-      return this.$t('dialoginput.style-font');
-    },
-    getLabelFontColor: function () {
-      console.log(this.$t('dialoginput.style-align'));
-      return this.$t('dialoginput.style-fontcolor');
-    },
-    getLabelBackgroundColor: function () {
-      console.log(this.$t('dialoginput.style-align'));
-      return this.$t('dialoginput.style-backgroundcolor');
-    },
   },
   methods: {
     styleMethod: function(i) {
@@ -378,41 +361,36 @@ export default {
         );
         return;
       }
-      if (this.$store.state.selectedFileDirectory !== "") {
         if (i == 0) {
-          this.$store.dispatch("setEditingText", css.alignText("left"));
+          this.$store.dispatch("setEditingText", exec.addStyle('justifyleft'));
         } else if (i == 1) {
-          this.$store.dispatch("setEditingText", css.alignText("center"));
+          this.$store.dispatch("setEditingText", exec.addStyle("justifycenter"));
         } else if (i == 2) {
-          this.$store.dispatch("setEditingText", css.alignText("right"));
+          this.$store.dispatch("setEditingText", exec.addStyle("justifyright"));
         } else if (i == 3) {
-          this.$store.dispatch("setEditingText", css.alignText("justify"));
+          this.$store.dispatch("setEditingText", exec.addStyle("justifyfull"));
         } else if (i == 4) {
           this.$store.dispatch(
             "setEditingText",
-            css.setFontColor(this.tabs[4].color)
+            exec.addStyle("forecolor", this.tabs[4].color)
           );
         } else if (i == 5) {
           this.$store.dispatch(
             "setEditingText",
-            css.setBackgroundColor(this.tabs[5].color)
+            exec.addStyle("backcolor", this.tabs[5].color)
           );
         } else if (i == 6) {
           this.fontDialog = !this.fontDialog;
         } else if (i == 7) {
-          this.$store.dispatch("setEditingText", css.fontSize("down"));
+          if (this.fontSize <= 1) return;
+          this.$store.dispatch("setEditingText", exec.addStyle("fontsize", --this.fontSize));
         } else if (i == 8) {
-          this.$store.dispatch("setEditingText", css.fontSize("up"));
+          if (this.fontSize >= 7) return;
+          this.$store.dispatch("setEditingText", exec.addStyle("fontsize", ++this.fontSize));
         } else if (i == 9) {
           this.openCustomStyleMenu();
         }
         edit.set("");
-      } else {
-        this.$store.dispatch(
-          "setAlertMessage",
-          "error.select-text"
-        );
-      }
     },
     pickColor: function() {
       if (this.selected == "font") {
@@ -439,18 +417,6 @@ export default {
       css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
       this.customStyle = {};
       this.$store.dispatch("setCustomStyleArray", this.customStyleList);
-      var HTMLEDITOR = document.getElementById("preview");
-      var editorObj = HTMLEDITOR.contentWindow.document;
-      editorObj.designMode = "on";
-      editorObj.open();
-      let cssString = file.readCSS(this.$store.state.ebookDirectory);
-      editorObj.writeln("<style>");
-      editorObj.writeln(cssString)
-      editorObj.writeln("</style>");
-      let temp = textStyle.convertImageTag(this.$store.state.editingText, this.$store.state.ebookDirectory);
-      editorObj.writeln(temp);
-      editorObj.designMode = "off";
-      editorObj.close();
     },
     openCustomStyleMenu: function() {
       this.customStyleList = this.$store.state.customStyleArray;
@@ -466,7 +432,7 @@ export default {
     setFont: function() {
       this.fontDialog = false;
       let font = this.selectedFont;
-      this.$store.dispatch("setEditingText", css.setFont(font));
+      this.$store.dispatch("setEditingText", exec.addStyle("fontname", font));
     },
     fontBinding: function(val) {
       let font = '"font-family : ' + val + '"';

@@ -226,3 +226,19 @@ export function orderedListTag () {
   return area.value;
 }
 
+export function convertImageTag (temp, path) {
+  let str = 'src="file:///' + path + '/EPUB/images/';
+  temp = temp.replaceAll('src="../images/', str);
+  return temp;
+}
+
+export function convertStyleTag (temp, path) {
+  path = path.replaceAll('\\', '/');
+  let str = "url('" + path + '/EPUB/fonts/';
+  temp = temp.replaceAll("url('../fonts/", str);
+  return temp;
+}
+
+String.prototype.replaceAll = function(org, dest) {
+  return this.split(org).join(dest);
+}

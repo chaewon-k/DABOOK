@@ -27,7 +27,8 @@ async function createWindow() {
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+      webSecurity: false
     }
   })
   //win.setMenu(null);
@@ -73,7 +74,7 @@ async function createWindow() {
     win.loadURL('app://./index.html')
   }
 }
-
+app.commandLine.appendSwitch('disable-site-isolation-trials')
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
@@ -120,3 +121,10 @@ if (isDevelopment) {
     })
   }
 }
+
+app.whenReady().then(() => {
+  protocol.registerFileProtocol('file', (request, callback) => {
+    const pathname = decodeURI(request.url.replace('file:///', ''));
+    callback(pathname);
+  });
+});

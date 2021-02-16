@@ -91,23 +91,23 @@
 </template>
 
 <script>
-import eventBus from '@/eventBus.js';
+import eventBus from "@/eventBus.js";
 
 export default {
-  name: 'ToolsTab',
-  data: function () {
+  name: "ToolsTab",
+  data: function() {
     return {
       tab: null,
-    }
+    };
   },
   methods: {
     selectTag: function(index) {
-      if (this.$store.state.selectedFileDirectory !== '') {
-        eventBus.$emit('pushIndexData', index);
+      if (this.$store.state.selectedFileDirectory !== "") {
+        eventBus.$emit("pushIndexData", index);
       } else {
-        this.$store.dispatch('setAlertMessage', 'error.select-text')
+        this.$store.dispatch("setAlertMessage", "error.select-text");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

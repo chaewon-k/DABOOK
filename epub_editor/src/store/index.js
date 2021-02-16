@@ -15,6 +15,7 @@ export default new Vuex.Store({
     findTextArray: [],
     alertMessage: '',
     alertDialog: false,
+    isPreview: true,
   },
 
   mutations: {
@@ -43,7 +44,6 @@ export default new Vuex.Store({
         if (temp[temp.length - 1].includes('/')) {
           const temp2 = temp[temp.length - 1].split('/')
           const title = temp2[temp2.length - 2]
-          console.log(title)
           document.getElementById('electron-title').text = 'epub_editor - ' + title
         } else {
           const title = temp[temp.length - 1]
@@ -64,6 +64,9 @@ export default new Vuex.Store({
     CANCEL_ALERTMESSAGE: function (state) {
       state.alertDialog = false;
     },
+    SET_ISPREVIEW: function (state, value) {
+      state.isPreview = value;
+    }
   },
   actions: {
     setEditingText: function ({ commit }, value) {
@@ -102,6 +105,9 @@ export default new Vuex.Store({
     cancelAlertMessage: function({ commit }) {
       commit('CANCEL_ALERTMESSAGE');
     },
+    setIsPreview: function ({commit}, value) {
+      commit('SET_ISPREVIEW', value);
+    }
   },
 
   modules: {
