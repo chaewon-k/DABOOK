@@ -1,46 +1,45 @@
 <template>
-  <v-treeview
-    v-model="tree"
-    :open="initiallyOpen"
-    :items="items"
-    activatable
-    item-key="name"
-    open-on-click
-    @input="openFile"
-  >
-    <template slot="label" slot-scope="{ item }" >
-      <div  @mouseover="mouseAction(item,true);" @mouseleave="mouseAction(item,false);">
-          <v-icon small style="padding: 0 5px;" v-if="!item.file">
-            {{ 'mdi-folder' }}
-          </v-icon>
-          <v-icon v-else small style="padding: 0 5px;" >
-            {{ files[item.file] }}
-          </v-icon>
-          <span @click="openFile(item); saveDialog=true">{{ item.name }}</span>
-        <span id="toc" v-if="deleteBtn[item.name]">
-          <v-btn
-          class="align-self-center rounded-sm"
-          icon
-          x-small
-         @click="deleteChapter(item)">
-            <v-icon>mdi-trash-can-outline</v-icon>
-          </v-btn>
-        </span>
-      </div>
-    </template>
-
+  <div>
+    <v-treeview
+      v-model="tree"
+      :open="initiallyOpen"
+      :items="items"
+      activatable
+      item-key="name"
+      open-on-click
+      @input="openFile"
+    >
+      <template slot="label" slot-scope="{ item }" >
+        <div  @mouseover="mouseAction(item,true);" @mouseleave="mouseAction(item,false);">
+            <v-icon small style="padding: 0 5px;" v-if="!item.file">
+              {{ 'mdi-folder' }}
+            </v-icon>
+            <v-icon v-else small style="padding: 0 5px;" >
+              {{ files[item.file] }}
+            </v-icon>
+            <span @click="openFile(item)">{{ item.name }}</span>
+          <span id="toc" v-if="deleteBtn[item.name]">
+            <v-btn
+            class="align-self-center rounded-sm"
+            icon
+            x-small
+          @click="deleteChapter(item)">
+              <v-icon>mdi-trash-can-outline</v-icon>
+            </v-btn>
+          </span>
+        </div>
+      </template>
+    </v-treeview>
     <Confirm 
-     :dialog="saveDialog"
-     title="confirm.save-title"
-     content1="confirm.save-content"
-     confirm="confirm.save-confirm"
-     cancel="confirm.save-cancel"
-     @cancel="saveDialog = false"
-     @confirm="saveFile"
+    :dialog="saveDialog"
+    title="confirm.save-title"
+    content1="confirm.save-content"
+    confirm="confirm.save-confirm"
+    cancel="confirm.save-cancel"
+    @cancel="saveDialog = false"
+    @confirm="saveFile"
     />
-
-  </v-treeview>
-
+  </div>
 </template>
 
 <script>
@@ -49,7 +48,6 @@ import * as edit from '@/functions/edit.js';
 import Vue from 'vue'
 import Confirm from '@/components/mainpage/Confirm'
 
-const { dialog } = require('electron').remote;
 const fs = require('fs');
 
 export default {
@@ -173,20 +171,8 @@ export default {
           original = original.slice(original.indexOf("<body"), original.indexOf("</body>") + 7);
           if (original !== this.$store.state.editingText) {  // 원본과 수정 중 파일이 다르다면
             // 저장 할 것인지 물어보고 저장 / 취소
-            
             this.saveDialog = true;
-            console.log('바뀌어서 다이얼로그 띄우고싶은데');
-            const options = {
-              type: 'question',
-              message: this.$t('confirm.save-title'),
-              buttons: [this.GET_CONFIRM_BUTTON, this.GET_CANCEL_BUTTON],
-            };
-            const result = dialog.showMessageBoxSync(options);
-            if (result === 0) {
-              const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
-              fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
-              this.$store.dispatch('setAlertMessage', 'success.save-ebook');
-            }
+            this.saveFile();
           } 
         }
         if (this.$store.state.selectedFileDirectory !== val.dirPath) {  // 자기 자신을 다시 클릭한 것이 아니라면 새 파일을 가져온다.
@@ -204,6 +190,7 @@ export default {
     saveFile: function () {
       const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
       fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
+      console.log(this.$store.state.selectedFileDirectory, updatedText)
       this.$store.dispatch('setAlertMessage', 'success.save-ebook');
     }
   },

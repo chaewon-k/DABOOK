@@ -293,6 +293,34 @@ export default {
       editorObj.designMode = "off";
       editorObj.close();
     },
+    isDark: function(newVal) {
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      if (newVal === true) {
+        editorObj.designMode = "on";
+        editorObj.open();
+        let cssString = file.readCSS(this.$store.state.ebookDirectory);
+        cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+        editorObj.writeln("<style>");
+        editorObj.writeln(cssString)
+        editorObj.writeln("* {color: white;}");
+        editorObj.writeln("</style>");
+        editorObj.writeln(this.inputText);
+        editorObj.designMode = "off";
+        editorObj.close();
+      } else {
+        editorObj.designMode = "on";
+        editorObj.open();
+        let cssString = file.readCSS(this.$store.state.ebookDirectory);
+        cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+        editorObj.writeln("<style>");
+        editorObj.writeln(cssString);
+        editorObj.writeln("</style>");
+        editorObj.writeln(this.inputText);
+        editorObj.designMode = "off";
+        editorObj.close();
+      }
+    },
     getEditingText: function() {
       this.inputText = this.getEditingText;
     },
@@ -332,13 +360,13 @@ export default {
     };
   },
   computed: {
-    getEditingText: function() {
+    getEditingText: function () {
       return this.$store.state.editingText;
     },
-    isPreview: function() {
+    isPreview: function () {
       return this.$store.state.isPreview;
     },
-    previewURL: function() {
+    previewURL: function () {
       return this.$store.state.selectedFileDirectory;
     },
     getPlaceholder: function () {
@@ -353,6 +381,9 @@ export default {
     getLabelRow: function () {
       return this.$t('dialoginput.tool-table-row');
     },
+    isDark: function () {
+      return this.$store.state.isDark;
+    }
   },
   methods: {
     edits: function (res) {
