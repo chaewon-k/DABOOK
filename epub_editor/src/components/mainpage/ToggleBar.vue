@@ -54,6 +54,9 @@
 
 <script>
 import UserInfo from '@/components/mainpage/UserInfo'
+
+let ipc = require('electron').ipcRenderer;
+
 export default {
   data: function () {
     return {
@@ -80,8 +83,14 @@ export default {
       if (val == "Dir") {
         this.$emit('toggleDir');
       } else if (val == "Lang") {
-        if (this.$i18n.locale === "en") this.$i18n.locale = "ko";
-        else this.$i18n.locale = "en";
+        if (this.$i18n.locale === "en") {
+          this.$i18n.locale = "ko";
+          ipc.send('close_dialog', true);
+          }
+        else {
+          this.$i18n.locale = "en";
+          ipc.send('close_dialog', false);
+          }
       } else {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       }

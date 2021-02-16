@@ -36,7 +36,7 @@
     "line": "line",
     "quote": "quote",
     "cite": "cite",
-    "bole": "bole",
+    "bold": "bold",
     "underline": "underline",
     "mediumline": "mediumline",
     "subscript": "subscript",
@@ -63,7 +63,7 @@
     "file-ebook": "Create e-book",
     "file-epub": "Create ePUB",
     "file-chapter": "Add chapter",
-    "edit-find": "Find words",
+    "edit-find": "Find word",
     "edit-replace": "Replacing words",
     "style-font": "Select font",
     "style-color": "Select color",
@@ -84,7 +84,10 @@
     "style-align": "alignment",
     "style-font": "font",
     "style-fontcolor": "font color",
-      "style-backgroundcolor": "background color"
+    "style-backgroundcolor": "background color",
+    "tool-link": "link",
+    "tool-table-row": "row",
+    "tool-table-col": "col"
   },
   "dialogbutton": {
     "create" : "create",
@@ -170,5 +173,6 @@
   "addstyle": "add style",
   "manual": "manual",
   "directory": "directory",
-  "toc": "toc"
+  "toc": "toc",
+  "textarea-placeholder": "Let's make book :)"
 }
