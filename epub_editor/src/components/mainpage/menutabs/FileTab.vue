@@ -23,7 +23,7 @@
       >목차 추가하기</v-btn
     >
     <v-btn class="align-self-center" @click="getEbookList" text
-      >서버에서 불러오기</v-btn
+      >서버에서 다운받기</v-btn
     >
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
@@ -123,35 +123,24 @@
     <v-dialog v-model="eBookListDialog" max-width="400">
       <v-card>
         <DialogTitle
-          title="서버에서 불러오기"
+          title="서버에서 다운받기"
           @toggle-dialog="eBookListDialog = false"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
-          <v-container>
-            <v-item-group
-              v-model="eBookSelected"
-            >
-              <v-row>
-                <v-col
-                  v-for="(eBook, i) in eBookList"
-                  :key="i"
-                >
-                  <v-item v-slot="{ active, toggle }">
-                    <div @click="toggle">
-                      <p>{{ eBook.epubName }}</p>
-                      <v-btn
-                        icon                        
-                      >
-                        <v-icon>{{ active ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
-                      </v-btn>
-                    </div>
-                  </v-item>
-                </v-col>
-              </v-row>
-            </v-item-group>
-          </v-container>
+          <v-list>
+            <v-list-item-group v-model="eBookSelected">
+              <v-list-item
+                v-for="(eBook, i) in eBookList"
+                :key="i"
+              >
+                <v-list-item-content>
+                  <v-list-item-title v-text="eBook.epubName"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
         </v-card-text>
-        <DialogButton buttonText="불러오기" :dialogMethod="loadFromServer" />
+        <DialogButton buttonText="다운받기" :dialogMethod="loadFromServer" />
       </v-card>
     </v-dialog>
   </v-tabs>
@@ -160,6 +149,7 @@
 <script>
 import * as file from "@/functions/file.js";
 import { mapState } from "vuex";
+import { ipcRenderer } from 'electron';
 import eventBus from "@/eventBus.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
@@ -586,35 +576,64 @@ export default {
     loadFromServer: function () {
       const eBookId = this.eBookList[this.eBookSelected]['_id']
       const eBookName = this.eBookList[this.eBookSelected]['epubName']
+      let loadEbookPath = file.readPath() + "/" + eBookName + "/";
       axios.get("https://contact.dabook.site/api/epub/file/list", { params: { id: eBookId }})
         .then((res) => {
-          console.log(res.data)
+          // console.log(res.data)
           const fileList = res.data
+          let i = 0;
           for (let file of fileList) {
-            console.log(file)
+            // console.log(file)
             axios.get("https://contact.dabook.site/api/download", { headers: { accept: '*/*' }, responseType: 'blob', params: { email: localStorage.getItem('email'), epubName: eBookName, fileName: file.fileName, path: file.path }})
               .then(res => {
-                console.log(res)
-                const url = window.URL.createObjectURL(new Blob([res.data]));
-                const link = document.createElement('a');
-                const contentDisposition = res.headers['content-disposition']; // 파일 이름
-                let fileName = file.fileName;
-                if (contentDisposition) {
-                  const [ fileNameMatch ] = contentDisposition.split(';').filter(str => str.includes('filename'));
-                  if (fileNameMatch)
-                    [ , fileName ] = fileNameMatch.split('=');
-                }
-                link.href = url;
-                link.setAttribute('download', `${fileName}`);
-                link.style.cssText = 'display:none';
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
+                setTimeout(function () {
+                  ipcRenderer.send('download-button', res.request.responseURL, loadEbookPath, file.path)
+                }, 500 * i)
+                i++;
+                // 다운로드 링크클릭 방식
+                // const url = window.URL.createObjectURL(new Blob([res.data]));
+                // const link = document.createElement('a');
+                // const contentDisposition = res.headers['content-disposition']; // 파일 이름
+                // let fileName = file.fileName;
+                // if (contentDisposition) {
+                //   const [ fileNameMatch ] = contentDisposition.split(';').filter(str => str.includes('filename'));
+                //   if (fileNameMatch)
+                //     [ , fileName ] = fileNameMatch.split('=');
+                // }
+                // link.href = url;
+                // link.setAttribute('download', `${fileName}`);
+                // link.style.cssText = 'display:none';
+                // document.body.appendChild(link);
+                // link.click();
+                // link.remove();
               })
               .catch(err => console.log(err))
           }
         })
         .catch(err => console.log(err))
+    //   try {  // 시도한다.
+    //     this.eBookLocation = loadEbookPath;
+    //     if (this.eBookLocation) {
+    //       if (this.readToc()) {
+    //         // EPUB 필수 폴더들이 있는 경로를 선택한 경우에만 디렉토리에 로드한다.
+    //         this.$store.dispatch("setEbookDirectory", this.eBookLocation);
+    //         this.readCustomStyle();
+    //         this.$store.dispatch("setEditingText", "");
+    //         this.$store.dispatch(
+    //           "setAlertMessage",
+    //           "이북 불러오기에 성공했습니다"
+    //         );
+    //       }
+    //     } else {
+    //       this.$store.dispatch(
+    //         "setAlertMessage",
+    //         "ebook 불러오기에 실패했습니다"
+    //       );
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //     this.$store.dispatch("setAlertMessage", "이북 불러오기에 실패했습니다");
+    //   }
     },
   },
 };
