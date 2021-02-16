@@ -353,19 +353,15 @@ export default {
   },
   computed: {
     getLabelAlign: function () {
-      console.log(this.$t('dialoginput.style-align'));
       return this.$t('dialoginput.style-align');
     },
     getLabelFont: function () {
-      console.log(this.$t('dialoginput.style-font'));
       return this.$t('dialoginput.style-font');
     },
     getLabelFontColor: function () {
-      console.log(this.$t('dialoginput.style-align'));
       return this.$t('dialoginput.style-fontcolor');
     },
     getLabelBackgroundColor: function () {
-      console.log(this.$t('dialoginput.style-align'));
       return this.$t('dialoginput.style-backgroundcolor');
     },
   },
