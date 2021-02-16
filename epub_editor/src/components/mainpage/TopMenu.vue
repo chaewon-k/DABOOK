@@ -12,7 +12,7 @@
             >
               {{ $t("tab." + item.tab) }}
             </v-tab>
-            <v-btn id="helpBtn" @click="popUpEditor()" text>도움말</v-btn>
+            <v-btn id="helpBtn" @click="popUpEditor()" text>{{ $t("tab.help") }}</v-btn>
           </v-tabs>
         </v-col>
       </v-row>
