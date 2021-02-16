@@ -237,8 +237,7 @@ div.right {
 
 .theme--dark.v-btn,
 .theme--dark.v-btn.v-btn--icon,
-.theme--dark.v-treeview, 
-.theme--dark.v-icon {
+.theme--dark.v-treeview {
   color: #cdcdd4 !important;
 }
 
