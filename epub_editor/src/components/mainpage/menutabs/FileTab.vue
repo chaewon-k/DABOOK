@@ -8,7 +8,6 @@
     <v-btn class="align-self-center" @click="preview" text>{{ $t('filetab.preview') }}</v-btn>
     <v-btn class="align-self-center" @click="exportFile" text>{{ $t('filetab.epub') }}</v-btn>
     <v-btn class="align-self-center" @click="addChapter" text>{{ $t('filetab.chapter') }}</v-btn>
-    <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text>{{ $t("filetab.server") }}</v-btn>
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
         <DialogTitle title="file-chapter" @toggle-dialog="chapterDialog = false" />
@@ -90,37 +89,6 @@
         <DialogButton buttonText="export" :dialogMethod="makeEpub" />
       </v-card>
     </v-dialog>
-    
-    <v-dialog v-model="eBookListDialog" max-width="400">
-      <v-card :loading="loading">
-        <template slot="progress">
-          <v-progress-linear
-            color="deep-purple"
-            height="7"
-            indeterminate
-          ></v-progress-linear>
-        </template>
-        <DialogTitle
-          title="server-load"
-          @toggle-dialog="eBookListDialog = false;"
-        />
-        <v-card-text style="padding: 3% 6% 3% 6%">
-          <v-list>
-            <v-list-item-group v-model="eBookSelected">
-              <v-list-item
-                v-for="(eBook, i) in eBookList"
-                :key="i"
-              >
-                <v-list-item-content>
-                  <v-list-item-title v-text="eBook.epubName"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card-text>
-        <DialogButton buttonText="download" :dialogMethod="loadFromServer" />
-      </v-card>
-    </v-dialog>
   </v-tabs>
 </template>
 
@@ -132,13 +100,11 @@ import eventBus from "@/eventBus.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
-import axios from 'axios';
 
 const fs = require('fs');
 const path = require('path');
 const electron = require('electron');
 const BrowserWindow = electron.remote.BrowserWindow;
-const ipcRenderer = electron.ipcRenderer;
 const fse = require('fs-extra');
 
 export default {
@@ -470,9 +436,7 @@ export default {
         }
         let num = '';
         let path = this.eBookLocation + '/EPUB/text/';
-        const temp = fs
-          .readFileSync('/Applications/DABOOK.app/Contents/Resources/src/assets/chapter01.xhtml')
-          .toString(); // for build
+        const temp = fs.readFileSync('/Applications/DABOOK.app/Contents/Resources/src/assets/chapter01.xhtml').toString(); // for build
         // const temp = fs.readFileSync("./src/assets/chapter01.xhtml").toString();  // for mac test
         //const temp = fs.readFileSync("./resources/src/assets/chapter01.xhtml").toString();  // for win build
         this.chapterNum++;

@@ -22,7 +22,7 @@
 </template>
 <script>
 import SubMenu from "./SubMenu.vue";
-
+import { ipcRenderer } from 'electron';
 const path = require("path");
 const electron = require("electron");
 const BrowserWindow = electron.remote.BrowserWindow;
@@ -66,7 +66,8 @@ export default {
         win.focus();
       } else {
         win = new BrowserWindow({ width: 800, height: 1500 });
-        const p = path.resolve(`/Applications/DABOOK.app/Contents/Resources/src/assets/manual/manual.html`);
+          const p = path.resolve(`/Applications/DABOOK.app/Contents/Resources/src/assets/manual/manual.html`);
+          // const p = path.resolve(`./src/assets/manual/manual.html`);
         win.loadURL("file://" + p, function() {
         });
       }
