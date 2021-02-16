@@ -237,7 +237,7 @@ export function convertImageTag (temp, path) {
 
 export function convertStyleTag (temp, path) {
   path = path.replaceAll('\\', '/');
-  let str = "url('" + path + '/EPUB/fonts/';
+  let str = "url('file:///" + path + '/EPUB/fonts/';
   temp = temp.replaceAll("url('../fonts/", str);
   return temp;
 }

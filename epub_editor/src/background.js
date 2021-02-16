@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, Menu, BrowserWindow} from 'electron'
+import { app, protocol, Menu, BrowserWindow, ipcMain} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const { dialog } = require('electron')
@@ -8,7 +8,10 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const isMac = process.platform === 'darwin'
 let win;
 let menuEnabled = true;
-
+var isKor = false;
+ipcMain.on('close_dialog', (event, arg) => {
+  isKor = arg;
+})
 const template = [
   // { role: 'appMenu' }
   ...(isMac ? [{
@@ -444,10 +447,6 @@ async function createWindow() {
         e.preventDefault();
       }
     }
-
-
-
-    
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -459,32 +458,32 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
-  if (isMac === true) { // mac이면  
-    console.log('isMac')
-    win.webContents.send('isMac', true);
-  }
-  let close = false    
+  // if (isMac === true) { // mac이면  
+  //   console.log('isMac')
+  //   win.webContents.send('isMac', true);
+  // }
+  // let close = false    
 
-  win.on('close', (ev) => {
-    if (close === false) {
-      ev.preventDefault()
-      dialog.showMessageBox({
-        type: 'warning',
-        buttons: ['아니오', '네'],
-        message: '변경 내역을 모두 저장하셨나요?',
-        cancelId: 0,
-        defaultId: 1,
-        noLink: true
-      }).then((val) => {
-        if (val.response === 0) {
-          // Cancel the close process
-        } else if (win) {
-          close = true
-          app.quit()
-        }
-      })
-    }
-  })
+  // win.on('close', (ev) => {
+  //   if (close === false) {
+  //     ev.preventDefault()
+  //     dialog.showMessageBox({
+  //       type: 'warning',
+  //       buttons: ['아니오', '네'],
+  //       message: '변경 내역을 모두 저장하셨나요?',
+  //       cancelId: 0,
+  //       defaultId: 1,
+  //       noLink: true
+  //     }).then((val) => {
+  //       if (val.response === 0) {
+  //         // Cancel the close process
+  //       } else if (win) {
+  //         close = true
+  //         app.quit()
+  //       }
+  //     })
+  //   }
+  // })
   // win.addEventListenter('beforeunload', function (event) {
   //   console.log('I do not want to be closed')
   //   const options = {
