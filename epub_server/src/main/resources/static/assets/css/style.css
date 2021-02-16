@@ -621,12 +621,35 @@ section {
 .team {
   padding: 60px 0;
 }
+.team .lmember {
+  text-align: right;
+  margin-bottom: 20px;
+  position: relative;
+}
 
 .team .member {
   text-align: center;
   margin-bottom: 20px;
-  background: #343a40;
   position: relative;
+}
+
+.team .rmember {
+  text-align: left;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.team .lmember .member-info {
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 110px;
+  right: -30px;
+  transition: 0.2s;
 }
 
 .team .member .member-info {
@@ -637,14 +660,43 @@ section {
   position: absolute;
   bottom: 0;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 40px;
+  right: 40px;
   transition: 0.2s;
+}
+
+.team .rmember .member-info {
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: -30px;
+  right: 110px;
+  transition: 0.2s;
+}
+
+.team .lmember .member-info-content {
+  margin-top: -50px;
+  transition: margin 0.2s;
 }
 
 .team .member .member-info-content {
   margin-top: -50px;
   transition: margin 0.2s;
+}
+
+.team .rmember .member-info-content {
+  margin-top: -50px;
+  transition: margin 0.2s;
+}
+
+.team .lmember:hover .member-info {
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 1;
+  transition: 0.4s;
 }
 
 .team .member:hover .member-info {
@@ -653,15 +705,52 @@ section {
   transition: 0.4s;
 }
 
+.team .rmember:hover .member-info {
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 1;
+  transition: 0.4s;
+}
+
+.team .lmember:hover .member-info-content {
+  margin-top: 0;
+  transition: margin 0.4s;
+}
+
 .team .member:hover .member-info-content {
   margin-top: 0;
   transition: margin 0.4s;
+}
+
+.team .rmember:hover .member-info-content {
+  margin-top: 0;
+  transition: margin 0.4s;
+}
+
+.team .lmember h4 {
+  font-weight: 700;
+  margin-bottom: 2px;
+  font-size: 18px;
+  color: #fff;
 }
 
 .team .member h4 {
   font-weight: 700;
   margin-bottom: 2px;
   font-size: 18px;
+  color: #fff;
+}
+
+.team .rmember h4 {
+  font-weight: 700;
+  margin-bottom: 2px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.team .lmember span {
+  font-style: italic;
+  display: block;
+  font-size: 13px;
   color: #fff;
 }
 
@@ -672,8 +761,28 @@ section {
   color: #fff;
 }
 
+.team .rmember span {
+  font-style: italic;
+  display: block;
+  font-size: 13px;
+  color: #fff;
+}
+
+.team .lmember .social {
+  margin-top: 15px;
+}
+
 .team .member .social {
   margin-top: 15px;
+}
+
+.team .rmember .social {
+  margin-top: 15px;
+}
+
+.team .lmember .social a {
+  transition: color 0.3s;
+  color: #fff;
 }
 
 .team .member .social a {
@@ -681,13 +790,41 @@ section {
   color: #fff;
 }
 
+.team .rmember .social a {
+  transition: color 0.3s;
+  color: #fff;
+}
+
+.team .lmember .social a:hover {
+  color: #423F8C;
+}
+
 .team .member .social a:hover {
   color: #423F8C;
+}
+
+.team .rmember .social a:hover {
+  color: #423F8C;
+}
+
+.team .lmember .social i {
+  font-size: 18px;
+  margin: 0 2px;
 }
 
 .team .member .social i {
   font-size: 18px;
   margin: 0 2px;
+}
+
+.team .rmember .social i {
+  font-size: 18px;
+  margin: 0 2px;
+}
+
+#team-img{
+	width: 210px;
+	height: 280px;
 }
 
 /*--------------------------------------------------------------
@@ -1167,39 +1304,6 @@ section {
 #img-size {
   height: 55px;
   width: 160px;
-}
-
-#footer .footer-top .footer-newsletter form {
-  margin-top: 30px;
-  background: #fff;
-  padding: 6px 10px;
-  position: relative;
-  border-radius: 4px;
-}
-
-#footer .footer-top .footer-newsletter form input[type="email"] {
-  border: 0;
-  padding: 4px;
-  width: calc(100% - 110px);
-}
-
-#footer .footer-top .footer-newsletter form input[type="submit"] {
-  position: absolute;
-  top: 0;
-  right: -2px;
-  bottom: 0;
-  border: 0;
-  background: none;
-  font-size: 16px;
-  padding: 0 20px;
-  background: #423F8C;
-  color: #fff;
-  transition: 0.3s;
-  border-radius: 0 4px 4px 0;
-}
-
-#footer .footer-top .footer-newsletter form input[type="submit"]:hover {
-  background: #6A68A6;
 }
 
 #footer .copyright {
