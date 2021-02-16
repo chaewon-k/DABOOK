@@ -7,6 +7,12 @@
           
         </v-list-item-action>
       </v-list-item>
+      <v-list-item>
+        <v-list-item-action @click="toggleIcon('IsPreview')">
+          <v-icon v-if ="isPreview">mdi-monitor</v-icon>
+          <v-icon v-else-if ="!isPreview">mdi-monitor-off</v-icon>
+        </v-list-item-action>
+      </v-list-item>
       <!-- <v-list-item>
         <v-btn icon class="align-self-center rounded-sm"><v-icon @click="userInfoDialog=true">mdi-account-circle-outline</v-icon></v-btn>
       </v-list-item>
@@ -19,7 +25,18 @@
       /> -->
     </v-list>
 
-    <!----------- logout dialog ----------->
+    <!-- <Confirm
+      :dialog="logoutDialog"
+      title="togglebar.logout.title"
+      content1="togglebar.logout.content-1"
+      content2="togglebar.logout.content-2"
+      confirm="togglebar.logout.logout-btn"
+      cancel="togglebar.logout.cancel"
+      @confirm="logout"
+      @cancel="logoutDialog = false"
+     /> -->
+
+    <!-- --------- logout dialog ---------
     <v-dialog
       v-model="logoutDialog"
       max-width="300"
@@ -48,13 +65,18 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
+
   </v-navigation-drawer>
 </template>
 
 <script>
-// import UserInfo from '@/components/mainpage/UserInfo'
+
+let ipc = require('electron').ipcRenderer;
+
 export default {
+  components: {
+  },
   data: function () {
     return {
       dirOpen: true,
@@ -72,18 +94,33 @@ export default {
       type: Boolean
     },
   },
-  components: {
-    // UserInfo
+  computed: {
+    isPreview(){
+      return this.$store.state.isPreview;
+    }
   },
   methods: {
     toggleIcon: function(val) {
       if (val == "Dir") {
         this.$emit('toggleDir');
       } else if (val == "Lang") {
-        if (this.$i18n.locale === "en") this.$i18n.locale = "ko";
-        else this.$i18n.locale = "en";
-      } else {
+        if (this.$i18n.locale === "en") {
+          this.$i18n.locale = "ko";
+          ipc.send('close_dialog', true);
+          }
+        else {
+          this.$i18n.locale = "en";
+          ipc.send('close_dialog', false);
+          }
+      } else if (val == "Dark") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+        this.$store.dispatch("setIsDark")
+      } else {
+        if (this.isPreview) {
+          this.$store.dispatch("setIsPreview", false);
+        } else {
+          this.$store.dispatch("setIsPreview", true);
+        }
       }
     },
     logout: function () {

@@ -401,7 +401,7 @@ const menu = Menu.buildFromTemplate(template)
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
+  { scheme: 'app', privileges: { secure: true, standard: true }}
 ])
 
 async function createWindow() {
@@ -413,9 +413,43 @@ async function createWindow() {
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+      webSecurity: false
     }
   })
+  //win.setMenu(null);
+  win.on('close', function(e) {
+    //setTimeout(function () {console.log('isKor ' + isKor)}, 3000);
+    //console.log('isKor : ' + isKor)
+    if (isKor) {
+      const choice = require('electron').dialog.showMessageBoxSync(this,
+        {
+          type: 'question',
+          buttons: ['네', '아니오'],
+          title: 'DABOOK 종료',
+          message: `정말로 종료하시겠습니까?`
+        });
+      if (choice === 1) {
+        e.preventDefault();
+      }
+    } else {
+      const choice = require('electron').dialog.showMessageBoxSync(this,
+        {
+          type: 'question',
+          buttons: ['yes', 'no'],
+          title: 'DABOOK exit',
+          message: `Are you sure you want to exit?`
+        });
+      if (choice === 1) {
+        e.preventDefault();
+      }
+    }
+
+
+
+    
+  });
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -521,3 +555,18 @@ if (isDevelopment) {
     })
   }
 }
+
+app.whenReady().then(() => {
+  protocol.registerFileProtocol('file', (request, callback) => {
+    const pathname = decodeURI(request.url.replace('file:///', ''));
+    callback(pathname);
+  })
+});
+
+ipcMain.on('download-button', async (event, url, ebookPath, filePath) => {
+  const options = {
+    directory: ebookPath + filePath,
+  }
+  const win = BrowserWindow.getFocusedWindow();
+  await download(win, url, options);
+});

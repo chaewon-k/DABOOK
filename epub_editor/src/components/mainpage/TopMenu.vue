@@ -12,6 +12,7 @@
             >
               {{ $t("tab." + item.tab) }}
             </v-tab>
+            <v-btn id="helpBtn" @click="popUpEditor()" text>{{ $t("tab.help") }}</v-btn>
           </v-tabs>
         </v-col>
       </v-row>
@@ -21,6 +22,11 @@
 </template>
 <script>
 import SubMenu from "./SubMenu.vue";
+
+const path = require("path");
+const electron = require("electron");
+const BrowserWindow = electron.remote.BrowserWindow;
+let win;
 
 export default {
   name: "TopMenu",
@@ -36,14 +42,34 @@ export default {
         { tab: "edit" },
         { tab: "tool" },
         { tab: "style" },
-        { tab: "setting" },
-        { tab: "help" },
       ],
     };
+  },
+  mounted: function() {
+    this.eBookDialog = false;
+    ipcRenderer.on(
+      'helpTab',
+      function(event, message) {
+        if (message === 0) {
+          this.popUpEditor();
+        }
+      }.bind(this)
+    );
   },
   methods: {
     selectedIndex: function (idx) {
       this.itemIndex = idx;
+    },
+    popUpEditor: function() {
+      console.log(BrowserWindow.getAllWindows());
+      if (BrowserWindow.getAllWindows().length >= 2) {
+        win.focus();
+      } else {
+        win = new BrowserWindow({ width: 800, height: 1500 });
+        const p = path.resolve(`/Applications/DABOOK.app/Contents/Resources/src/assets/manual/manual.html`);
+        win.loadURL("file://" + p, function() {
+        });
+      }
     },
   },
 };

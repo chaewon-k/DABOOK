@@ -13,7 +13,8 @@
     "save": "save",
     "preview": "preview",
     "epub": "create epub",
-    "chapter": "chapter"
+    "chapter": "chapter",
+    "server": "load from server"
   },
   "edittab": {
     "undo": "undo",
@@ -36,7 +37,7 @@
     "line": "line",
     "quote": "quote",
     "cite": "cite",
-    "bole": "bole",
+    "bold": "bold",
     "underline": "underline",
     "mediumline": "mediumline",
     "subscript": "subscript",
@@ -63,14 +64,15 @@
     "file-ebook": "Create e-book",
     "file-epub": "Create ePUB",
     "file-chapter": "Add chapter",
-    "edit-find": "Find words",
+    "edit-find": "Find word",
     "edit-replace": "Replacing words",
     "style-font": "Select font",
     "style-color": "Select color",
     "style-add": "Add style",
     "style-custom": "My style",
     "tool-link": "Add link",
-    "tool-table": "Add table"
+    "tool-table": "Add table",
+    "server-load": "Load from server"
   },
   "dialoginput": {
     "file-title": "e-book title",
@@ -84,14 +86,18 @@
     "style-align": "alignment",
     "style-font": "font",
     "style-fontcolor": "font color",
-      "style-backgroundcolor": "background color"
+    "style-backgroundcolor": "background color",
+    "tool-link": "link",
+    "tool-table-row": "row",
+    "tool-table-col": "col"
   },
   "dialogbutton": {
     "create" : "create",
     "export": "export",
     "add": "add",
     "replace": "replace",
-    "apply": "apply"
+    "apply": "apply",
+    "download": "download"
   },
   "success": {
     "create-ebook": "e-book creation was successful.",
@@ -101,7 +107,8 @@
     "add-chapter": "adding chapter was successful.",
     "replace": "Word conversion completed.",
     "change-nickname": "Nickname has been changed.",
-    "change-password": "Password has been changed."
+    "change-password": "Password has been changed.",
+    "download-ebook": "Download completed."
   },
   "error": {
     "create-ebook-input": "Please enter a name and storage location for the book.",
@@ -126,10 +133,12 @@
     "duplicated-nickname": "Nickname already exists.",
     "not-match-newpassword": "New password not match.",
     "not-match-prevpassword": "Password not match.",
-    "fail-signout": "Failed to signout membership. Please contact the customer service center."
+    "fail-signout": "Failed to signout membership. Please contact the customer service center.",
+    "duplicated-ebook": "You've already created an ebook with the same name."
   },
   "confirm": {
-    "save-title": "Do you want to save the history of changes in the previous file?",
+    "save-title": "Save file",
+    "save-content": "Do you want to save the history of changes in the previous file?",
     "save-confirm": "save",
     "save-cancel": "cancel",
     "close-title": "Are you sure you want to exit the DABOOK?",
@@ -170,5 +179,6 @@
   "addstyle": "add style",
   "manual": "manual",
   "directory": "directory",
-  "toc": "toc"
+  "toc": "toc",
+  "textarea-placeholder": "Let's make a book :)"
 }

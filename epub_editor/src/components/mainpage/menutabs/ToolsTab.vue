@@ -31,7 +31,7 @@
       <span>{{ $t('toolstab.italic') }}</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
-        <v-btn class="align-self-center rounded-sm" v-on="on" icon medium><v-icon medium @click="selectTag('Enter')">mdi-format-paragraph</v-icon></v-btn></template>
+        <v-btn class="align-self-center rounded-sm" v-on="on" icon medium><v-icon medium @click="selectTag('Enter')">mdi-keyboard-return</v-icon></v-btn></template>
       <span>{{ $t('toolstab.enter') }}</span>
       </v-tooltip>
       <v-tooltip bottom><template v-slot:activator="{ on }">
@@ -91,17 +91,17 @@
 </template>
 
 <script>
-import eventBus from '@/eventBus.js';
+import eventBus from "@/eventBus.js";
 
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
 export default {
-  name: 'ToolsTab',
-  data: function () {
+  name: "ToolsTab",
+  data: function() {
     return {
       tab: null,
-    }
+    };
   },
   mounted: function () {
     this.eBookDialog = false;
@@ -111,12 +111,12 @@ export default {
   },
   methods: {
     selectTag: function(index) {
-      if (this.$store.state.selectedFileDirectory !== '') {
-        eventBus.$emit('pushIndexData', index);
+      if (this.$store.state.selectedFileDirectory !== "") {
+        eventBus.$emit("pushIndexData", index);
       } else {
-        this.$store.dispatch('setAlertMessage', 'error.select-file')
+        this.$store.dispatch("setAlertMessage", "error.select-text");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

@@ -8,7 +8,7 @@
     <v-btn class="align-self-center" @click="preview" text>{{ $t('filetab.preview') }}</v-btn>
     <v-btn class="align-self-center" @click="exportFile" text>{{ $t('filetab.epub') }}</v-btn>
     <v-btn class="align-self-center" @click="addChapter" text>{{ $t('filetab.chapter') }}</v-btn>
-
+    <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text>{{ $t("filetab.server") }}</v-btn>
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
         <DialogTitle title="file-chapter" @toggle-dialog="chapterDialog = false" />
@@ -90,26 +90,49 @@
         <DialogButton buttonText="export" :dialogMethod="makeEpub" />
       </v-card>
     </v-dialog>
+    
+    <v-dialog v-model="eBookListDialog" max-width="400">
+      <v-card :loading="loading">
+        <template slot="progress">
+          <v-progress-linear
+            color="deep-purple"
+            height="7"
+            indeterminate
+          ></v-progress-linear>
+        </template>
+        <DialogTitle
+          title="server-load"
+          @toggle-dialog="eBookListDialog = false;"
+        />
+        <v-card-text style="padding: 3% 6% 3% 6%">
+          <v-list>
+            <v-list-item-group v-model="eBookSelected">
+              <v-list-item
+                v-for="(eBook, i) in eBookList"
+                :key="i"
+              >
+                <v-list-item-content>
+                  <v-list-item-title v-text="eBook.epubName"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card-text>
+        <DialogButton buttonText="download" :dialogMethod="loadFromServer" />
+      </v-card>
+    </v-dialog>
   </v-tabs>
 </template>
 
 <script>
-import {
-  readDirectory,
-  tocToList,
-  makeEpubFile,
-  addContentOpf,
-  addTocNcx,
-  changeHtag,
-  readPath,
-  readCustomStyle,
-  changeTitleAuthor,
-} from '@/functions/file.js';
-import { mapState } from 'vuex';
-import eventBus from '@/eventBus.js';
-import DialogButton from '@/components/Dialog/DialogButton';
-import DialogInput from '@/components/Dialog/DialogInput';
-import DialogTitle from '@/components/Dialog/DialogTitle';
+import * as file from "@/functions/file.js";
+import { mapState } from "vuex";
+import { ipcRenderer } from 'electron';
+import eventBus from "@/eventBus.js";
+import DialogButton from "@/components/Dialog/DialogButton";
+import DialogInput from "@/components/Dialog/DialogInput";
+import DialogTitle from "@/components/Dialog/DialogTitle";
+import axios from 'axios';
 
 const fs = require('fs');
 const path = require('path');
@@ -132,6 +155,7 @@ export default {
       chapterDialog: false,
       epubDialog: false,
       eBookDialog: false,
+      eBookListDialog: false,
 
       // string
       eBookText: '',
@@ -141,6 +165,7 @@ export default {
 
       // boolean
       selectDefaultImg: false,
+      loading: false,
 
       // number
       hTags: [1, 2, 3, 4, 5, 6],
@@ -149,6 +174,8 @@ export default {
       // Array
       findIndexArray: [],
       eBookCover: [],
+      eBookList: [],
+      eBookSelected: [],
 
       rules: {
         required: (value) => !!value || this.GET_RULE_TEXT,
@@ -163,6 +190,10 @@ export default {
       } else if (res == 'preview') {
         this.preview();
       }
+    });
+    eventBus.$on("toc",()=>{
+      this.readToc();
+      this.$store.dispatch("setEditingText", "");
     });
   },
   mounted: function() {
@@ -219,7 +250,7 @@ export default {
       /*
       E-BOOK 생성하기 > 위치 선택 버튼을 눌렀을 때 선택한 위치 + ebook 제목 반환
       */
-      this.eBookLocation = readPath();
+      this.eBookLocation = file.readPath();
       this.selectedEBookLocation = this.eBookLocation;
     },
     createNewEBook: function() {
@@ -286,8 +317,8 @@ export default {
     // 목차 읽어오기
     readToc: function() {
       try {
-        const data = readDirectory(this.eBookLocation, [], [], 0);
-        this.chapterNum = data['maxV'];
+        const data = file.readDirectory(this.eBookLocation, [], [], 0);
+        this.chapterNum = data["maxV"];
 
         const folders = []; // 선택한 디렉토리의 폴더들을 리스트에 저장한다.
         for (let i = 0; i < data['arrayOfFiles'].length; i++) {
@@ -302,12 +333,11 @@ export default {
           // 선택한 디렉토리에 필수 폴더들이 모두 있는 경우에만 디렉토리에 로드한다.
           this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
           const fileToText = fs.readFileSync(data['toc'][0]).toString();
-          this.$store.dispatch('setTableOfContents', tocToList(fileToText, []));
-          return true;
-        } else {
-          // 필수 폴더들이 모두 있지 않은 경우 알림창을 띄운다.
-          this.$store.dispatch('setAlertMessage', 'error.load-not-ebook');
-          return false;
+          this.$store.dispatch('setTableOfContents', file.tocToList(fileToText, []));
+          return true
+        } else {  // 필수 폴더들이 모두 있지 않은 경우 알림창을 띄운다. 
+          this.$store.dispatch('setAlertMessage',"error.load-not-ebook")
+          return false
         }
       } catch (err) {
         console.log('목차 읽어오기 실패');
@@ -316,8 +346,11 @@ export default {
     },
 
     // 나만의 style 읽어오기
-    readCustomStyle: function() {
-      this.$store.dispatch('setCustomStyleArray', readCustomStyle(this.eBookLocation));
+    readCustomStyle: function () {
+      this.$store.dispatch(
+        "setCustomStyleArray",
+        file.readCustomStyle(this.eBookLocation)
+      );
     },
 
     // 이미지 이름 재설정
@@ -351,7 +384,7 @@ export default {
     // e-book 불러오기
     loadEbook: function() {
       try {
-        this.eBookLocation = readPath();
+        this.eBookLocation = file.readPath();
         if (this.eBookLocation != null) {
           if (this.readToc()) {
             // EPUB 필수 폴더들이 있는 경로를 선택한 경우에만 디렉토리에 로드한다.
@@ -360,6 +393,11 @@ export default {
             this.$store.dispatch('setEditingText', '');
             this.$store.dispatch('setAlertMessage', 'success.load-ebook');
           }
+        } else {
+          this.$store.dispatch(
+            "setAlertMessage",
+            "error.load-ebook"
+          );
         }
       } catch (err) {
         console.log(err);
@@ -380,10 +418,13 @@ export default {
           this.$store.dispatch('setAlertMessage', 'error.input');
           return;
         }
-        changeTitleAuthor(this.eBookLocation, val, this.eBookAuthor);
+        file.changeTitleAuthor(this.eBookLocation, val, this.eBookAuthor);
         this.epubDialog = false;
-        if (makeEpubFile(this.eBookLocation, val) == true)
-          this.$store.dispatch('setAlertMessage', 'success.create-epub');
+        if (file.makeEpubFile(this.eBookLocation, val) == true)
+          this.$store.dispatch(
+            "setAlertMessage",
+            "success.create-epub"
+          );
       } catch (err) {
         console.log('epub 내보내기 실패');
         this.$store.dispatch('setAlertMessage', 'error.create-epub');
@@ -440,16 +481,25 @@ export default {
         } else {
           num = this.chapterNum;
         }
-        changeHtag(path, num, temp, val);
-        addContentOpf(this.eBookLocation, num);
-        addTocNcx(this.eBookLocation, val, num);
+        file.changeHtag(path, num, temp, val);
+        file.addContentOpf(this.eBookLocation, num);
+        file.addTocNcx(this.eBookLocation, val, num);
 
-        const data = readDirectory(this.eBookLocation, [], [], 0);
-        this.$store.dispatch('setAlertMessage', 'success.add-chapter');
-        this.$store.dispatch('setEbookDirectoryTree', data['arrayOfFiles']);
-        this.$store.dispatch('addTableOfContents', val);
-        this.chapterText = '';
+        const data = file.readDirectory(this.eBookLocation, [], [], 0);
+        //alert('새 chapter가 추가되었습니다!');
+        this.$store.dispatch("setAlertMessage", "success.add-chapter");
+        this.$store.dispatch("setEbookDirectoryTree", data["arrayOfFiles"]);
+        this.$store.dispatch("addTableOfContents", val);
+        this.chapterText = "";
         this.$refs.chapterTextInput.resetText();
+
+        // 서버 업로드
+        let email = localStorage.getItem('email');
+        let fileName = 'chapter' + num + '.xhtml'
+        let bookName = this.$store.state.ebookTitle
+        file.uploadFile(path + fileName, '/EPUB/text', bookName, email)
+        file.uploadFile(this.eBookLocation + '/EPUB/content.opf', '/EPUB', bookName, email);
+        file.uploadFile(this.eBookLocation + '/EPUB/toc.ncx', '/EPUB', bookName, email);
       } catch (err) {
         console.log('chapter 추가 실패');
         this.$store.dispatch('setAlertMessage', 'error.add-chapter');
