@@ -18,9 +18,7 @@
 import FileTab from "@/components/mainpage/menutabs/FileTab";
 import EditTab from "@/components/mainpage/menutabs/EditTab";
 import ToolsTab from "@/components/mainpage/menutabs/ToolsTab";
-import ToolsTab2 from "@/components/mainpage/menutabs/ToolsTab2";
 import StyleTab from "@/components/mainpage/menutabs/StyleTab";
-import StyleTab2 from "@/components/mainpage/menutabs/StyleTab2";
 
 export default {
   name: "SubMenu",
@@ -28,9 +26,7 @@ export default {
     FileTab,
     EditTab,
     ToolsTab,
-    ToolsTab2,
     StyleTab,
-    StyleTab2
   },
   props: {
     itemIndex: { type: Number },
