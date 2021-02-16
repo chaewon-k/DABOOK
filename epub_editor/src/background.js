@@ -7,6 +7,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 import { ipcMain } from 'electron';
 
+const { download } = require('electron-dl');
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const fs = require("fs");
 
@@ -30,7 +31,7 @@ ipcMain.on('upload', async (event, url, file, email, epubName, path) => {
       win.webContents.send('upload','success');
     })
     .catch(function (err) {
-      console.log(err)
+      console.log(file, '에러에러에러')
       win.webContents.send('upload', 'fail');
     })
 });
@@ -108,3 +109,11 @@ if (isDevelopment) {
     })
   }
 }
+
+ipcMain.on('download-button', async (event, url, ebookPath, filePath) => {
+  const options = {
+    directory: ebookPath + filePath,
+  }
+  const win = BrowserWindow.getFocusedWindow();
+  await download(win, url, options);
+});

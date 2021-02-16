@@ -55,13 +55,13 @@ export function uploadDirectory (arrayOfFiles, bookName, email, i) {
       i++;
       setTimeout(function () {
         uploadDirectory(file.children, bookName, email, i);
-      }, 2000*i)
+      }, 500*i)
     } else {
       let temp = file.dirPath.split(bookName)[1].split('/')
       i++;
       setTimeout(function () {
         uploadFile(file.dirPath, '/'+temp.slice(2, temp.length-1).join('/'), bookName, email)
-      }, 2000*i)
+      }, 500*i)
     }
   }
 }
