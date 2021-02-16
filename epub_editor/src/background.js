@@ -24,7 +24,7 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     }
   })
-  win.setMenu(null);
+  //win.setMenu(null);
   win.on('close', function(e) {
 
     if (!isSave) {

@@ -10,7 +10,6 @@
   >
     <template slot="label" slot-scope="{ item }" >
       <div  @mouseover="mouseAction(item,true);" @mouseleave="mouseAction(item,false);">
-        
           <v-icon small style="padding: 0 5px;" v-if="!item.file">
             {{ 'mdi-folder' }}
           </v-icon>
@@ -18,7 +17,6 @@
             {{ files[item.file] }}
           </v-icon>
           <span @click="openFile(item)">{{ item.name }}</span>
-        
         <span id="toc" v-if="deleteBtn[item.name]">
           <v-btn
           class="align-self-center rounded-sm"
@@ -45,8 +43,6 @@ export default {
   name: 'Directory',
   watch: {
     items: function () {
-      //this.deleteBtn.clear();
-      console.log(this.deleteBtn);
       this.initiallyOpen = ['EPUB', 'text']
       for(let j=0;j<this.items[0].children[4].children.length;j++){
         if(this.items[0].children[4].children[j].file==="xhtml"){
@@ -87,10 +83,62 @@ export default {
   },
   methods: {
     deleteChapter(item){
-      fs.unlink(item.dirPath,(err)=>{
+      console.log("deleteChapter");
+      fs.unlinkSync(item.dirPath, (err)=>{
         console.log(err);
       });
+      
+      //content 변경
+      let content= fs.readFileSync(this.$store.state.ebookDirectory+ '/EPUB/content.opf').toString();
+      let start=content.indexOf('<item id="'+item.name);
+      let end =content.indexOf("/>",start);
+      content=content.slice(0,start)+content.slice(end+3);
+
+      start=content.indexOf('<itemref idref="'+item.name);
+      end=content.indexOf("/>",start);
+      content=content.slice(0,start)+content.slice(end+3);
+
+      console.log("content : ",content);
+      fs.writeFile(this.$store.state.ebookDirectory+ '/EPUB/content.opf', content, (err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+
+      //toc 변경
+      let temp = fs.readFileSync(this.$store.state.ebookDirectory+ '/EPUB/toc.ncx').toString();
+
+      let searchTextStart='chapter';
+      let searchTextEnd='.xhtml';
+      start=item.name.indexOf(searchTextStart);
+      end=item.name.indexOf(searchTextEnd);
+      let searchNumber=item.name.slice(start+searchTextStart.length,end);
+
+      let point=0;
+      let searchDirTextStart='<navPoint id="navPoint-';
+      let searchDirTextEnd='">';
+      for(;;){
+        if(temp.length<=point)
+          break;
+        let dirStart=temp.indexOf(searchDirTextStart,point);
+        let dirEnd=temp.indexOf(searchDirTextEnd,dirStart);
+        let number=temp.slice(dirStart+searchDirTextStart.length,dirEnd);
+
+        if(searchNumber==number){
+          let t='</navPoint>';
+          let last=temp.indexOf(t,dirEnd);
+          temp=temp.slice(0,dirStart)+temp.slice(last+t.length);
+          fs.writeFile(this.$store.state.ebookDirectory+ '/EPUB/toc.ncx', temp, (err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+          break;
+        }
+        point=dirEnd;
+      }
       eventBus.$emit('toc');
+      this.$store.state.selectedFileDirectory='';
     },
     mouseAction(item,set){
       if(item.file=="xhtml"){
