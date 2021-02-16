@@ -36,7 +36,7 @@
     "line": "선",
     "quote": "인용구",
     "cite": "인용문",
-    "bole": "굵게",
+    "bold": "굵게",
     "underline": "밑줄",
     "mediumline": "취소선",
     "subscript": "아래첨자",
@@ -84,7 +84,10 @@
     "style-align": "정렬",
     "style-font": "글꼴",
     "style-fontcolor": "글자색",
-    "style-backgroundcolor": "배경색"
+    "style-backgroundcolor": "배경색",
+    "tool-link": "링크",
+    "tool-table-row": "행",
+    "tool-table-col": "열"
   },
   "dialogbutton": {
     "create" : "생성하기",
@@ -169,5 +172,6 @@
   "addstyle": "스타일 추가하기",
   "manual": "사용 설명서",
   "directory": "파일 구조",
-  "toc": "목차"
+  "toc": "목차",
+  "textarea-placeholder": "책을 작성해볼까요?"
 }
