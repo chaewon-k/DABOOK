@@ -13,7 +13,8 @@
     "save": "save",
     "preview": "preview",
     "epub": "create epub",
-    "chapter": "chapter"
+    "chapter": "chapter",
+    "server": "load from server"
   },
   "edittab": {
     "undo": "undo",
@@ -70,7 +71,8 @@
     "style-add": "Add style",
     "style-custom": "My style",
     "tool-link": "Add link",
-    "tool-table": "Add table"
+    "tool-table": "Add table",
+    "server-load": "Load from server"
   },
   "dialoginput": {
     "file-title": "e-book title",
@@ -94,7 +96,8 @@
     "export": "export",
     "add": "add",
     "replace": "replace",
-    "apply": "apply"
+    "apply": "apply",
+    "download": "download"
   },
   "success": {
     "create-ebook": "e-book creation was successful.",
@@ -129,7 +132,8 @@
     "duplicated-nickname": "Nickname already exists.",
     "not-match-newpassword": "New password not match.",
     "not-match-prevpassword": "Password not match.",
-    "fail-signout": "Failed to signout membership. Please contact the customer service center."
+    "fail-signout": "Failed to signout membership. Please contact the customer service center.",
+    "duplicated-ebook": "You've already created an ebook with the same name."
   },
   "confirm": {
     "save-title": "Do you want to save the history of changes in the previous file?",
