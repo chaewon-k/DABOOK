@@ -335,12 +335,6 @@ export default {
     getEditingText: function() {
       return this.$store.state.editingText;
     },
-    getIframeText: function() {
-      let iframe = document.getElementById("preview");
-      let obj = iframe.contentWindow.document;
-      console.log(obj);
-      return obj;
-    },
     isPreview: function() {
       return this.$store.state.isPreview;
     },
