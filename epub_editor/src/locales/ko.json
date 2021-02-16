@@ -137,7 +137,8 @@
     "duplicated-ebook": "동일한 이름의 이북이 이미 있습니다."
   },
   "confirm": {
-    "save-title": "이전 파일의 변경 내역을 저장하시겠습니까?",
+    "save-title": "파일 저장",
+    "save-content": "이전 파일의 변경 내역을 저장하시겠습니까?",
     "save-confirm": "저장",
     "save-cancel": "취소",
     "close-title": "DABOOK을 종료하시겠습니까?",

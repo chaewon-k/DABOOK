@@ -25,7 +25,18 @@
       />
     </v-list>
 
-    <!----------- logout dialog ----------->
+    <Confirm
+      :dialog="logoutDialog"
+      title="togglebar.logout.title"
+      content1="togglebar.logout.content-1"
+      content2="togglebar.logout.content-2"
+      confirm="togglebar.logout.logout-btn"
+      cancel="togglebar.logout.cancel"
+      @confirm="logout"
+      @cancel="logoutDialog = false"
+     />
+
+    <!-- --------- logout dialog ---------
     <v-dialog
       v-model="logoutDialog"
       max-width="300"
@@ -54,18 +65,21 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
+
   </v-navigation-drawer>
 </template>
 
 <script>
 import UserInfo from '@/components/mainpage/UserInfo'
+import Confirm from '@/components/mainpage/Confirm'
 
 let ipc = require('electron').ipcRenderer;
 
 export default {
   components: {
-    UserInfo
+    UserInfo,
+    Confirm
   },
   data: function () {
     return {
