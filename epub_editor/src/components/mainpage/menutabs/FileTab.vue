@@ -16,7 +16,7 @@
     <v-btn class="align-self-center" @click="addChapter" text
       >{{ $t("filetab.chapter") }}</v-btn
     >
-    <v-btn class="align-self-center" @click="getEbookList" text
+    <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text
       >{{ $t("filetab.server") }}</v-btn
     >
     <v-dialog v-model="chapterDialog" max-width="400">
@@ -111,10 +111,17 @@
     </v-dialog>
     
     <v-dialog v-model="eBookListDialog" max-width="400">
-      <v-card>
+      <v-card :loading="loading">
+        <template slot="progress">
+          <v-progress-linear
+            color="deep-purple"
+            height="7"
+            indeterminate
+          ></v-progress-linear>
+        </template>
         <DialogTitle
           title="server-load"
-          @toggle-dialog="eBookListDialog = false"
+          @toggle-dialog="eBookListDialog = false;"
         />
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-list>
@@ -176,6 +183,7 @@ export default {
 
       // boolean
       selectDefaultImg: false,
+      loading: false,
 
       // number
       hTags: [1, 2, 3, 4, 5, 6],
@@ -571,25 +579,29 @@ export default {
         .catch(err => console.log(err))
     },
     loadFromServer: function () {
+      this.loading = true;
+      var i = 1;
       const eBookId = this.eBookList[this.eBookSelected]['_id']
       const eBookName = this.eBookList[this.eBookSelected]['epubName']
       let loadEbookPath = file.readPath() + "/" + eBookName + "/";
       axios.get("https://contact.dabook.site/api/epub/file/list", { params: { id: eBookId }})
         .then((res) => {
           const fileList = res.data
-          let i = 1;
           for (let file of fileList) {
-            axios.get("https://contact.dabook.site/api/download", { headers: { accept: '*/*' }, responseType: 'blob', params: { email: localStorage.getItem('email'), epubName: eBookName, fileName: file.fileName, path: file.path }})
-              .then(res => {
-                setTimeout(function () {
-                  ipcRenderer.send('download-button', res.request.responseURL, loadEbookPath, file.path)
-                }, 1000 * i)
-                i++;
-              })
-              .catch(err => console.log(err))
+            let tempURL = `https://contact.dabook.site/api/download?email=${localStorage.getItem('email')}&epubName=${eBookName}&fileName=${file.fileName}&path=${file.path}`
+            setTimeout(() => {
+              ipcRenderer.send('download-button', tempURL, loadEbookPath, file.path)
+            }, 500 * i)
+            i++;
           }
+          setTimeout(() => {
+            this.$store.dispatch("setAlertMessage", "success.download-ebook");
+            this.loading = false;
+            this.eBookListDialog = false;            
+          }, 500 * i)
         })
         .catch(err => console.log(err))
+      this.eBookSelected = [];
     },
   },
 };

@@ -107,7 +107,8 @@
     "add-chapter": "목차 추가하기에 성공했습니다.",
     "replace": "단어 변환을 완료하였습니다.",
     "change-nickname": "닉네임을 변경했습니다.",
-    "change-password": "비밀번호를 변경했습니다."
+    "change-password": "비밀번호를 변경했습니다.",
+    "download-ebook": "이북 다운로드에 성공했습니다."
   },
   "error": {
     "create-ebook-input": "이북 이름과 저장 위치를 입력해주세요.",
