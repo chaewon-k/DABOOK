@@ -2,10 +2,10 @@
   <div id="textarea">
     <v-textarea
       id="area"
+      v-bind:class="[isPreview ? 'withPreview' : 'withoutPreview']"
       solo
       hide-details
       spellcheck="false"
-      style="width: auto; border-radius: 0%;"
       ma-auto
       height="100%"
       no-resize
@@ -15,13 +15,16 @@
       @mousedown.left="closeMenu"
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
+    <iframe
+      v-show="isPreview"
+      id="preview"
+      style="width:50%; height:100%; position:absolute; margin-left:50%; border: 0px; padding-right:2px;"
+      name="preview"
+    ></iframe>
 
     <v-dialog v-model="linkDialog" max-width="400">
       <v-card>
-        <DialogTitle
-          title="tool-link"
-          @toggle-dialog="linkDialog = false"
-        /> 
+        <DialogTitle title="tool-link" @toggle-dialog="linkDialog = false" />
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
@@ -129,11 +132,13 @@
 
       <v-divider class="divider-margin"></v-divider>
 
-      <span @mouseover="openHeaders">{{$t('title')}}  ▸</span>
+      <span @mouseover="openHeaders">{{ $t("title") }} ▸</span>
     </div>
 
     <div id="headers" class="contextmenu" @click="closeMenu">
-      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{$t('title') + hTag}} </span>
+      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)"
+        >{{ $t("title") + hTag }}
+      </span>
     </div>
   </div>
 </template>
@@ -144,12 +149,12 @@ import { readDirectory, tocToList } from "@/functions/file.js";
 import { findText, replaceText } from "@/functions/edit.js";
 import * as textStyle from "@/functions/text-style.js";
 import * as edit from "@/functions/edit.js";
+import * as file from "@/functions/file.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
 
 const fs = require("fs");
-
 
 export default {
   name: "Textarea",
@@ -158,26 +163,24 @@ export default {
     DialogInput,
     DialogTitle,
   },
-  mounted: function () {
-    window.onmousewheel=(e)=>{
-      if(e.ctrlKey==false)
-        return;
-      if (e.wheelDelta > 0 ) {
-        this.fontSize+=1;
-        document.getElementById("area").style.fontSize=this.fontSize+"px";
+  created() {},
+  mounted: function() {
+    window.onmousewheel = (e) => {
+      if (e.ctrlKey == false) return;
+      if (e.wheelDelta > 0) {
+        this.fontSize += 1;
+        document.getElementById("area").style.fontSize = this.fontSize + "px";
         console.log(this.fontSize);
-      }
-      else {
-        this.fontSize-=1;
-        document.getElementById("area").style.fontSize=this.fontSize+"px";
+      } else {
+        this.fontSize -= 1;
+        document.getElementById("area").style.fontSize = this.fontSize + "px";
         console.log(this.fontSize);
       }
     };
     window.onkeypress = (e) => {
-      if(e.keyCode==1&&e.ctrlKey==true&&e.shiftKey==true){
-        eventBus.$emit("shortcut","preview");
-      }
-      else if (e.keyCode === 19 && e.ctrlKey === true) {
+      if (e.keyCode == 1 && e.ctrlKey == true && e.shiftKey == true) {
+        eventBus.$emit("shortcut", "preview");
+      } else if (e.keyCode === 19 && e.ctrlKey === true) {
         eventBus.$emit("shortcut", "save");
       } else if (e.keyCode === 5 && e.ctrlKey === true) {
         edit.copy();
@@ -270,41 +273,79 @@ export default {
     });
   },
   watch: {
-    inputText: function () {
-      let area =document.getElementById("area");
-      area.scrollTop=area.scrollHeight;
+    inputText: function(newVal) {
+      let area = document.getElementById("area");
+      area.scrollTop = area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);
       this.$store.dispatch("setHTMLText", this.defaultHTMLText);
+      newVal = textStyle.convertImageTag(newVal, this.$store.state.ebookDirectory);
+      //console.log(newVal);
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      editorObj.designMode = "on";
+      editorObj.open();
+      let cssString = file.readCSS(this.$store.state.ebookDirectory);
+      cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+      editorObj.writeln("<style>");
+      editorObj.writeln(cssString)
+      editorObj.writeln("</style>");
+      editorObj.writeln(newVal);
+      editorObj.designMode = "off";
+      editorObj.close();
     },
-    getEditingText: function () {
+    getEditingText: function() {
       this.inputText = this.getEditingText;
     },
+    isPreview: function () {
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      editorObj.designMode = "on";
+      editorObj.open();
+      let cssString = file.readCSS(this.$store.state.ebookDirectory);
+      cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+      editorObj.writeln("<style>");
+      editorObj.writeln(cssString)
+      editorObj.writeln("</style>");
+      let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
+      editorObj.writeln(temp);
+      editorObj.designMode = "off";
+      editorObj.close();
+    }
   },
-  data: function () {
+  data: function() {
     return {
-      test: "",
       inputText: "",
       defaultHTMLText: "",
+      findText: "",
       linkText: "",
-      tableData: {
-        col: [],
-        row: [],
-      },
-      hTags: [1, 2, 3, 4, 5, 6],
+
       linkDialog: false,
       tableDialog: false,
+
       tableRow: 1,
       tableCol: 1,
-      findText: "",
+      fontSize: 15,
+
+      hTags: [1, 2, 3, 4, 5, 6],
       findIndexArray: [],
       cursorPosition: { posX: 0, posY: 0 },
-
-      fontSize:15,
     };
   },
   computed: {
-    getEditingText: function () {
+    getEditingText: function() {
       return this.$store.state.editingText;
+    },
+    getIframeText: function() {
+      let iframe = document.getElementById("preview");
+      let obj = iframe.contentWindow.document;
+      console.log(obj);
+      return obj;
+    },
+    isPreview: function() {
+      return this.$store.state.isPreview;
+    },
+    previewURL: function() {
+      return this.$store.state.selectedFileDirectory;
     },
     getPlaceholder: function () {
       return this.$t('textarea-placeholder');
@@ -321,7 +362,6 @@ export default {
   },
   methods: {
     edits: function (res) {
-      console.log("edits");
       switch (res) {
         case "cut":
           this.inputText=edit.cut();
@@ -340,81 +380,81 @@ export default {
           break;
       }
     },
-    isSave: function (event) {
+    isSave: function(event) {
       edit.Save(event.keyCode);
     },
-    plusRow: function () {
+    plusRow: function() {
       this.tableRow++;
     },
-    minusRow: function () {
+    minusRow: function() {
       if (this.tableRow == 1) return;
       this.tableRow--;
     },
-    plusCol: function () {
+    plusCol: function() {
       this.tableCol++;
     },
-    minusCol: function () {
+    minusCol: function() {
       if (this.tableCol == 1) return;
       this.tableCol--;
     },
-    attachPTag: function () {
+    attachPTag: function() {
       this.inputText = textStyle.pTag();
     },
-    attachEnterTag: function () {
+    attachEnterTag: function() {
       this.inputText = textStyle.enterTag();
     },
-    attachLineTag: function () {
+    attachLineTag: function() {
       this.inputText = textStyle.lineTag();
     },
-    attachHTag: function (index) {
+    attachHTag: function(index) {
       this.inputText = textStyle.hTag(index);
     },
-    attachItalicTag: function () {
+    attachItalicTag: function() {
       this.inputText = textStyle.italicTag();
     },
-    attachBlockquoteTag: function () {
+    attachBlockquoteTag: function() {
       this.inputText = textStyle.blockquoteTag();
     },
-    attachCiteTag: function () {
+    attachCiteTag: function() {
       this.inputText = textStyle.citeTag();
     },
-    attachBoldTag: function () {
+    attachBoldTag: function() {
       this.inputText = textStyle.boldTag();
     },
-    attachUnderlineTag: function () {
+    attachUnderlineTag: function() {
       this.inputText = textStyle.underlineTag();
     },
-    attachMediumlineTag: function () {
+    attachMediumlineTag: function() {
       this.inputText = textStyle.mediumlineTag();
     },
-    attachSubscriptTag: function () {
+    attachSubscriptTag: function() {
       this.inputText = textStyle.subscriptTag();
     },
-    attachSuperscriptTag: function () {
+    attachSuperscriptTag: function() {
       this.inputText = textStyle.superscriptTag();
     },
     attachImageTag: function () {
       this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
     },
-    attachLinkTag: function () {
+    attachLinkTag: function() {
       this.linkDialog = false;
       this.inputText = textStyle.linkTag(this.linkText);
       this.linkText = "";
       this.$refs.linkTextInput.resetText();
     },
-    attachTableTag: function () {
+    attachTableTag: function() {
       this.tableDialog = false;
       this.inputText = textStyle.tableTag(this.tableRow, this.tableCol);
       this.tableRow = 1;
       this.tableCol = 1;
     },
-    attachUnorderedListTag: function () {
+    attachUnorderedListTag: function() {
       this.inputText = textStyle.unorderedListTag();
     },
-    attachOrderedListTag: function () {
+    attachOrderedListTag: function() {
       this.inputText = textStyle.orderedListTag();
     },
-    closeMenu: function () {
+    closeMenu: function() {
       let menu = document.getElementById("menu");
       menu.style.display = "none";
       this.cursorPosition.posX = 0;
@@ -430,21 +470,21 @@ export default {
       this.cursorPosition.posX = event.offsetX;
       this.cursorPosition.posY = event.offsetY;
     },
-    openHeaders: function () {
+    openHeaders: function() {
       let menu = document.getElementById("headers");
       menu.style.left = this.cursorPosition.posX +20 +180 + "px";
       menu.style.top = this.cursorPosition.posY +20+ 190 + "px";
       menu.style.height = "auto";
       menu.style.display = "block";
     },
-    closeHeaders: function () {
+    closeHeaders: function() {
       let menu = document.getElementById("headers");
       menu.style.display = "none";
     },
-    setCursor: function (index, length) {
+    setCursor: function(index, length) {
       edit.setCursor(index, length);
     },
-    setLinkText: function (sendData) {
+    setLinkText: function(sendData) {
       this.linkText = sendData;
     },
   },

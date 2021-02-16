@@ -186,3 +186,8 @@ function leadingZeros(n, digits) {
   }
   return zero + n;
 }
+
+export function readCSS(path) {
+  let css = fs.readFileSync(path + '/EPUB/styles/stylesheet.css').toString();
+  return css
+}

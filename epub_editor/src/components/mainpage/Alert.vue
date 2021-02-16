@@ -31,12 +31,5 @@ export default {
 </script>
 
 <style>
-#alertMessage{
-  color: white;
-  position: fixed;
-  float:  right;
-  bottom: 3%;
-  right:  2%;
-  z-index: 99;
-}
+
 </style>

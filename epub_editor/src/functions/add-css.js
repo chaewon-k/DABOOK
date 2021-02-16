@@ -73,12 +73,11 @@ ${fontColor}${backgroundColor}${range}${font}
 }\n\n`;
   // console.log(cssStr);
 
-  fs.writeFile(path + '/EPUB/styles/stylesheet.css', temp + cssStr, (err) => {
+  fs.writeFileSync(path + '/EPUB/styles/stylesheet.css', temp + cssStr, (err) => {
     if (err) {
       console.log('fs.writeFile 실패');
     }
   });
-
 }
 
 export function attachCustomStyleTag (title) {

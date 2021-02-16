@@ -8,6 +8,11 @@
         </v-list-item-action>
       </v-list-item>
       <v-list-item>
+        <v-list-item-action @click="toggleIcon('IsPreview')">
+          <v-icon v-if ="isPreview">mdi-monitor</v-icon>
+          <v-icon v-else-if ="!isPreview">mdi-monitor-off</v-icon>
+        </v-list-item-action>
+      </v-list-item>
         <v-btn icon class="align-self-center rounded-sm"><v-icon @click="userInfoDialog=true">mdi-account-circle-outline</v-icon></v-btn>
       </v-list-item>
       <v-list-item>
@@ -75,6 +80,10 @@ export default {
       type: Boolean
     },
   },
+  computed: {
+    isPreview(){
+      return this.$store.state.isPreview;
+    }
   components: {
     UserInfo
   },
@@ -91,8 +100,14 @@ export default {
           this.$i18n.locale = "en";
           ipc.send('close_dialog', false);
           }
-      } else {
+      } else if (val == "Dark") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      } else {
+        if (this.isPreview) {
+          this.$store.dispatch("setIsPreview", false);
+        } else {
+          this.$store.dispatch("setIsPreview", true);
+        }
       }
     },
     logout: function () {

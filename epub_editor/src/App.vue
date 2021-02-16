@@ -2,21 +2,15 @@
   <v-app>
     <v-main>
       <router-view />
-      <!-- <Editor /> -->
     </v-main>
   </v-app>
 </template>
 
 <script>
-// import Editor from './views/Editor';
 import "./assets/style.css";
 
 export default {
   name: 'App',
-
-  components: {
-    // Editor,
-  },
 };
 </script>
 <style>
