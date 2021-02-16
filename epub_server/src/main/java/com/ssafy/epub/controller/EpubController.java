@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,12 +98,13 @@ public class EpubController {
 		String epubId = "";
 		Epub epub = null;
 		List<FileDTO> fileList = null;
-		for(Epub tempEpub : epubList) {
+		for(Iterator<Epub> iter = epubList.iterator(); iter.hasNext();) {
+			Epub tempEpub = iter.next();
 			if(tempEpub.getEpubName().equals(fileVo.getEpubName())) {
 				epubId = new String(tempEpub.get_id());
 				epub = tempEpub;
 				fileList = tempEpub.getFileList();
-				epubList.remove(tempEpub);
+				iter.remove();
 				break;
 			}
 		}
@@ -112,9 +114,10 @@ public class EpubController {
 		fileDTO.setFileName(mfFile.getOriginalFilename());
 		fileDTO.setEpubId(epubId);
 		//파일 중복 처리
-		for(FileDTO tempFile : fileList) {
+		for(Iterator<FileDTO> iter = fileList.iterator(); iter.hasNext();) {
+			FileDTO tempFile = iter.next();
 			if(tempFile.getFileName().equals(mfFile.getOriginalFilename())) {
-				fileList.remove(tempFile);
+				iter.remove();
 			}
 		}
 		fileList.add(fileDTO);
