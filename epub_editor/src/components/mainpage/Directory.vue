@@ -23,7 +23,7 @@
             class="align-self-center rounded-sm"
             icon
             x-small
-          @click="deleteChapter(item)">
+          @click="deleteDialog=true; deleteitem=item">
               <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
           </span>
@@ -39,6 +39,16 @@
       cancel="confirm.save-cancel"
       @cancel="saveFile(false)"
       @confirm="saveFile(true)"
+      />
+    <Confirm 
+      :dialog="deleteDialog"
+      title="deleteChapter.title"
+      content1="deleteChapter.content-1"
+      content2="deleteChapter.content-2"
+      confirm="deleteChapter.delete-btn"
+      cancel="deleteChapter.cancel"
+      @cancel="deleteChapter(false)"
+      @confirm="deleteChapter(true)"
       />
   </div>
 </template>
@@ -94,41 +104,48 @@ export default {
       tree: [],
       deleteBtn: new Object(),
       saveDialog: false,
+      deleteDialog:false,
+      deleteitem:{},
       value : ''
     };
   },
   methods: {
-    deleteChapter(item){
-      console.log("deleteChapter");
+    deleteChapter(res){
+      this.deleteDialog=false;
+      if(!res)
+        return;
+      let item=this.deleteitem;
       fs.unlinkSync(item.dirPath, (err)=>{
         console.log(err);
       });
       Vue.nextTick();
+
       //content 변경
       let content= fs.readFileSync(this.$store.state.ebookDirectory+ '/EPUB/content.opf').toString();
-      let start=content.indexOf('<item id="'+item.name);
-      let end =content.indexOf("/>",start);
+      let startText='<item id="'+item.name;
+      let endText="/>"
+      let start=content.indexOf(startText);
+      let end =content.indexOf(endText,start);
       content=content.slice(0,start)+content.slice(end+3);
 
       start=content.indexOf('<itemref idref="'+item.name);
       end=content.indexOf("/>",start);
       content=content.slice(0,start)+content.slice(end+3);
 
-      console.log("content : ",content);
       fs.writeFile(this.$store.state.ebookDirectory+ '/EPUB/content.opf', content, (err) => {
-            if (err) {
-              console.log(err);
-            }
-          });
+        if (err) {
+          console.log(err);
+        }
+      });
 
       //toc 변경
       let temp = fs.readFileSync(this.$store.state.ebookDirectory+ '/EPUB/toc.ncx').toString();
 
-      let searchTextStart='chapter';
-      let searchTextEnd='.xhtml';
-      start=item.name.indexOf(searchTextStart);
-      end=item.name.indexOf(searchTextEnd);
-      let searchNumber=item.name.slice(start+searchTextStart.length,end);
+      startText='chapter';
+      endText='.xhtml';
+      start=item.name.indexOf(startText);
+      end=item.name.indexOf(endText,start);
+      let searchNumber=item.name.slice(start+startText.length,end);
 
       let point=0;
       let searchDirTextStart='<navPoint id="navPoint-';
