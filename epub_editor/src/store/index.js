@@ -16,6 +16,9 @@ export default new Vuex.Store({
     osDirectory: '/Applications/DABOOK.app/Contents/Resources/',
     alertMessage: '',
     alertDialog: false,
+    isPreview: true,
+    ebookTitle: '',
+    isDark: false,
   },
 
   mutations: {
@@ -44,7 +47,6 @@ export default new Vuex.Store({
         if (temp[temp.length - 1].includes('/')) {
           const temp2 = temp[temp.length - 1].split('/')
           const title = temp2[temp2.length - 2]
-          console.log(title)
           document.getElementById('electron-title').text = 'DABOOK - ' + title
         } else {
           const title = temp[temp.length - 1]
@@ -65,11 +67,11 @@ export default new Vuex.Store({
     CANCEL_ALERTMESSAGE: function (state) {
       state.alertDialog = false;
     },
-    SET_OSDIRECTORY: function (state, value) {
-      state.osDirectory = value;
+    SET_ISPREVIEW: function (state, value) {
+      state.isPreview = value;
     },
-    SETDIRTOGGLE: function (state) {
-      state.dirToggle = !state.dirToggle;
+    SET_ISDARK: function (state) {
+      state.isDark = !state.isDark;
     }
   },
   actions: {
@@ -109,12 +111,12 @@ export default new Vuex.Store({
     cancelAlertMessage: function({ commit }) {
       commit('CANCEL_ALERTMESSAGE');
     },
-    setOsDirectory: function({ commit }, value){
-      commit('SET_OSDIRECTORY', value);
+    setIsPreview: function ({ commit }, value) {
+      commit('SET_ISPREVIEW', value);
     },
-    setDirToggle: function({ commit }) {
-      commit('SETDIRTOGGLE');
-    }
+    setIsDark: function ({ commit }) {
+      commit('SET_ISDARK');
+    },
   },
   modules: {
   }

@@ -19,14 +19,30 @@
   src: url('../fonts/NotoSerif-LightItalic.ttf');
 }
 
-* {
-  font-family: 'kopub_bat_l';
+html {
+  word-break:break-all;
+  margin-top: 10px;
+}
+
+#eBook::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+  background: #ffffff;
+}
+
+#eBook::-webkit-scrollbar-thumb {
+    border-radius: 3.5px;
+    background-color: #dedeeb;
+}
+
+#eBook::-webkit-scrollbar-track {
+  background: #ffffff;
+  margin-top: 10px;
 }
 
 p {
   font-size: 1em;
   line-height: 1.8em;
-  text-align: justify;
   text-indent: 1em;
   display: block;
   margin: 0;

@@ -97,7 +97,7 @@
         <v-card-text style="padding: 3% 6% 3% 6%">
           <v-container>
             <DialogInput
-              :labelText="label.title"
+              labelText="style-title"
               icon="mdi-textbox"
               required="true"
               check="true"
@@ -115,18 +115,10 @@
                   '가운데 정렬',
                   '양쪽 정렬',
                 ]"
-                :label="label.align"
+                :label="getLabelAlign"
               ></v-select>
             </v-row>
             <v-row>
-              <!-- <select>
-                <option
-                  v-for="(font, idx) in fonts"
-                  :key="idx"
-                  :style="{ 'font-family': font.value }"
-                  >{{ font.name }}</option
-                >
-              </select> -->
               <v-select
                 class="my-3"
                 prepend-icon="mdi-format-font"
@@ -134,7 +126,7 @@
                 :items="fonts"
                 item-text="name"
                 item-value="value"
-                :label="label.font"
+                :label="getLabelFont"
               >
               </v-select>
             </v-row>
@@ -147,7 +139,7 @@
               <v-text-field
               class="my-3"
                 v-model="customStyle.fontColor"
-                :label="label.fontcolor"
+                :label="getLabelFontColor"
                 @click="
                   selected = 'font';
                   colorDialog = true;
@@ -165,7 +157,7 @@
               <v-text-field
               class="my-3"
                 v-model="customStyle.backgroundColor"
-                :label="label.backgroundcolor"
+                :label="getLabelBackgroundColor"
                 @click="
                   selected = 'background';
                   colorDialog = true;
@@ -227,6 +219,8 @@
 <script>
 import * as css from "@/functions/add-css.js";
 import * as edit from "@/functions/edit.js";
+import * as file from "@/functions/file.js";
+import * as textStyle from "@/functions/text-style.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
@@ -344,12 +338,19 @@ export default {
       colorDialog2: false,
       fontDialog: false,
       selectedFont: "",
+      // label: {
+      //   "title": this.$t('dialoginput.style-title'),
+      //   "align" : this.$t('dialoginput.style-align'),
+      //   "font" : this.$t('dialoginput.style-font'),
+      //   "fontcolor": this.$t('dialoginput.style-fontcolor'),
+      //   "backgroundcolor": this.$t('dialoginput.style-backgroundcolor')
+      // }
       label: {
-        "title": "style-title",
-        "align" : "style-align",
-        "font" : "style-font",
-        "fontcolor": "style-fontcolor",
-        "backgroundcolor": "style-backgroundcolor"
+        "title": 'style-title',
+        "align" : 'style-align',
+        "font" : 'style-font',
+        "fontcolor": 'style-fontcolor',
+        "backgroundcolor": 'style-backgroundcolor'
       }
     };
   },
@@ -358,6 +359,20 @@ export default {
     ipcRenderer.on('toolsTab', function (event, message) {
       this.styleMethod(message)
     }.bind(this))
+  },
+  computed: {
+    getLabelAlign: function () {
+      return this.$t('dialoginput.style-align');
+    },
+    getLabelFont: function () {
+      return this.$t('dialoginput.style-font');
+    },
+    getLabelFontColor: function () {
+      return this.$t('dialoginput.style-fontcolor');
+    },
+    getLabelBackgroundColor: function () {
+      return this.$t('dialoginput.style-backgroundcolor');
+    },
   },
   methods: {
     styleMethod: function(i) {
@@ -429,6 +444,18 @@ export default {
       css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
       this.customStyle = {};
       this.$store.dispatch("setCustomStyleArray", this.customStyleList);
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      editorObj.designMode = "on";
+      editorObj.open();
+      let cssString = file.readCSS(this.$store.state.ebookDirectory);
+      editorObj.writeln("<style>");
+      editorObj.writeln(cssString)
+      editorObj.writeln("</style>");
+      let temp = textStyle.convertImageTag(this.$store.state.editingText, this.$store.state.ebookDirectory);
+      editorObj.writeln(temp);
+      editorObj.designMode = "off";
+      editorObj.close();
     },
     openCustomStyleMenu: function() {
       this.customStyleList = this.$store.state.customStyleArray;
