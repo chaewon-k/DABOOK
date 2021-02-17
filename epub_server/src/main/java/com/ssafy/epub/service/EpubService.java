@@ -171,7 +171,7 @@ public class EpubService {
 	private void compressZip(File file, String root, ZipOutputStream zos) throws Throwable {
 		FileInputStream fis = null;
 		try {
-			String zipName = file.getPath().replace(root + "\\", "");
+			String zipName = file.getPath().replace(root + "/", "");
 			// 파일을 읽어드림
 			fis = new FileInputStream(file);
 			// Zip엔트리 생성(한글 깨짐 버그)
