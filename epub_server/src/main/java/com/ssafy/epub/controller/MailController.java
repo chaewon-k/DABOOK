@@ -30,7 +30,7 @@ public class MailController {
 	// 이메일 인증
 	@GetMapping("/auth")
 	@ApiOperation(value = "verify email", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<Boolean> verifyEmail(String token, String email) {
+	public ResponseEntity<String> verifyEmail(String token, String email) {
 		try {
 			// findByEmail의 반환이 List & 회원가입 시 중복체크를 함으로 email에 맞는 User는 한명이다.
 			User findUser = userRepository.findByEmail(email);
@@ -38,12 +38,12 @@ public class MailController {
 				// 이메일 인증 완료시 Status를 false에서 true로 전환한다.
 				findUser.setStatus(true);
 				userRepository.save(findUser);
-				return new ResponseEntity<>(true, HttpStatus.OK);
+				return new ResponseEntity<>("인증이 완료되었습니다.", HttpStatus.OK);
 			} else
-				return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
+				return new ResponseEntity<>("인증에 실패하셨습니다.", HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("인증에 실패하셨습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
 	}
