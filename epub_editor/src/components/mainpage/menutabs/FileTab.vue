@@ -282,8 +282,8 @@ export default {
                       }
                     });
                     this.eBookDialog = false;
-                    let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
-                    // let eBookSettingDirectory = "./resources/src/assets/NewEbook"; //for win build
+                    // let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
+                    let eBookSettingDirectory = "./resources/src/assets/NewEbook"; //for win build
                     fse.copySync(eBookSettingDirectory, this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
                     /*
                     새 ebook 만들기 
@@ -499,8 +499,8 @@ export default {
           this.$store.dispatch("setAlertMessage", "error.add-chapter-input");
           return;
         }
-        const temp = fs.readFileSync("src/assets/chapter01.xhtml").toString();
-        // const temp = fs.readFileSync("./resources/src/assets/chapter01.xhtml").toString(); // for win build
+        // const temp = fs.readFileSync("src/assets/chapter01.xhtml").toString();
+        const temp = fs.readFileSync("./resources/src/assets/chapter01.xhtml").toString(); // for win build
         this.chapterNum++;
         if (this.chapterNum < 10) {
           num = "0" + this.chapterNum;

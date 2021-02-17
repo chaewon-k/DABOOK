@@ -59,6 +59,7 @@ import eventBus from '@/eventBus.js';
 import * as edit from '@/functions/edit.js';
 import Vue from 'vue'
 import Confirm from '@/components/mainpage/Confirm'
+import * as file from '@/functions/file.js';
 
 const fs = require('fs');
 
@@ -208,6 +209,13 @@ export default {
         const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
         fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
         this.$store.dispatch('setAlertMessage', 'success.save-ebook');
+        // 서버 업로드
+        let email = localStorage.getItem('email');
+        let filePath = this.$store.state.selectedFileDirectory
+        let bookName = this.$store.state.ebookTitle
+        let serverPath = "/EPUB/text"
+        file.uploadFile(filePath, serverPath, bookName, email);
+        console.log('서버에 저장함다!')
       } 
       this.saveDialog = false;
       this.moveFile(this.value);
