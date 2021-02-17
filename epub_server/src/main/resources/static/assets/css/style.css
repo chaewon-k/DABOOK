@@ -76,6 +76,9 @@ h1, h2, h3, h4, h5, h6 {
 #header .logo img {
   max-height: 40px;
 }
+#downBtn{
+	cursor: not-allowed;
+}
 
 /*--------------------------------------------------------------
 # Navigation Menu
@@ -552,70 +555,6 @@ section {
 }
 
 /*--------------------------------------------------------------
-# Services
---------------------------------------------------------------*/
-.services .icon-box {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.services .icon {
-  display: flex;
-  justify-content: center;
-}
-
-.services .icon i {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 20px;
-  background: #fff;
-  border-radius: 50%;
-  transition: 0.5s;
-  color: #423F8C;
-  font-size: 40px;
-  overflow: hidden;
-  padding-top: 20px;
-  box-shadow: 0px 0 25px rgba(0, 0, 0, 0.15);
-}
-
-.services .icon-box:hover .icon i {
-  box-shadow: 0px 0 25px rgba(92, 159, 36, 0.3);
-}
-
-.services .title {
-  font-weight: 600;
-  margin-bottom: 15px;
-  font-size: 18px;
-  position: relative;
-  padding-bottom: 15px;
-}
-
-.services .title a {
-  color: #444444;
-  transition: 0.3s;
-}
-
-.services .title a:hover {
-  color: #423F8C;
-}
-
-.services .title::after {
-  content: '';
-  position: absolute;
-  display: block;
-  width: 50px;
-  height: 2px;
-  background: #423F8C;
-  bottom: 0;
-  left: calc(50% - 25px);
-}
-
-.services .description {
-  line-height: 24px;
-  font-size: 14px;
-}
-
-/*--------------------------------------------------------------
 # Team
 --------------------------------------------------------------*/
 .team {
@@ -714,16 +653,19 @@ section {
 .team .lmember:hover .member-info-content {
   margin-top: 0;
   transition: margin 0.4s;
+  text-align:center;
 }
 
 .team .member:hover .member-info-content {
   margin-top: 0;
   transition: margin 0.4s;
+  text-align:center;
 }
 
 .team .rmember:hover .member-info-content {
   margin-top: 0;
   transition: margin 0.4s;
+  text-align:center;
 }
 
 .team .lmember h4 {
@@ -783,11 +725,13 @@ section {
 .team .lmember .social a {
   transition: color 0.3s;
   color: #fff;
+  text-algin:center;
 }
 
 .team .member .social a {
   transition: color 0.3s;
   color: #fff;
+  text-algin:center;
 }
 
 .team .rmember .social a {
