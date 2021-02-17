@@ -18,7 +18,6 @@
     <iframe
       v-show="isPreview"
       id="preview"
-      style="width:50%; height:100%; position:absolute; margin-left:50%; border: 0px; padding-right:2px;"
       name="preview"
     ></iframe>
 
@@ -140,6 +139,16 @@
         >{{ $t("title") + hTag }}
       </span>
     </div>
+     <Confirm 
+      :dialog="beforeChooseDialog"
+      title="beforeChooseEBook.title"
+      content1="beforeChooseEBook.content-1"
+      content2="beforeChooseEBook.content-2"
+      confirm="beforeChooseEBook.create-btn"
+      cancel="beforeChooseEBook.load-btn"
+      @cancel="chooseResult('load')"
+      @confirm="chooseResult('new')"
+      />
   </div>
 </template>
 
@@ -154,6 +163,8 @@ import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
 
+import Confirm from '@/components/mainpage/Confirm'
+
 const fs = require("fs");
 
 export default {
@@ -162,6 +173,7 @@ export default {
     DialogButton,
     DialogInput,
     DialogTitle,
+    Confirm,
   },
   created() {},
   mounted: function() {
@@ -274,6 +286,10 @@ export default {
   },
   watch: {
     inputText: function(newVal) {
+      if(this.$store.state.ebookDirectory===''){
+        this.beforeChooseDialog=true;
+        return;
+      }
       let area = document.getElementById("area");
       area.scrollTop = area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);
@@ -284,6 +300,7 @@ export default {
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
       editorObj.open();
+
       let cssString = file.readCSS(this.$store.state.ebookDirectory);
       cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
       editorObj.writeln("<style>");
@@ -293,6 +310,40 @@ export default {
       editorObj.designMode = "off";
       editorObj.close();
     },
+    isDark: function(newVal) {
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      if (newVal === true) {
+        editorObj.designMode = "on";
+        editorObj.open();
+        editorObj.writeln("<style>");
+        if(this.$store.state.ebookDirectory!==''){
+          let cssString = file.readCSS(this.$store.state.ebookDirectory);
+          cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+          editorObj.writeln(cssString);
+        }
+        editorObj.writeln("* {color: white;}");
+        editorObj.writeln("</style>");
+        let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
+        editorObj.writeln(temp);
+        editorObj.designMode = "off";
+        editorObj.close();
+      } else {
+        editorObj.designMode = "on";
+        editorObj.open();
+        editorObj.writeln("<style>");
+        if(this.$store.state.ebookDirectory!==''){
+          let cssString = file.readCSS(this.$store.state.ebookDirectory);
+          cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+          editorObj.writeln(cssString);
+        }
+        editorObj.writeln("</style>");
+        let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
+        editorObj.writeln(temp);
+        editorObj.designMode = "off";
+        editorObj.close();
+      }
+    },
     getEditingText: function() {
       this.inputText = this.getEditingText;
     },
@@ -301,10 +352,12 @@ export default {
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
       editorObj.open();
-      let cssString = file.readCSS(this.$store.state.ebookDirectory);
-      cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
-      editorObj.writeln("<style>");
-      editorObj.writeln(cssString)
+      editorObj.writeln("<style>"); 
+      if(this.$store.state.ebookDirectory!==''){
+        let cssString = file.readCSS(this.$store.state.ebookDirectory);
+        cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);      
+        editorObj.writeln(cssString);
+      }
       editorObj.writeln("</style>");
       let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
       editorObj.writeln(temp);
@@ -321,6 +374,7 @@ export default {
 
       linkDialog: false,
       tableDialog: false,
+      beforeChooseDialog:false,
 
       tableRow: 1,
       tableCol: 1,
@@ -332,13 +386,13 @@ export default {
     };
   },
   computed: {
-    getEditingText: function() {
+    getEditingText: function () {
       return this.$store.state.editingText;
     },
-    isPreview: function() {
+    isPreview: function () {
       return this.$store.state.isPreview;
     },
-    previewURL: function() {
+    previewURL: function () {
       return this.$store.state.selectedFileDirectory;
     },
     getPlaceholder: function () {
@@ -353,8 +407,21 @@ export default {
     getLabelRow: function () {
       return this.$t('dialoginput.tool-table-row');
     },
+    isDark: function () {
+      return this.$store.state.isDark;
+    }
   },
   methods: {
+    chooseResult: function(res){
+      console.log("chooseResult");
+      document.getElementById("area").value="";
+      this.inputText="";
+      eventBus.$emit("choose",res);
+      if(this.$store.state.ebookDirectory!=""){
+        this.beforeChooseDialog=false;
+        console.log(this.$store.state.tableOfContents);
+      }
+    },
     edits: function (res) {
       switch (res) {
         case "cut":

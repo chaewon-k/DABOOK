@@ -19,6 +19,9 @@
     <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text
       >{{ $t("filetab.server") }}</v-btn
     >
+    <v-btn class="align-self-center" @click="test" text
+      >test</v-btn
+    >
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
         <DialogTitle
@@ -180,6 +183,7 @@ export default {
       eBookAuthor: "",
       eBookLocation: "",
       selectedEBookLocation: "",
+      uploadFileDirectory: undefined,
 
       // boolean
       selectDefaultImg: false,
@@ -207,12 +211,21 @@ export default {
         this.storeInputText();
       }
       else if(res=="preview"){
-        this.preview();
+        this.loadEbook();
       }
     });
     eventBus.$on("toc",()=>{
       this.readToc();
       this.$store.dispatch("setEditingText", "");
+    });
+    eventBus.$on("choose", (res) => {
+      if (res == "new") {
+        this.epubDialog=true;
+        this.createNewEBook();
+      }
+      else if(res=="load"){
+        this.loadEbook();
+      }
     });
   },
   computed: {
@@ -234,6 +247,17 @@ export default {
     }
   },
   methods: {
+    test: function () {
+      this.test2().then((resolvedData) => {
+        file.uploadFile(resolvedData, '/',this.$store.state.ebookTitle, localStorage.getItem('email'));
+      })
+    },
+    test2: function () {
+      return new Promise((resolve) => {
+        var result = file.makeZipFile(this.eBookLocation, this.$store.state.ebookTitle)
+        resolve(result)
+      })
+    },
     checkExp: function (value) {
       var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
       if (special_pattern.test(value) == true) {
@@ -286,6 +310,7 @@ export default {
                     });
                     this.eBookDialog = false;
                     let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
+                    // let eBookSettingDirectory = "./resources/src/assets/NewEbook"; //for win build
                     fse.copySync(eBookSettingDirectory, this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
                     /*
                     새 ebook 만들기 
@@ -520,6 +545,7 @@ export default {
           return;
         }
         const temp = fs.readFileSync("src/assets/chapter01.xhtml").toString();
+        // const temp = fs.readFileSync("./resources/src/assets/chapter01.xhtml").toString(); // for win build
         this.chapterNum++;
         if (this.chapterNum < 10) {
           num = "0" + this.chapterNum;

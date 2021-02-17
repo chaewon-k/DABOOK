@@ -174,10 +174,25 @@
       "cancel": "취소"
     }
   },
+  "deleteChapter":{
+    "title": "챕터 삭제",
+    "content-1": "챕터를 삭제하면 되돌릴 수 없습니다. ",
+    "content-2": "삭제하시겠습니까?",
+    "delete-btn": "삭제",
+    "cancel": "취소"
+  },
   "title": "제목",
   "addstyle": "스타일 추가하기",
   "manual": "사용 설명서",
   "directory": "파일 구조",
   "toc": "목차",
-  "textarea-placeholder": "책을 작성해볼까요?"
+  "textarea-placeholder": "책을 작성해볼까요?",
+  "beforeChooseEBook":{
+    "title": "이북 선택",
+    "content-1": "이북 작성을 위해 이북을 만들어야됩니다.",
+    "content-2": "새 이북을 만드시겠습니까?",
+    "create-btn": "새 이북 만들기",
+    "load-btn": "이북 불러오기"
+  },
+  "customStyleName":"동일한 이름의 스타일이 있습니다."
 }

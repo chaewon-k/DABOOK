@@ -22,6 +22,7 @@
               <v-text-field
                 label="Email"
                 v-model="inputEmail"
+                @keypress.enter="logIn"
               ></v-text-field>
             </v-row>
             <v-row class="mb-1">
@@ -30,6 +31,7 @@
                 label="Password"
                 type="password"
                 v-model="inputPassword"
+                @keypress.enter="logIn"
               ></v-text-field>
             </v-row>
 

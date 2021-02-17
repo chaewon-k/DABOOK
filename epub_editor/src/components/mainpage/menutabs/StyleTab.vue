@@ -422,6 +422,13 @@ export default {
       }
       this.colorDialog = false;
     },
+    resetCustomStyle: function(){
+      this.customStyle.title='';
+      this.customStyle.range='';
+      this.customStyle.font='';
+      this.customStyle.fontColor='';
+      this.customStyle.backgroundColor='';
+    },
     addStyle: function() {
       if (this.customStyle.title.trim() == "" || this.customStyle.title == undefined) {
         this.$store.dispatch(
@@ -430,9 +437,13 @@ export default {
         );
         return;
       }
+      if(!css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory)){
+        this.$store.dispatch('setAlertMessage', "customStyleName");
+        //this.resetCustomStyle();
+        return ;
+      }
       this.styleDialog = false;
       this.customStyleList.push(this.customStyle.title);
-      css.makeCustomStyle(this.customStyle, this.$store.state.ebookDirectory);
       this.customStyle = {};
       this.$store.dispatch("setCustomStyleArray", this.customStyleList);
       var HTMLEDITOR = document.getElementById("preview");
@@ -447,6 +458,7 @@ export default {
       editorObj.writeln(temp);
       editorObj.designMode = "off";
       editorObj.close();
+      this.resetCustomStyle();
     },
     openCustomStyleMenu: function() {
       this.customStyleList = this.$store.state.customStyleArray;
