@@ -175,6 +175,13 @@
       "cancel": "cancel"
     }
   },
+  "deleteChapter":{
+    "title": "Delete Chapter",
+    "content-1": "Deleting a chapter is irreversible.",
+    "content-2": "Are you sure you want to delete?",
+    "delete-btn": "Delete",
+    "cancel": "cancel"
+  },
   "title": "title",
   "addstyle": "add style",
   "manual": "manual",
