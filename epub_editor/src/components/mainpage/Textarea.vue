@@ -140,6 +140,16 @@
         >{{ $t("title") + hTag }}
       </span>
     </div>
+     <Confirm 
+      :dialog="beforeChooseDialog"
+      title="beforeChooseEBook.title"
+      content1="beforeChooseEBook.content-1"
+      content2="beforeChooseEBook.content-2"
+      confirm="beforeChooseEBook.create-btn"
+      cancel="beforeChooseEBook.load-btn"
+      @cancel="chooseResult('load')"
+      @confirm="chooseResult('new')"
+      />
   </div>
 </template>
 
@@ -154,6 +164,8 @@ import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
 
+import Confirm from '@/components/mainpage/Confirm'
+
 const fs = require("fs");
 
 export default {
@@ -162,6 +174,7 @@ export default {
     DialogButton,
     DialogInput,
     DialogTitle,
+    Confirm,
   },
   created() {},
   mounted: function() {
@@ -274,6 +287,10 @@ export default {
   },
   watch: {
     inputText: function(newVal) {
+      if(this.$store.state.ebookDirectory===''){
+        this.beforeChooseDialog=true;
+        return;
+      }
       let area = document.getElementById("area");
       area.scrollTop = area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);
@@ -284,6 +301,7 @@ export default {
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
       editorObj.open();
+
       let cssString = file.readCSS(this.$store.state.ebookDirectory);
       cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
       editorObj.writeln("<style>");
@@ -352,6 +370,7 @@ export default {
 
       linkDialog: false,
       tableDialog: false,
+      beforeChooseDialog:false,
 
       tableRow: 1,
       tableCol: 1,
@@ -389,6 +408,15 @@ export default {
     }
   },
   methods: {
+    chooseResult: function(res){
+      console.log("chooseResult");
+      document.getElementById("area").value="";
+      this.inputText="";
+      eventBus.$emit("choose",res);
+      if(this.$store.state.ebookDirectory!=""){
+        this.beforeChooseDialog=false;
+      }
+    },
     edits: function (res) {
       switch (res) {
         case "cut":
