@@ -204,14 +204,16 @@ public class EpubController {
 						//경로
 						String path = file.getParent();
 						//파일 이름 fileName
-						
-						path = path.replace(storagePath + "\\" +fileVo.getEmail() ,"");
+						path = path.split(fileVo.getEmail())[1];
 						path = path.replace("\\", "/");
 						if(path.length() == 0)
 							path = "/";
 						System.out.println(path);
 						
-						epubService.fildDBFunc(fileVo.getEmail(),path,epubName,fileName);
+						String [] fileNameArr = fileName.split("/");
+						String tempFileName = fileNameArr[fileNameArr.length-1];
+						
+						epubService.fildDBFunc(fileVo.getEmail(),path,epubName,tempFileName);
 					} catch (Throwable e) {
 						e.printStackTrace();
 					}
@@ -241,8 +243,7 @@ public class EpubController {
 
 	@GetMapping("/download")
 	@ApiOperation(value = "download file")
-	public ResponseEntity<Resource> download(@RequestParam String email, @RequestParam String epubName
-			) throws IOException {
+	public ResponseEntity<Resource> download(@RequestParam String email, @RequestParam String epubName) throws IOException {
 		Path localPath = Paths.get(storagePath + "/" + email + "/" + epubName);
 		
 		String zipFileName = epubName + ".zip";
