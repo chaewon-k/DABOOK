@@ -19,9 +19,6 @@
     <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text
       >{{ $t("filetab.server") }}</v-btn
     >
-    <v-btn class="align-self-center" @click="test" text
-      >test</v-btn
-    >
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
         <DialogTitle
@@ -149,7 +146,6 @@
 <script>
 import * as file from "@/functions/file.js";
 import { mapState } from "vuex";
-import { ipcRenderer } from 'electron';
 import eventBus from "@/eventBus.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
@@ -183,7 +179,6 @@ export default {
       eBookAuthor: "",
       eBookLocation: "",
       selectedEBookLocation: "",
-      uploadFileDirectory: undefined,
 
       // boolean
       selectDefaultImg: false,
@@ -247,17 +242,6 @@ export default {
     }
   },
   methods: {
-    test: function () {
-      this.test2().then((resolvedData) => {
-        file.uploadFile(resolvedData, '/',this.$store.state.ebookTitle, localStorage.getItem('email'));
-      })
-    },
-    test2: function () {
-      return new Promise((resolve) => {
-        var result = file.makeZipFile(this.eBookLocation, this.$store.state.ebookTitle)
-        resolve(result)
-      })
-    },
     checkExp: function (value) {
       var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
       if (special_pattern.test(value) == true) {
@@ -327,7 +311,7 @@ export default {
                     }
                     this.renameImageTag();
                     this.readToc();
-                    file.uploadDirectory(this.$store.state.ebookDirectoryTree, this.eBookText, localStorage.getItem('email'), 1)
+                    file.makeZipFile(this.eBookLocation, this.eBookText)
                     // Dialog 초기화
                     this.eBookDialog = false;
                     this.eBookText = "";
@@ -606,27 +590,24 @@ export default {
     },
     loadFromServer: function () {
       this.loading = true;
-      var i = 1;
-      const eBookId = this.eBookList[this.eBookSelected]['_id']
       const eBookName = this.eBookList[this.eBookSelected]['epubName']
-      let loadEbookPath = file.readPath() + "/" + eBookName + "/";
-      axios.get("https://contact.dabook.site/api/epub/file/list", { params: { id: eBookId }})
+      axios.get("https://contact.dabook.site/api/download", { params: { email: localStorage.getItem('email'), epubName: eBookName }, responseType: 'arraybuffer' })
         .then((res) => {
-          const fileList = res.data
-          for (let file of fileList) {
-            let tempURL = `https://contact.dabook.site/api/download?email=${localStorage.getItem('email')}&epubName=${eBookName}&fileName=${file.fileName}&path=${file.path}`
-            setTimeout(() => {
-              ipcRenderer.send('download-button', tempURL, loadEbookPath, file.path)
-            }, 500 * i)
-            i++;
-          }
-          setTimeout(() => {
-            this.$store.dispatch("setAlertMessage", "success.download-ebook");
-            this.loading = false;
-            this.eBookListDialog = false;            
-          }, 500 * i)
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${eBookName}.zip`);
+          link.style.cssText = 'display:none';
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
         })
         .catch(err => console.log(err))
+      setTimeout(() => {
+        this.$store.dispatch("setAlertMessage", "success.download-ebook");
+        this.loading = false;
+        this.eBookListDialog = false;            
+      }, 500 * 5)
       this.eBookSelected = [];
     },
   },

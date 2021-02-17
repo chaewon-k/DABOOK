@@ -113,7 +113,7 @@ export function makeEpubFile (path, title) {
   console.log(path)
   console.log(savePath)
   console.log(title)
-  zipFolder(path, savePath + '/' + title + '.epub', function(err) {
+  zipFolder(path, savePath + '' + title + '.epub', function(err) {
     if(err) {
         console.log('makeEpubFile 실패');
         return false;
@@ -124,19 +124,20 @@ export function makeEpubFile (path, title) {
   });
 }
 
-export function makeZipFile (path, title) {
-  path = path.replace('\\\\', '/');
-  let savePath = 'C:/Users/Jubin Jang/Desktop/'
-  console.log(path)
+export function makeZipFile (filePath, title) {
+  filePath = filePath.replace('\\\\', '/');
+  const path = require("path");
+  let savePath = path.resolve('./src/' + title + '.zip');
+  console.log(filePath)
   console.log(savePath)
   console.log(title)
-  zipFolder(path, savePath + '/' + title + '.zip', function(err) {
+  zipFolder(filePath, savePath, function(err) {
     if(err) {
       console.log('makeZipFile 실패');
       return false;
     } else {
-      let temp = savePath + '/' + title + '.zip'
-      return temp;
+      let temp = savePath
+      uploadZipFile(temp, '/', title, localStorage.getItem('email'))
     }
   });
 }
@@ -230,4 +231,8 @@ export function readCSS(path) {
 
 export function uploadFile (filePath, serverPath, bookName, email) {
   ipcRenderer.send('upload', 'https://contact.dabook.site/api/upload', filePath, email, bookName, serverPath)
+}
+
+export function uploadZipFile (filePath, serverPath, bookName, email) {
+  ipcRenderer.send('upload', 'https://contact.dabook.site/api/upload/zip', filePath, email, bookName, serverPath)
 }
