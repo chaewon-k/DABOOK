@@ -35,6 +35,7 @@
       :dialog="saveDialog"
       title="confirm.save-title"
       content1="confirm.save-content"
+      content2=""
       confirm="confirm.save-confirm"
       cancel="confirm.save-cancel"
       @cancel="saveFile(false)"
