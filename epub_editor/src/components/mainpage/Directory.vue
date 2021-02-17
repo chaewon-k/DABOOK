@@ -132,7 +132,7 @@ export default {
       end=content.indexOf("/>",start);
       content=content.slice(0,start)+content.slice(end+3);
 
-      fs.writeFile(this.$store.state.ebookDirectory+ '/EPUB/content.opf', content, (err) => {
+      fs.writeFileSync(this.$store.state.ebookDirectory+ '/EPUB/content.opf', content, (err) => {
         if (err) {
           console.log(err);
         }
@@ -161,7 +161,7 @@ export default {
           let t='</navPoint>';
           let last=temp.indexOf(t,dirEnd);
           temp=temp.slice(0,dirStart)+temp.slice(last+t.length);
-          fs.writeFile(this.$store.state.ebookDirectory+ '/EPUB/toc.ncx', temp, (err) => {
+          fs.writeFileSync(this.$store.state.ebookDirectory+ '/EPUB/toc.ncx', temp, (err) => {
             if (err) {
               console.log(err);
             }
@@ -170,8 +170,9 @@ export default {
         }
         point=dirEnd;
       }
-      eventBus.$emit('toc');
+      
       this.$store.state.selectedFileDirectory='';
+      eventBus.$emit('toc');
     },
     mouseAction(item,set){
       if(item.file=="xhtml"){
