@@ -42,11 +42,8 @@ export function makeCustomStyle (val, path) {
   const fs = require("fs");
   let temp = fs.readFileSync(path + '/EPUB/styles/stylesheet.css').toString();
 
-  console.log("val: ",val);
   let title='.user_'+val.title;
-  console.log(title);
   let duplicateCheck=temp.indexOf(title);
-  console.log(duplicateCheck);
   if(duplicateCheck!==-1){
     return false;
   }
