@@ -35,6 +35,9 @@ ipcMain.on('upload', async (event, url, file, email, epubName, path) => {
     .then(function () {
       console.log('upload success')
       win.webContents.send('upload','success');
+      fs.unlink(file, (err) => {
+        console.log('널이니?',err)
+      })
     })
     .catch(function (err) {
       console.log(file, '에러에러에러')

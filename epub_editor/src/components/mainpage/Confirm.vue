@@ -16,7 +16,7 @@
           </v-card-text>
         </templete>
 
-        <templete v-if="content2=='false'">
+        <templete v-if="content2!==''">
           <v-card-text style="padding: 3% 6% 3% 8%">
             <p>{{ $t(`${content1}`) }}</p>
             <p>{{ $t(`${content2}`) }}</p>
@@ -49,6 +49,7 @@
 
 <script>
 export default {
+  name: "Confirm",
   props: ['dialog', 'title', 'confirm', 'cancel', 'content1', 'content2'],
   computed: {
   },
