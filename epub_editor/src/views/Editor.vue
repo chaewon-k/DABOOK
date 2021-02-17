@@ -50,6 +50,7 @@ export default {
     Alert,
     ToggleBar
   },
+
   data: function () {
     return {
       dirTableToggle: true,

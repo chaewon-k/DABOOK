@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, Menu } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import axios from 'axios';
@@ -52,15 +52,35 @@ async function createWindow() {
   win = new BrowserWindow({
     width: 950,
     height: 700,
-    //autoHideMenuBar: true,
+    autoHideMenuBar: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       webSecurity: false
     }
-  })
-  //win.setMenu(null);
+  });
+  const templete=[
+    {
+      label: 'edit',
+      submenu:[
+        {
+          role:'zoomIn',
+          accelerator: 'CommandOrControl+='
+        },
+        {
+          role:'zoomOut'
+        },
+        {
+          role:'reload'
+        }
+      ]
+    }
+  ];
+  let newMenu= Menu.buildFromTemplate(templete);
+
+  Menu.setApplicationMenu(newMenu);
+
   win.on('close', function(e) {
     //setTimeout(function () {console.log('isKor ' + isKor)}, 3000);
     //console.log('isKor : ' + isKor)

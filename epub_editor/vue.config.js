@@ -10,13 +10,16 @@ module.exports = {
         './node_modules'
       ],
       builderOptions: {
+        extraResources: [
+          "src/assets/**",
+        ],
         appId: 'com.dabook.app',
-        productName: 'dabook',
-        asar: true,
+        productName: 'DABOOK',
+        asar: false,
         protocols: {
-          name: 'dabook',
+          name: 'DABOOK',
           schemes: [
-            'dabook'
+            'DABOOK'
           ]
         },
         mas: {
@@ -33,6 +36,17 @@ module.exports = {
           cscKeyPassword: 'skrgnswnqls@123',
           icon: 'build/MyIcon.icns',
           provisioningProfile: 'build/dabook.provisionprofile'
+        },
+        win: {
+          target: [
+            {
+              target: "nsis",
+              arch: [
+                "x64",
+                "ia32"
+              ]
+            }
+          ]
         }
       }
     },
