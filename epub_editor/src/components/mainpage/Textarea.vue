@@ -415,6 +415,7 @@ export default {
       eventBus.$emit("choose",res);
       if(this.$store.state.ebookDirectory!=""){
         this.beforeChooseDialog=false;
+        console.log(this.$store.state.tableOfContents);
       }
     },
     edits: function (res) {
