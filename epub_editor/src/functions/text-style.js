@@ -1,3 +1,5 @@
+import * as file from '@/functions/file.js'
+
 const { dialog } = require('electron').remote;
 const fse = require('fs-extra');
 const fs = require("fs");
@@ -7,11 +9,11 @@ export function pTag () {
   let pos = 0, remember = area.selectionStart;
   let preTag = area.value.indexOf('<p>', remember);
   let postTag = area.value.indexOf('</p>', remember);
-  console.log(preTag, postTag);
+  // console.log(preTag, postTag);
   if (preTag < postTag && preTag != -1) {
     remember = area.selectionStart;
     area.value = area.value.slice(0,  area.selectionStart) + "\n\n    <p></p>" + area.value.slice(area.selectionEnd);
-    console.log(area.selectionStart, area.selectionEnd);
+    // console.log(area.selectionStart, area.selectionEnd);
     area.selectionEnd = remember + 9;
     return area.value;
   }
@@ -22,7 +24,7 @@ export function pTag () {
       area.selectionStart = area.value.indexOf('</p>', pos) + 4;
       remember = area.selectionStart;
       area.value = area.value.slice(0,  area.selectionStart) + "\n\n    <p></p>" + area.value.slice(area.selectionEnd);
-      console.log(area.selectionStart, area.selectionEnd);
+      // console.log(area.selectionStart, area.selectionEnd);
       area.selectionEnd = remember + 9;
       return area.value;
     }
@@ -33,7 +35,7 @@ export function pTag () {
   if (area.value.indexOf('</p>', pos) == -1) {
     remember = area.selectionStart;
     area.value = area.value.slice(0,  area.selectionStart) + "\n\n    <p></p>" + area.value.slice(area.selectionEnd);
-    console.log(area.selectionStart, area.selectionEnd);
+    // console.log(area.selectionStart, area.selectionEnd);
     area.selectionEnd = remember + 9;
   }
 
@@ -133,7 +135,7 @@ export function citeTag () {
   return area.value;
 }
 
-export function imageTag (location) {
+export function imageTag (location, bookName, email) {
   var area = document.getElementById("area");
   const options = {
     filters: [
@@ -153,14 +155,15 @@ export function imageTag (location) {
   let temp2 = fs.readFileSync(location + '/EPUB/content.opf').toString();
   let start = temp2.indexOf("<!-- 이미지 파일 추가 위치 -->");
   temp2 = temp2.slice(0, start-1).concat(` <item id="${fileName}" href="images/${fileName}" media-type="image/${extension}" />\n    `, temp2.slice(start, temp2.length));
-  fs.writeFile(location + '/EPUB/content.opf', temp2, (err) => {
+  fs.writeFileSync(location + '/EPUB/content.opf', temp2, (err) => {
     if (err) {
       console.log('해당 디렉토리에 이미지 저장 실패');
     }
   });
   var resultString = `<img src="../images/${fileName}" />`;
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
-
+  file.uploadFile(imgLocation, '/EPUB/images', bookName, email);
+  file.uploadFile(location + '/EPUB/content.opf', '/EPUB', bookName, email);
   return area.value;
 }
 
@@ -180,25 +183,25 @@ export function linkTag (link) {
 }
 
 export function tableTag (row, col) {
-  var resultString = `<table>
-      <caption>표 이름</caption>
-      <thead>
-        <tr>\n`;
+  var resultString = `\n    <table>
+     <caption>표 이름</caption>
+     <thead>
+      <tr>\n`;
   for (let i = 0; i < col; i++) {
-    resultString += `           <th>제목</th>\n`;
+    resultString += `       <th>제목</th>\n`;
   }
-  resultString += `       </tr>
-      </thead>
-      <tbody>\n`;
+  resultString += `     </tr>
+    </thead>
+    <tbody>\n`;
   for (let i = 0; i < row; i++) {
-    resultString += `       <tr>\n`;
+    resultString += `     <tr>\n`;
     for (let j = 0; j < col; j++) {
-      resultString += `         <td>data</td>\n`;
+      resultString += `      <td>data</td>\n`;
     }
-    resultString += `       </tr>\n`;
+    resultString += `     </tr>\n`;
   }
-    resultString += `     </tbody>
-    </table>`;
+    resultString += `    </tbody>
+   </table>`;
   var area = document.getElementById("area");
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
   return area.value;
@@ -226,3 +229,19 @@ export function orderedListTag () {
   return area.value;
 }
 
+export function convertImageTag (temp, path) {
+  let str = 'src="file:///' + path + '/EPUB/images/';
+  temp = temp.replaceAll('src="../images/', str);
+  return temp;
+}
+
+export function convertStyleTag (temp, path) {
+  path = path.replaceAll('\\', '/');
+  let str = "url('" + path + '/EPUB/fonts/';
+  temp = temp.replaceAll("url('../fonts/", str);
+  return temp;
+}
+
+String.prototype.replaceAll = function(org, dest) {
+  return this.split(org).join(dest);
+}
