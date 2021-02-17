@@ -52,7 +52,7 @@ async function createWindow() {
   win = new BrowserWindow({
     width: 950,
     height: 700,
-    //autoHideMenuBar: true,
+    autoHideMenuBar: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -60,7 +60,7 @@ async function createWindow() {
       webSecurity: false
     }
   })
-  //win.setMenu(null);
+  // win.setMenu(null);
   win.on('close', function(e) {
     //setTimeout(function () {console.log('isKor ' + isKor)}, 3000);
     //console.log('isKor : ' + isKor)
@@ -158,10 +158,11 @@ app.whenReady().then(() => {
   })
 });
 
-ipcMain.on('download-button', async (event, url, ebookPath, filePath) => {
+ipcMain.on('download-button', async (event, url, ebookPath, filePath, fileName) => {
   const options = {
-    directory: ebookPath + filePath,
+    directory: ebookPath,
+    filename: fileName + '.zip',
   }
-  const win = BrowserWindow.getFocusedWindow();
-  await download(win, url, options);
+  const win = BrowserWindow.getAllWindows()[0];
+  await download(win, url, options)
 });
