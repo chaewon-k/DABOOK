@@ -23,7 +23,7 @@ public class MailService {
 		mailMessage.setText(new StringBuffer().append("<h1>회원가입 인증메일입니다.</h1>")
 			    .append("<p>밑의 링크를 클릭하면 메일이 인증 됩니다.</p>")
 			    .append("<a href='https://contact.dabook.site/auth?token="+user.getEmailToken())
-			    .append("&email="+user.getEmail()+"' onclick=\"window.open(this.href, '_blank', 'width=800, height=600'); return false;\">메일 인증 링크</a>")
+			    .append("&email="+user.getEmail()+"' onclick=\"window.open(this.href, \"인증 팝업\", 'width=800, height=600,location=no,status=no,scrollbars=yes'); return false;\">메일 인증 링크</a>")
 			    .toString(),"utf-8","html"
 			  );
 		javaMailSender.send(mailMessage);
