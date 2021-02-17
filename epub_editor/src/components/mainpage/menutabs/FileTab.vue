@@ -207,12 +207,21 @@ export default {
         this.storeInputText();
       }
       else if(res=="preview"){
-        this.preview();
+        this.loadEbook();
       }
     });
     eventBus.$on("toc",()=>{
       this.readToc();
       this.$store.dispatch("setEditingText", "");
+    });
+    eventBus.$on("choose", (res) => {
+      if (res == "new") {
+        this.epubDialog=true;
+        this.createNewEBook();
+      }
+      else if(res=="load"){
+        this.loadEbook();
+      }
     });
   },
   computed: {
