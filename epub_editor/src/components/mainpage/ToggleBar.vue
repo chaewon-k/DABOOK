@@ -118,7 +118,7 @@ export default {
           }
       } else if (val == "Dark") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-        this.$store.dispatch("setIsDark")
+        this.$store.dispatch("setIsDark");
       } else {
         if (this.isPreview) {
           this.$store.dispatch("setIsPreview", false);
