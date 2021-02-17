@@ -4,13 +4,14 @@
       <v-list-item v-for="item in items" :key="item.title">
         <v-list-item-action class="ma-0">
           <v-btn icon class="align-self-center rounded-sm"><v-icon @click="toggleIcon(item.title)">{{ item.icon }}</v-icon></v-btn>
-          
         </v-list-item-action>
       </v-list-item>
       <v-list-item>
         <v-list-item-action @click="toggleIcon('IsPreview')">
-          <v-icon v-if ="isPreview">mdi-monitor</v-icon>
-          <v-icon v-else-if ="!isPreview">mdi-monitor-off</v-icon>
+          <v-btn icon class="align-self-center rounded-sm">
+            <v-icon v-if ="isPreview">mdi-monitor</v-icon>
+            <v-icon v-else-if ="!isPreview">mdi-monitor-off</v-icon>
+          </v-btn>
         </v-list-item-action>
       </v-list-item>
       <v-list-item>
@@ -118,7 +119,7 @@ export default {
           }
       } else if (val == "Dark") {
         this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-        this.$store.dispatch("setIsDark")
+        this.$store.dispatch("setIsDark");
       } else {
         if (this.isPreview) {
           this.$store.dispatch("setIsPreview", false);

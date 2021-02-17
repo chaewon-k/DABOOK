@@ -10,10 +10,18 @@
           {{ $t(`${title}`) }}
         </v-card-title>
 
-        <v-card-text style="padding: 3% 6% 3% 8%">
-          <p>{{ $t(`${content1}`) }}</p>
-          <p>{{ $t(`${content2}`) }}</p>
-        </v-card-text>
+        <templete v-if="content2==''">
+          <v-card-text style="padding: 3% 6% 3% 8%">
+            <p>{{ $t(`${content1}`) }}</p>
+          </v-card-text>
+        </templete>
+
+        <templete v-if="content2=='false'">
+          <v-card-text style="padding: 3% 6% 3% 8%">
+            <p>{{ $t(`${content1}`) }}</p>
+            <p>{{ $t(`${content2}`) }}</p>
+          </v-card-text>
+        </templete>
 
         <v-card-actions>
           <v-spacer></v-spacer>

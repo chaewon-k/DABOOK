@@ -194,5 +194,6 @@
     "content-2": "Are you sure you want to create?",
     "create-btn": "Create",
     "load-btn": "Load"
-  }
+  },
+  "customStyleName":"There are styles of the same name."
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, Menu } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import axios from 'axios';
@@ -59,8 +59,28 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       webSecurity: false
     }
-  })
-  // win.setMenu(null);
+  });
+  const templete=[
+    {
+      label: 'edit',
+      submenu:[
+        {
+          role:'zoomIn',
+          accelerator: 'CommandOrControl+='
+        },
+        {
+          role:'zoomOut'
+        },
+        {
+          role:'reload'
+        }
+      ]
+    }
+  ];
+  let newMenu= Menu.buildFromTemplate(templete);
+
+  Menu.setApplicationMenu(newMenu);
+
   win.on('close', function(e) {
     //setTimeout(function () {console.log('isKor ' + isKor)}, 3000);
     //console.log('isKor : ' + isKor)

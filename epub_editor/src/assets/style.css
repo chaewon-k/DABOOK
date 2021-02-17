@@ -91,6 +91,8 @@ html, body {
   height: 100%;
   position: relative;
 }
+
+
 .withPreview {
   width: 50%;
   position: absolute;
@@ -108,12 +110,17 @@ html, body {
 }
 
 #area{
-  margin-top: 10px;
+  margin:8px;
+  padding-right: 0px;
   font-size: 15px;
   line-height: 130%;
 }
 
 #preview {
+  width:50%; 
+  height:100%; 
+  margin-left:50%; 
+  border: 0px; 
   z-index: 100;
 }
 

@@ -128,12 +128,8 @@ export function makeZipFile (filePath, title) {
   filePath = filePath.replace('\\\\', '/');
   const path = require("path");
   let savePath = path.resolve('./src/' + title + '.zip');
-  console.log(filePath)
-  console.log(savePath)
-  console.log(title)
   zipFolder(filePath, savePath, function(err) {
     if(err) {
-      console.log('makeZipFile 실패');
       return false;
     } else {
       let temp = savePath

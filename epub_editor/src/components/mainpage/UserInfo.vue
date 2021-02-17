@@ -2,7 +2,6 @@
   <v-dialog
     v-model="userInfoDialog"
     fullscreen
-    transition="dialog-bottom-transition"
   >
     <Alert/>
     <v-card>
@@ -23,8 +22,9 @@
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
-
+    
       <v-layout justify-center class="mt-5">
+      
         <v-card flat width="600">
           <v-card-text class="pa-0">
 
@@ -114,38 +114,6 @@
       @confirm="signout"
       @cancel="signoutDialog = false"
      />
-
-    <!-------------- 회원 탈퇴 Dialog-------------->
-    <!-- <v-dialog
-      v-model="signoutDialog"
-      max-width="300"
-    >
-      <v-card>
-        <v-card-title class="mb-3">{{ $t("userinfotab.signouttab.title") }}</v-card-title>
-        <v-card-text class="pb-0">
-          <p>{{ $t("userinfotab.signouttab.content-1") }}</p>
-          <p>{{ $t("userinfotab.signouttab.content-2") }}</p>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="red"
-            text
-            @click="signout"
-          >
-            {{ $t("userinfotab.signouttab.signout-btn") }}
-          </v-btn>
-          <v-btn
-            text
-            @click="signoutDialog = false"
-            style="color: #6A68A6;"
-          >
-            {{ $t("userinfotab.signouttab.cancel") }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog> -->
-
   </v-dialog>
 </template>
 
@@ -264,3 +232,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.flower {
+  background-image: url('/assets/accountImg/flower.png');
+  background-size: 100% 100%;
+}
+</style>
