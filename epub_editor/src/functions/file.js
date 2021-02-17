@@ -108,8 +108,8 @@ export function makeZipFile (filePath, title) {
   filePath = filePath.replace('\\\\', '/');
   const path = require("path");
   const zipFolder = require('zip-folder');
-  let savePath = path.resolve('./src/' + title + '.zip');
-  // let savePath = path.resolve('./resources/src/' + title + '.zip'); // for win build
+  // let savePath = path.resolve('./src/' + title + '.zip');
+  let savePath = path.resolve('./resources/src/' + title + '.zip'); // for win build
   zipFolder(filePath, savePath, function(err) {
     if(err) {
       return false;

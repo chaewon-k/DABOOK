@@ -139,7 +139,7 @@
         >{{ $t("title") + hTag }}
       </span>
     </div>
-     <Confirm 
+     <!-- <Confirm 
       :dialog="beforeChooseDialog"
       title="beforeChooseEBook.title"
       content1="beforeChooseEBook.content-1"
@@ -148,7 +148,7 @@
       cancel="beforeChooseEBook.load-btn"
       @cancel="chooseResult('load')"
       @confirm="chooseResult('new')"
-      />
+      /> -->
   </div>
 </template>
 
@@ -163,7 +163,7 @@ import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
 
-import Confirm from '@/components/mainpage/Confirm'
+//import Confirm from '@/components/mainpage/Confirm'
 
 const fs = require("fs");
 
@@ -173,7 +173,7 @@ export default {
     DialogButton,
     DialogInput,
     DialogTitle,
-    Confirm,
+    //Confirm,
   },
   created() {},
   mounted: function() {
@@ -286,10 +286,10 @@ export default {
   },
   watch: {
     inputText: function(newVal) {
-      if(this.$store.state.ebookDirectory===''){
-        this.beforeChooseDialog=true;
-        return;
-      }
+      // if(this.$store.state.ebookDirectory===''){
+      //   this.beforeChooseDialog=true;
+      //   return;
+      // }
       let area = document.getElementById("area");
       area.scrollTop = area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);

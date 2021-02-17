@@ -445,6 +445,7 @@ export default {
       this.styleDialog = false;
       this.customStyleList.push(this.customStyle.title);
       this.customStyle = {};
+      this.$refs.styleTextInput.resetText();
       this.$store.dispatch("setCustomStyleArray", this.customStyleList);
       var HTMLEDITOR = document.getElementById("preview");
       var editorObj = HTMLEDITOR.contentWindow.document;

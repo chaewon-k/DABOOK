@@ -35,9 +35,12 @@ ipcMain.on('upload', async (event, url, file, email, epubName, path) => {
     .then(function () {
       console.log('upload success')
       win.webContents.send('upload','success');
-      fs.unlink(file, (err) => {
-        console.log('널이니?',err)
-      })
+      let temp = file.split('.');
+      if (temp[temp.length-1] == 'zip') {
+        fs.unlink(file, (err) => {
+          console.log('널이니?',err)
+        })
+      }
     })
     .catch(function (err) {
       console.log(file, '에러에러에러')
@@ -63,26 +66,26 @@ async function createWindow() {
       webSecurity: false
     }
   });
-  const templete=[
-    {
-      label: 'edit',
-      submenu:[
-        {
-          role:'zoomIn',
-          accelerator: 'CommandOrControl+='
-        },
-        {
-          role:'zoomOut'
-        },
-        {
-          role:'reload'
-        }
-      ]
-    }
-  ];
-  let newMenu= Menu.buildFromTemplate(templete);
+  // const templete=[
+  //   {
+  //     label: 'edit',
+  //     submenu:[
+  //       {
+  //         role:'zoomIn',
+  //         accelerator: 'CommandOrControl+='
+  //       },
+  //       {
+  //         role:'zoomOut'
+  //       },
+  //       {
+  //         role:'reload'
+  //       }
+  //     ]
+  //   }
+  // ];
+  // let newMenu= Menu.buildFromTemplate(templete);
 
-  Menu.setApplicationMenu(newMenu);
+  // Menu.setApplicationMenu(newMenu);
 
   win.on('close', function(e) {
     //setTimeout(function () {console.log('isKor ' + isKor)}, 3000);
