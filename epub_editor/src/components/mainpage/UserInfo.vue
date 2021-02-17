@@ -41,7 +41,7 @@
               <v-container>
                 <v-row class="mb-5">
                   <h2 class="mr-2" style="color: #9C9BBF;">{{ $t("userinfotab.nickname") }}</h2>
-                  <v-icon @click="changeNN=!changeNN" style="color: #6A68A6;">mdi-pencil-outline</v-icon>
+                  <v-icon @click="resetNickname" style="color: #6A68A6;">mdi-pencil-outline</v-icon>
                 </v-row>
                 <v-row v-if="!changeNN">
                   <h3>{{ nickname }}</h3></v-row>
@@ -63,7 +63,7 @@
               <v-container>
                 <v-row class="mb-5">
                   <h2 class="mr-2" style="color: #9C9BBF;">{{ $t("userinfotab.password-change") }}</h2>
-                  <v-icon @click="changePW=!changePW" style="color: #6A68A6;">mdi-pencil-outline</v-icon>
+                  <v-icon @click="resetPassword" style="color: #6A68A6;">mdi-pencil-outline</v-icon>
                 </v-row>
                 <div v-if="changePW">
                   <v-row class="mb-2">
@@ -198,6 +198,20 @@ export default {
           }
         })
         .catch(err => { console.log(err) })
+    },
+
+    // 닉네임 변수 리셋
+    resetNickname: function () {
+      this.changeNN = !this.changeNN;
+      this.newNickname = '';
+    },
+
+    // 비밀번호 변수 리셋
+    resetPassword: function () {
+      this.changePW = !this.changePW;
+      this.prevPassword = '';
+      this.newPassword = '';
+      this.passwordConfirm = '';
     },
 
     // 비밀번호 변경 함수
