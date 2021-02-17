@@ -188,7 +188,6 @@
   "directory": "directory",
   "toc": "toc",
   "textarea-placeholder": "Let's make a book :)",
-  "beforeChooseEBook":"You need to create and load e-book",
   "beforeChooseEBook":{
     "title": "Choose e-book",
     "content-1": "You must create an e-book to write.",
