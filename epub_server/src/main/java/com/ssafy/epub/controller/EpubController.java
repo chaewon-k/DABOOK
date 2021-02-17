@@ -244,25 +244,27 @@ public class EpubController {
 	@GetMapping("/download")
 	@ApiOperation(value = "download file")
 	public ResponseEntity<Resource> download(@RequestParam String email, @RequestParam String epubName) throws IOException {
-		Path localPath = Paths.get(storagePath + "/" + email + "/" + epubName);
+		Path localPath = Paths.get(storagePath + "/" + email);
 		
-		String zipFileName = epubName + ".zip";
+		File file = new File(storagePath + "/" + email + "/" + epubName + ".zip");
+		
+		
 		
 		try {
 			System.out.println(localPath.toString());
-			epubService.compress(localPath.toString(), localPath.toString(), "");
+			epubService.compress(localPath.toString() + "/" + epubName, localPath.toString() + "/", epubName);
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		String contentType = Files.probeContentType(localPath);
-
+		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
-		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipFileName + "\"");
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + epubName + ".zip\"");
 		
-		Path zipPath = Paths.get(storagePath + "/" + email + "/" + zipFileName);
+		Path zipPath = Paths.get(storagePath + "/" + email + "/" + epubName + ".zip");
 		
 		Resource resource = new InputStreamResource(Files.newInputStream(zipPath));
 		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
