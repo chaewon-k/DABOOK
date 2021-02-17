@@ -2,7 +2,7 @@
   <v-container fluid fill-height class="pa-0 bg">
     <!---------------Alert 창-------------------->
     <v-row>
-      <v-alert text dense class="mt-3" style="width:100%;" icon="mdi-alert-circle-outline" :color="color" v-if="type">
+      <v-alert text dense outlined class="mt-3" style="width:100%;" icon="mdi-alert-circle-outline" :color="color" v-if="type">
         {{ message }}
       </v-alert>
     </v-row>

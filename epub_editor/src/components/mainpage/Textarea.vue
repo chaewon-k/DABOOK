@@ -18,7 +18,6 @@
     <iframe
       v-show="isPreview"
       id="preview"
-      style="width:50%; height:100%; position:absolute; margin-left:50%; border: 0px; padding-right:2px;"
       name="preview"
     ></iframe>
 
@@ -317,10 +316,12 @@ export default {
       if (newVal === true) {
         editorObj.designMode = "on";
         editorObj.open();
-        let cssString = file.readCSS(this.$store.state.ebookDirectory);
-        cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
         editorObj.writeln("<style>");
-        editorObj.writeln(cssString)
+        if(this.$store.state.ebookDirectory!==''){
+          let cssString = file.readCSS(this.$store.state.ebookDirectory);
+          cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+          editorObj.writeln(cssString);
+        }
         editorObj.writeln("* {color: white;}");
         editorObj.writeln("</style>");
         let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
@@ -330,10 +331,12 @@ export default {
       } else {
         editorObj.designMode = "on";
         editorObj.open();
-        let cssString = file.readCSS(this.$store.state.ebookDirectory);
-        cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
         editorObj.writeln("<style>");
-        editorObj.writeln(cssString);
+        if(this.$store.state.ebookDirectory!==''){
+          let cssString = file.readCSS(this.$store.state.ebookDirectory);
+          cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+          editorObj.writeln(cssString);
+        }
         editorObj.writeln("</style>");
         let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
         editorObj.writeln(temp);
@@ -349,10 +352,12 @@ export default {
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
       editorObj.open();
-      let cssString = file.readCSS(this.$store.state.ebookDirectory);
-      cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
-      editorObj.writeln("<style>");
-      editorObj.writeln(cssString)
+      editorObj.writeln("<style>"); 
+      if(this.$store.state.ebookDirectory!==''){
+        let cssString = file.readCSS(this.$store.state.ebookDirectory);
+        cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);      
+        editorObj.writeln(cssString);
+      }
       editorObj.writeln("</style>");
       let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
       editorObj.writeln(temp);

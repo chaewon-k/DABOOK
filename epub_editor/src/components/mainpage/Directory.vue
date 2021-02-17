@@ -35,6 +35,7 @@
       :dialog="saveDialog"
       title="confirm.save-title"
       content1="confirm.save-content"
+      content2=""
       confirm="confirm.save-confirm"
       cancel="confirm.save-cancel"
       @cancel="saveFile(false)"
@@ -181,7 +182,7 @@ export default {
       }
     },
     openFile: function (val) { // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
-    this.value = val;
+      this.value = val;
       if (val.children) {
         return  // 폴더면 그냥 return
       } else {  // 파일을 클릭한 것이면
