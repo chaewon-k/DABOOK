@@ -126,16 +126,17 @@ export function makeEpubFile (path, title) {
 
 export function makeZipFile (path, title) {
   path = path.replace('\\\\', '/');
-  const savePath = 'C:/Users/Jubin Jang/Desktop/'
+  let savePath = 'C:/Users/Jubin Jang/Desktop/'
   console.log(path)
   console.log(savePath)
   console.log(title)
   zipFolder(path, savePath + '/' + title + '.zip', function(err) {
     if(err) {
-        console.log('makeZipFile 실패');
-        return false;
+      console.log('makeZipFile 실패');
+      return false;
     } else {
-        return savePath;
+      let temp = savePath + '/' + title + '.zip'
+      return temp;
     }
   });
 }

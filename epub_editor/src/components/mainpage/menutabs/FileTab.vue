@@ -183,6 +183,7 @@ export default {
       eBookAuthor: "",
       eBookLocation: "",
       selectedEBookLocation: "",
+      uploadFileDirectory: undefined,
 
       // boolean
       selectDefaultImg: false,
@@ -238,11 +239,15 @@ export default {
   },
   methods: {
     test: function () {
-      const result = file.makeZipFile(this.eBookLocation, this.$store.state.ebookTitle);
-      console.log(result)
-      if (result !== false) {
-        file.uploadFile(result+'.zip', '/', this.$store.state.ebookTitle, localStorage.getItem('email'));
-      }
+      this.test2().then((resolvedData) => {
+        file.uploadFile(resolvedData, '/',this.$store.state.ebookTitle, localStorage.getItem('email'));
+      })
+    },
+    test2: function () {
+      return new Promise((resolve) => {
+        var result = file.makeZipFile(this.eBookLocation, this.$store.state.ebookTitle)
+        resolve(result)
+      })
     },
     checkExp: function (value) {
       var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
