@@ -319,7 +319,6 @@ export default {
         editorObj.writeln("</style>");
         let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
         editorObj.writeln(temp);
-        editorObj.writeln(this.inputText);
         editorObj.designMode = "off";
         editorObj.close();
       }

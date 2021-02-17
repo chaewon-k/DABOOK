@@ -19,6 +19,9 @@
     <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text
       >{{ $t("filetab.server") }}</v-btn
     >
+    <v-btn class="align-self-center" @click="test" text
+      >test</v-btn
+    >
     <v-dialog v-model="chapterDialog" max-width="400">
       <v-card>
         <DialogTitle
@@ -234,6 +237,13 @@ export default {
     }
   },
   methods: {
+    test: function () {
+      const result = file.makeZipFile(this.eBookLocation, this.$store.state.ebookTitle);
+      console.log(result)
+      if (result !== false) {
+        file.uploadFile(result+'.zip', '/', this.$store.state.ebookTitle, localStorage.getItem('email'));
+      }
+    },
     checkExp: function (value) {
       var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
       if (special_pattern.test(value) == true) {
@@ -286,6 +296,7 @@ export default {
                     });
                     this.eBookDialog = false;
                     let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
+                    // let eBookSettingDirectory = "./resources/src/assets/NewEbook"; //for win build
                     fse.copySync(eBookSettingDirectory, this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
                     /*
                     새 ebook 만들기 
@@ -520,6 +531,7 @@ export default {
           return;
         }
         const temp = fs.readFileSync("src/assets/chapter01.xhtml").toString();
+        // const temp = fs.readFileSync("./resources/src/assets/chapter01.xhtml").toString(); // for win build
         this.chapterNum++;
         if (this.chapterNum < 10) {
           num = "0" + this.chapterNum;

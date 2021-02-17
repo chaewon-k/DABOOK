@@ -1,7 +1,9 @@
 import { ipcRenderer } from 'electron';
 
 const { dialog } = require('electron').remote;
+const zipFolder = require('zip-folder');
 const fs = require("fs");
+
 
 export function readPath () {
   const options = {
@@ -103,25 +105,39 @@ export function readCustomStyle (path) {
 }
 
 export function makeEpubFile (path, title) {
-  var zipFolder = require('zip-folder');
   const savePath = readPath();
-  if (savePath == undefined) return false;
   const electron = require('electron');
   const { shell } = electron;
+  if (savePath == undefined) return false;
   path = path.replace('\\\\', '/');
   console.log(path)
   console.log(savePath)
   console.log(title)
   zipFolder(path, savePath + '/' + title + '.epub', function(err) {
-      if(err) {
-          console.log('makeEpubFile 실패');
-          return false;
-      } else {
-          shell.openPath(savePath);
-          return true;
-      }
+    if(err) {
+        console.log('makeEpubFile 실패');
+        return false;
+    } else {
+        shell.openPath(savePath);
+        return true;
+    }
   });
+}
 
+export function makeZipFile (path, title) {
+  path = path.replace('\\\\', '/');
+  const savePath = 'C:/Users/Jubin Jang/Desktop/'
+  console.log(path)
+  console.log(savePath)
+  console.log(title)
+  zipFolder(path, savePath + '/' + title + '.zip', function(err) {
+    if(err) {
+        console.log('makeZipFile 실패');
+        return false;
+    } else {
+        return savePath;
+    }
+  });
 }
 
 export function addContentOpf (path, maxV) {
