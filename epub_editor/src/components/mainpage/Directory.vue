@@ -60,9 +60,9 @@ export default {
   watch: {
     items: function () {
       this.initiallyOpen = ['EPUB', 'text']
-      for(let j=0;j<this.items[0].children[4].children.length;j++){
-        if(this.items[0].children[4].children[j].file==="xhtml"){
-          Vue.set(this.deleteBtn,this.items[0].children[4].children[j].name,false);
+      for (let j = 0; j < this.items[0].children[4].children.length; j++) {
+        if (this.items[0].children[4].children[j].file === "xhtml") {
+          Vue.set(this.deleteBtn, this.items[0].children[4].children[j].name, false);
           //this.deleteBtn[this.deleteBtn,this.items[0].children[4].children[j].name.toString]=false;
         }
       }
