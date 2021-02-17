@@ -314,7 +314,7 @@ export default {
       } else {
         this.$store.dispatch(
           "setAlertMessage",
-          "select-text"
+          "error.select-text"
         );
       }
     },

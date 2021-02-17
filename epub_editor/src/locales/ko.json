@@ -1,4 +1,7 @@
 {
+  "message": {
+    "required": "필수 입력 사항입니다."
+  },
   "tab": {
     "file": "파일",
     "edit": "편집",
@@ -134,7 +137,8 @@
     "not-match-newpassword": "비밀번호가 일치하지 않습니다.",
     "not-match-prevpassword": "현재 비밀번호가 일치하지 않습니다.",
     "fail-signout": "회원 탈퇴에 실패했습니다. 고객센터에 문의해주세요.",
-    "duplicated-ebook": "동일한 이름의 이북이 이미 있습니다."
+    "duplicated-ebook": "동일한 이름의 이북이 이미 있습니다.",
+    "no-ebook": "서버에 저장하신 이북이 없습니다."
   },
   "confirm": {
     "save-title": "파일 저장",

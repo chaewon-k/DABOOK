@@ -9,7 +9,6 @@
     <v-btn class="align-self-center" @click="storeInputText" text
       >{{ $t("filetab.save") }}</v-btn
     >
-    <v-btn class="align-self-center" @click="preview" text>{{ $t("filetab.preview") }}</v-btn>
     <v-btn class="align-self-center" @click="exportFile" text
       >{{ $t("filetab.epub") }}</v-btn
     >
@@ -111,14 +110,7 @@
     </v-dialog>
     
     <v-dialog v-model="eBookListDialog" max-width="400">
-      <v-card :loading="loading">
-        <template slot="progress">
-          <v-progress-linear
-            color="deep-purple"
-            height="7"
-            indeterminate
-          ></v-progress-linear>
-        </template>
+      <v-card>
         <DialogTitle
           title="server-load"
           @toggle-dialog="eBookListDialog = false;"
@@ -153,10 +145,8 @@ import DialogTitle from "@/components/Dialog/DialogTitle";
 import axios from 'axios';
 
 const fs = require("fs");
-const path = require("path");
-const electron = require("electron");
-const BrowserWindow = electron.remote.BrowserWindow;
 const fse = require("fs-extra");
+const path = require("path");
 
 export default {
   name: "FileTab",
@@ -182,7 +172,6 @@ export default {
 
       // boolean
       selectDefaultImg: false,
-      loading: false,
 
       // number
       hTags: [1, 2, 3, 4, 5, 6],
@@ -215,7 +204,7 @@ export default {
     });
     eventBus.$on("choose", (res) => {
       if (res == "new") {
-        this.epubDialog=true;
+        this.eBookDialog=true;
         this.createNewEBook();
       }
       else if(res=="load"){
@@ -499,24 +488,6 @@ export default {
         this.epubDialog = true;
       }
     },
-
-    // e-book 미리보기
-    preview: function () {
-      try {
-        if (this.$store.state.selectedFileDirectory === "") {
-          this.$store.dispatch(
-            "setAlertMessage",
-            "error.preview"
-          );
-        } else {
-          const win = new BrowserWindow({ width: 800, height: 1500 });
-          win.loadURL("file://" + this.$store.state.selectedFileDirectory);
-        }
-      } catch {
-        console.log("ebook 미리보기 실패");
-      }
-    },
-
     // chapter 추가하기
     makeChapter: function () {
       try {
@@ -581,15 +552,19 @@ export default {
     },
     //ebook list 받아오기
     getEbookList: function () {
-      this.eBookListDialog = true;
       axios.get("https://contact.dabook.site/api/user/epub/list", { params: { email: localStorage.getItem('email') }})
         .then((res) => {
           this.eBookList = res.data
+          if (res.data.length != 0) {
+            this.eBookListDialog = true;
+          } else {
+            this.$store.dispatch('setAlertMessage', 'error.no-ebook');
+          }
+          
         })
         .catch(err => console.log(err))
     },
     loadFromServer: function () {
-      this.loading = true;
       const eBookName = this.eBookList[this.eBookSelected]['epubName']
       axios.get("https://contact.dabook.site/api/download", { params: { email: localStorage.getItem('email'), epubName: eBookName }, responseType: 'arraybuffer' })
         .then((res) => {
@@ -605,7 +580,6 @@ export default {
         .catch(err => console.log(err))
       setTimeout(() => {
         this.$store.dispatch("setAlertMessage", "success.download-ebook");
-        this.loading = false;
         this.eBookListDialog = false;            
       }, 500 * 5)
       this.eBookSelected = [];

@@ -1,4 +1,7 @@
-{
+{ 
+  "message": {
+    "required": "required"
+  },
   "tab": {
     "file": "file",
     "edit": "edit",
@@ -134,7 +137,8 @@
     "not-match-newpassword": "New password not match.",
     "not-match-prevpassword": "Password not match.",
     "fail-signout": "Failed to signout membership. Please contact the customer service center.",
-    "duplicated-ebook": "You've already created an ebook with the same name."
+    "duplicated-ebook": "You've already created an ebook with the same name.",
+    "no-ebook": "You don't have any ebooks."
   },
   "confirm": {
     "save-title": "Save file",

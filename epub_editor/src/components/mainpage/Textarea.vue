@@ -182,11 +182,11 @@ export default {
       if (e.wheelDelta > 0) {
         this.fontSize += 1;
         document.getElementById("area").style.fontSize = this.fontSize + "px";
-        console.log(this.fontSize);
+        // console.log(this.fontSize);
       } else {
         this.fontSize -= 1;
         document.getElementById("area").style.fontSize = this.fontSize + "px";
-        console.log(this.fontSize);
+        // console.log(this.fontSize);
       }
     };
     window.onkeypress = (e) => {

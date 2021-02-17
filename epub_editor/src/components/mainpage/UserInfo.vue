@@ -70,6 +70,7 @@
                     <v-text-field
                       :placeholder="this.GET_PREVPW_PLACEHOLDER"
                       dense
+                      type="password"
                       class="mr-3"
                       v-model="prevPassword"
                     ></v-text-field>
@@ -78,12 +79,14 @@
                     <v-text-field
                       :placeholder="this.GET_NEWPW_PLACEHOLDER"
                       dense
+                      type="password"
                       class="mr-3"
                       v-model="newPassword"
                     ></v-text-field>
                     <v-text-field
                       :placeholder="this.GET_PWCOMFIRM_PLACEHOLDER"
                       dense
+                      type="password"
                       class="mr-3"
                       v-model="passwordConfirm"
                     ></v-text-field>
