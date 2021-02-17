@@ -124,19 +124,20 @@ export function makeEpubFile (path, title) {
   });
 }
 
-export function makeZipFile (path, title) {
+export async function makeZipFile (path, title) {
   path = path.replace('\\\\', '/');
-  let savePath = 'C:/Users/Jubin Jang/Desktop/'
+  let savePath = 'C:/Users/multicampus/Desktop/'
   console.log(path)
   console.log(savePath)
-  console.log(title)
-  zipFolder(path, savePath + '/' + title + '.zip', function(err) {
+  await zipFolder(path, savePath + '/' + title + '.zip', function(err) {
     if(err) {
       console.log('makeZipFile 실패');
       return false;
     } else {
       let temp = savePath + '/' + title + '.zip'
-      return temp;
+      console.log('makeZipFile 성공');
+      console.log(temp);
+      return true;
     }
   });
 }
