@@ -56,7 +56,7 @@ export default {
       } else {
         win = new BrowserWindow({ width: 800, height: 1500 });
         // const p = path.resolve("./src/assets/manual/manual.html");
-        const p = path.resolve("./resources/src/assets/manual/manual.html"); // for win build
+        const p = path.resolve('./src/assets/manual/', this.$t('menual')); // for win build
         win.loadURL("file://" + p, function() {
         });
       }

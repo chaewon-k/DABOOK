@@ -200,5 +200,5 @@
     "load-btn": "Load"
   },
   "customStyleName":"There are styles of the same name.",
-  "menual" : "Editor_Manual.html"
+  "manual" : "Editor_Manual.html"
 }
