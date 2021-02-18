@@ -460,6 +460,13 @@ export default {
       editorObj.designMode = "off";
       editorObj.close();
       this.resetCustomStyle();
+
+      // 서버 업로드
+      let email = localStorage.getItem('email');
+      let filePath = this.$store.state.ebookDirectory + '/EPUB/styles/stylesheet.css'
+      let bookName = this.$store.state.ebookTitle
+      let serverPath = "/EPUB/styles"
+      file.uploadFile(filePath, serverPath, bookName, email);
     },
 
     // my style 열기
