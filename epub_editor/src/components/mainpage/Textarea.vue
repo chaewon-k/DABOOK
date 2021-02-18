@@ -304,16 +304,17 @@ export default {
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
       editorObj.open();
-      editorObj.writeln("<style>"); 
+      editorObj.writeln("<style>");
+      if (this.isDark === true) {
+        editorObj.writeln("* {color: white;}")
+      }
       if(this.$store.state.ebookDirectory!==''){
         let cssString = file.readCSS(this.$store.state.ebookDirectory);
         cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);      
         editorObj.writeln(cssString);
       }
       editorObj.writeln("</style>");
-      if (this.isDark === true) {
-        editorObj.writeln("* {color: white;}")
-      }
+
       let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
       editorObj.writeln(temp);
       editorObj.designMode = "off";
