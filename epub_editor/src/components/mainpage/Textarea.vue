@@ -311,6 +311,9 @@ export default {
         editorObj.writeln(cssString);
       }
       editorObj.writeln("</style>");
+      if (this.isDark === true) {
+        editorObj.writeln("* {color: white;}")
+      }
       let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
       editorObj.writeln(temp);
       editorObj.designMode = "off";

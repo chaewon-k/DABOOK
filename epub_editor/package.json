@@ -1,6 +1,6 @@
 {
   "name": "DABOOK",
-  "version": "0.1.10",
+  "version": "0.1.14",
   "private": true,
   "description": "Epub editor developed with Electron",
   "author": "sodokgaydeul",

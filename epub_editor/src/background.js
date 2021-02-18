@@ -66,26 +66,26 @@ async function createWindow() {
       webSecurity: false
     }
   });
-  // const templete=[
-  //   {
-  //     label: 'edit',
-  //     submenu:[
-  //       {
-  //         role:'zoomIn',
-  //         accelerator: 'CommandOrControl+='
-  //       },
-  //       {
-  //         role:'zoomOut'
-  //       },
-  //       {
-  //         role:'reload'
-  //       }
-  //     ]
-  //   }
-  // ];
-  // let newMenu= Menu.buildFromTemplate(templete);
+  const templete=[
+    {
+      label: 'edit',
+      submenu:[
+        {
+          role:'zoomIn',
+          accelerator: 'CommandOrControl+='
+        },
+        {
+          role:'zoomOut'
+        },
+        {
+          role:'reload'
+        }
+      ]
+    }
+  ];
+  let newMenu= Menu.buildFromTemplate(templete);
 
-  // Menu.setApplicationMenu(newMenu);
+  Menu.setApplicationMenu(newMenu);
 
   win.on('close', function(e) {
     //setTimeout(function () {console.log('isKor ' + isKor)}, 3000);
