@@ -54,9 +54,12 @@ export default {
   computed: {
   },
   methods: {
+    // 취소 버튼
     cancelButton: function () {
       this.$emit("cancel");
     },
+    
+    // 확인 버튼
     confirmButton: function () {
       this.$emit("confirm");
     },

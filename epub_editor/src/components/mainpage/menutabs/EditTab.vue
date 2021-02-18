@@ -9,8 +9,7 @@
           icon
           medium
           @click="edit('undo')"
-          ><v-icon medium>mdi-undo</v-icon></v-btn
-        >
+        ><v-icon medium>mdi-undo</v-icon></v-btn>
       </template>
       <span>{{ $t("edittab.undo") }}</span>
     </v-tooltip>
@@ -22,8 +21,7 @@
           icon
           medium
           @click="edit('redo')"
-          ><v-icon medium>mdi-redo</v-icon></v-btn
-        >
+        ><v-icon medium>mdi-redo</v-icon></v-btn>
       </template>
       <div id="btnText">
       <span>{{ $t("edittab.redo") }}</span>
@@ -37,8 +35,7 @@
           icon
           medium
           @click="edit('cut')"
-          ><v-icon medium>mdi-content-cut</v-icon></v-btn
-        >
+        ><v-icon medium>mdi-content-cut</v-icon></v-btn>
       </template>
       <span>{{ $t("edittab.cut") }}</span>
     </v-tooltip>
@@ -50,8 +47,7 @@
           icon
           medium
           @click="edit('copy')"
-          ><v-icon medium>mdi-content-copy</v-icon></v-btn
-        >
+        ><v-icon medium>mdi-content-copy</v-icon></v-btn>
       </template>
       <span>{{ $t("edittab.copy") }}</span>
     </v-tooltip>
@@ -63,8 +59,7 @@
           icon
           medium
           @click="edit('paste')"
-          ><v-icon medium>mdi-content-paste</v-icon></v-btn
-        >
+        ><v-icon medium>mdi-content-paste</v-icon></v-btn>
       </template>
       <span>{{ $t("edittab.paste") }}</span>
     </v-tooltip>
@@ -77,8 +72,7 @@
           medium
           @click.stop="openFindMenu"
           text
-          ><v-icon medium>mdi-file-find-outline</v-icon></v-btn
-        >
+        ><v-icon medium>mdi-file-find-outline</v-icon></v-btn>
       </template>
       <span>{{ $t("edittab.find") }}</span>
     </v-tooltip>
@@ -91,8 +85,7 @@
           medium
           @click.stop="replaceDialog = true"
           text
-          ><v-icon medium>mdi-find-replace</v-icon></v-btn
-        >
+        ><v-icon medium>mdi-find-replace</v-icon></v-btn>
       </template>
       <span>{{ $t("edittab.replace") }}</span>
     </v-tooltip>
@@ -150,16 +143,13 @@
         <span
           v-show="this.findTextArray.length != 0"
           style="color: gray; margin:10px;"
-          >{{ this.findTextIndex + 1 }} of {{ this.findTextArray.length }}</span
-        >
+        >{{ this.findTextIndex + 1 }} of {{ this.findTextArray.length }}</span>
         <v-btn icon small @click="findUp">
           <v-icon>mdi-chevron-up</v-icon>
         </v-btn>
-
         <v-btn icon small @click="findDown">
           <v-icon>mdi-chevron-down</v-icon>
         </v-btn>
-
         <v-btn icon small @click="closeFindMenu">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -210,6 +200,7 @@ export default {
         );
       }
     },
+
     // 찾기
     find: function() {
       if (this.$store.state.selectedFileDirectory !== "") {
@@ -235,6 +226,8 @@ export default {
         );
       }
     },
+
+    // 찾기 창 열기
     openFindMenu: function() {
       if (this.$store.state.selectedFileDirectory !== "") {
         let findMenu = document.getElementById("findMenu");
@@ -255,6 +248,8 @@ export default {
       this.findTextIndex = 0;
       this.findTextArray = [];
     },
+
+    // 찾기 함수 1
     findUp: function() {
       if (this.findTextIndex == 0) {
         eventBus.$emit(
@@ -272,6 +267,7 @@ export default {
       }
     },
 
+    // 찾기 함수 2
     findDown: function() {
       if (this.findTextIndex == this.findTextArray.length - 1) {
         eventBus.$emit(
@@ -318,10 +314,10 @@ export default {
         );
       }
     },
-    setFindText: function(sendData) {
+    setFindText: function (sendData) {
       this.findText = sendData;
     },
-    setReplaceText: function(sendData) {
+    setReplaceText: function (sendData) {
       this.replaceText = sendData;
     },
   },

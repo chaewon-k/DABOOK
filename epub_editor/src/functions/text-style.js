@@ -141,7 +141,7 @@ export function imageTag (location, bookName, email) {
     filters: [
       {
         name: 'Image files',
-        extensions: ['jpg', 'png']
+        extensions: ['jpg', 'png', 'gif']
       }
     ]
   };
@@ -160,7 +160,7 @@ export function imageTag (location, bookName, email) {
       console.log('해당 디렉토리에 이미지 저장 실패');
     }
   });
-  var resultString = `<img src="../images/${fileName}" />`;
+  var resultString = `<img style="width: 100%;" src="../images/${fileName}" />`;
   area.value = area.value.slice(0,  area.selectionStart) + resultString + area.value.slice(area.selectionStart);
   file.uploadFile(imgLocation, '/EPUB/images', bookName, email);
   file.uploadFile(location + '/EPUB/content.opf', '/EPUB', bookName, email);

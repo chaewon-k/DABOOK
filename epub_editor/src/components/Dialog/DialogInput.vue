@@ -34,9 +34,9 @@ export default {
     }
   },
   methods: {
-    resetText: function () {
-      this.inputText = '';
-    },
+    // resetText: function () {
+    //   this.inputText = '';
+    // },
     sendData: function () {
       this.$emit("changeData", this.inputText);
     },

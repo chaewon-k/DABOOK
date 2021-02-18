@@ -55,7 +55,8 @@ html, body {
 #togglebar {
   padding-top: 2px;
   position: absolute;
-  height: 100%;
+  padding-top: 100px;
+  /* height: 100%; */
   width: 65px;
   z-index: 1;
 }
