@@ -198,5 +198,6 @@
     "create-btn": "새 이북 만들기",
     "load-btn": "이북 불러오기"
   },
-  "customStyleName":"동일한 이름의 스타일이 있습니다."
+  "customStyleName":"동일한 이름의 스타일이 있습니다.",
+  "menual" : "사용설명서.html"
 }
