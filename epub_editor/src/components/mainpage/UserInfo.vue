@@ -24,10 +24,8 @@
       </v-toolbar>
     
       <v-layout justify-center class="mt-5">
-      
         <v-card flat width="600">
           <v-card-text class="pa-0">
-
             <!-------------- 회원 정보 -------------->
             <div class="mt-7 mb-9">
               <h2 class="mb-3" style="color: #9C9BBF;">{{ $t("userinfotab.email") }}</h2>
@@ -56,7 +54,6 @@
                 </v-row>
               </v-container>
             </div>
-
             <!-------------- 정보 변경 -------------->
             <v-divider></v-divider>
             <div class="mt-7">
@@ -96,7 +93,6 @@
               </v-container>
             </div>
           </v-card-text>
-
           <!-------------- 회원 탈퇴 -------------->
           <v-divider></v-divider>
           <v-card-actions class="pt-0 pl-0">
@@ -116,7 +112,7 @@
       cancel="userinfotab.signouttab.cancel"
       @confirm="signout"
       @cancel="signoutDialog = false"
-     />
+    />
   </v-dialog>
 </template>
 

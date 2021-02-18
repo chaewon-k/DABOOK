@@ -101,6 +101,7 @@ export default {
     };
   },
   methods: {
+    // 각 태그 선택
     selectTag: function(index) {
       if (this.$store.state.selectedFileDirectory !== "") {
         eventBus.$emit("pushIndexData", index);

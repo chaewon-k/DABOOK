@@ -23,7 +23,7 @@
             class="align-self-center rounded-sm"
             icon
             x-small
-          @click="deleteDialog=true; deleteitem=item">
+            @click="deleteDialog=true; deleteitem=item">
               <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
           </span>
@@ -40,7 +40,8 @@
       cancel="confirm.save-cancel"
       @cancel="saveFile(false)"
       @confirm="saveFile(true)"
-      />
+    />
+    
     <Confirm 
       :dialog="deleteDialog"
       title="deleteChapter.title"
@@ -50,7 +51,7 @@
       cancel="deleteChapter.cancel"
       @cancel="deleteChapter(false)"
       @confirm="deleteChapter(true)"
-      />
+    />
   </div>
 </template>
 
@@ -71,8 +72,8 @@ export default {
   watch: {
     items: function () {
       this.initiallyOpen = ['EPUB', 'text']
-      for(let j=0;j<this.items[0].children[4].children.length;j++){
-        if(this.items[0].children[4].children[j].file==="xhtml"){
+      for (let j = 0; j < this.items[0].children[4].children.length; j++) {
+        if (this.items[0].children[4].children[j].file === "xhtml") {
           Vue.set(this.deleteBtn, this.items[0].children[4].children[j].name, false);
         }
       }
@@ -82,9 +83,13 @@ export default {
     items: function () {
       return this.$store.state.ebookDirectoryTree;
     },
+
+    // 확인 버튼 한/영 변환
     GET_CONFIRM_BUTTON() {
       return this.$t('confirm.save-confirm');
     },
+
+    // 취소 버튼 한/영 변환
     GET_CANCEL_BUTTON() {
       return this.$t('confirm.save-cancel');
     },
@@ -112,77 +117,81 @@ export default {
     };
   },
   methods: {
-    deleteChapter(res){
+    // 목차 삭제
+    deleteChapter: function (res) {
       this.deleteDialog=false;
-      if(!res)
+      if (!res)
         return;
-      let item=this.deleteitem;
-      fs.unlinkSync(item.dirPath, (err)=>{
+      let item = this.deleteitem;
+      fs.unlinkSync(item.dirPath, (err) => {
         console.log(err);
       });
       Vue.nextTick();
 
       //content 변경
-      let content= fs.readFileSync(this.$store.state.ebookDirectory+ '/EPUB/content.opf').toString();
-      let startText='<item id="'+item.name;
-      let endText="/>"
-      let start=content.indexOf(startText);
-      let end =content.indexOf(endText,start);
-      content=content.slice(0,start)+content.slice(end+3);
+      let content = fs.readFileSync(this.$store.state.ebookDirectory + '/EPUB/content.opf').toString();
+      let startText = '<item id="'+item.name;
+      let endText = "/>"
+      let start = content.indexOf(startText);
+      let end = content.indexOf(endText,start);
+      content = content.slice(0,start) + content.slice(end+3);
 
-      start=content.indexOf('<itemref idref="'+item.name);
-      end=content.indexOf("/>",start);
-      content=content.slice(0,start)+content.slice(end+3);
+      start = content.indexOf('<itemref idref="' + item.name);
+      end = content.indexOf("/>", start);
+      content = content.slice(0, start) + content.slice(end + 3);
 
-      fs.writeFileSync(this.$store.state.ebookDirectory+ '/EPUB/content.opf', content, (err) => {
+      fs.writeFileSync(this.$store.state.ebookDirectory + '/EPUB/content.opf', content, (err) => {
         if (err) {
           console.log(err);
         }
       });
 
-      //toc 변경
-      let temp = fs.readFileSync(this.$store.state.ebookDirectory+ '/EPUB/toc.ncx').toString();
+      // toc 변경
+      let temp = fs.readFileSync(this.$store.state.ebookDirectory + '/EPUB/toc.ncx').toString();
 
-      startText='chapter';
-      endText='.xhtml';
-      start=item.name.indexOf(startText);
-      end=item.name.indexOf(endText,start);
-      let searchNumber=item.name.slice(start+startText.length,end);
+      startText = 'chapter';
+      endText = '.xhtml';
+      start = item.name.indexOf(startText);
+      end = item.name.indexOf(endText, start);
+      let searchNumber = item.name.slice(start + startText.length, end);
 
-      let point=0;
-      let searchDirTextStart='<navPoint id="navPoint-';
-      let searchDirTextEnd='">';
-      for(;;){
-        if(temp.length<=point)
+      let point = 0;
+      let searchDirTextStart = '<navPoint id="navPoint-';
+      let searchDirTextEnd = '">';
+      for (;;) {
+        if (temp.length <= point)
           break;
-        let dirStart=temp.indexOf(searchDirTextStart,point);
-        let dirEnd=temp.indexOf(searchDirTextEnd,dirStart);
-        let number=temp.slice(dirStart+searchDirTextStart.length,dirEnd);
+        let dirStart = temp.indexOf(searchDirTextStart, point);
+        let dirEnd = temp.indexOf(searchDirTextEnd, dirStart);
+        let number = temp.slice(dirStart + searchDirTextStart.length, dirEnd);
 
-        if(searchNumber==number){
-          let t='</navPoint>';
-          let last=temp.indexOf(t,dirEnd);
-          temp=temp.slice(0,dirStart)+temp.slice(last+t.length);
-          fs.writeFileSync(this.$store.state.ebookDirectory+ '/EPUB/toc.ncx', temp, (err) => {
+        if (searchNumber == number) {
+          let t = '</navPoint>';
+          let last = temp.indexOf(t, dirEnd);
+          temp = temp.slice(0, dirStart) + temp.slice(last + t.length);
+          fs.writeFileSync(this.$store.state.ebookDirectory + '/EPUB/toc.ncx', temp, (err) => {
             if (err) {
               console.log(err);
             }
           });
           break;
         }
-        point=dirEnd;
+        point = dirEnd;
       }
-      
-      this.$store.state.selectedFileDirectory='';
+      this.$store.state.selectedFileDirectory = '';
       eventBus.$emit('toc');
     },
-    mouseAction(item,set){
-      if(item.file=="xhtml"){
-        this.deleteBtn[item.name]=set;
+
+    // mouse over -> 삭제버튼 활성화
+    mouseAction: function (item, set) {
+      if (item.file == "xhtml") {
+        this.deleteBtn[item.name] = set;
         this.$nextTick();
       }
     },
-    openFile: function (val) { // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
+
+    // 디렉토리에서 선택한 파일을 텍스트로 읽는 함수
+    openFile: function (val) {
       this.value = val;
       if (val.children) {
         return  // 폴더면 그냥 return
@@ -204,7 +213,9 @@ export default {
         edit.reset();
       }
     },
-    saveFile: function (flag) { // 저장
+
+    // 저장
+    saveFile: function (flag) { 
       if (flag) {
         const updatedText = this.$store.state.editingHTMLText + this.$store.state.editingText + '</html>';
         fs.writeFileSync(this.$store.state.selectedFileDirectory, updatedText);
@@ -215,12 +226,14 @@ export default {
         let bookName = this.$store.state.ebookTitle
         let serverPath = "/EPUB/text"
         file.uploadFile(filePath, serverPath, bookName, email);
-        console.log('서버에 저장함다!')
+        console.log('서버에 저장!')
       } 
       this.saveDialog = false;
       this.moveFile(this.value);
     },
-    moveFile: function (val) { // 파일 이동
+
+    // 파일 이동
+    moveFile: function (val) {
       if (this.$store.state.selectedFileDirectory !== val.dirPath) {  // 자기 자신을 다시 클릭한 것이 아니라면 새 파일을 가져온다.
         if (val.dirPath.slice(-5) === 'xhtml') {    // xhtml 파일이라면 불러온다.
           const temp = fs.readFileSync(val.dirPath).toString();
@@ -231,7 +244,9 @@ export default {
         }
       }
     },
-    compareFile: function (pre, post) { // 비교
+
+    // 파일 비교
+    compareFile: function (pre, post) {
       if (pre === post) return true;
       return false;
     }

@@ -1,25 +1,14 @@
 <template>
   <v-tabs id="fileTab" show-arrows v-model="tab">
-    <v-btn class="align-self-center" @click.stop="eBookDialog = true" text
-      >{{ $t("filetab.create") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="loadEbook" text
-      >{{ $t("filetab.load") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="storeInputText" text
-      >{{ $t("filetab.save") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="exportFile" text
-      >{{ $t("filetab.epub") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="addChapter" text
-      >{{ $t("filetab.chapter") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text
-      >{{ $t("filetab.server") }}</v-btn
-    >
+    <v-btn class="align-self-center" @click.stop="eBookDialog = true" text>{{ $t("filetab.create") }}</v-btn>
+    <v-btn class="align-self-center" @click="loadEbook" text>{{ $t("filetab.load") }}</v-btn>
+    <v-btn class="align-self-center" @click="storeInputText" text>{{ $t("filetab.save") }}</v-btn>
+    <v-btn class="align-self-center" @click="exportFile" text>{{ $t("filetab.epub") }}</v-btn>
+    <v-btn class="align-self-center" @click="addChapter" text>{{ $t("filetab.chapter") }}</v-btn>
+    <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text>{{ $t("filetab.server") }}</v-btn>
+
     <v-dialog v-model="chapterDialog" max-width="400">
-      <v-card>
+      <v-card ref="form">
         <DialogTitle
           title="file-chapter"
           @toggle-dialog="chapterDialog = false"
@@ -193,21 +182,21 @@ export default {
     eventBus.$on("shortcut", (res) => {
       if (res == "save") {
         this.storeInputText();
-      }
-      else if(res=="preview"){
+      } else if(res=="preview"){
         this.loadEbook();
       }
     });
+
     eventBus.$on("toc",()=>{
       this.readToc();
       this.$store.dispatch("setEditingText", "");
     });
+
     eventBus.$on("choose", (res) => {
-      if (res == "new") {
-        this.eBookDialog=true;
+      if (res === "new") {
+        this.eBookDialog = true;
         this.createNewEBook();
-      }
-      else if(res=="load"){
+      } else if (res === "load"){
         this.loadEbook();
       }
     });
@@ -282,8 +271,8 @@ export default {
                       }
                     });
                     this.eBookDialog = false;
-                    // let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
-                    let eBookSettingDirectory = "./resources/src/assets/NewEbook"; //for win build
+                    let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
+                    // let eBookSettingDirectory = "./resources/src/assets/NewEbook"; //for win build
                     fse.copySync(eBookSettingDirectory, this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
                     /*
                     새 ebook 만들기 
@@ -316,12 +305,12 @@ export default {
                   }
                 })
                 .catch(err => {
-                  console.log('여기니?')
+                  // console.log('여기니?')
                   console.log(err)
                 })
             } else {
               // alert 메시지로 동일한 이름의 책을 만들었다고 알려주기
-              console.log(res)
+              // console.log(res)
               this.$store.dispatch('setAlertMessage', 'error.duplicated-ebook')
             }
           })
@@ -337,6 +326,7 @@ export default {
         );
         this.$refs.ebookTextInput.resetText();
       }
+      this.$refs.form.reset()
     },
 
     // 목차 읽어오기
@@ -499,8 +489,8 @@ export default {
           this.$store.dispatch("setAlertMessage", "error.add-chapter-input");
           return;
         }
-        // const temp = fs.readFileSync("src/assets/chapter01.xhtml").toString();
-        const temp = fs.readFileSync("./resources/src/assets/chapter01.xhtml").toString(); // for win build
+        const temp = fs.readFileSync("src/assets/chapter01.xhtml").toString();
+        // const temp = fs.readFileSync("./resources/src/assets/chapter01.xhtml").toString(); // for win build
         this.chapterNum++;
         if (this.chapterNum < 10) {
           num = "0" + this.chapterNum;
@@ -564,6 +554,7 @@ export default {
         })
         .catch(err => console.log(err))
     },
+    
     loadFromServer: function () {
       const eBookName = this.eBookList[this.eBookSelected]['epubName']
       axios.get("https://contact.dabook.site/api/download", { params: { email: localStorage.getItem('email'), epubName: eBookName }, responseType: 'arraybuffer' })
