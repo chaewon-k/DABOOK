@@ -1,0 +1,65 @@
+@font-face {
+  font-family: "kopub_dot_b";
+  src: url('../fonts/KoPubDotumBold.ttf');
+}
+@font-face {
+  font-family: "kopub_dot_l";
+  src: url('../fonts/KoPubDotumLight.ttf');
+}
+@font-face {
+  font-family: "kopub_bat_l";
+  src: url('../fonts/KoPubBatangLight.ttf');
+}
+@font-face {
+  font-family: "kopub_bat_b";
+  src: url('../fonts/KoPubBatangBold.ttf');
+}
+@font-face {
+  font-family: 'noto_li';
+  src: url('../fonts/NotoSerif-LightItalic.ttf');
+}
+
+html {
+  word-break:break-all;
+  margin-top: 10px;
+}
+
+#eBook::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+  background: #ffffff;
+}
+
+#eBook::-webkit-scrollbar-thumb {
+    border-radius: 3.5px;
+    background-color: #dedeeb;
+}
+
+#eBook::-webkit-scrollbar-track {
+  background: #ffffff;
+  margin-top: 10px;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.8em;
+  text-indent: 1em;
+  display: block;
+  margin: 0;
+}
+
+table, th, td {
+  margin: auto;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+table {
+  width: 80%;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+

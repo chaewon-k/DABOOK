@@ -20,12 +20,13 @@ public class User {
 	@Id
 	private String _id;
 	
+	private String name;
 	private String email;
 	private String password;
 	private String nickname;
 	private boolean status;
 	private String emailToken;
-	private List<String> epubList;
+	private List<Epub> epubList;
 	
 	public User(String email, String password, String nickname){
 		this.email = email;

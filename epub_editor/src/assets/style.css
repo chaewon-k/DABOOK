@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap');
+
+@font-face {
+  font-family: "kopub_dot_b";
+  src: url('./NewEbook/EPUB/fonts/KoPubDotumBold.ttf');
+}
+@font-face {
+  font-family: "kopub_dot_l";
+  src: url('./NewEbook/EPUB/fonts/KoPubDotumLight.ttf');
+}
+@font-face {
+  font-family: "kopub_bat_l";
+  src: url('./NewEbook/EPUB/fonts/KoPubBatangLight.ttf');
+}
+@font-face {
+  font-family: "kopub_bat_b";
+  src: url('./NewEbook/EPUB/fonts/KoPubBatangBold.ttf');
+}
+@font-face {
+  font-family: 'noto_li';
+  src: url('./NewEbook/EPUB/fonts/NotoSerif-LightItalic.ttf');
+}
+
+html, body {
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+#app {
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+#editor {
+  height: 100%;
+}
+
+#header {
+  position: fixed;
+  height: 96px;
+  width: 100%;
+  z-index: 102;
+}
+
+#topMenu {
+  width: 100%;
+}
+
+#wrap {
+  padding-top: 96px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+#togglebar {
+  padding-top: 2px;
+  position: absolute;
+  padding-top: 100px;
+  /* height: 100%; */
+  width: 65px;
+  z-index: 1;
+}
+
+#aside {
+  position: absolute;
+  padding-left: 65px;
+  height: 100%;
+  width: 365px;
+  /* z-index: 99; */
+  /* position: fixed; */
+}
+
+#tableOfContents {
+  height: 100%;
+}
+
+.content-first {
+  padding-left: 365px;
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
+.content-second {
+  padding-left: 65px;
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
+#textarea {
+  height: 100%;
+  position: relative;
+}
+
+
+.withPreview {
+  width: 50%;
+  position: absolute;
+}
+
+.withoutPreview {
+  width: 100%;
+}
+#textarea > .v-input {
+  height: 100%;
+}
+
+#textarea > .v-input > .v-input__control {
+  height: 100%;
+}
+
+#area{
+  margin:8px;
+  padding-right: 0px;
+  font-size: 15px;
+  line-height: 130%;
+}
+
+#preview {
+  width:50%; 
+  height:100%; 
+  margin-left:50%; 
+  border: 0px; 
+  z-index: 100;
+}
+
+/* 도구상자 버튼 정렬하는 style */
+
+#subMenuBar {
+  width: 100%;
+}
+
+/* alert 창 */
+
+#alertMessage{
+  color: white;
+  position: fixed;
+  float:  right;
+  bottom: 3%;
+  right:  2%;
+  z-index: 999999;
+}
+
+/* div.left {
+    width: 60%;
+    float: left;
+    height: 10%;
+}
+
+div.right {
+  top:20%;
+  width: 39%;
+  float: right;
+  position: relative;
+} */
+
+/* dialog 글씨 및 배경 색 변경하는 style */
+
+/* .v-text-field {
+  width: 150px;
+} */
+
+.header-color {
+  color: #423F8C;
+}
+
+.font-color {
+  color: #423F8C;
+}
+
+/* 우클릭 시 나오는 div의 style */
+.contextmenu {
+  display: none;
+  position: absolute;
+  width: 180px;
+  height: 220px;
+  margin-top: 2px;
+  padding: 0;
+  border-radius: 5px;
+  list-style: none;
+  box-shadow:
+    0 15px 35px rgba(50,50,90,0.1),
+    0 5px 15px rgba(0,0,0,0.07);
+  overflow: hidden;
+  z-index: 9;
+}
+
+.contextmenu span {
+  display: block;
+  padding: 2px;
+  margin-left: 5px;
+  text-decoration: none;
+  transition: ease .2s;
+}
+
+.contextmenu span:hover {
+  background: #5d106b;
+  color: white;
+}
+
+.divider-margin {
+  margin: 7px;
+}
+
+/* 찾기 bar style */
+#findMenu {
+  display: none;
+  position: absolute;
+  right: 2%;
+  width: auto;
+  border-radius: 5px;
+  z-index: 999999;
+}
+
+/*새 ebook 만들기*/
+.confirmMessage {
+  margin-bottom: -5px;
+  color: red;
+  font-size: smaller;
+}
+
+
+/* Light mode */
+.theme--light.v-card {
+  color: #423F8C !important;
+}
+
+.theme--light.v-btn {
+  color: #423F8C;
+}
+
+.theme--light.v-btn.v-btn--icon {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.theme--light.v-navigation-drawer {
+  background-color: white;
+}
+
+/* Dark mode */
+.theme--dark.v-card {
+  color: #9C9BBF !important;
+}
+
+.theme--dark.v-btn,
+.theme--dark.v-btn.v-btn--icon,
+.theme--dark.v-treeview {
+  color: #cdcdd4 !important;
+}
+
+
+.theme--dark.v-input textarea {
+  color: #cfcddf;
+}
+
+
+/*tooltab 맨 앞으로 보이게*/
+v-tooltab span{
+  z-index: 999999;
+  position: relative;
+}
+
+#toc {
+  float: right;
+}
+
+
+#helpBtn{
+  color:rgba(0, 0, 0, 0.54);
+  font-size: 15px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  justify-content: center;
+  min-width: 90px;
+  max-width: 360px;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: none;
+  z-index: 3;
+  height: auto;
+}

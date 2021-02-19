@@ -20,5 +20,5 @@ public class Epub {
 	private String _id;
 	private String userId;
 	private String epubName;
-	private List<String> fileList;
+	private List<FileDTO> fileList;
 }
