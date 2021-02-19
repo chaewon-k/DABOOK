@@ -4,7 +4,7 @@
     <!-- <dc:identifier id="epub-id-1">e701fa01-c44b-4c19-89a4-54389da808e8</dc:identifier> -->
     <dc:title id="epub-title-1">test</dc:title>
     <dc:creator opf:role="aut">username</dc:creator>
-    <dc:publisher>다독다독</dc:publisher>
+    <dc:publisher>다북</dc:publisher>
     <dc:date id="epub-date">2019-04-25</dc:date>
     <dc:language>ko</dc:language>
     <meta content="cover.jpg" name="cover"/>

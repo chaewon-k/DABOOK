@@ -15,7 +15,7 @@ export default new Vuex.Store({
     findTextArray: [],
     alertMessage: '',
     alertDialog: false,
-    isPreview: true,
+    isPreview: false,
     ebookTitle: '',
     isDark: false,
   },

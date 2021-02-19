@@ -35,6 +35,12 @@ ipcMain.on('upload', async (event, url, file, email, epubName, path) => {
     .then(function () {
       console.log('upload success')
       win.webContents.send('upload','success');
+      let temp = file.split('.');
+      if (temp[temp.length-1] == 'zip') {
+        fs.unlink(file, (err) => {
+          console.log('널이니?',err)
+        })
+      }
     })
     .catch(function (err) {
       console.log(file, '에러에러에러')
@@ -178,10 +184,11 @@ app.whenReady().then(() => {
   })
 });
 
-ipcMain.on('download-button', async (event, url, ebookPath, filePath) => {
+ipcMain.on('download-button', async (event, url, ebookPath, filePath, fileName) => {
   const options = {
-    directory: ebookPath + filePath,
+    directory: ebookPath,
+    filename: fileName + '.zip',
   }
-  const win = BrowserWindow.getFocusedWindow();
-  await download(win, url, options);
+  const win = BrowserWindow.getAllWindows()[0];
+  await download(win, url, options)
 });

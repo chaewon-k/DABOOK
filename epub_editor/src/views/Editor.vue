@@ -5,11 +5,12 @@
       <TopMenu/>
     </header>
     <div id="wrap">
-      <div id="togglebar">
+      <!-- <div id="togglebar"> -->
         <ToggleBar
           @toggleDir='toggleDir'
+          id="togglebar"
         />
-      </div>
+      <!-- </div> -->
       <aside v-if="dirToggle" id="aside">
         <v-card max-height="100%" min-height="100%" class="overflow-y-auto" style="border-radius: 0%;">
           <v-btn v-if="dirTableToggle===true" @click="toggle" block text>{{ $t("directory") }}</v-btn>

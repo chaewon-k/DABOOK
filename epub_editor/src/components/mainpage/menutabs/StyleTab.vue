@@ -13,10 +13,11 @@
                 medium
                 @click="styleMethod(idx)"
                 @mousedown.right.stop.prevent="selected = 'tab-font'; colorDialog = true;"
-                ><v-icon v-bind:style="{ color: tab.color }" medium>{{
-                  tab.icon
-                }}</v-icon></v-btn
               >
+                <v-icon v-bind:style="{ color: tab.color }" medium>
+                    {{ tab.icon }}
+                </v-icon>
+              </v-btn>
             </template>
             <span>{{ $t("styletab." + tab.name) }}</span>
           </v-tooltip>
@@ -31,10 +32,11 @@
                 medium
                 @click="styleMethod(idx)"
                 @mousedown.right.stop.prevent="selected = 'tab-background'; colorDialog = true;"
-                ><v-icon v-bind:style="{ color: tab.color }" medium>{{
-                  tab.icon
-                }}</v-icon></v-btn
               >
+                <v-icon v-bind:style="{ color: tab.color }" medium>
+                  {{ tab.icon }}
+                </v-icon>
+              </v-btn>
             </template>
             <span>{{ $t("styletab." + tab.name) }}</span>
           </v-tooltip>
@@ -48,10 +50,11 @@
                 icon
                 medium
                 @click="styleMethod(idx)"
-                ><v-icon v-bind:style="{ color: tab.color }" medium>{{
-                  tab.icon
-                }}</v-icon></v-btn
               >
+                <v-icon v-bind:style="{ color: tab.color }" medium>
+                  {{ tab.icon }}
+                </v-icon>
+              </v-btn>
             </template>
             <span>{{ $t("styletab." + tab.name) }}</span>
           </v-tooltip>
@@ -106,7 +109,7 @@
             />
             <v-row>
               <v-select
-              class="my-3"
+                class="my-3"
                 prepend-icon="mdi-reorder-horizontal"
                 v-model="customStyle.range"
                 :items="[
@@ -132,12 +135,10 @@
             </v-row>
             <v-row>
               <v-btn icon medium style="margin-top:5%; margin-left:-2%">
-                <v-icon medium v-bind:style="{ color: customStyle.fontColor }"
-                  >mdi-format-color-text</v-icon
-                >
+                <v-icon medium v-bind:style="{ color: customStyle.fontColor }">mdi-format-color-text</v-icon>
               </v-btn>
               <v-text-field
-              class="my-3"
+                class="my-3"
                 v-model="customStyle.fontColor"
                 :label="getLabelFontColor"
                 @click="
@@ -151,11 +152,10 @@
                 <v-icon
                   medium
                   v-bind:style="{ color: customStyle.backgroundColor }"
-                  >mdi-square</v-icon
-                >
+                >mdi-square</v-icon>
               </v-btn>
               <v-text-field
-              class="my-3"
+                class="my-3"
                 v-model="customStyle.backgroundColor"
                 :label="getLabelBackgroundColor"
                 @click="
@@ -335,13 +335,6 @@ export default {
       colorDialog2: false,
       fontDialog: false,
       selectedFont: "",
-      // label: {
-      //   "title": this.$t('dialoginput.style-title'),
-      //   "align" : this.$t('dialoginput.style-align'),
-      //   "font" : this.$t('dialoginput.style-font'),
-      //   "fontcolor": this.$t('dialoginput.style-fontcolor'),
-      //   "backgroundcolor": this.$t('dialoginput.style-backgroundcolor')
-      // }
       label: {
         "title": 'style-title',
         "align" : 'style-align',
@@ -366,6 +359,7 @@ export default {
     },
   },
   methods: {
+    // 스타일 탭 전체 기능
     styleMethod: function(i) {
       if (!css.inTag()) {
         this.$store.dispatch(
@@ -410,6 +404,8 @@ export default {
         );
       }
     },
+
+    // 색상 선택 함수 (글자, 배경)
     pickColor: function() {
       if (this.selected == "font") {
         this.customStyle.fontColor = this.pickedColor;
@@ -422,6 +418,8 @@ export default {
       }
       this.colorDialog = false;
     },
+
+    // my style 초기화
     resetCustomStyle: function(){
       this.customStyle.title='';
       this.customStyle.range='';
@@ -429,6 +427,8 @@ export default {
       this.customStyle.fontColor='';
       this.customStyle.backgroundColor='';
     },
+
+    // my style 추가
     addStyle: function() {
       if (this.customStyle.title.trim() == "" || this.customStyle.title == undefined) {
         this.$store.dispatch(
@@ -445,6 +445,7 @@ export default {
       this.styleDialog = false;
       this.customStyleList.push(this.customStyle.title);
       this.customStyle = {};
+      this.$refs.styleTextInput.resetText();
       this.$store.dispatch("setCustomStyleArray", this.customStyleList);
       var HTMLEDITOR = document.getElementById("preview");
       var editorObj = HTMLEDITOR.contentWindow.document;
@@ -459,11 +460,22 @@ export default {
       editorObj.designMode = "off";
       editorObj.close();
       this.resetCustomStyle();
+
+      // 서버 업로드
+      let email = localStorage.getItem('email');
+      let filePath = this.$store.state.ebookDirectory + '/EPUB/styles/stylesheet.css'
+      let bookName = this.$store.state.ebookTitle
+      let serverPath = "/EPUB/styles"
+      file.uploadFile(filePath, serverPath, bookName, email);
     },
+
+    // my style 열기
     openCustomStyleMenu: function() {
       this.customStyleList = this.$store.state.customStyleArray;
       this.customDialog = true;
     },
+
+    // my style 적용
     applyCustomStyle: function(index) {
       this.$store.dispatch(
         "setEditingText",
@@ -471,16 +483,22 @@ export default {
       );
       this.customDialog = false;
     },
+    
+    // 폰트 선택
     setFont: function() {
       this.fontDialog = false;
       let font = this.selectedFont;
       this.$store.dispatch("setEditingText", css.setFont(font));
     },
+
+    // 폰트 연결 (적용)
     fontBinding: function(val) {
       let font = '"font-family : ' + val + '"';
       console.log(font);
       return font;
     },
+
+    // my style 폰트 적용
     setStyleText: function(sendData) {
       this.customStyle.title = sendData;
     },

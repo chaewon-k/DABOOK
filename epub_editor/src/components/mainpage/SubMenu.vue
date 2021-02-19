@@ -1,16 +1,9 @@
 <template>
   <div id="subMenu">
-    <!-------------------- file tap start -------------------->
     <FileTab v-show="itemIndex === 0" />
-
-    <!-------------------- edit tap start -------------------->
     <EditTab v-show="itemIndex === 1" />
-
     <ToolsTab v-show="itemIndex === 2" />
-
-    <!-------------------- style tap start -------------------->
     <StyleTab v-show="itemIndex === 3" />
-
   </div>
 </template>
 
