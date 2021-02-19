@@ -8,16 +8,44 @@
 
 <script>
 import Editor from './views/Editor';
+import './assets/style.css';
+
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
 
 export default {
   name: 'App',
-
   components: {
     Editor,
   },
-
-  data: () => ({
-    //
-  }),
+  mounted: function() {
+    ipcRenderer.on(
+      'isMac',
+      function(event, message) {
+        if (message === true) {
+          this.$store.dispatch('setOsDirectory', '/Contents/Resources/');
+        }
+      }.bind(this)
+    );
+  },
+  data: function() {
+    return {};
+  },
 };
 </script>
+<style>
+/* 스크롤바 웹킷 엔진 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+  background: #ffffff;
+  /* display: none; */
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 3.5px;
+  background-color: #dedeeb;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+</style>
