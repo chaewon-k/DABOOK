@@ -2,50 +2,54 @@
   <div id="textarea">
     <v-textarea
       id="area"
+      v-bind:class="[isPreview ? 'withPreview' : 'withoutPreview']"
       solo
       hide-details
       spellcheck="false"
-      style="width: auto; border-radius: 0%;"
       ma-auto
       height="100%"
-      label="textarea 입니다"
       no-resize
-      placeholder="책을 작성해볼까요?"
+      :placeholder="getPlaceholder"
       v-model="inputText"
       @keydown="isSave"
       @mousedown.left="closeMenu"
       @mousedown.right.stop.prevent="openMenu"
     ></v-textarea>
-    
-    <v-dialog v-model="linkDialog" max-width="500">
+    <iframe
+      v-show="isPreview"
+      id="preview"
+      name="preview"
+    ></iframe>
+
+    <v-dialog v-model="linkDialog" max-width="400">
       <v-card>
-        <v-container>
-          <v-row class="header-color">
-            <v-card-title> 링크를 입력해주세요. </v-card-title>
-          </v-row>
-          <v-row class="mt-7">
-            <v-icon class="ml-4" style="color: #423F8C;">mdi-link-variant</v-icon>
-            <v-text-field class="mx-4" label="Link" v-model="linkText" required></v-text-field>
-          </v-row>
-        </v-container>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="linkDialog = false"
-            >취소</v-btn
-          >
-          <v-btn style="color: #423F8C;" text @click="attachLinkTag()"
-            >생성</v-btn
-          >
-        </v-card-actions>
+        <DialogTitle title="tool-link" @toggle-dialog="linkDialog = false" />
+        <v-card-text style="padding: 3% 6% 3% 6%">
+          <v-container>
+            <DialogInput
+              labelText="tool-link"
+              icon="mdi-link-variant"
+              required="true"
+              check="true"
+              @changeData="setLinkText"
+              ref="linkTextInput"
+            />
+          </v-container>
+        </v-card-text>
+        <DialogButton buttonText="add" :dialogMethod="attachLinkTag" />
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="tableDialog" max-width="250">
+    <v-dialog v-model="tableDialog" max-width="300">
       <v-card>
-        <v-card-title class="header-color">표 생성</v-card-title>
-        <v-space></v-space>
-        <v-card-text >
-            <v-text-field label="행" v-model="tableRow" style="left:70%; margin-top:15%;">
+        <DialogTitle title="tool-table" @toggle-dialog="tableDialog = false" />
+        <v-card-text style="padding: 10% 6% 3% 6%">
+          <v-row>
+            <v-text-field
+            class="my-3"
+              :label="getLabelRow"
+              v-model="tableRow"
+            >
               <v-icon slot="append" color="red" @click="plusRow()"
                 >mdi-plus</v-icon
               >
@@ -53,10 +57,13 @@
                 >mdi-minus</v-icon
               >
             </v-text-field>
-        </v-card-text>
-
-        <v-card-text width="auto">
-            <v-text-field label="열" v-model="tableCol" style="left:70%;">
+          </v-row>
+          <v-row>
+            <v-text-field
+            class="my-3"
+              :label="getLabelCol"
+              v-model="tableCol"
+            >
               <v-icon slot="append" color="red" @click="plusCol()"
                 >mdi-plus</v-icon
               >
@@ -64,24 +71,16 @@
                 >mdi-minus</v-icon
               >
             </v-text-field>
+          </v-row>
         </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="tableDialog = false"
-            >취소</v-btn
-          >
-          <v-btn style="color: #423F8C;" text @click="attachTableTag()"
-            >생성</v-btn
-          >
-        </v-card-actions>
+        <DialogButton buttonText="add" :dialogMethod="attachTableTag" />
       </v-card>
     </v-dialog>
 
     <div class="contextmenu" id="menu" @click="closeMenu">
-      <span>오려두기</span>
-      <span>복사하기</span>
-      <span>붙여넣기</span>
+      <span @click="edits('cut')">{{ $t('edittab.cut') }}</span>
+      <span @click="edits('copy')">{{ $t('edittab.copy') }}</span>
+      <span @click="edits('paste')">{{ $t('edittab.paste') }}</span>
       <v-divider class="divider-margin"></v-divider>
 
       <v-btn x-small class="mx-1"
@@ -132,14 +131,24 @@
 
       <v-divider class="divider-margin"></v-divider>
 
-      <span @mouseover="openHeaders">제목▸</span>
+      <span @mouseover="openHeaders">{{ $t("title") }} ▸</span>
     </div>
 
     <div id="headers" class="contextmenu" @click="closeMenu">
-      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{
-        "제목" + hTag
-      }}</span>
+      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)"
+        >{{ $t("title") + hTag }}
+      </span>
     </div>
+     <Confirm 
+      :dialog="beforeChooseDialog"
+      title="beforeChooseEBook.title"
+      content1="beforeChooseEBook.content-1"
+      content2="beforeChooseEBook.content-2"
+      confirm="beforeChooseEBook.create-btn"
+      cancel="beforeChooseEBook.load-btn"
+      @cancel="chooseResult('load')"
+      @confirm="chooseResult('new')"
+      />
   </div>
 </template>
 
@@ -149,21 +158,49 @@ import { readDirectory, tocToList } from "@/functions/file.js";
 import { findText, replaceText } from "@/functions/edit.js";
 import * as textStyle from "@/functions/text-style.js";
 import * as edit from "@/functions/edit.js";
+import * as file from "@/functions/file.js";
+import DialogButton from "@/components/Dialog/DialogButton";
+import DialogInput from "@/components/Dialog/DialogInput";
+import DialogTitle from "@/components/Dialog/DialogTitle";
+
+import Confirm from '@/components/mainpage/Confirm'
 
 const fs = require("fs");
 
 export default {
   name: "Textarea",
-  created: function() {
+  components: {
+    DialogButton,
+    DialogInput,
+    DialogTitle,
+    Confirm,
+  },
+  created() {},
+  mounted: function() {
+    window.onmousewheel = (e) => {
+      if (e.ctrlKey == false) return;
+      if (e.wheelDelta > 0) {
+        this.fontSize += 1;
+        document.getElementById("area").style.fontSize = this.fontSize + "px";
+        console.log(this.fontSize);
+      } else {
+        this.fontSize -= 1;
+        document.getElementById("area").style.fontSize = this.fontSize + "px";
+        console.log(this.fontSize);
+      }
+    };
     window.onkeypress = (e) => {
-      if (e.keyCode === 83 && e.ctrlKey === true) {
+      if (e.keyCode == 1 && e.ctrlKey == true && e.shiftKey == true) {
+        eventBus.$emit("shortcut", "preview");
+      } else if (e.keyCode === 19 && e.ctrlKey === true) {
         eventBus.$emit("shortcut", "save");
       } else if (e.keyCode === 5 && e.ctrlKey === true) {
         edit.copy();
       } else if (e.keyCode === 23 && e.ctrlKey === true) {
-        edit.cut();
+        console.log("shortcut cut");
+        this.inputText=edit.cut();
       } else if (e.keyCode === 4 && e.ctrlKey === true) {
-        edit.paste();
+        this.inputText=edit.paste();
       } else if (e.keyCode === 17 && e.ctrlKey === true) {
         this.inputText = edit.undo();
       } else if (e.keyCode === 6 && e.ctrlKey === true) {
@@ -174,7 +211,7 @@ export default {
       }
     };
     eventBus.$on("edit", (res) => {
-      this.edit(res);
+      this.edits(res);
     });
     eventBus.$on("findText", (res) => {
       this.findText = res;
@@ -227,7 +264,7 @@ export default {
       } else if (res === "SuperscriptTag") {
         this.inputText = textStyle.superscriptTag();
       } else if (res === "ImageTag") {
-        this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
+        this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory, this.$store.state.ebookTitle, localStorage.getItem('email'));
         const data = readDirectory(this.$store.state.ebookDirectory, [], [], 0);
         this.chapterNum = data["maxV"];
         this.$store.dispatch("setEbookDirectoryTree", data["arrayOfFiles"]);
@@ -248,50 +285,153 @@ export default {
     });
   },
   watch: {
-    inputText: function() {
+    inputText: function(newVal) {
+      if(this.$store.state.ebookDirectory===''){
+        this.beforeChooseDialog=true;
+        return;
+      }
+      let area = document.getElementById("area");
+      area.scrollTop = area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);
       this.$store.dispatch("setHTMLText", this.defaultHTMLText);
+      newVal = textStyle.convertImageTag(newVal, this.$store.state.ebookDirectory);
+      //console.log(newVal);
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      editorObj.designMode = "on";
+      editorObj.open();
+
+      let cssString = file.readCSS(this.$store.state.ebookDirectory);
+      cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+      editorObj.writeln("<style>");
+      editorObj.writeln(cssString)
+      editorObj.writeln("</style>");
+      editorObj.writeln(newVal);
+      editorObj.designMode = "off";
+      editorObj.close();
+    },
+    isDark: function(newVal) {
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      if (newVal === true) {
+        editorObj.designMode = "on";
+        editorObj.open();
+        editorObj.writeln("<style>");
+        if(this.$store.state.ebookDirectory!==''){
+          let cssString = file.readCSS(this.$store.state.ebookDirectory);
+          cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+          editorObj.writeln(cssString);
+        }
+        editorObj.writeln("* {color: white;}");
+        editorObj.writeln("</style>");
+        let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
+        editorObj.writeln(temp);
+        editorObj.designMode = "off";
+        editorObj.close();
+      } else {
+        editorObj.designMode = "on";
+        editorObj.open();
+        editorObj.writeln("<style>");
+        if(this.$store.state.ebookDirectory!==''){
+          let cssString = file.readCSS(this.$store.state.ebookDirectory);
+          cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
+          editorObj.writeln(cssString);
+        }
+        editorObj.writeln("</style>");
+        let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
+        editorObj.writeln(temp);
+        editorObj.designMode = "off";
+        editorObj.close();
+      }
     },
     getEditingText: function() {
       this.inputText = this.getEditingText;
     },
+    isPreview: function () {
+      var HTMLEDITOR = document.getElementById("preview");
+      var editorObj = HTMLEDITOR.contentWindow.document;
+      editorObj.designMode = "on";
+      editorObj.open();
+      editorObj.writeln("<style>"); 
+      if(this.$store.state.ebookDirectory!==''){
+        let cssString = file.readCSS(this.$store.state.ebookDirectory);
+        cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);      
+        editorObj.writeln(cssString);
+      }
+      editorObj.writeln("</style>");
+      let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
+      editorObj.writeln(temp);
+      editorObj.designMode = "off";
+      editorObj.close();
+    }
   },
   data: function() {
     return {
-      test: "",
       inputText: "",
       defaultHTMLText: "",
+      findText: "",
       linkText: "",
-      tableData: {
-        col: [],
-        row: [],
-      },
-      hTags: [1, 2, 3, 4, 5, 6],
+
       linkDialog: false,
       tableDialog: false,
-      tableRow: 0,
-      tableCol: 0,
-      findText: "",
+      beforeChooseDialog:false,
+
+      tableRow: 1,
+      tableCol: 1,
+      fontSize: 15,
+
+      hTags: [1, 2, 3, 4, 5, 6],
       findIndexArray: [],
       cursorPosition: { posX: 0, posY: 0 },
     };
   },
   computed: {
-    getEditingText: function() {
+    getEditingText: function () {
       return this.$store.state.editingText;
     },
+    isPreview: function () {
+      return this.$store.state.isPreview;
+    },
+    previewURL: function () {
+      return this.$store.state.selectedFileDirectory;
+    },
+    getPlaceholder: function () {
+      return this.$t('textarea-placeholder');
+    },
+    getLabelLink: function () {
+      return this.$t('dialoginput.tool-link');
+    },
+    getLabelCol: function () {
+      return this.$t('dialoginput.tool-table-col');
+    },
+    getLabelRow: function () {
+      return this.$t('dialoginput.tool-table-row');
+    },
+    isDark: function () {
+      return this.$store.state.isDark;
+    }
   },
   methods: {
-    edit: function(res) {
+    chooseResult: function(res){
+      console.log("chooseResult");
+      document.getElementById("area").value="";
+      this.inputText="";
+      eventBus.$emit("choose",res);
+      if(this.$store.state.ebookDirectory!=""){
+        this.beforeChooseDialog=false;
+        console.log(this.$store.state.tableOfContents);
+      }
+    },
+    edits: function (res) {
       switch (res) {
         case "cut":
-          edit.cut();
+          this.inputText=edit.cut();
           break;
         case "copy":
           edit.copy();
           break;
         case "paste":
-          edit.paste();
+          this.inputText=edit.paste();
           break;
         case "undo":
           this.inputText = edit.undo();
@@ -308,12 +448,14 @@ export default {
       this.tableRow++;
     },
     minusRow: function() {
+      if (this.tableRow == 1) return;
       this.tableRow--;
     },
     plusCol: function() {
       this.tableCol++;
     },
     minusCol: function() {
+      if (this.tableCol == 1) return;
       this.tableCol--;
     },
     attachPTag: function() {
@@ -352,19 +494,20 @@ export default {
     attachSuperscriptTag: function() {
       this.inputText = textStyle.superscriptTag();
     },
-    attachImageTag: function() {
-      this.inputText = textStyle.imageTag();
+    attachImageTag: function () {
+      this.inputText = textStyle.imageTag(this.$store.state.ebookDirectory);
     },
     attachLinkTag: function() {
       this.linkDialog = false;
       this.inputText = textStyle.linkTag(this.linkText);
       this.linkText = "";
+      this.$refs.linkTextInput.resetText();
     },
     attachTableTag: function() {
       this.tableDialog = false;
       this.inputText = textStyle.tableTag(this.tableRow, this.tableCol);
-      this.tableRow = 0;
-      this.tableCol = 0;
+      this.tableRow = 1;
+      this.tableCol = 1;
     },
     attachUnorderedListTag: function() {
       this.inputText = textStyle.unorderedListTag();
@@ -379,18 +522,19 @@ export default {
       this.cursorPosition.posY = 0;
       this.closeHeaders();
     },
-    openMenu: function(event) {
+    openMenu: function (event) {
+      this.closeHeaders();
       let menu = document.getElementById("menu");
-      menu.style.left = event.pageX + "px";
-      menu.style.top = event.pageY + "px";
+      menu.style.left = event.offsetX+20+ "px";
+      menu.style.top = event.offsetY+20+ "px";
       menu.style.display = "block";
-      this.cursorPosition.posX = event.pageX;
-      this.cursorPosition.posY = event.pageY;
+      this.cursorPosition.posX = event.offsetX;
+      this.cursorPosition.posY = event.offsetY;
     },
     openHeaders: function() {
       let menu = document.getElementById("headers");
-      menu.style.left = this.cursorPosition.posX + 180 + "px";
-      menu.style.top = this.cursorPosition.posY + 190 + "px";
+      menu.style.left = this.cursorPosition.posX +20 +180 + "px";
+      menu.style.top = this.cursorPosition.posY +20+ 190 + "px";
       menu.style.height = "auto";
       menu.style.display = "block";
     },
@@ -400,6 +544,9 @@ export default {
     },
     setCursor: function(index, length) {
       edit.setCursor(index, length);
+    },
+    setLinkText: function(sendData) {
+      this.linkText = sendData;
     },
   },
 };
