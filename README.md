@@ -1,6 +1,6 @@
 ## 소독가들을 위한 다독 장려 프로젝트
 
-![Project](/uploads/3f0820e6940864c1e6acdb894bf2d761/Project.jpg)
+![Cover_img](Document/Book Cover/Cover_img.png)
 
 
 ## 프로젝트 개요
@@ -11,7 +11,7 @@
 - 목표 : GUI와 단축키로 편하게 사용가능한 Epub Editor만들기.
 
 ## Project Stack
-![Project_Stacks](/uploads/ea77b3e5ce6ab35d0ba738c464d6a66c/Project_Stacks.png)
+![Stack](Document/PJT_Stack/Stack.png)
 
 ## Document
 <details>
@@ -42,19 +42,20 @@
 <details>
     <summary> Manual </summary>
     <ul>
-        <a href="Document/Manual/manual.md"><li> Manual </li></a>
+        <a href="Document/Manual/Editor_Manual(한글).html"><li> Manual(한글) </li></a>
+        <a href="Document/Manual/Editor_Manual(영어).html"><li> Manual(영어) </li></a>
     </ul>
 </details>
 
 
 ## 기능정의서
 
-![1](/uploads/5a5d2da16e1e1b1047e5fe610824bff3/1.png)
+![Specification_1](Document/Specification/Specification_1.png)
 
-![2](/uploads/058e01760f34462ecee4517f5ccaaed7/2.png)
+![Specification_2](Document/Specification/Specification_2.png)
 
-![3](/uploads/f361bfb867ed9b06cc210d84100b292b/3.png)
+![Specification_3](Document/Specification/Specification_3.png)
 
-![4](/uploads/b038d95e20f2177fbe43762be37deed1/4.png)
+![Specification_4](Document/Specification/Specification_4.png)
 
-![5](/uploads/39067c5cfbf5665eb6927574a74cf2d1/5.png)
+![Specification_5](Document/Specification/Specification_5.png)
