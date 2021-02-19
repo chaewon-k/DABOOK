@@ -1,29 +1,14 @@
 <template>
   <v-tabs id="fileTab" show-arrows v-model="tab">
-    <v-btn class="align-self-center" @click.stop="eBookDialog = true" text
-      >{{ $t("filetab.create") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="loadEbook" text
-      >{{ $t("filetab.load") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="storeInputText" text
-      >{{ $t("filetab.save") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="preview" text>{{ $t("filetab.preview") }}</v-btn>
-    <v-btn class="align-self-center" @click="exportFile" text
-      >{{ $t("filetab.epub") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="addChapter" text
-      >{{ $t("filetab.chapter") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text
-      >{{ $t("filetab.server") }}</v-btn
-    >
-    <v-btn class="align-self-center" @click="test" text
-      >test</v-btn
-    >
+    <v-btn class="align-self-center" @click.stop="eBookDialog = true" text>{{ $t("filetab.create") }}</v-btn>
+    <v-btn class="align-self-center" @click="loadEbook" text>{{ $t("filetab.load") }}</v-btn>
+    <v-btn class="align-self-center" @click="storeInputText" text>{{ $t("filetab.save") }}</v-btn>
+    <v-btn class="align-self-center" @click="exportFile" text>{{ $t("filetab.epub") }}</v-btn>
+    <v-btn class="align-self-center" @click="addChapter" text>{{ $t("filetab.chapter") }}</v-btn>
+    <v-btn class="align-self-center" @click="eBookSelected = []; getEbookList();" text>{{ $t("filetab.server") }}</v-btn>
+
     <v-dialog v-model="chapterDialog" max-width="400">
-      <v-card>
+      <v-card ref="form">
         <DialogTitle
           title="file-chapter"
           @toggle-dialog="chapterDialog = false"
@@ -114,14 +99,7 @@
     </v-dialog>
     
     <v-dialog v-model="eBookListDialog" max-width="400">
-      <v-card :loading="loading">
-        <template slot="progress">
-          <v-progress-linear
-            color="deep-purple"
-            height="7"
-            indeterminate
-          ></v-progress-linear>
-        </template>
+      <v-card>
         <DialogTitle
           title="server-load"
           @toggle-dialog="eBookListDialog = false;"
@@ -149,7 +127,6 @@
 <script>
 import * as file from "@/functions/file.js";
 import { mapState } from "vuex";
-import { ipcRenderer } from 'electron';
 import eventBus from "@/eventBus.js";
 import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
@@ -157,10 +134,8 @@ import DialogTitle from "@/components/Dialog/DialogTitle";
 import axios from 'axios';
 
 const fs = require("fs");
-const path = require("path");
-const electron = require("electron");
-const BrowserWindow = electron.remote.BrowserWindow;
 const fse = require("fs-extra");
+const path = require("path");
 
 export default {
   name: "FileTab",
@@ -183,11 +158,9 @@ export default {
       eBookAuthor: "",
       eBookLocation: "",
       selectedEBookLocation: "",
-      uploadFileDirectory: undefined,
 
       // boolean
       selectDefaultImg: false,
-      loading: false,
 
       // number
       hTags: [1, 2, 3, 4, 5, 6],
@@ -209,21 +182,21 @@ export default {
     eventBus.$on("shortcut", (res) => {
       if (res == "save") {
         this.storeInputText();
-      }
-      else if(res=="preview"){
+      } else if(res=="preview"){
         this.loadEbook();
       }
     });
+
     eventBus.$on("toc",()=>{
       this.readToc();
       this.$store.dispatch("setEditingText", "");
     });
+
     eventBus.$on("choose", (res) => {
-      if (res == "new") {
-        this.epubDialog=true;
+      if (res === "new") {
+        this.eBookDialog = true;
         this.createNewEBook();
-      }
-      else if(res=="load"){
+      } else if (res === "load"){
         this.loadEbook();
       }
     });
@@ -247,17 +220,6 @@ export default {
     }
   },
   methods: {
-    test: function () {
-      this.test2().then((resolvedData) => {
-        file.uploadFile(resolvedData, '/',this.$store.state.ebookTitle, localStorage.getItem('email'));
-      })
-    },
-    test2: function () {
-      return new Promise((resolve) => {
-        var result = file.makeZipFile(this.eBookLocation, this.$store.state.ebookTitle)
-        resolve(result)
-      })
-    },
     checkExp: function (value) {
       var special_pattern = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9 | ' ']/gi;
       if (special_pattern.test(value) == true) {
@@ -309,8 +271,8 @@ export default {
                       }
                     });
                     this.eBookDialog = false;
-                    let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
-                    // let eBookSettingDirectory = "./resources/src/assets/NewEbook"; //for win build
+                    // let eBookSettingDirectory = "src/assets/NewEbook"; //기본 ebook 디렉토리 위치
+                    let eBookSettingDirectory = "./resources/src/assets/NewEbook"; //for win build
                     fse.copySync(eBookSettingDirectory, this.eBookLocation); //기본 ebook 디렉토리를 새 ebook 디렉토리에 복사
                     /*
                     새 ebook 만들기 
@@ -327,7 +289,7 @@ export default {
                     }
                     this.renameImageTag();
                     this.readToc();
-                    file.uploadDirectory(this.$store.state.ebookDirectoryTree, this.eBookText, localStorage.getItem('email'), 1)
+                    file.makeZipFile(this.eBookLocation, this.eBookText)
                     // Dialog 초기화
                     this.eBookDialog = false;
                     this.eBookText = "";
@@ -343,12 +305,12 @@ export default {
                   }
                 })
                 .catch(err => {
-                  console.log('여기니?')
+                  // console.log('여기니?')
                   console.log(err)
                 })
             } else {
               // alert 메시지로 동일한 이름의 책을 만들었다고 알려주기
-              console.log(res)
+              // console.log(res)
               this.$store.dispatch('setAlertMessage', 'error.duplicated-ebook')
             }
           })
@@ -364,6 +326,7 @@ export default {
         );
         this.$refs.ebookTextInput.resetText();
       }
+      this.$refs.form.reset()
     },
 
     // 목차 읽어오기
@@ -515,24 +478,6 @@ export default {
         this.epubDialog = true;
       }
     },
-
-    // e-book 미리보기
-    preview: function () {
-      try {
-        if (this.$store.state.selectedFileDirectory === "") {
-          this.$store.dispatch(
-            "setAlertMessage",
-            "error.preview"
-          );
-        } else {
-          const win = new BrowserWindow({ width: 800, height: 1500 });
-          win.loadURL("file://" + this.$store.state.selectedFileDirectory);
-        }
-      } catch {
-        console.log("ebook 미리보기 실패");
-      }
-    },
-
     // chapter 추가하기
     makeChapter: function () {
       try {
@@ -544,8 +489,8 @@ export default {
           this.$store.dispatch("setAlertMessage", "error.add-chapter-input");
           return;
         }
-        const temp = fs.readFileSync("src/assets/chapter01.xhtml").toString();
-        // const temp = fs.readFileSync("./resources/src/assets/chapter01.xhtml").toString(); // for win build
+        // const temp = fs.readFileSync("src/assets/chapter01.xhtml").toString();
+        const temp = fs.readFileSync("./resources/src/assets/chapter01.xhtml").toString(); // for win build
         this.chapterNum++;
         if (this.chapterNum < 10) {
           num = "0" + this.chapterNum;
@@ -597,36 +542,37 @@ export default {
     },
     //ebook list 받아오기
     getEbookList: function () {
-      this.eBookListDialog = true;
       axios.get("https://contact.dabook.site/api/user/epub/list", { params: { email: localStorage.getItem('email') }})
         .then((res) => {
           this.eBookList = res.data
+          if (res.data.length != 0) {
+            this.eBookListDialog = true;
+          } else {
+            this.$store.dispatch('setAlertMessage', 'error.no-ebook');
+          }
+          
         })
         .catch(err => console.log(err))
     },
+    
     loadFromServer: function () {
-      this.loading = true;
-      var i = 1;
-      const eBookId = this.eBookList[this.eBookSelected]['_id']
       const eBookName = this.eBookList[this.eBookSelected]['epubName']
-      let loadEbookPath = file.readPath() + "/" + eBookName + "/";
-      axios.get("https://contact.dabook.site/api/epub/file/list", { params: { id: eBookId }})
+      axios.get("https://contact.dabook.site/api/download", { params: { email: localStorage.getItem('email'), epubName: eBookName }, responseType: 'arraybuffer' })
         .then((res) => {
-          const fileList = res.data
-          for (let file of fileList) {
-            let tempURL = `https://contact.dabook.site/api/download?email=${localStorage.getItem('email')}&epubName=${eBookName}&fileName=${file.fileName}&path=${file.path}`
-            setTimeout(() => {
-              ipcRenderer.send('download-button', tempURL, loadEbookPath, file.path)
-            }, 500 * i)
-            i++;
-          }
-          setTimeout(() => {
-            this.$store.dispatch("setAlertMessage", "success.download-ebook");
-            this.loading = false;
-            this.eBookListDialog = false;            
-          }, 500 * i)
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${eBookName}.zip`);
+          link.style.cssText = 'display:none';
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
         })
         .catch(err => console.log(err))
+      setTimeout(() => {
+        this.$store.dispatch("setAlertMessage", "success.download-ebook");
+        this.eBookListDialog = false;            
+      }, 500 * 5)
       this.eBookSelected = [];
     },
   },

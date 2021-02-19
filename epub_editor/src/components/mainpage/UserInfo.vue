@@ -24,10 +24,8 @@
       </v-toolbar>
     
       <v-layout justify-center class="mt-5">
-      
         <v-card flat width="600">
           <v-card-text class="pa-0">
-
             <!-------------- 회원 정보 -------------->
             <div class="mt-7 mb-9">
               <h2 class="mb-3" style="color: #9C9BBF;">{{ $t("userinfotab.email") }}</h2>
@@ -41,7 +39,7 @@
               <v-container>
                 <v-row class="mb-5">
                   <h2 class="mr-2" style="color: #9C9BBF;">{{ $t("userinfotab.nickname") }}</h2>
-                  <v-icon @click="changeNN=!changeNN" style="color: #6A68A6;">mdi-pencil-outline</v-icon>
+                  <v-icon @click="resetNickname" style="color: #6A68A6;">mdi-pencil-outline</v-icon>
                 </v-row>
                 <v-row v-if="!changeNN">
                   <h3>{{ nickname }}</h3></v-row>
@@ -56,20 +54,20 @@
                 </v-row>
               </v-container>
             </div>
-
             <!-------------- 정보 변경 -------------->
             <v-divider></v-divider>
             <div class="mt-7">
               <v-container>
                 <v-row class="mb-5">
                   <h2 class="mr-2" style="color: #9C9BBF;">{{ $t("userinfotab.password-change") }}</h2>
-                  <v-icon @click="changePW=!changePW" style="color: #6A68A6;">mdi-pencil-outline</v-icon>
+                  <v-icon @click="resetPassword" style="color: #6A68A6;">mdi-pencil-outline</v-icon>
                 </v-row>
                 <div v-if="changePW">
                   <v-row class="mb-2">
                     <v-text-field
                       :placeholder="this.GET_PREVPW_PLACEHOLDER"
                       dense
+                      type="password"
                       class="mr-3"
                       v-model="prevPassword"
                     ></v-text-field>
@@ -78,12 +76,14 @@
                     <v-text-field
                       :placeholder="this.GET_NEWPW_PLACEHOLDER"
                       dense
+                      type="password"
                       class="mr-3"
                       v-model="newPassword"
                     ></v-text-field>
                     <v-text-field
                       :placeholder="this.GET_PWCOMFIRM_PLACEHOLDER"
                       dense
+                      type="password"
                       class="mr-3"
                       v-model="passwordConfirm"
                     ></v-text-field>
@@ -93,7 +93,6 @@
               </v-container>
             </div>
           </v-card-text>
-
           <!-------------- 회원 탈퇴 -------------->
           <v-divider></v-divider>
           <v-card-actions class="pt-0 pl-0">
@@ -113,7 +112,7 @@
       cancel="userinfotab.signouttab.cancel"
       @confirm="signout"
       @cancel="signoutDialog = false"
-     />
+    />
   </v-dialog>
 </template>
 
@@ -195,6 +194,20 @@ export default {
           }
         })
         .catch(err => { console.log(err) })
+    },
+
+    // 닉네임 변수 리셋
+    resetNickname: function () {
+      this.changeNN = !this.changeNN;
+      this.newNickname = '';
+    },
+
+    // 비밀번호 변수 리셋
+    resetPassword: function () {
+      this.changePW = !this.changePW;
+      this.prevPassword = '';
+      this.newPassword = '';
+      this.passwordConfirm = '';
     },
 
     // 비밀번호 변경 함수

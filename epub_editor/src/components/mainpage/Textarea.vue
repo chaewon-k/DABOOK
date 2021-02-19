@@ -50,12 +50,8 @@
               :label="getLabelRow"
               v-model="tableRow"
             >
-              <v-icon slot="append" color="red" @click="plusRow()"
-                >mdi-plus</v-icon
-              >
-              <v-icon slot="prepend" color="green" @click="minusRow()"
-                >mdi-minus</v-icon
-              >
+              <v-icon slot="append" color="red" @click="plusRow()">mdi-plus</v-icon>
+              <v-icon slot="prepend" color="green" @click="minusRow()">mdi-minus</v-icon>
             </v-text-field>
           </v-row>
           <v-row>
@@ -64,12 +60,8 @@
               :label="getLabelCol"
               v-model="tableCol"
             >
-              <v-icon slot="append" color="red" @click="plusCol()"
-                >mdi-plus</v-icon
-              >
-              <v-icon slot="prepend" color="green" @click="minusCol()"
-                >mdi-minus</v-icon
-              >
+              <v-icon slot="append" color="red" @click="plusCol()">mdi-plus</v-icon>
+              <v-icon slot="prepend" color="green" @click="minusCol()">mdi-minus</v-icon>
             </v-text-field>
           </v-row>
         </v-card-text>
@@ -77,78 +69,41 @@
       </v-card>
     </v-dialog>
 
-    <div class="contextmenu" id="menu" @click="closeMenu">
+    <div 
+      class="contextmenu" 
+      id="menu" 
+      @click="closeMenu"
+      v-bind:style="{ 'background-color': bgColor }"
+    >
       <span @click="edits('cut')">{{ $t('edittab.cut') }}</span>
       <span @click="edits('copy')">{{ $t('edittab.copy') }}</span>
       <span @click="edits('paste')">{{ $t('edittab.paste') }}</span>
       <v-divider class="divider-margin"></v-divider>
 
-      <v-btn x-small class="mx-1"
-        ><v-icon medium @click="attachBoldTag()">mdi-format-bold</v-icon></v-btn
-      >
-      <v-btn x-small class="mx-1"
-        ><v-icon medium @click="attachItalicTag()"
-          >mdi-format-italic</v-icon
-        ></v-btn
-      >
-      <v-btn x-small class="mx-1"
-        ><v-icon medium @click="attachUnderlineTag()"
-          >mdi-format-underline</v-icon
-        ></v-btn
-      >
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachBoldTag()">mdi-format-bold</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachItalicTag()">mdi-format-italic</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachUnderlineTag()">mdi-format-underline</v-icon></v-btn>
 
-      <v-btn x-small class="mx-1"
-        ><v-icon medium @click="attachMediumlineTag()"
-          >mdi-format-strikethrough</v-icon
-        ></v-btn
-      >
-      <v-btn x-small class="mx-1"
-        ><v-icon medium @click="attachUnorderdListTag()"
-          >mdi-format-list-bulleted</v-icon
-        ></v-btn
-      >
-      <v-btn x-small class="mx-1"
-        ><v-icon medium @click="attachOrderedListTag()"
-          >mdi-format-list-numbered</v-icon
-        ></v-btn
-      >
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachMediumlineTag()">mdi-format-strikethrough</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachUnorderdListTag()">mdi-format-list-bulleted</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachOrderedListTag()">mdi-format-list-numbered</v-icon></v-btn>
 
-      <v-btn x-small class="mx-1"
-        ><v-icon medium @click="attachImageTag()"
-          >mdi-image-search-outline</v-icon
-        ></v-btn
-      >
-      <v-btn x-small class="mx-1"
-        ><v-icon medium @click="linkDialog = true"
-          >mdi-link-box-variant-outline</v-icon
-        ></v-btn
-      >
-      <v-btn x-small class="mx-1"
-        ><v-icon medium @click="tableDialog = true"
-          >mdi-table-large-plus</v-icon
-        ></v-btn
-      >
+      <v-btn x-small class="mx-1"><v-icon medium @click="attachImageTag()">mdi-image-search-outline</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="linkDialog = true">mdi-link-box-variant-outline</v-icon></v-btn>
+      <v-btn x-small class="mx-1"><v-icon medium @click="tableDialog = true">mdi-table-large-plus</v-icon></v-btn>
 
       <v-divider class="divider-margin"></v-divider>
-
       <span @mouseover="openHeaders">{{ $t("title") }} ▸</span>
     </div>
 
-    <div id="headers" class="contextmenu" @click="closeMenu">
-      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)"
-        >{{ $t("title") + hTag }}
-      </span>
+    <div 
+      id="headers" 
+      class="contextmenu" 
+      @click="closeMenu"
+      v-bind:style="{ 'background-color': bgColor }"
+    >
+      <span v-for="hTag in hTags" :key="hTag" @click="attachHTag(hTag)">{{ $t("title") + hTag }}</span>
     </div>
-     <Confirm 
-      :dialog="beforeChooseDialog"
-      title="beforeChooseEBook.title"
-      content1="beforeChooseEBook.content-1"
-      content2="beforeChooseEBook.content-2"
-      confirm="beforeChooseEBook.create-btn"
-      cancel="beforeChooseEBook.load-btn"
-      @cancel="chooseResult('load')"
-      @confirm="chooseResult('new')"
-      />
   </div>
 </template>
 
@@ -163,8 +118,6 @@ import DialogButton from "@/components/Dialog/DialogButton";
 import DialogInput from "@/components/Dialog/DialogInput";
 import DialogTitle from "@/components/Dialog/DialogTitle";
 
-import Confirm from '@/components/mainpage/Confirm'
-
 const fs = require("fs");
 
 export default {
@@ -172,25 +125,21 @@ export default {
   components: {
     DialogButton,
     DialogInput,
-    DialogTitle,
-    Confirm,
+    DialogTitle
   },
-  created() {},
-  mounted: function() {
+  mounted: function () {
     window.onmousewheel = (e) => {
-      if (e.ctrlKey == false) return;
+      if (e.ctrlKey === false) return;
       if (e.wheelDelta > 0) {
         this.fontSize += 1;
         document.getElementById("area").style.fontSize = this.fontSize + "px";
-        console.log(this.fontSize);
       } else {
         this.fontSize -= 1;
         document.getElementById("area").style.fontSize = this.fontSize + "px";
-        console.log(this.fontSize);
       }
     };
     window.onkeypress = (e) => {
-      if (e.keyCode == 1 && e.ctrlKey == true && e.shiftKey == true) {
+      if (e.keyCode === 1 && e.ctrlKey === true && e.shiftKey === true) {
         eventBus.$emit("shortcut", "preview");
       } else if (e.keyCode === 19 && e.ctrlKey === true) {
         eventBus.$emit("shortcut", "save");
@@ -286,16 +235,16 @@ export default {
   },
   watch: {
     inputText: function(newVal) {
-      if(this.$store.state.ebookDirectory===''){
-        this.beforeChooseDialog=true;
-        return;
-      }
+      // if(this.$store.state.ebookDirectory===''){
+      //   this.beforeChooseDialog=true;
+      //   return;
+      // }
       let area = document.getElementById("area");
       area.scrollTop = area.scrollHeight;
       this.$store.dispatch("setEditingText", this.inputText);
       this.$store.dispatch("setHTMLText", this.defaultHTMLText);
       newVal = textStyle.convertImageTag(newVal, this.$store.state.ebookDirectory);
-      //console.log(newVal);
+      
       var HTMLEDITOR = document.getElementById("preview");
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
@@ -304,6 +253,9 @@ export default {
       let cssString = file.readCSS(this.$store.state.ebookDirectory);
       cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);
       editorObj.writeln("<style>");
+      if (this.isDark === true) {
+        editorObj.writeln("* {color: white;}")
+      }
       editorObj.writeln(cssString)
       editorObj.writeln("</style>");
       editorObj.writeln(newVal);
@@ -352,13 +304,17 @@ export default {
       var editorObj = HTMLEDITOR.contentWindow.document;
       editorObj.designMode = "on";
       editorObj.open();
-      editorObj.writeln("<style>"); 
+      editorObj.writeln("<style>");
+      if (this.isDark === true) {
+        editorObj.writeln("* {color: white;}")
+      }
       if(this.$store.state.ebookDirectory!==''){
         let cssString = file.readCSS(this.$store.state.ebookDirectory);
         cssString = textStyle.convertStyleTag(cssString, this.$store.state.ebookDirectory);      
         editorObj.writeln(cssString);
       }
       editorObj.writeln("</style>");
+
       let temp = textStyle.convertImageTag(this.inputText, this.$store.state.ebookDirectory);
       editorObj.writeln(temp);
       editorObj.designMode = "off";
@@ -383,6 +339,8 @@ export default {
       hTags: [1, 2, 3, 4, 5, 6],
       findIndexArray: [],
       cursorPosition: { posX: 0, posY: 0 },
+
+      bgColor: '#ffffff'
     };
   },
   computed: {
@@ -523,6 +481,12 @@ export default {
       this.closeHeaders();
     },
     openMenu: function (event) {
+      console.log(this.$vuetify.theme.dark)
+      if (this.$vuetify.theme.dark === true) {
+        this.bgColor = '#000000'
+      } else {
+        this.bgColor = '#ffffff'
+      }
       this.closeHeaders();
       let menu = document.getElementById("menu");
       menu.style.left = event.offsetX+20+ "px";

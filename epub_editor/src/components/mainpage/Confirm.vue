@@ -10,10 +10,18 @@
           {{ $t(`${title}`) }}
         </v-card-title>
 
-        <v-card-text style="padding: 3% 6% 3% 8%">
-          <p>{{ $t(`${content1}`) }}</p>
-          <p>{{ $t(`${content2}`) }}</p>
-        </v-card-text>
+        <templete v-if="content2==''">
+          <v-card-text style="padding: 3% 6% 3% 8%">
+            <p>{{ $t(`${content1}`) }}</p>
+          </v-card-text>
+        </templete>
+
+        <templete v-if="content2!==''">
+          <v-card-text style="padding: 3% 6% 3% 8%">
+            <p>{{ $t(`${content1}`) }}</p>
+            <p>{{ $t(`${content2}`) }}</p>
+          </v-card-text>
+        </templete>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -41,13 +49,17 @@
 
 <script>
 export default {
+  name: "Confirm",
   props: ['dialog', 'title', 'confirm', 'cancel', 'content1', 'content2'],
   computed: {
   },
   methods: {
+    // 취소 버튼
     cancelButton: function () {
       this.$emit("cancel");
     },
+    
+    // 확인 버튼
     confirmButton: function () {
       this.$emit("confirm");
     },

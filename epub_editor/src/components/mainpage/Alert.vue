@@ -21,12 +21,7 @@ export default {
   name: 'Alert',
   computed: {
     ...mapState(['alertMessage', 'alertDialog']),
-  },
-  methods: {
-    cancel: function () {
-      this.$store.dispatch('cancelAlertMessage');
-    },
-  },
+  }
 }
 </script>
 
