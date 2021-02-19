@@ -1,7 +1,5 @@
 package com.ssafy.epub.model;
 
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -12,7 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class FileVO {
-	private List<MultipartFile> files;
+	private MultipartFile file;
 	private String email;
 	private String epubName;
+	private String path;
 }

@@ -13,8 +13,11 @@ export default new Vuex.Store({
     editingHTMLText: '',  //default HTML text value
     customStyleArray: [],
     findTextArray: [],
-    alertMessage:'',
-    alertDialog:false,
+    alertMessage: '',
+    alertDialog: false,
+    isPreview: true,
+    ebookTitle: '',
+    isDark: false,
   },
 
   mutations: {
@@ -43,11 +46,12 @@ export default new Vuex.Store({
         if (temp[temp.length - 1].includes('/')) {
           const temp2 = temp[temp.length - 1].split('/')
           const title = temp2[temp2.length - 2]
-          console.log(title)
-          document.getElementById('electron-title').text = 'epub_editor - ' + title
+          state.ebookTitle = title;
+          document.getElementById('electron-title').text = 'DABOOK - ' + title
         } else {
           const title = temp[temp.length - 1]
-          document.getElementById('electron-title').text = 'epub_editor - ' + title
+          state.ebookTitle = title;
+          document.getElementById('electron-title').text = 'DABOOK - ' + title
         }
       } 
     },
@@ -58,11 +62,17 @@ export default new Vuex.Store({
       state.findTextArray = value;
     },
     SET_ALERTMESSAGE: function (state,value) {
-      state.alertDialog=true;
-      state.alertMessage=value;
+      state.alertDialog = true;
+      state.alertMessage = value;
     },
-    CANCEL_ALERTMESSAGE: function (state){
-      state.alertDialog=false;
+    CANCEL_ALERTMESSAGE: function (state) {
+      state.alertDialog = false;
+    },
+    SET_ISPREVIEW: function (state, value) {
+      state.isPreview = value;
+    },
+    SET_ISDARK: function (state) {
+      state.isDark = !state.isDark;
     }
   },
   actions: {
@@ -99,9 +109,15 @@ export default new Vuex.Store({
         commit('CANCEL_ALERTMESSAGE');
       }, 3000);
     },
-    cancelAlertMessage: function({ commit }){
+    cancelAlertMessage: function({ commit }) {
       commit('CANCEL_ALERTMESSAGE');
-    }
+    },
+    setIsPreview: function ({ commit }, value) {
+      commit('SET_ISPREVIEW', value);
+    },
+    setIsDark: function ({ commit }) {
+      commit('SET_ISDARK');
+    },
   },
 
   modules: {

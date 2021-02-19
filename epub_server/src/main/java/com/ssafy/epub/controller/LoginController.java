@@ -40,34 +40,35 @@ public class LoginController {
 		String email = req.get("email");
 		String password = req.get("password");
 
-		User user = null;
+		User user = userRepository.findByEmail(email);
 		Map<String, String> result = new HashMap<>();
 		//아이디가 존재하지 않을 때
-		if(userRepository.findByEmail(email).size() == 0) {
+		if(user == null) {
 			result.put("result", "ERROR_ID");
 			return ResponseEntity.ok().body(result);
 		}
 		
 		//비밀번호가 틀렸을 때
 //		if(!userRepository.findByEmail(email).get(0).getPassword().equals(password)) {
-		if(!encryptHandler.isMatch(password, userRepository.findByEmail(email).get(0).getPassword())) {
+		if(!encryptHandler.isMatch(password, userRepository.findByEmail(email).getPassword())) {
 			System.out.println();
 			result.put("result", "ERROR_PASSWORD");
 			return ResponseEntity.ok().body(result);
 		}
 		
 		//비밀번호는 맞았는데 status가 false일 때
-		if(!userRepository.findByEmail(email).get(0).isStatus()) {
+		if(!userRepository.findByEmail(email).isStatus()) {
 			result.put("result", "ERROR_STATUS");
 			return ResponseEntity.ok().body(result);
 		}
 		
-		user = userRepository.findByEmail(email).get(0);
+		user = userRepository.findByEmail(email);
 		String token = jwtTokenProvider.createToken(user.getEmail());
 			
 		result.put("token", token);
 		result.put("result", "SUCCESS_LOGIN");
 		result.put("email", user.getEmail());
+		result.put("name", user.getName());
 		result.put("nickname", user.getNickname());
 			
 		return ResponseEntity.ok().body(result);

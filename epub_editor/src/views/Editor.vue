@@ -5,10 +5,15 @@
       <TopMenu/>
     </header>
     <div id="wrap">
-      <aside id="aside">
+      <div id="togglebar">
+        <ToggleBar
+          @toggleDir='toggleDir'
+        />
+      </div>
+      <aside v-if="dirToggle" id="aside">
         <v-card max-height="100%" min-height="100%" class="overflow-y-auto" style="border-radius: 0%;">
-          <v-btn v-if="dirTableToggle===true" @click="toggle" block text>디렉토리</v-btn>
-          <v-btn v-else @click="toggle" block text>목차</v-btn>
+          <v-btn v-if="dirTableToggle===true" @click="toggle" block text>{{ $t("directory") }}</v-btn>
+          <v-btn v-else @click="toggle" block text>{{ $t("toc") }}</v-btn>
           <Directory
             v-show="dirTableToggle===true"
           />
@@ -17,10 +22,13 @@
           />
         </v-card>
       </aside>
-      <content id="content">
+      <content :class="{'content-first': dirToggle, 'content-second': !dirToggle }">
+      <!-- <content>  -->
         <Textarea />
       </content>
+      
     </div>
+    
   </div>
 </template>
 
@@ -30,6 +38,7 @@ import Directory from '@/components/mainpage/Directory';
 import TableOfContents from '@/components/mainpage/TableOfContents';
 import Textarea from '@/components/mainpage/Textarea';
 import Alert from "@/components/mainpage/Alert"
+import ToggleBar from "@/components/mainpage/ToggleBar";
 
 export default {
   name: 'Editor',
@@ -39,15 +48,22 @@ export default {
     TableOfContents,
     Textarea,
     Alert,
+    ToggleBar
   },
+
   data: function () {
     return {
-      dirTableToggle: true
+      dirTableToggle: true,
+      dirOpen: true,
+      dirToggle: true,
     }
   },
   methods: {
     toggle: function () {
       this.dirTableToggle = !this.dirTableToggle;
+    },
+    toggleDir: function () {
+      this.dirToggle = !this.dirToggle;
     },
   },
 }

@@ -1,3 +1,4 @@
+
 export function alignText (val) {
   const area = document.getElementById("area");
   let start = area.selectionStart;
@@ -37,10 +38,16 @@ export function alignText (val) {
   return area.value;
 }
 
-
 export function makeCustomStyle (val, path) {
   const fs = require("fs");
   let temp = fs.readFileSync(path + '/EPUB/styles/stylesheet.css').toString();
+
+  let title='.user_'+val.title;
+  let duplicateCheck=temp.indexOf(title);
+  if(duplicateCheck!==-1){
+    return false;
+  }
+
   let range = '', font = '', backgroundColor = '', fontColor = '';
   if (val.range === '왼쪽 정렬') {
     range = ` text-align: left;\n`;
@@ -73,12 +80,12 @@ ${fontColor}${backgroundColor}${range}${font}
 }\n\n`;
   // console.log(cssStr);
 
-  fs.writeFile(path + '/EPUB/styles/stylesheet.css', temp + cssStr, (err) => {
+  fs.writeFileSync(path + '/EPUB/styles/stylesheet.css', temp + cssStr, (err) => {
     if (err) {
       console.log('fs.writeFile 실패');
     }
   });
-
+  return true;
 }
 
 export function attachCustomStyleTag (title) {
@@ -204,7 +211,7 @@ export function inTag() {
   let current = area.selectionStart;
   let preBracket = area.value.indexOf('<', current);
   let postBracket = area.value.indexOf('>', current);
-  console.log(preBracket, postBracket);
+  // console.log(preBracket, postBracket);
   if (preBracket > postBracket) {
     return false;
   } 
