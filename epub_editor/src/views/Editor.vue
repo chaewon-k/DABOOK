@@ -1,27 +1,35 @@
 <template>
-  <div>
-    <TopMenu/>
-    <v-container class="d-flex flex-column" >
-      <v-row class="stretch" style="width: auto;">
-        <v-col cols="3" style="height:35em;">
-          <v-card max-height="100%" min-height="100%" class="overflow-y-auto">
-            <v-btn v-if="dirTableToggle===true" @click="toggle" block text>디렉토리</v-btn>
-            <v-btn v-else @click="toggle" block text>목차</v-btn>
-            <Directory
-              v-show="dirTableToggle===true"
-            />
-            <TableOfContents
-              v-show="dirTableToggle===false"
-            />
-          </v-card>
-          
-        </v-col>
-      <!-- <v-divider vertical></v-divider> -->
+  <div id="editor">
+    <Alert/>
+    <header id="header">
+      <TopMenu/>
+    </header>
+    <div id="wrap">
+      <!-- <div id="togglebar"> -->
+        <ToggleBar
+          @toggleDir='toggleDir'
+          id="togglebar"
+        />
+      <!-- </div> -->
+      <aside v-if="dirToggle" id="aside">
+        <v-card max-height="100%" min-height="100%" class="overflow-y-auto" style="border-radius: 0%;">
+          <v-btn v-if="dirTableToggle===true" @click="toggle" block text>{{ $t("directory") }}</v-btn>
+          <v-btn v-else @click="toggle" block text>{{ $t("toc") }}</v-btn>
+          <Directory
+            v-show="dirTableToggle===true"
+          />
+          <TableOfContents
+            v-show="dirTableToggle===false"
+          />
+        </v-card>
+      </aside>
+      <content :class="{'content-first': dirToggle, 'content-second': !dirToggle }">
+      <!-- <content>  -->
         <Textarea />
-      <!-- <v-divider vertical></v-divider>
-        <Preview /> -->
-      </v-row>
-    </v-container>
+      </content>
+      
+    </div>
+    
   </div>
 </template>
 
@@ -30,7 +38,8 @@ import TopMenu from '@/components/mainpage/TopMenu';
 import Directory from '@/components/mainpage/Directory';
 import TableOfContents from '@/components/mainpage/TableOfContents';
 import Textarea from '@/components/mainpage/Textarea';
-// import Preview from '@/components/mainpage/Preview';
+import Alert from "@/components/mainpage/Alert"
+import ToggleBar from "@/components/mainpage/ToggleBar";
 
 export default {
   name: 'Editor',
@@ -39,21 +48,24 @@ export default {
     Directory,
     TableOfContents,
     Textarea,
-    // Preview
+    Alert,
+    ToggleBar
   },
+
   data: function () {
     return {
-      dirTableToggle: true
+      dirTableToggle: true,
+      dirOpen: true,
+      dirToggle: true,
     }
   },
   methods: {
     toggle: function () {
-      this.dirTableToggle = !this.dirTableToggle
+      this.dirTableToggle = !this.dirTableToggle;
+    },
+    toggleDir: function () {
+      this.dirToggle = !this.dirToggle;
     },
   },
 }
 </script>
-
-<style>
-
-</style>
