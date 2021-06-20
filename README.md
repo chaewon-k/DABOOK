@@ -1,27 +1,60 @@
-## DABOOK site
+# 📖DABOOK📖
 
-https://contact.dabook.site
+> e-book 제작 및 공유 Desktop Application DABOOK 입니다!
+>
+> 아래 DABOOK site에서 다운받아 사용해보세요!
 
-## App Store Link
+## 🎀[DABOOK site](https://contact.dabook.site)
 
-https://apps.apple.com/kr/app/dabook/id1552689997?mt=12
+## 🎊[App Store Link](https://apps.apple.com/kr/app/dabook/id1552689997?mt=12)
 
-## 소독가들을 위한 다독 장려 프로젝트
+## 🎨기획 배경
+
+![image-20210620224445941](images/image-20210620224445941.png)
+
+ 보통의 출판 프로세스는 작가가 원고를 제작하면 출판사는 유통을 시켜주는 과정을 거칩니다.
+
+이 과정에서 작가의 인세는 **10%**에 불과합니다. 이 문제로 인해 **1인 출판사**가 늘어나고 있지만, **개인의 비용 문제**가 발생합니다. 
+
+우리 소독가들은 이 현실을 체감하여 작가들에게 출판 진입장벽이 낮은 e-book 제작을 제안하게 되었고, 그 결과 e-book 제작 데스크탑 애플리케이션 ***DABOOK***을 기획했습니다.
+
+
+
+## 💌소독가들을 위한 다독 장려 프로젝트
 
 ![Cover_img](Document/Book_Cover/Cover_img.png)
 
-
-## 프로젝트 개요
-
-- 진행기간 : 2021.1.11 ~ (ing)
-- 만든이 : 소독가들(강세준, 강채원, 김혜민, 장주빈, 최나현, 최낙훈)
-- 기획 배경 : HTML, CSS도 모르는 일반인들도 전자책을 만들수 있게 해보자.
-- 목표 : GUI와 단축키로 편하게 사용가능한 Epub Editor만들기.
-
-## Project Stack
+## 🍴 Project Stack
 ![Stack](Document/PJT_Stack/Stack.png)
 
-## Document
+
+
+## 😍DABOOK 실행화면
+
+- 로그인 화면
+
+![image-20210620231123326](images/image-20210620231123326.png)
+
+
+
+- 에디터 초기화면
+
+![image-20210620231239696](images/image-20210620231239696.png)
+
+
+
+- e-book 제작 화면
+
+![image-20210620231805715](images/image-20210620231805715.png)
+
+
+
+- 사용 설명서 (상단 `도움말` 탭)
+
+![image-20210620231914004](images/image-20210620231914004.png)
+
+## 📃Document
+
 <details>
     <summary> Convention </summary>
     <ul>
@@ -56,7 +89,7 @@ https://apps.apple.com/kr/app/dabook/id1552689997?mt=12
 </details>
 
 
-## 기능정의서
+## 📽 기능정의서
 
 ![Specification_1](Document/Specification/Specification_1.png)
 
@@ -67,3 +100,7 @@ https://apps.apple.com/kr/app/dabook/id1552689997?mt=12
 ![Specification_4](Document/Specification/Specification_4.png)
 
 ![Specification_5](Document/Specification/Specification_5.png)
+
+## 😁DABOOK을 제작한 멋진 소독가들을 소개합니다!
+
+![image-20210620224713154](images/image-20210620224713154.png)
